@@ -1,0 +1,325 @@
+---
+title: "Lumping, Splitting, and Personalized Medicine"
+author: "Roger Day"
+date: \"`r date()`
+output: 
+  html_notebook: 
+    number_sections: yes
+runtime: shiny
+---
+
+
+NAVIGATE:
+
+Possible solution to including a nav toc:
+
+https://github.com/sethen/markdown-include#markdown-include 
+https://shapeshed.com/setting-up-nodejs-and-npm-on-mac-osx/ 
+Downloaded it, but the SHA 256 doesn't match.
+But... don't need it.  See below.
+
+
+[Reference on local anchors](https://stackoverflow.com/questions/5319754/cross-reference-named-anchor-in-markdown#7335259)
+
+[Reference on markdown with shiny (excellent)](https://beta.rstudioconnect.com/content/2671/Combining-Shiny-R-Markdown.html)
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+"LumpSplit-with-notebook.Rmd"
+```
+
+
+```{r inclRmd}
+require("magrittr")
+inclRmd <- function(path) {
+  paste(readLines(path, warn = FALSE), collapse = '\n') %>%
+  knitr::knit2html(text = ., fragment.only = TRUE, options = "",
+                   stylesheet=file.path(r_path,"../www/empty.css")) %>%
+    gsub("&lt;!--/html_preserve--&gt;","",.) %>%
+    gsub("&lt;!--html_preserve--&gt;","",.) %>%
+    HTML %>%
+    withMathJax
+}
+
+output$mini_case_1 <- renderUI({
+  tagList(
+    # rmarkdown::run("./cases/case1/01_test.Rmd"),
+    inclRmd("../test-incl.Rmd") 
+  )
+})
+
+div(uiOutput('mini_case_1'))
+#### IT WORKS!
+
+```
+
+```{r testRunChunk}
+print('hello testrunchunk')
+```
+
+
+
+```{r initial values, echo=FALSE}
+
+logit = function(p) log(p/(1-p))
+antilogit = function(x) 1 - 1/(1+exp(x))
+DLdata = matrix(c(3,5,2,90),nrow=2)
+dimnames(DLdata) = list(c("D","L"),c("R","N"))
+ColorForPrior="orange";     
+ColorForPosterior="blue";     
+ColorForLikelihood="black"
+```
+```{r}
+output$navTOC <- renderUI({
+  tagList(inclRmd("navTOC.Rmd") )
+  })
+div(uiOutput('navTOC'))
+```
+
+```{r}
+div(uiOutput('navToc'))
+```
+
+
+```{r server code}
+source("Plight-Pdark-posterior-new.R", local=TRUE)
+
+rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
+                         title_1='title 1',
+                         DLdata = DLdata)
+```
+
+```{r plotPlightPdarkPosteriorReactive}
+plotPlightPdarkPosteriorReactive = reactive( {
+  cat("PLOTTING   ")
+  tau <- input$tauInput
+  phi <- input$phiInput
+  mu0 <- input$mu0Input
+  cat("tau=", tau, " phi=", phi, " mu0=", mu0, "\n")
+  plotPlightPdarkPosterior(DLdata=rValues$DLdata,
+                           tau=tau, phi=phi, mu0=logit(mu0), 
+                           showPrior = input$checkPrior, 
+                           showPosterior = input$checkPosterior,
+                           fudgeFactor = input$fudgeFactor)
+  rValues$title_3 <<- paste0(
+    "  tau=", input$tauInput,  
+    ",  phi=", input$phiInput,  
+    ",  mu0=", input$mu0Input 
+  )
+})
+```
+```{r lumpReact}
+lumpReact = observe({
+  if(length(input$lumpID) > 0) {
+    cat("lumpID\n")
+    rValues$tau <- 1; rValues$phi <- 0.001   
+    ### Lump:  no individual variation:   D is same as L.
+    rValues$title_1 <- "Lump"
+    rValues$title_2 <- "Prior belief: Pr(R|D) = Pr(R|L)"
+  }
+})  
+```
+
+```{r updateDLdata}
+updateDLdata = observe({
+  try({
+    rValues$DLdata[1,1] = input$mRD
+    rValues$DLdata[1,2] = input$mND
+    rValues$DLdata[2,1] = input$mRL
+    rValues$DLdata[2,2] = input$mNL
+  })
+  cat('input$mRD', input$mRD, '\n')
+})
+```
+
+```{r}
+splitReact = observe({
+  if(length(input$splitID) > 0) {
+    cat("splitID\n")
+    rValues$tau <<- 0; rValues$phi <<- 1   
+    ### Split:  D unconnected to L.
+    rValues$title_1 <<- "Split"
+    rValues$title_2 <<- "Prior belief: Pr(R|D) is unrelated to Pr(R|L)."
+  }
+}) 
+```
+
+```{r mixedReact} 
+mixedReact = observe({
+  if(length(input$mixedID) > 0) {
+    cat("mixedID\n")
+    rValues$tau <<- 1/2; rValues$phi <<- 1/2 
+    rValues$title_1 <<- "Compromise: lump some, split some"
+    rValues$title_2 <<- "Prior belief:  Pr(R|D)  is somewhat related to Pr(R|L). "
+  }
+})
+```
+
+```{r updateViews}
+updateViews = observe({
+  updateNumericInput(session=session, inputId="tauInput", 
+                     value = rValues$tau)
+  updateNumericInput(session=session, inputId="phiInput", 
+                     value = rValues$phi)
+})
+```
+
+#### <a name=plotCode> Code for the Plot! </a>
+
+Go to Top of the [Notebook](#notebookBegin) .
+
+```{r thePlot}
+output$title_1_ID = renderText({rValues$title_1})
+output$title_2_ID = renderText({rValues$title_2})
+output$title_3_ID = renderText({rValues$title_3})
+
+output$thePlot = renderPlot(width=500, height=500,
+                            {
+                              par(mai=c(1.4,1.4,1.1,0.6))
+                              par(mar=c(5,5,4,2) + 0.2)
+                              plotPlightPdarkPosteriorReactive()
+                            })
+```
+
+```{r makeDebuggingPanelOutput}
+shinyDebuggingPanel::makeDebuggingPanelOutput(session) 
+```
+
+##  <a name="notebookBegin"> Notebook </a>
+
+### Hypothetical medical study demonstrating lumping versus splitting
+
+The Problem:  A new treatment is given to 100 patients.  
+Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respond, yield
+Goal: decide whether to treat the "D" patients.
+
+#### Method
+
+We set the Bayesian joint prior, and compute the joint posterior.
+
+To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits (log(odds)).
+Then we set a bivariate normal distribution on the logits.
+We also convert the observed proportions to logits. We estimate the variances using the delta method applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
+
+(This doesn't work well if the count is near zero , and not at all at zero.
+For this reason a "continuity fudge" is applied, if necessary.)
+
+
+
+## <a name='debugging'>Debugging the shiny code</a>
+
+This tool allows direct computation of any R or JS.
+```{r withDebuggingPanel}
+fluidRow(
+  shinyDebuggingPanel::withDebuggingPanel() 
+)
+```
+
+
+
+## Bivariate prior/posterior plot <a name="prior-posterior">
+
+Go to Top of the [Notebook](#notebookBegin) .
+```{r}
+div(uiOutput('navTOC'))
+```
+
+```{r}
+panelOfInputs = 
+  list(h1("Declaring the Prior Distribution "),
+    checkboxInput(inputId= 'togglePanelOfInputs', 
+                  label = 'togglePanelOfInputs',value = TRUE),
+    conditionalPanel(
+      "input.togglePanelOfInputs",
+      wellPanel(
+        numericInput("phiInput", "prior variance | group (phi)", 
+                     value=0, min = 0.00, step=0.1),
+        numericInput("tauInput", "shared additional variance (tau)", 
+                     value=1, min = 0.00, step=0.1),
+        numericInput("mu0Input", "shared prior mean", 
+                     value=0.5, min = 0.001, step=0.1, max=0.999),
+        actionButton("lumpID", label = "Lump"),
+        actionButton("splitID", label = "Split"),
+        actionButton("mixedID", label = "Mixed")
+      ),
+      numericInput(inputId = 'fudgeFactor', 
+                   label = 'continuity fudge factor',
+                   value=0.001),
+      div(style="color:blue", 
+          checkboxInput("checkPrior", 
+                        "Orange = prior distribution",
+                        TRUE)),
+      div(style="color:orange",
+          checkboxInput("checkPosterior", 
+                        "Blue = posterior distribution",
+                        TRUE)),
+      "Shaded: 50% highest posterior region"
+    )
+  )
+```
+
+```{r}
+output$responseRates = renderText({
+  paste(input$mRD, '/', input$mRD+input$mND, "for D, and ",
+        input$mRL, '/', input$mRL+input$mNL, "for L.")
+})
+
+panelOfData = wellPanel(
+  h1("Data: Response by Predictor"),
+  checkboxInput('toggleShowData', 'Show/Hide the Data Panel', TRUE),
+  conditionalPanel(
+    'input.toggleShowData',
+    wellPanel(
+      splitLayout("", "Responders", "non-responders"),
+      splitLayout("Group 'L'",
+                  numericInput('mRL', 'mRL', DLdata[2,1]),
+                  numericInput('mNL', 'mNL', DLdata[2,2])
+      ),
+      splitLayout( "Group 'D'",
+                   numericInput('mRD', 'mRD', DLdata[1,1]),
+                   numericInput('mND', 'mND', DLdata[1,2])
+      ), 
+      "X = observed response rate, ",
+      br(),
+      textOutput(outputId = 'responseRates'),
+      hr()
+    )
+  )
+)
+```
+
+```{r}
+#### UI fluidPage####
+require(shinyBS)
+fluidPage(
+  title  = 'Bias-variance-smoothing-shrinking', 
+  # Application title
+  titlePanel("Bias-variance-smoothing-shrinking"),
+
+  column(width = 8, panelOfData),
+  sidebarLayout(sidebarPanel = 
+                  sidebarPanel(
+                    panelOfInputs),
+                mainPanel = mainPanel(
+                  br(),
+                  tagAppendAttributes(
+                    div(
+                      textOutput(outputId="title_1_ID"),
+                      textOutput(outputId="title_2_ID"),
+                      textOutput(outputId="title_3_ID")
+                    ),
+                    style=
+                      'text-align:center; font-size:large; font-weight:bold'),
+                  a(name='viewPlot'),
+                  plotOutput(outputId = 'thePlot')
+                )
+  )
+)
+```
+
+[Click here]() to view the derivation of the posterior in another window.
+
+The current tau is -- can't do this :  *r rValues$tau*. Not reactive context.
+  
