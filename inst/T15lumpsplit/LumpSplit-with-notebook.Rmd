@@ -110,6 +110,8 @@ plotPlightPdarkPosteriorReactive = reactive( {
   )
 })
 ```
+
+
 ```{r lumpReact}
 lumpReact = observe({
   if(length(input$lumpID) > 0) {
@@ -208,6 +210,10 @@ For this reason a "continuity fudge" is applied, if necessary.)
 
 
 
+```{r}
+div(uiOutput('navToc'))
+```
+
 ## <a name='debugging'>Debugging the shiny code</a>
 
 This tool allows direct computation of any R or JS.
@@ -218,6 +224,9 @@ fluidRow(
 ```
 
 
+```{r}
+div(uiOutput('navToc'))
+```
 
 ## Bivariate prior/posterior plot <a name="prior-posterior">
 
@@ -246,18 +255,23 @@ panelOfInputs =
       ),
       numericInput(inputId = 'fudgeFactor', 
                    label = 'continuity fudge factor',
-                   value=0.001),
-      div(style="color:blue", 
-          checkboxInput("checkPrior", 
-                        "Orange = prior distribution",
-                        TRUE)),
-      div(style="color:orange",
-          checkboxInput("checkPosterior", 
-                        "Blue = posterior distribution",
-                        TRUE)),
-      "Shaded: 50% highest posterior region"
-    )
-  )
+                   value=0.001)
+    ))
+```
+
+
+```{r show-hide-contours}
+ShowHideContoursPanel = list(
+  div(style="color:blue", 
+      checkboxInput("checkPrior", 
+                    "Orange = prior distribution",
+                    TRUE)),
+  div(style="color:orange",
+      checkboxInput("checkPosterior", 
+                    "Blue = posterior distribution",
+                    TRUE)),
+  "Shaded: 50% highest posterior region"
+)
 ```
 
 ```{r}
