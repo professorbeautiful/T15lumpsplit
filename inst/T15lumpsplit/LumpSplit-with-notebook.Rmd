@@ -9,18 +9,6 @@ runtime: shiny
 ---
 
 
-NAVIGATE:
-
-Possible solution to including a nav toc:
-
-https://github.com/sethen/markdown-include#markdown-include 
-https://shapeshed.com/setting-up-nodejs-and-npm-on-mac-osx/ 
-Downloaded it, but the SHA 256 doesn't match.
-But... don't need it.  See below.
-
-
-[Reference on local anchors](https://stackoverflow.com/questions/5319754/cross-reference-named-anchor-in-markdown#7335259)
-
 [Reference on markdown with shiny (excellent)](https://beta.rstudioconnect.com/content/2671/Combining-Shiny-R-Markdown.html)
 
 
@@ -49,9 +37,7 @@ TOCnum =  0
 ```
 
 ```{r}
-navTOCid = paste0('navTOC',TOCnum); TOCnum = TOCnum+1
-output[[navTOCid]] <- renderUI({ tagList(inclRmd("navTOC.Rmd") )})
-div(uiOutput(navTOCid))
+source('navTOCid.R', local=T)
 ```
 
 
@@ -182,7 +168,7 @@ For this reason a "continuity fudge" is applied, if necessary.)
 
 
 ```{r}
-#div(uiOutput('navToc'))
+source('navTOCid.R', local=T)
 ```
 
 ## <a name='debugging'>Debugging the shiny code</a>
@@ -196,16 +182,14 @@ fluidRow(
 
 
 ```{r}
-navTOCid = paste0('navTOC',TOCnum); TOCnum = TOCnum+1
-output[[navTOCid]] <- renderUI({ tagList(inclRmd("navTOC.Rmd") )})
-div(uiOutput(navTOCid))
+source('navTOCid.R', local=T)
 ```
 
 ## Bivariate prior/posterior plot <a name="prior-posterior">
 
 Go to Top of the [Notebook](#notebookBegin) .
 ```{r}
-# div(uiOutput('navTOC'))
+source('navTOCid.R', local=T)
 ```
 
 ```{r}
@@ -315,9 +299,7 @@ fluidPage(
 div(list(br(),br(),br(),br(),br(),br(),br(),br()))
 ```
 ```{r}
-navTOCid = paste0('navTOC',TOCnum); TOCnum = TOCnum+1
-output[[navTOCid]] <- renderUI({ tagList(inclRmd("navTOC.Rmd") )})
-div(uiOutput(navTOCid))
+source('navTOCid.R', local=T)
 ```
 ```{r}
 div(list(br(),br(),br(),br()))
