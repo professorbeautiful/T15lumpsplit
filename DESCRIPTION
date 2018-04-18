@@ -3,10 +3,8 @@ Type: Package
 Title: T15lumpsplit tutorial
 Version: 0.1.0
 Author: Roger Day
-Maintainer: day01@pitt.edu
+Maintainer: Roger Day<day01@pitt.edu>
 Description: Developing tutorial module for the NLM T15
-    Use four spaces when indenting paragraphs within the Description.
 License: What license is it under?
-Require: RTutor
 Encoding: UTF-8
 LazyData: true
