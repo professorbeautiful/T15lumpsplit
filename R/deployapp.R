@@ -1,6 +1,6 @@
 # Deploying an interactive RTutor problem set on shinyapps.io
 
-# 1. Make sure you have generated a package for your problem set and 
+# 1. Make sure you have generated a package for your problem set and
 #    have it hosted on github
 
 # 2. Install in the subfolder ./app/work all the data sets that are used by
@@ -10,19 +10,19 @@
 #    RStudio from CRAN or GITHUB (a local build of a package does not work)
 
 if (FALSE) {
-  # Run this code if you need to install some packages	
+  # Run this code if you need to install some packages
   library(devtools)
-  install_github("skranz/shinyEvents",ref = "master")  
+  install_github("skranz/shinyEvents",ref = "master")
   install_github("skranz/regtools",ref = "master")
   install_github("skranz/dplyrExtras",ref = "master")
   install_github("skranz/stringtools",ref = "master")
 
   # Pick master or development version of RTutor
-  install_github("skranz/RTutor",ref = "master")  
+  install_github("skranz/RTutor",ref = "master")
   #install_github("skranz/RTutor",ref = "develop")
 
   # You need to install your own package from your github account
-  install_github("GITHUB_USERNAME/PACKAGE_NAME",ref = "master") 
+  install_github("GITHUB_USERNAME/PACKAGE_NAME",ref = "master")
 }
 
 # 4. You must now install the shinyapps package and open a free account
@@ -34,7 +34,7 @@ if (FALSE) {
 
 
   # You must adapt the following lines to your account as explained in
-  #  http://shiny.rstudio.com/articles/shinyapps.html 
+  #  http://shiny.rstudio.com/articles/shinyapps.html
 
   shinyapps::setAccountInfo(
     name='<SHINYAPPS_USERNAME>',
@@ -43,12 +43,12 @@ if (FALSE) {
   )
 
   library(shinyapps)
-  
+
   # Set app directory as working directory
-  setwd("T15-lumpsplit/app")
+  setwd("inst/T15lumpsplit")
 
   # This command deploys your app on shinyapps.io
-  deployApp(appName="T15-lumpsplit")
+  deployApp(appName="T15lumpsplit")
 
   # You can now log in on shinyapps.io to get usage statistics about your app
 }
