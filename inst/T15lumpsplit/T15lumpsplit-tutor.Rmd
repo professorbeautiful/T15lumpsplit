@@ -1,8 +1,8 @@
 # Problemset Example
 
 Example of an RTutor interactive Problemset
-Author:  Sebastian Kranz, modified by R.Day
-Date:    12.06.2014, now \"`Sys.date()`\"
+Author:   modified by R.Day--SebastianKranz,
+Date:   now \"`Sys.date()`\"
 
 Adapt the working directory below and press Ctrl-Alt-R (run all chunks). This creates the problem set files and the sample solution from this solution file.
 #< ignore
@@ -16,12 +16,13 @@ Adapt the working directory below and press Ctrl-Alt-R (run all chunks). This cr
 library(restorepoint)
 # facilitates error detection
 #  I needed to prepend "restorepoint:::"
-restorepoint:::set.restore.point.options(display.restore.point=TRUE)
+## restorepoint:::set.restore.point.options(display.restore.point=TRUE)
 
 library(RTutor)
 
 #setwd(system.file(package="RTutor", "examples") )
-setwd(system.file(package="T15lumpsplit", "examples") )
+#setwd(system.file(package="T15lumpsplit", "examples") )
+setwd("inst/T15lumpsplit")
 ps.name = "Example"; sol.file = paste0(ps.name,"_sol.Rmd")
 libs = c("ggplot2") # character vector of all packages you load in the problem set
 #name.rmd.chunks(sol.file) # set auto chunk names in this file
@@ -33,11 +34,27 @@ stop.without.error()
 
 ## Exercise 1 -- Summary statistics
 
+```{r initial values, echo=FALSE}
+
+logit = function(p) log(p/(1-p))
+antilogit = function(x) 1 - 1/(1+exp(x))
+DLdata = matrix(c(3,5,2,90),nrow=2)
+dimnames(DLdata) = list(c("D","L"),c("R","N"))
+ColorForPrior="orange";     
+ColorForPosterior="blue";     
+ColorForLikelihood="black"
+```
+
+
+
+
+DOES MY STUFF SHOW UP?
+
 a) First part
 
 Some Math:
 
-$$x = \beta^2$$
+$$x = \beta^2 + \xi^3$$
 
 #< info "Some math in an info block"
 $$y = \alpha^2$$
