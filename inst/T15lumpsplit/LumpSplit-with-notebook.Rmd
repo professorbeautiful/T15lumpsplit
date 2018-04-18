@@ -302,6 +302,7 @@ fluidPage(
                   sidebarPanel(
                     panelOfInputs),
                 mainPanel = mainPanel(
+                  ShowHideContoursPanel,
                   br(),
                   tagAppendAttributes(
                     div(
