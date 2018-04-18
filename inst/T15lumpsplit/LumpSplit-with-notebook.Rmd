@@ -35,28 +35,15 @@ knitr::opts_chunk$set(echo = FALSE)
 require("magrittr")
 inclRmd <- function(path) {
   paste(readLines(path, warn = FALSE), collapse = '\n') %>%
-  knitr::knit2html(text = ., fragment.only = TRUE, options = "",
-                   stylesheet=file.path(r_path,"../www/empty.css")) %>%
+    knitr::knit2html(text = ., fragment.only = TRUE, options = "", 
+                     stylesheet=file.path(r_path,"../www/empty.css")
+  ) %>%
     gsub("&lt;!--/html_preserve--&gt;","",.) %>%
     gsub("&lt;!--html_preserve--&gt;","",.) %>%
     HTML %>%
     withMathJax
 }
 
-output$mini_case_1 <- renderUI({
-  tagList(
-    # rmarkdown::run("./cases/case1/01_test.Rmd"),
-    inclRmd("../test-incl.Rmd") 
-  )
-})
-
-div(uiOutput('mini_case_1'))
-#### IT WORKS!
-
-```
-
-```{r testRunChunk}
-print('hello testrunchunk')
 ```
 
 
