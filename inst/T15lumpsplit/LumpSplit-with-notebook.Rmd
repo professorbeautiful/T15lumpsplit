@@ -289,6 +289,10 @@ panelOfData = wellPanel(
 )
 ```
 
+
+[Click here](asdfasd) to view the derivation of the posterior in another window.
+
+
 ```{r}
 #### UI fluidPage####
 require(shinyBS)
