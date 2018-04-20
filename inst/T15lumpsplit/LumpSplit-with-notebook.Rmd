@@ -2,16 +2,12 @@
 title: "Lumping, Splitting, and Personalized Medicine"
 author: "Roger Day"
 date: "`r date()`"
-output: 
-  html_notebook: 
-    number_sections: yes
+output: html_document
 runtime: shiny
 ---
 
 
 [Reference on markdown with shiny (excellent)](https://beta.rstudioconnect.com/content/2671/Combining-Shiny-R-Markdown.html)
-
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
