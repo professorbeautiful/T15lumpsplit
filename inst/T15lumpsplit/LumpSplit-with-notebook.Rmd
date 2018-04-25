@@ -32,7 +32,7 @@ ColorForLikelihood="black"
 TOCnum =  0
 ```
 
-```{r}
+```{r navTOCid.R}
 source('navTOCid.R', local=T)
 ```
 
@@ -89,7 +89,7 @@ updateDLdata = observe({
 })
 ```
 
-```{r}
+```{r splitReact}
 splitReact = observe({
   if(length(input$splitID) > 0) {
     cat("splitID\n")
@@ -143,7 +143,7 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(session)
 ```
 
 
-```{r}
+```{r navTOCid.R.2}
 source('navTOCid.R', local=T)
 ```
 
@@ -168,7 +168,7 @@ Go to Top of the [Notebook](#notebookBegin) .
 source('navTOCid.R', local=T)
 ```
 
-```{r}
+```{r panelOfInputs}
 panelOfInputs = 
   list(h1("Declaring the Prior Distribution "),
     checkboxInput(inputId= 'togglePanelOfInputs', 
@@ -207,7 +207,7 @@ ShowHideContoursPanel = list(
 )
 ```
 
-```{r}
+```{r responseRates}
 output$responseRates = renderText({
   paste(input$mRD, '/', input$mRD+input$mND, "for D, and ",
         input$mRL, '/', input$mRL+input$mNL, "for L.")
@@ -241,14 +241,20 @@ panelOfData = wellPanel(
 [Click here](asdfasd) to view the derivation of the posterior in another window.
 
 
-```{r}
+```{r UI_begins}
 #### UI fluidPage####
 require(shinyBS)
 fluidPage(
   title  = 'Bias-variance-smoothing-shrinking', 
   # Application title
-  titlePanel("Bias-variance-smoothing-shrinking"),
-fluidRow(
+  titlePanel("Bias-variance-smoothing-shrinking")
+)
+```
+
+
+
+```{r}
+div(list(fluidRow(
   column(width = 4, 
          inclRmd('LumpSplit-with-notebook-Notebook.Rmd')),
   column(width = 4, panelOfData,
@@ -268,7 +274,7 @@ fluidRow(
                   plotOutput(outputId = 'thePlot')
                 )
   )
-)
+))
 ```
 
 ```{r}
