@@ -7,7 +7,6 @@ runtime: shiny
 ---
 
 
-[Reference on markdown with shiny (excellent)](https://beta.rstudioconnect.com/content/2671/Combining-Shiny-R-Markdown.html)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
