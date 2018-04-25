@@ -239,14 +239,19 @@ panelOfData = wellPanel(
 
 [Click here](asdfasd) to view the derivation of the posterior in another window.
 
+```{r navBar}
+### TODO
+navBar = br()
+```
 
 ```{r UI_begins}
 #### UI fluidPage####
 require(shinyBS)
-fluidPage(
+navbarPage(
   title  = 'Bias-variance-smoothing-shrinking', 
   # Application title
-  titlePanel("Bias-variance-smoothing-shrinking")
+  titlePanel(list("Bias-variance-smoothing-shrinking",
+                   navBar))
 )
 ```
 
