@@ -1,9 +1,8 @@
-# Problemset Example
-
-Example of an RTutor interactive Problemset
-Author:   modified by R.Day--SebastianKranz,
-Date:   now \"`Sys.date()`\"
-
+---
+Title: RTutor Example interactive Problemset, towards the T15
+Author:   modified by R.Day--SebastianKranz
+Date:   "`Sys.date()`"
+---
 Adapt the working directory below and press Ctrl-Alt-R (run all chunks). This creates the problem set files and the sample solution from this solution file.
 #< ignore
 ```{r compare}
@@ -19,11 +18,11 @@ library(restorepoint)
 ## restorepoint:::set.restore.point.options(display.restore.point=TRUE)
 
 library(RTutor)
-
+### Use Knit option "Document Directory" .
 #setwd(system.file(package="RTutor", "examples") )
 #setwd(system.file(package="T15lumpsplit", "examples") )
-setwd("inst/T15lumpsplit")
-ps.name = "Example"; sol.file = paste0(ps.name,"_sol.Rmd")
+ps.name = "T15lumpsplit-tutor"
+sol.file = "T15lumpsplit-tutor.Rmd"
 libs = c("ggplot2") # character vector of all packages you load in the problem set
 #name.rmd.chunks(sol.file) # set auto chunk names in this file
 create.ps(sol.file=sol.file, ps.name=ps.name, user.name=NULL,libs=libs, stop.when.finished=FALSE)
