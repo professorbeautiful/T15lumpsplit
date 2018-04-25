@@ -18,3 +18,10 @@ We also convert the observed proportions to logits. We estimate the variances us
 (This doesn't work well if the count is near zero , and not at all at zero.
 For this reason a "continuity fudge" is applied, if necessary.)
 
+
+```{r}
+require('shiny')
+div(h1('shiny here'), numericInput('LABEL', 'LABEL', value = 1, min = 0, max = 2)
+    )
+```
+
