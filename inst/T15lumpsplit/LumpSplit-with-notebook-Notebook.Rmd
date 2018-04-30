@@ -1,5 +1,9 @@
 ---
 runtime: shiny
+output: 
+  html_notebook: 
+    number_sections: yes
+    toc: yes
 ---
 ##  <a name="notebookBegin"> Notebook </a>
 
@@ -20,16 +24,20 @@ We also convert the observed proportions to logits. We estimate the variances us
 (This doesn't work well if the count is near zero , and not at all at zero.
 For this reason a "continuity fudge" is applied, if necessary.)
 
-The link to bivariate normal details is [here](lump,split-bivariate-normal-derivation.pdf))): 
+The link to bivariate normal details is [here](lump,split-bivariate-normal-derivation.htm))): 
 
 ```{r }
 require('shiny')
+
 codeToRun = "date()"
-output$RunCode1 = renderText({ eval(parse(text=codeToRun)) })
+### You need to add input$idRunCode1 to make it reactive!!
+output$RunCode1 = renderText({ 
+  paste("Clicked! ", input$idRunCode1, "///", eval(parse(text=codeToRun))) })
 outputRunCode1 = textOutput(outputId = 'RunCode1')
 div(h3('click button to run code'), 
     actionButton('idRunCode1', 'idRunCode1'), 
     pre(codeToRun), 'RESULT', outputRunCode1 , 'THERE IT WAS'
 )
+
 ```
 

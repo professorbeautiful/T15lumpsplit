@@ -237,7 +237,8 @@ panelOfData = wellPanel(
 ```
 
 
-[Click here](asdfasd) to view the derivation of the posterior in another window.
+
+[Click here](lump,split-bivariate-normal-derivation.htm) to view the derivation of the posterior in another window.
 
 ```{r navBar}
 ### TODO
@@ -277,7 +278,7 @@ div(list(fluidRow(
                   a(name='viewPlot'),
                   plotOutput(outputId = 'thePlot')
                 )
-  )
+)
 ))
 ```
 
