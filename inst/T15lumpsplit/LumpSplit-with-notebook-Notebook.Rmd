@@ -1,4 +1,6 @@
-
+---
+runtime: shiny
+---
 ##  <a name="notebookBegin"> Notebook </a>
 
 ### Hypothetical medical study demonstrating lumping versus splitting
@@ -18,10 +20,16 @@ We also convert the observed proportions to logits. We estimate the variances us
 (This doesn't work well if the count is near zero , and not at all at zero.
 For this reason a "continuity fudge" is applied, if necessary.)
 
+The link to bivariate normal details is [here](lump,split-bivariate-normal-derivation.pdf))): 
 
-```{r}
+```{r }
 require('shiny')
-div(h1('shiny here'), numericInput('LABEL', 'LABEL', value = 1, min = 0, max = 2)
-    )
+codeToRun = "date()"
+output$RunCode1 = renderText({ eval(parse(text=codeToRun)) })
+outputRunCode1 = textOutput(outputId = 'RunCode1')
+div(h3('click button to run code'), 
+    actionButton('idRunCode1', 'idRunCode1'), 
+    pre(codeToRun), 'RESULT', outputRunCode1 , 'THERE IT WAS'
+)
 ```
 
