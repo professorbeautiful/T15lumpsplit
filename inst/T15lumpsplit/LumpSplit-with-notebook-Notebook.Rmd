@@ -50,15 +50,20 @@ interactiveSection = function(codeToRun = "date()",
   outputRunCode1 = textOutput(outputId = outputIdThisSection)
   div(h2(paste("section", thisSectionNumber)),
          h3('click button to run code'), 
-      paste("thisSectionNumber", thisSectionNumber),
-      paste("outputIdThisSection", outputIdThisSection),
-      paste("buttonIdThisSection", buttonIdThisSection),
+      # paste("thisSectionNumber", thisSectionNumber),
+      # paste("outputIdThisSection", outputIdThisSection),
+      # paste("buttonIdThisSection", buttonIdThisSection),
          actionButton(buttonIdThisSection, buttonIdThisSection), 
          pre(codeToRun), 'RESULT', outputRunCode1 , 'THERE IT WAS'
   )
 }
-interactiveSection(codeToRun = "'hello'")
-interactiveSection(codeToRun = "'hello again'")
 
 ```
 
+```{r}
+interactiveSection(codeToRun = "'hello'")
+```
+
+```{r}
+interactiveSection(codeToRun = "'hello again'")
+```
