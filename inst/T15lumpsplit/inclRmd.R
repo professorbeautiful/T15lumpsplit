@@ -1,7 +1,8 @@
 require("magrittr")
 inclRmd <- function(path) {
   paste(readLines(path, warn = FALSE), collapse = '\n') %>%
-    knitr::knit2html(text = ., fragment.only = TRUE, options = "",
+    knitr::knit2html(quiet=TRUE,
+                     text = ., fragment.only = TRUE, options = "",
                      stylesheet=file.path(r_path,"../www/empty.css")
     ) %>%
     gsub("&lt;!--/html_preserve--&gt;","",.) %>%
