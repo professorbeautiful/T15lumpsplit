@@ -1,0 +1,69 @@
+---
+runtime: shiny
+output: 
+  html_notebook: 
+    number_sections: yes
+    toc: yes
+---
+##  <a name="notebookBegin"> Notebook </a>
+
+### Hypothetical medical study demonstrating lumping versus splitting
+
+The Problem:  A new treatment is given to 100 patients.  
+Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respond, yield
+Goal: decide whether to treat the "D" patients.
+
+#### Method
+
+We set the Bayesian joint prior, and compute the joint posterior.
+
+To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits (log(odds)).
+Then we set a bivariate normal distribution on the logits.
+We also convert the observed proportions to logits. We estimate the variances using the delta method applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
+
+(This doesn't work well if the count is near zero , and not at all at zero.
+For this reason a "continuity fudge" is applied, if necessary.)
+
+The link to bivariate normal details is [here](lump,split-bivariate-normal-derivation.htm))): 
+
+```{r }
+require('shiny')
+envNextNumber = new.env()
+assign('x', 0, envir = envNextNumber)
+nextNumber = function(){
+  x <- get('x', envir=envNextNumber) + 1
+  assign('x', x, envir = envNextNumber)
+  print(x)
+}
+interactiveSection = function(codeToRun = "date()",
+                              buttonLabel= "run code") {
+  ### You need to add input$idRunCode1 to make it reactive!!
+  thisSectionNumber = nextNumber()
+  outputIdThisSection = paste0('RunCode', thisSectionNumber)
+  buttonIdThisSection = paste0('id', outputIdThisSection)
+  output[[outputIdThisSection]] = renderText({ 
+    if(input[[buttonIdThisSection]] == 0)
+      "<result will be here>"
+    else
+      paste("Clicked! ", input[[buttonIdThisSection]], "///",
+            eval(parse(text=codeToRun))) })
+  outputRunCode1 = textOutput(outputId = outputIdThisSection)
+  div(h2(paste("section", thisSectionNumber)),
+         h3('click button to run code'), 
+      # paste("thisSectionNumber", thisSectionNumber),
+      # paste("outputIdThisSection", outputIdThisSection),
+      # paste("buttonIdThisSection", buttonIdThisSection),
+         actionButton(buttonIdThisSection, buttonIdThisSection), 
+         pre(codeToRun), 'RESULT', outputRunCode1 , 'THERE IT WAS'
+  )
+}
+
+```
+
+```{r}
+interactiveSection(codeToRun = "'hello'")
+```
+
+```{r}
+interactiveSection(codeToRun = "'hello again'")
+```

@@ -2,14 +2,9 @@
 title: "Lumping, Splitting, and Personalized Medicine"
 author: "Roger Day"
 date: "`r date()`"
-output: 
-  html_notebook: 
-    number_sections: yes
+output: html_document
 runtime: shiny
 ---
-
-
-[Reference on markdown with shiny (excellent)](https://beta.rstudioconnect.com/content/2671/Combining-Shiny-R-Markdown.html)
 
 
 
@@ -36,7 +31,7 @@ ColorForLikelihood="black"
 TOCnum =  0
 ```
 
-```{r}
+```{r navTOCid.R}
 source('navTOCid.R', local=T)
 ```
 
@@ -93,7 +88,7 @@ updateDLdata = observe({
 })
 ```
 
-```{r}
+```{r splitReact}
 splitReact = observe({
   if(length(input$splitID) > 0) {
     cat("splitID\n")
@@ -146,28 +141,8 @@ output$thePlot = renderPlot(width=500, height=500,
 shinyDebuggingPanel::makeDebuggingPanelOutput(session) 
 ```
 
-##  <a name="notebookBegin"> Notebook </a>
 
-### Hypothetical medical study demonstrating lumping versus splitting
-
-The Problem:  A new treatment is given to 100 patients.  
-Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respond, yield
-Goal: decide whether to treat the "D" patients.
-
-#### Method
-
-We set the Bayesian joint prior, and compute the joint posterior.
-
-To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits (log(odds)).
-Then we set a bivariate normal distribution on the logits.
-We also convert the observed proportions to logits. We estimate the variances using the delta method applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
-
-(This doesn't work well if the count is near zero , and not at all at zero.
-For this reason a "continuity fudge" is applied, if necessary.)
-
-
-
-```{r}
+```{r navTOCid.R.2}
 source('navTOCid.R', local=T)
 ```
 
@@ -192,7 +167,7 @@ Go to Top of the [Notebook](#notebookBegin) .
 source('navTOCid.R', local=T)
 ```
 
-```{r}
+```{r panelOfInputs}
 panelOfInputs = 
   list(h1("Declaring the Prior Distribution "),
     checkboxInput(inputId= 'togglePanelOfInputs', 
@@ -231,7 +206,7 @@ ShowHideContoursPanel = list(
 )
 ```
 
-```{r}
+```{r responseRates}
 output$responseRates = renderText({
   paste(input$mRD, '/', input$mRD+input$mND, "for D, and ",
         input$mRL, '/', input$mRL+input$mNL, "for L.")
@@ -262,22 +237,34 @@ panelOfData = wellPanel(
 ```
 
 
-[Click here](asdfasd) to view the derivation of the posterior in another window.
 
+[Click here](lump,split-bivariate-normal-derivation.htm) to view the derivation of the posterior in another window.
 
-```{r}
+```{r navBar}
+### TODO
+navBar = br()
+```
+
+```{r UI_begins}
 #### UI fluidPage####
 require(shinyBS)
-fluidPage(
+navbarPage(
   title  = 'Bias-variance-smoothing-shrinking', 
   # Application title
-  titlePanel("Bias-variance-smoothing-shrinking"),
+  titlePanel(list("Bias-variance-smoothing-shrinking",
+                   navBar))
+)
+```
 
-  column(width = 8, panelOfData),
-  sidebarLayout(sidebarPanel = 
-                  sidebarPanel(
+
+
+```{r include notebook}
+div(list(fluidRow(
+  column(width = 4, 
+         inclRmd('LumpSplit-with-notebook-Notebook.Rmd')),
+  column(width = 4, panelOfData,
                     panelOfInputs),
-                mainPanel = mainPanel(
+  column(width = 4,
                   ShowHideContoursPanel,
                   br(),
                   tagAppendAttributes(
@@ -291,14 +278,14 @@ fluidPage(
                   a(name='viewPlot'),
                   plotOutput(outputId = 'thePlot')
                 )
-  )
 )
+))
 ```
 
 ```{r}
 div(list(br(),br(),br(),br(),br(),br(),br(),br()))
 ```
-```{r}
+```{r include navTOCid}
 source('navTOCid.R', local=T)
 ```
 ```{r}

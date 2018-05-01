@@ -1,0 +1,22 @@
+---
+title: "Technical-references-of-interest"
+author: "Roger Day"
+date: "4/25/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Technical References of interest
+
+
+[Reference on markdown with shiny (excellent)](https://beta.rstudioconnect.com/content/2671/Combining-Shiny-R-Markdown.html)
+
+[Reference on anchors in markdown with reference to HTML and HTML5](https://stackoverflow.com/questions/5319754/cross-reference-named-anchor-in-markdown#7335259)
+
+[question: render multiple dynamic rmarkdown documents inside a shiny app?]
+(https://github.com/rstudio/shiny/issues/859)
+
+
