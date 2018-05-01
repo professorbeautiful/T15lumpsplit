@@ -28,16 +28,37 @@ The link to bivariate normal details is [here](lump,split-bivariate-normal-deriv
 
 ```{r }
 require('shiny')
-
-codeToRun = "date()"
-### You need to add input$idRunCode1 to make it reactive!!
-output$RunCode1 = renderText({ 
-  paste("Clicked! ", input$idRunCode1, "///", eval(parse(text=codeToRun))) })
-outputRunCode1 = textOutput(outputId = 'RunCode1')
-div(h3('click button to run code'), 
-    actionButton('idRunCode1', 'idRunCode1'), 
-    pre(codeToRun), 'RESULT', outputRunCode1 , 'THERE IT WAS'
-)
+envNextNumber = new.env()
+assign('x', 0, envir = envNextNumber)
+nextNumber = function(){
+  x <- get('x', envir=envNextNumber) + 1
+  assign('x', x, envir = envNextNumber)
+  print(x)
+}
+interactiveSection = function(codeToRun = "date()",
+                              buttonLabel= "run code") {
+  ### You need to add input$idRunCode1 to make it reactive!!
+  thisSectionNumber = nextNumber()
+  outputIdThisSection = paste0('RunCode', thisSectionNumber)
+  buttonIdThisSection = paste0('id', outputIdThisSection)
+  output[[outputIdThisSection]] = renderText({ 
+    if(input[[buttonIdThisSection]] == 0)
+      "<result will be here>"
+    else
+      paste("Clicked! ", input[[buttonIdThisSection]], "///",
+            eval(parse(text=codeToRun))) })
+  outputRunCode1 = textOutput(outputId = outputIdThisSection)
+  div(h2(paste("section", thisSectionNumber)),
+         h3('click button to run code'), 
+      paste("thisSectionNumber", thisSectionNumber),
+      paste("outputIdThisSection", outputIdThisSection),
+      paste("buttonIdThisSection", buttonIdThisSection),
+         actionButton(buttonIdThisSection, buttonIdThisSection), 
+         pre(codeToRun), 'RESULT', outputRunCode1 , 'THERE IT WAS'
+  )
+}
+interactiveSection(codeToRun = "'hello'")
+interactiveSection(codeToRun = "'hello again'")
 
 ```
 
