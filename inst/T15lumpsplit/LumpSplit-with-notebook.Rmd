@@ -10,6 +10,7 @@ runtime: shiny
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+#options(error=browser)
 "LumpSplit-with-notebook.Rmd"
 ```
 
@@ -122,8 +123,6 @@ updateViews = observe({
 
 #### <a name=plotCode> Code for the Plot! </a>
 
-Go to Top of the [Notebook](#notebookBegin) .
-
 ```{r thePlot}
 output$title_1_ID = renderText({rValues$title_1})
 output$title_2_ID = renderText({rValues$title_2})
@@ -169,7 +168,7 @@ source('navTOCid.R', local=T)
 
 ```{r panelOfInputs}
 panelOfInputs = 
-  list(h1("Declaring the Prior Distribution "),
+  list(h3("Declaring the Prior Distribution "),
     checkboxInput(inputId= 'togglePanelOfInputs', 
                   label = 'togglePanelOfInputs',value = TRUE),
     conditionalPanel(
@@ -213,7 +212,7 @@ output$responseRates = renderText({
 })
 
 panelOfData = wellPanel(
-  h1("Data: Response by Predictor"),
+  h3("Data: Response by Predictor"),
   checkboxInput('toggleShowData', 'Show/Hide the Data Panel', TRUE),
   conditionalPanel(
     'input.toggleShowData',
@@ -236,19 +235,6 @@ panelOfData = wellPanel(
 )
 ```
 
-
-```{r}
-div(HTML("<a
-  href='http://localhost/~Roger/lump,split-bivariate-normal-derivation.pdf' target='_blank' > Click here to view the derivation of the posterior in another window.</a>")
-)
-div(HTML("<a
-  href='www/lump,split-bivariate-normal-derivation.pdf' target='_blank' rel='noopener'> Click here to view the derivation of the posterior in another window.</a>")
-)     ####doesn't work
-div(HTML("<a
-  href='lump,split-bivariate-normal-derivation.pdf' target='_blank' rel='noopener'> Click here to view the derivation of the posterior in another window.</a>")
-)     ####doesn't work
-```
-
 ```{r navBar}
 ### TODO
 navBar = br()
@@ -258,10 +244,11 @@ navBar = br()
 #### UI fluidPage####
 require(shinyBS)
 navbarPage(
-  title  = 'Bias-variance-smoothing-shrinking', 
+  title  = 'Bias, variance, smoothing and shrinking', 
   # Application title
-  titlePanel(list("Bias-variance-smoothing-shrinking",
-                   navBar))
+  titlePanel(list("Bias-variance-smoothing-shrinking"
+                  #, navBar
+                  ))
 )
 ```
 
@@ -270,7 +257,9 @@ navbarPage(
 ```{r include notebook}
 div(list(fluidRow(
   column(width = 4, 
-         inclRmd('LumpSplit-with-notebook-Notebook.Rmd')),
+         wellPanel(id = "leftScrollPanel",
+                   style = "overflow-y:scroll; max-height: 600px",
+           inclRmd('LumpSplit-with-notebook-Notebook.Rmd'))),
   column(width = 4, panelOfData,
                     panelOfInputs),
   column(width = 4,

@@ -7,26 +7,7 @@ output:
 ---
 ##  <a name="notebookBegin"> Notebook </a>
 
-### Hypothetical medical study demonstrating lumping versus splitting
-
-The Problem:  A new treatment is given to 100 patients.  
-Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respond, yield
-Goal: decide whether to treat the "D" patients.
-
-#### Method
-
-We set the Bayesian joint prior, and compute the joint posterior.
-
-To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits (log(odds)).
-Then we set a bivariate normal distribution on the logits.
-We also convert the observed proportions to logits. We estimate the variances using the delta method applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
-
-(This doesn't work well if the count is near zero , and not at all at zero.
-For this reason a "continuity fudge" is applied, if necessary.)
-
-The link to bivariate normal details is [here](lump,split-bivariate-normal-derivation.htm))): 
-
-```{r }
+```{r hide=TRUE}
 require('shiny')
 envNextNumber = new.env()
 assign('x', 0, envir = envNextNumber)
@@ -45,19 +26,92 @@ interactiveSection = function(codeToRun = "date()",
     if(input[[buttonIdThisSection]] == 0)
       "<result will be here>"
     else
-      paste("Clicked! ", input[[buttonIdThisSection]], "///",
-            eval(parse(text=codeToRun))) })
-  outputRunCode1 = textOutput(outputId = outputIdThisSection)
-  div(h2(paste("section", thisSectionNumber)),
-         h3('click button to run code'), 
+      #paste(
+            capture.output(eval(parse(text=codeToRun))) #) 
+    })
+  outputRunCode = textOutput(outputId = outputIdThisSection)
+  span(paste("(", thisSectionNumber, ") "),
       # paste("thisSectionNumber", thisSectionNumber),
       # paste("outputIdThisSection", outputIdThisSection),
       # paste("buttonIdThisSection", buttonIdThisSection),
-         actionButton(buttonIdThisSection, buttonIdThisSection), 
-         pre(codeToRun), 'RESULT', outputRunCode1 , 'THERE IT WAS'
+         actionButton(buttonIdThisSection, "run"), 
+         pre(codeToRun),  outputRunCode
   )
 }
+```
 
+#### Overview of this module
+
+In science, advances often proceed by "splitting": things that seem initially the same are classified as different. The classification may be tentativedistinction, until it proves to be useful. 
+Other advances proceed by "lumping":  identifying things that seem different but have a deep connection.
+
+So, we split birds and bats, but we lump bats and whales because they are both mammals. At least in this case, for some purposes, lumping supercedes splitting.
+(But if studying modes of  locomotion, the lumping will be different.)
+
+In medicine both splitting and lumping are important.
+
+Cancer was just "cancer" before it was learned through clinical trials that some medicines work well on cancer in one organ but not another--- and vice versa for another medicine.
+
+In recent years, however, specific molecular defects in cancer cells have "lumped" together types of cancer that we would not have dreamed of connecting.
+The drug gleevec is a miracle drug for patients with chronic myelogenous leukemia (CML). But not for other leukemias. Deep insight into molecular biology of cancer showed that a radically different kind, gastrointestinal stromal tumor (GIST).  
+
+We will explore a simple lumping and splitting conundrum as a jumping off point for introducing a collection of important statistical ideas that connect to each other.
+
+
+### Hypothetical medical study demonstrating lumping versus splitting
+
+The Problem:  A new treatment is given to 100 patients.  
+Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respond, yielding a response rate of 60%. for now we call them "D people", and the others "L people".
+
+Goal: decide whether to treat the "D" patients.
+
+If you "lump", you will estimate that the response rate (`Pr(R|D)`) for D people is 8%. 
+
+If you "split ", you will estimate that the response rate (`Pr(R|D)`) for D people is 60%. 
+
+Lumping gives an answer with low variance (N=100) but high bias-- because it is including many people who are not D.
+
+Splitting gives an answer with high variance (N=5) but low bias-- because it is including only people who ARE D:  it is directly asking our question.
+
+We will call the mystery patient "feature" X. Its values is D or L.
+The identity of X will be explored later.
+
+The outcome we call Y.  A responding patient has Y=R; non-reponding, Y=N.
+
+### Approaches
+
+* [Classical test: is X independent of the outcome Y?](#Classical test)
+* Bayes mixture:  "Dr. Maybe".
+* [Bayes joint prior, logit scale](#Bayes_joint_prior).  
+* Approaches used in the famous ECMO data set.
+
+#### <a name='Classical test'> Classical test: is X independent of the outcome Y?</a>
+
+A time-honored but fading technique is to perform a classical hypothesis test.
+Here the hypothesis is "X is independent of Y";  the response rate of D people does not differ from L people.  Then, depending on the hypothesis test result, one answer or the other is selected. 
+
+A Fisher exact test is frequently performed to test independence in a 2x2 table like this one.
+
+```{r fisher}
+interactiveSection(codeToRun = "fisher.test(DLdata)",
+                              buttonLabel= "run fishertest")
+```
+
+#### <a name='Bayes_joint_prior'> Bayes joint prior, logit scale.</a>
+
+We set the Bayesian joint prior, and compute the joint posterior.
+
+To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits (log(odds)).
+Then we set a bivariate normal distribution on the logits.
+We also convert the observed proportions to logits. We estimate the variances using the delta method applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
+
+(This doesn't work well if the count is near zero , and not at all at zero.
+For this reason a "continuity fudge" is applied, if necessary.)
+
+The link to bivariate normal details is [here](lump,split-bivariate-normal-derivation.htm))): 
+
+```{r}
+#source('linkToBivariate.R')
 ```
 
 ```{r}
