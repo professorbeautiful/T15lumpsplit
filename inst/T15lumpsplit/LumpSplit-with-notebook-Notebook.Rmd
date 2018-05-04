@@ -95,7 +95,7 @@ To view the data, click here:
 * [Bayes joint prior, logit scale](#Bayes_joint_prior).  
 * Approaches used in the famous ECMO data set.
 
-#### <a name='Classical test'> Classical test: is X independent of the outcome Y?</a>
+#### <a name='Classical test'> Approach: Classical test: is X independent of the outcome Y?</a>
 
 A time-honored but fading technique is to perform a classical hypothesis test.
 Here the hypothesis is "X is independent of Y";  the response rate of D people does not differ from L people.  Then, depending on the hypothesis test result, one answer or the other is selected. 
@@ -103,11 +103,18 @@ Here the hypothesis is "X is independent of Y";  the response rate of D people d
 A Fisher exact test is frequently performed to test independence in a 2x2 table like this one.
 
 ```{r fisher}
-invisible(interactiveSection(codeToRun = "fisher.test(DLdata)", buttonLabel= "run fishertest")
+invisible(interactiveSection(
+  codeToRun = "cat('P = ', fisher.test(DLdata)$p.value, ')'",
+  buttonLabel= "run fishertest")
 )
 ```
 
-#### <a name='Bayes_joint_prior'> Bayes joint prior, logit scale.</a>
+#### <a name='Bayes_joint_prior'> Approach: Bayes mixture of "Lump" and "Split"</a>
+
+TO DO!
+
+
+#### <a name='Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
 
 We set the Bayesian joint prior, and compute the joint posterior.
 
