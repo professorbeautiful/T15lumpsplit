@@ -11,12 +11,17 @@ runtime: shiny
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 #options(error=browser)
-"LumpSplit-with-notebook.Rmd"
+require(T15lumpsplit)
+envNextNumber <<- new.env()
+assign('x', 0, envir = envNextNumber)
+source('interactiveSection.R', local=TRUE)
 ```
 
 
 ```{r inclRmd}
 source('inclRmd.R', local=T)
+source('linkout.R', local=T)
+source('interactiveSection.R', local=T)
 ```
 
 
