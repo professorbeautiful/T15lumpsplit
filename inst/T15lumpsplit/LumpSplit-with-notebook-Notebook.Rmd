@@ -128,6 +128,13 @@ For this reason a "continuity fudge" is applied, if necessary.)
 The link to bivariate normal details is [here](./lump,split-bivariate-normal-derivation.pdf))): 
 
 ```{r}
+theFile = './lump,split-bivariate-normal-derivation.pdf'
+theFile = system.file(
+     package="T15lumpsplit",
+     'T15lumpsplit/lump,split-bivariate-normal-derivation.pdf')
+interactiveSection(codeToRun = paste0(
+  "system('open ", theFile, "')") )
+
 #source('linkToBivariate.R')
 ```
 
