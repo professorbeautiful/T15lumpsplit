@@ -14,10 +14,11 @@ assign('x', 0, envir = envNextNumber)
 nextNumber = function(){
   x <- get('x', envir=envNextNumber) + 1
   assign('x', x, envir = envNextNumber)
-  print(x)
+  #print(x)
 }
 interactiveSection = function(codeToRun = "date()",
-                              buttonLabel= "run code") {
+                              buttonLabel= "run code",
+                              showResult = TRUE) {
   ### You need to add input$idRunCode1 to make it reactive!!
   thisSectionNumber = nextNumber()
   outputIdThisSection = paste0('RunCode', thisSectionNumber)
@@ -65,9 +66,9 @@ Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respo
 
 Goal: decide whether to treat the "D" patients.
 
-If you "lump", you will estimate that the response rate (`Pr(R|D)`) for D people is 8%. 
+If you *"lump"*, you will estimate that the response rate (`Pr(R|D)`) for D people is *8%*. 
 
-If you "split ", you will estimate that the response rate (`Pr(R|D)`) for D people is 60%. 
+If you *"split"*, you will estimate that the response rate (`Pr(R|D)`) for D people is *60%*. 
 
 Lumping gives an answer with low variance (N=100) but high bias-- because it is including many people who are not D.
 
@@ -77,6 +78,15 @@ We will call the mystery patient "feature" X. Its values is D or L.
 The identity of X will be explored later.
 
 The outcome we call Y.  A responding patient has Y=R; non-reponding, Y=N.
+
+To view the data, click here:
+```{r}
+(interactiveSection(
+  codeToRun = "updateCheckboxInput(session=thisSession, inputId='toggleShowData', value=TRUE)", 
+  buttonLabel= "show data")
+)
+
+```
 
 ### Approaches
 
@@ -93,8 +103,8 @@ Here the hypothesis is "X is independent of Y";  the response rate of D people d
 A Fisher exact test is frequently performed to test independence in a 2x2 table like this one.
 
 ```{r fisher}
-interactiveSection(codeToRun = "fisher.test(DLdata)",
-                              buttonLabel= "run fishertest")
+invisible(interactiveSection(codeToRun = "fisher.test(DLdata)", buttonLabel= "run fishertest")
+)
 ```
 
 #### <a name='Bayes_joint_prior'> Bayes joint prior, logit scale.</a>

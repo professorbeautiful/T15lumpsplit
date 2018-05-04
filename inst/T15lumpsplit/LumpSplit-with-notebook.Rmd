@@ -121,7 +121,6 @@ updateViews = observe({
 })
 ```
 
-#### <a name=plotCode> Code for the Plot! </a>
 
 ```{r thePlot}
 output$title_1_ID = renderText({rValues$title_1})
@@ -145,8 +144,7 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(session)
 source('navTOCid.R', local=T)
 ```
 
-## <a name='debugging'>Debugging the shiny code</a>
-
+<a name='debugging'>**Debugging aid**</a>
 This tool allows direct computation of any R or JS.
 ```{r withDebuggingPanel}
 fluidRow(
@@ -159,16 +157,14 @@ fluidRow(
 source('navTOCid.R', local=T)
 ```
 
-## Bivariate prior/posterior plot <a name="prior-posterior">
-
 Go to Top of the [Notebook](#notebookBegin) .
 ```{r}
-source('navTOCid.R', local=T)
+#source('navTOCid.R', local=T)
 ```
 
 ```{r panelOfInputs}
 panelOfInputs = 
-  list(h3("Declaring the Prior Distribution "),
+  wellPanel(strong(em("Declaring the Prior Distribution ")),
     checkboxInput(inputId= 'togglePanelOfInputs', 
                   label = 'togglePanelOfInputs',value = TRUE),
     conditionalPanel(
@@ -192,7 +188,7 @@ panelOfInputs =
 
 
 ```{r show-hide-contours}
-ShowHideContoursPanel = list(
+ContoursPanelLegend = list(
   div(style="color:blue", 
       checkboxInput("checkPrior", 
                     "Orange = prior distribution",
@@ -212,8 +208,8 @@ output$responseRates = renderText({
 })
 
 panelOfData = wellPanel(
-  h3("Data: Response by Predictor"),
-  checkboxInput('toggleShowData', 'Show/Hide the Data Panel', TRUE),
+  strong(em("Data: Response by Predictor")),
+  checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
   conditionalPanel(
     'input.toggleShowData',
     wellPanel(
@@ -235,6 +231,14 @@ panelOfData = wellPanel(
 )
 ```
 
+```{r panelOfBifurcation}
+panelOfBifurcation = wellPanel(
+  strong(em("Bifurcated analysis: P>0.05? then lump. P<0.05? then split")),
+  checkboxInput('toggleShowFisher', 'Show/Hide the Fisher test', FALSE)
+)
+  
+```
+
 ```{r navBar}
 ### TODO
 navBar = br()
@@ -244,7 +248,7 @@ navBar = br()
 #### UI fluidPage####
 require(shinyBS)
 navbarPage(
-  title  = 'Bias, variance, smoothing and shrinking', 
+  title  = 'Page title: Bias, variance, smoothing and shrinking', 
   # Application title
   titlePanel(list("Bias-variance-smoothing-shrinking"
                   #, navBar
@@ -256,14 +260,14 @@ navbarPage(
 
 ```{r include notebook}
 div(list(fluidRow(
-  column(width = 4, 
+  column(width = 8, 
          wellPanel(id = "leftScrollPanel",
                    style = "overflow-y:scroll; max-height: 600px",
            inclRmd('LumpSplit-with-notebook-Notebook.Rmd'))),
   column(width = 4, panelOfData,
-                    panelOfInputs),
-  column(width = 4,
-                  ShowHideContoursPanel,
+         panelOfBifurcation,
+                    panelOfInputs,
+                  ContoursPanelLegend,
                   br(),
                   tagAppendAttributes(
                     div(
