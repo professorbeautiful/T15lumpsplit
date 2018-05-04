@@ -125,7 +125,7 @@ We also convert the observed proportions to logits. We estimate the variances us
 (This doesn't work well if the count is near zero , and not at all at zero.
 For this reason a "continuity fudge" is applied, if necessary.)
 
-The link to bivariate normal details is [here](lump,split-bivariate-normal-derivation.htm))): 
+The link to bivariate normal details is [here](./lump,split-bivariate-normal-derivation.pdf))): 
 
 ```{r}
 #source('linkToBivariate.R')
