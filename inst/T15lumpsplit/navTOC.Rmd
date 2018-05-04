@@ -3,6 +3,21 @@ Go to :
 * [Debugging panel](#debugging) .
 *  [Code for the Plot](#plotCode).
 * [viewPlot](#viewPlot).
+*	"Lumping" versus "splitting" in science. 
+*	Classical estimation bifurcating on a hypothesis test
+*	Bayesian estimation
+ +	Mixture of models:  Dr. Lump & Dr. Split
+ +	Bivariate normal prior on logit scale
+ +	The famous ECMO data set.
+*	The role of prior information, explored by introducing different identities for "D" and "L".
+ +	2 alleles of a gene known to affect this drug's pharmacodynamics
+ +	2 alleles of one gene out of a hundred tested, chosen because they are known to affect this drug's pharmacodynamics
+ +	2 alleles of one gene out of a hundred thousand tested; nothing known
+*	curse of dimensionality,
+*	multiple testing and estimation with high-dimensional priors,
+ +	D = dark hair, L = light hair
+ +	D = dark hair, L = light hair; but hair color is strongly tied to ethnicity… which is strongly tied to a key genetic variant
+
 
 
 
