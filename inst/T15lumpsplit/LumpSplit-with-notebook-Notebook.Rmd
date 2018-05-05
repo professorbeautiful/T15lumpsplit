@@ -73,11 +73,13 @@ Here the hypothesis is "X is independent of Y";  the response rate of D people d
 A Fisher exact test is frequently performed to test independence in a 2x2 table like this one.
 
 ```{r fisher}
-invisible(interactiveSection(
-  codeToRun = "cat('P = ', fisher.test(DLdata)$p.value, ')'",
+interactiveSection(
+  codeToRun = "cat('P = ', fisher.test(DLdata)$p.value, '\n')",
   buttonLabel= "run fishertest")
-)
 ```
+
+Since the P-value is significant, the "null hypothesis" (that "Dr. Lump" is correct) is rejected. The traditional consequence is that we use Dr. Split's estimate:  60%.
+
 
 #### <a name='Bayes_joint_prior'> Approach: Bayes mixture of "Lump" and "Split"</a>
 
@@ -86,10 +88,13 @@ TO DO!
 
 #### <a name='Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
 
-We set the Bayesian joint prior, and compute the joint posterior.
+Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R|D) and Pr(R|L). This allows data on the two probabilities to be shared between them, without the extreme "Dr. Lump".
 
-To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits (log(odds)).
+Once we have this joint prior distribution, we compute the joint posterior.
+
+To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits ("logit" means "log(odds)").
 Then we set a bivariate normal distribution on the logits.
+
 We also convert the observed proportions to logits. We estimate the variances using the delta method applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
 
 (This doesn't work well if the count is near zero , and not at all at zero.
