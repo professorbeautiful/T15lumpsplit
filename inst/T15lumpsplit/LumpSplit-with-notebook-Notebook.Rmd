@@ -7,11 +7,12 @@ output:
 ---
 
 ```{r}
-ls()
-cat('-=-=-=-=\n')
-ls(pos=1)
-cat('-=-=-=-=\n')
-wrapperToGetKeys
+# ls()
+# cat('-=-=-=-=\n')
+# ls(pos=1)
+# cat('-=-=-=-=\n')
+# so it has its own .GlobalEnv, and it's persistent across knits.
+# wrapperToGetKeys  ### interesting! that's mine! from DebugTools
 ```
 
 
