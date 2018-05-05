@@ -200,11 +200,11 @@ panelOfInputs =
 
 ```{r show-hide-contours}
 ContoursPanelLegend = list(
-  div(style="color:blue", 
+  div(style="color:orange", 
       checkboxInput("checkPrior", 
                     "Orange = prior distribution",
                     TRUE)),
-  div(style="color:orange",
+  div(style="color:blue",
       checkboxInput("checkPosterior", 
                     "Blue = posterior distribution",
                     TRUE)),
