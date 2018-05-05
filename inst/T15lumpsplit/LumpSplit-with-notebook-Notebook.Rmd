@@ -5,6 +5,16 @@ output:
     number_sections: yes
     toc: yes
 ---
+
+```{r}
+ls()
+cat('-=-=-=-=\n')
+ls(pos=1)
+cat('-=-=-=-=\n')
+wrapperToGetKeys
+```
+
+
 ##  <a name="notebookBegin"> Notebook </a>
 
 ```{r hide=TRUE}
@@ -28,6 +38,9 @@ The drug gleevec is a miracle drug for patients with chronic myelogenous leukemi
 
 We will explore a simple lumping and splitting conundrum as a jumping off point for introducing a collection of important statistical ideas that connect to each other.
 
+```{r}
+QandAha()
+```
 
 ### Hypothetical medical study demonstrating lumping versus splitting
 
