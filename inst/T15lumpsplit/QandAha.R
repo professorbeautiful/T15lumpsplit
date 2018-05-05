@@ -2,16 +2,11 @@ QandAha = function(buttonLabel= "save") {
   thisQANumber = nextNumber(sequenceType = "QA")
   outputIdThisQA = paste0('QA', thisQANumber)
   textareaIdThisQA = paste0('id', outputIdThisQA)
-
   output[[outputIdThisQA]] = renderUI({
-    textAreaInput(inputId = textareaIdThisQA, label = NULL,
-                  value="Ask question here.")
+    textAreaInput(inputId = textareaIdThisQA,
+                  label = paste("(", thisQANumber, ")",
+                                "Ask a question and/or describe an 'aha' here.")
+    )
   })
-
-  span(paste("(", thisQANumber, ") "),
-       # paste("thisQANumber", thisQANumber),
-       # paste("outputIdThisQA", outputIdThisQA),
-       # paste("buttonIdThisQA", buttonIdThisQA),
-       uiOutput(outputId = outputIdThisQA)
-  )
+  uiOutput(outputId = outputIdThisQA)
 }

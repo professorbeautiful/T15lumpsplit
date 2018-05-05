@@ -72,6 +72,10 @@ To view the data, click here:
 
 ```
 
+```{r}
+QandAha()
+```
+
 ### Approaches
 
 * [Classical test: is X independent of the outcome Y?](#Classical test)
@@ -93,19 +97,28 @@ interactiveSection(
 ```
 
 Since the P-value is significant, the "null hypothesis" (that "Dr. Lump" is correct) is rejected. The traditional consequence is that we use Dr. Split's estimate:  60%.
-
+```{r}
+QandAha()
+```
 
 #### <a name='Bayes_joint_prior'> Approach: Bayes mixture of "Lump" and "Split"</a>
 
 TO DO!
 
+```{r}
+QandAha()
+```
 
 #### <a name='Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
 
 Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R|D) and Pr(R|L). This allows data on the two probabilities to be shared between them, without the extreme "Dr. Lump".
-
+```{r}
+QandAha()
+```
 Once we have this joint prior distribution, we compute the joint posterior.
-
+```{r}
+QandAha()
+```
 To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits ("logit" means "log(odds)").
 Then we set a bivariate normal distribution on the logits.
 
@@ -120,9 +133,22 @@ linkout('./lump,split-bivariate-normal-derivation.pdf')
 ```
 
 ```{r}
-interactiveSection(codeToRun = "'hello'")
-```
+assembleComments <<- function() {
+  lastQANumber = nextNumber(sequenceType = "QA") - 1
+  answers = sapply(1:lastQANumber, function(num) {
+    outputIdThisQA = paste0('QA', num)
+    textareaIdThisQA = paste0('id', outputIdThisQA)
+    return(input[[textareaIdThisQA]])
+  })
+  unlist(answers[-which(sapply(answers, is.null))])
+}
+saveComments <<- function() {
+  answers = assembleComments()
+  writeLines(answers, file(paste0('answers.',
+                                 Sys.info()["user"],
+                                 '.txt'))
+  )
+}
 
-```{r}
-interactiveSection(codeToRun = "'hello again'")
+interactiveSection(codeToRun = "saveComments()")
 ```
