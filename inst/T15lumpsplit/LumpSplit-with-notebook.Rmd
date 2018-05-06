@@ -253,22 +253,28 @@ panelOfBifurcation = wellPanel(
   
 ```
 
-```{r navBar}
-### TODO
-navBar = br()
-```
+
 
 ```{r UI_begins}
 #### UI fluidPage####
 require(shinyBS)
-navbarPage(
-  title  = 'Page title: Bias, variance, smoothing and shrinking', 
-  # Application title
-  titlePanel(list("Bias-variance-smoothing-shrinking"
-                  #, navBar
-                  ))
-)
+#inclRmd('Overview.Rmd')
+# You can only use inclRmd once; otherwise "duplicate label 'unnamed-chunk-1"
+#out = knitr::knit_child('Overview.Rmd', quiet=TRUE)
+#markdown::markdownToHTML(text = out)
 ```
+
+The module begins with a dilemma, a small two-by-two table counting responding and nonresponding patients for two groups labeled D and L. Response rate is very high in  group D, very low in group L, but most of the patients are in L. The dilemma: to decide whether to pursue "personalized medicine" for group D, how informative is group L? 
+
+
+This example is used as a jumping off point for individual investigations into a cluster of connected statistical concepts (thus a web) important for data scientists. The connected topics are listed below. Those students interested in technical details of derivations or coding have links at hand for relevant documents.
+
+
+```{r overviewTOC_dup}
+#source('navTOCid.R', local=T)
+
+```
+
 
 
 
@@ -276,8 +282,9 @@ navbarPage(
 div(list(fluidRow(
   column(width = 8, 
          wellPanel(id = "leftScrollPanel",
-                   style = "overflow-y:scroll; max-height: 600px",
-           inclRmd('LumpSplit-with-notebook-Notebook.Rmd'))),
+                   style = "overflow-y:scroll; max-height: 600px"
+         , inclRmd('LumpSplit-with-notebook-Notebook.Rmd')
+         )),
   column(width = 4, panelOfData,
          panelOfBifurcation,
                     panelOfInputs,
