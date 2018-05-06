@@ -16,10 +16,18 @@ output:
 ```
 
 
-##  <a name="notebookBegin"> Notebook </a>
+##  <a name="notebookBegin"> Lumping and Splitting </a>
 
 ```{r hide=TRUE}
 require('shiny')
+#inclRmd('Overview.Rmd')
+## Yes, you can have 2 inclRmd in one file.
+## Either in the same chunk or separate.
+```
+```{r hide=TRUE}
+require('shiny')
+inclRmd('lumpsplit.Rmd')
+## Yes, you can have 2 inclRmd in one file.
 ```
 
 #### Overview of this module
