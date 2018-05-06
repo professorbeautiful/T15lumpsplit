@@ -6,7 +6,7 @@ output:
     toc: yes
 ---
 
-```{r}
+```{r listings}
 # ls()
 # cat('-=-=-=-=\n')
 # ls(pos=1)
@@ -72,7 +72,7 @@ To view the data, click here:
 
 ```
 
-```{r}
+```{r QA2}
 QandAha()
 ```
 
@@ -105,7 +105,7 @@ QandAha()
 
 TO DO!
 
-```{r}
+```{r QA3}
 QandAha()
 ```
 
@@ -116,7 +116,7 @@ Another Bayesian approach is to set a Bayesian prior on the joint distribution o
 QandAha()
 ```
 Once we have this joint prior distribution, we compute the joint posterior.
-```{r}
+```{r QA4}
 QandAha()
 ```
 To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits ("logit" means "log(odds)").
@@ -128,11 +128,11 @@ We also convert the observed proportions to logits. We estimate the variances us
 For this reason a "continuity fudge" is applied, if necessary.)
 
 The link to bivariate normal details is here:
-```{r}
+```{r linkoutbivariate}
 linkout('./lump,split-bivariate-normal-derivation.pdf')
 ```
 
-```{r}
+```{r assembleComments}
 assembleComments <<- function() {
   lastQANumber = nextNumber(sequenceType = "QA") - 1
   answers = sapply(1:lastQANumber, function(num) {
