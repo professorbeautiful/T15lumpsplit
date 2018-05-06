@@ -148,7 +148,8 @@ output$thePlot = renderPlot(width=500, height=500,
 ```
 
 ```{r makeDebuggingPanelOutput}
-shinyDebuggingPanel::makeDebuggingPanelOutput(session) 
+shinyDebuggingPanel::makeDebuggingPanelOutput(
+  session, toolsInitialState = FALSE) 
 ```
 
 
@@ -156,9 +157,8 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(session)
 source('navTOCid.R', local=T)
 ```
 
-<a name='debugging'>**Debugging aid**</a>
-This tool allows direct computation of any R or JS.
 ```{r withDebuggingPanel}
+##  <a name='debugging'>** **</a>
 fluidRow(
   shinyDebuggingPanel::withDebuggingPanel() 
 )
