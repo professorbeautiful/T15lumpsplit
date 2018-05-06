@@ -1,4 +1,3 @@
-Go to :
 * Top of the [Notebook](#notebookBegin) .
 * [Debugging panel](#debugging) .
 *  [Code for the Plot](#plotCode).
