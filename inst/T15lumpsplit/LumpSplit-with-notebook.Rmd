@@ -165,10 +165,11 @@ fluidRow(
 ```
 
 ```{r}
-#if(!exists('TOCnum')) TOCnum = 1
-navTOCid = paste0('navTOC',TOCnum); TOCnum = TOCnum+1
-output[[navTOCid]] <- renderUI({ tagList(inclRmd("navTOC.Rmd") )})
-conditionalPanel('false', uiOutput(navTOCid))
+# navTOCid = paste0('navTOC',TOCnum); TOCnum = TOCnum+1
+# output[[navTOCid]] <- renderUI({ tagList(inclRmd("navTOC.Rmd") )})
+# conditionalPanel('false', uiOutput(navTOCid))
+#source('navTOCid.R', local=T)
+
 ```
 
 
