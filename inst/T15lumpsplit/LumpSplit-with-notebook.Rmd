@@ -45,7 +45,7 @@ TOCnum =  0
 ```
 
 ```{r navTOCid.R}
-source('navTOCid.R', local=T)
+#source('navTOCid.R', local=T)
 ```
 
 
@@ -154,7 +154,7 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(
 
 
 ```{r navTOCid.R.2}
-source('navTOCid.R', local=T)
+#source('navTOCid.R', local=T)
 ```
 
 ```{r withDebuggingPanel}
@@ -173,7 +173,7 @@ conditionalPanel('false', uiOutput(navTOCid))
 
 
 ```{r}
-#source('navTOCid.R', local=T)
+##source('navTOCid.R', local=T)
 ```
 
 ```{r panelOfInputs}
@@ -309,7 +309,7 @@ div(list(fluidRow(
 div(list(br(),br(),br(),br(),br(),br(),br(),br()))
 ```
 ```{r include navTOCid}
-source('navTOCid.R', local=T)
+#source('navTOCid.R', local=T)
 ```
 ```{r}
 div(list(br(),br(),br(),br()))
