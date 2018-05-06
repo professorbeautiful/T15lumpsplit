@@ -25,7 +25,7 @@ source('QandAha.R', local=TRUE)
 ```
 
 
-```{r inclRmd}
+```{r includeFunctions}
 source('inclRmd.R', local=T)
 source('linkout.R', local=T)
 source('interactiveSection.R', local=T)
