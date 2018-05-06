@@ -1,8 +1,11 @@
 ---
-title: "Lumping, Splitting, and Personalized Medicine"
-author: "Roger Day"
+title: "Bias, variance, smoothing, and shrinking"
 date: "`r date()`"
-output: html_document
+author: "Roger Day"
+
+output: 
+  html_document:
+    css: lumpsplit.css
 runtime: shiny
 ---
 
