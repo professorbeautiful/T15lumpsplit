@@ -4,6 +4,8 @@ inclRmd <- function(path) {
     knitr::knit2html(quiet=TRUE,
                      text = ., fragment.only = TRUE, options = "",
                      stylesheet=file.path(r_path,"../www/empty.css")
+    # rmarkdown::render(quiet=TRUE,output_format = 'html_document',
+                      # input = path, runtime='shiny'
     ) %>%
     gsub("&lt;!--/html_preserve--&gt;","",.) %>%
     gsub("&lt;!--html_preserve--&gt;","",.) %>%
