@@ -15,7 +15,7 @@ The normalizing constant is
 \[D({p_{RD}},{p_{RL}},{p_{ND}},{p_{NL}}) = \Gamma ({a_{RD}})\Gamma ({a_{RL}})\Gamma ({a_{ND}})\Gamma ({a_{NL}})/\Gamma ({a_{RD}} + {a_{RL}} + {a_{ND}} + {a_{NL}}).\]
 
 
-We’ll suppose that for Dr. Split all the $a$’s equal to 1 (like having 4 prior observations, one in each cell). The normalizing constant is $D$=1/6.
+We’ll suppose that for Dr. Split all the $a$ values equal to 1 (like having 4 prior observations, one in each cell). The normalizing constant is $D$=1/6.
 
 So the posterior distribution is:
 \[\pi _{_S}^*({p_{RD}},{p_{RL}},{p_{ND}},{p_{NL}}) \propto p_{RD}^{{n_{RD}} + {a_{RD}} - 1} \cdot p_{RL}^{{n_{RL}} + {a_{RL}} - 1} \cdot p_{ND}^{{n_{ND}} + {a_{ND}} - 1} \cdot p_{NL}^{{n_{NL}} + {a_{NL}} - 1} \cdot I\{ {p_{RD}} + {p_{RL}} + {p_{ND}} + {p_{NL}} = 1\} \]
