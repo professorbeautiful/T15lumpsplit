@@ -26,8 +26,9 @@ require('shiny')
 ```
 ```{r hide=TRUE}
 require('shiny')
-inclRmd('lumpsplit.Rmd')
+#inclRmd('lumpsplit.Rmd')
 ## Yes, you can have 2 inclRmd in one file.
+## But this one busted the shiny responses.
 ```
 
 #### Overview of this module
