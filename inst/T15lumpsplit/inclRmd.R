@@ -1,5 +1,7 @@
 require("magrittr")
 inclRmd <- function(path) {
+  if(!file.exists(path))
+    return(paste("inclRmd: file ", path, " not found"))
   paste(readLines(path, warn = FALSE), collapse = '\n') %>%
     knitr::knit2html(quiet=TRUE,
                      text = ., fragment.only = TRUE, options = "",
