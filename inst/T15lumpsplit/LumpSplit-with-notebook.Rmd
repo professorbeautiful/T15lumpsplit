@@ -32,6 +32,8 @@ source('TextQuestion.R', local=TRUE)
 source('inclRmd.R', local=T)
 source('linkout.R', local=T)
 source('interactiveSection.R', local=T)
+source('includeHTMLtrimmed.R', local=T)
+
 ```
 
 
