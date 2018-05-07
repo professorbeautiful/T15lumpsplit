@@ -16,7 +16,7 @@ output:
 ```
 
 
-##  <a name="notebookBegin"> Lumping and Splitting </a>
+##  <a name="notebookBegin"> The Lump versus Split Dilemma </a>
 
 ```{r hide=TRUE}
 require('shiny')
@@ -31,7 +31,7 @@ require('shiny')
 ## But this one busted the shiny responses.
 ```
 
-#### Overview of this module
+#### Introduction to this sub-module
 
 In science, advances often proceed by "splitting": things that seem initially the same are classified as different. The classification may be tentativedistinction, until it proves to be useful. 
 Other advances proceed by "lumping":  identifying things that seem different but have a deep connection.
@@ -44,7 +44,8 @@ In medicine both splitting and lumping are important.
 Cancer was just "cancer" before it was learned through clinical trials that some medicines work well on cancer in one organ but not another--- and vice versa for another medicine.
 
 In recent years, however, specific molecular defects in cancer cells have "lumped" together types of cancer that we would not have dreamed of connecting.
-The drug gleevec is a miracle drug for patients with chronic myelogenous leukemia (CML). But not for other leukemias. Deep insight into molecular biology of cancer showed that a radically different kind, gastrointestinal stromal tumor (GIST).  
+The drug gleevec is a miracle drug for patients with chronic myelogenous leukemia (CML). But not for other leukemias. Deep insight into molecular biology of cancer showed that a radically different kind, gastrointestinal stromal tumor (GIST). 
+Better lumping together with better splitting can cure cancer patients.
 
 We will explore a simple lumping and splitting conundrum as a jumping off point for introducing a collection of important statistical ideas that connect to each other.
 
