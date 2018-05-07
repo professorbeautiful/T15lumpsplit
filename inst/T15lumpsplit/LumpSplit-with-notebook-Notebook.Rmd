@@ -147,8 +147,10 @@ We also convert the observed proportions to logits. We estimate the variances us
 For this reason a "continuity fudge" is applied, if necessary.)
 
 The link to bivariate normal details is here:
+
 ```{r linkoutbivariate}
-linkout('./lump,split-bivariate-normal-derivation.pdf')
+  interactiveSection(codeToRun = 
+linkout('./lump,split-bivariate-normal-derivation.pdf'))
 ```
 
 ```{r assembleComments}
