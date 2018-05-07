@@ -222,24 +222,38 @@ ContoursPanelLegend = list(
 ```
 
 ```{r responseRates}
+includeCSS('rotate-text.css')
+rotateMe = function(html) {
+                      HTML(paste("<span class='rotateMe'>",
+                               html, "</span>" 
+                    ))
+}
 output$responseRates = renderUI({
   wellPanel(
     splitLayout("", "Group 'D'", "Group 'L'" ),
-      splitLayout(div(br(),br(),HTML("<b>R</b>esponders")),
-                   numericInput('mRD', 'mRD', DLdata[1,1]),
-                  numericInput('mRL', 'mRL', DLdata[2,1])
-      ),
-      splitLayout(div(br(),br(),HTML("<b>N</b>onResponders")),
-                   numericInput('mND', 'mND', DLdata[1,2]),
-                  numericInput('mNL', 'mNL', DLdata[2,2])
-      ), 
-    splitLayout("Response rates:",
-                paste(input$mRD, '/', input$mRD+input$mND, 
-                      " = ", input$mRD/(input$mRD+input$mND)),
-                paste(input$mRL, '/', input$mRL+input$mNL, 
-                      " = ", 
-                      round(digits=3,
-                            input$mRL/(input$mRL+input$mNL)))
+    splitLayout(div(br(),br(),
+                    rotateMe( "<b>R</b>esponders" 
+                    )),
+                numericInput('mRD', 'mRD', DLdata[1,1]),
+                numericInput('mRL', 'mRL', DLdata[2,1])
+    ),
+    splitLayout(div(br(),br(),
+                    rotateMe( "<b>N</b>onResponders"
+                    )),
+                numericInput('mND', 'mND', DLdata[1,2]),
+                numericInput('mNL', 'mNL', DLdata[2,2])
+    ), 
+    splitLayout(HTML("Response <br>rates:"),
+                HTML(paste(
+                  input$mRD, '/', input$mRD+input$mND, 
+                  "<br> = ",
+                  round(digits=3,
+                        input$mRD/(input$mRD+input$mND)))),
+                HTML(paste(
+                  input$mRL, '/', input$mRL+input$mNL, 
+                  "<br> = ", 
+                  round(digits=3,
+                        input$mRL/(input$mRL+input$mNL))))
     )
   )
 })
