@@ -99,9 +99,9 @@ QandAha()
 ### Approaches
 
 * [Classical test: is X independent of the outcome Y?](#Classical test)
-* Bayes mixture:  "Dr. Maybe".
+* [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
 * [Bayes joint prior, logit scale](#Bayes_joint_prior).  
-* Approaches used in the famous ECMO data set.
+* Approaches used in the famous ECMO data set. (ToDo)
 
 #### <a name='Classical test'> Approach: Classical test: is X independent of the outcome Y?</a>
 
@@ -121,9 +121,10 @@ Since the P-value is significant, the "null hypothesis" (that "Dr. Lump" is corr
 QandAha()
 ```
 
-#### <a name='Bayes_joint_prior'> Approach: Bayes mixture of "Lump" and "Split"</a>
+#### <a name='Bayes_mixture'> Approach: Bayes mixture of "Lump" and "Split"</a>
 
-TO DO!
+```{r child = 'lumpsplitwho-mixture.Rmd'}
+```
 
 ```{r QA3}
 QandAha()

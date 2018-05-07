@@ -1,0 +1,26 @@
+*Dr. Split speaks:*  
+“I believe that the DarkHair and LightHair groups are fundamentally different.  My prior is a pair of independent beta distributions”:
+  \[{\pi _S}({p_{R.D}},{p_{R.L}}) \propto p_{R.D}^{{a_{RD}} - 1} \cdot p_{N.D}^{{a_{ND}} - 1} \cdot p_{R.L}^{{a_{RL}} - 1} \cdot p_{N.L}^{{a_{NL}} - 1} \cdot I\{ {p_{R.D}} + {p_{N.D}} = 1\} I\{ {p_{R.L}} + {p_{N.L}} = 1\}. \]
+
+
+Then the posterior distribution for ${p_{R.D}}$  is Beta(${n_{RD}} + {a_{RD}},{n_{ND}} + {a_{ND}}$ ),
+(The part involving the LightHair people factors and integrates out to 1.)
+
+What if Dr. Split uses a *Dirichlet* prior distribution?
+  
+\[{\pi _S}({p_{RD}},{p_{RL}},{p_{ND}},{p_{NL}}) \propto p_{RD}^{{a_{RD}} - 1} \cdot p_{RL}^{{a_{RL}} - 1} \cdot p_{ND}^{{a_{ND}} - 1} \cdot p_{NL}^{{a_{NL}} - 1} \cdot I\{ {p_{RD}} + {p_{RL}} + {p_{ND}} + {p_{NL}} = 1\} \]
+
+
+The normalizing constant is
+\[D({p_{RD}},{p_{RL}},{p_{ND}},{p_{NL}}) = \Gamma ({a_{RD}})\Gamma ({a_{RL}})\Gamma ({a_{ND}})\Gamma ({a_{NL}})/\Gamma ({a_{RD}} + {a_{RL}} + {a_{ND}} + {a_{NL}}).\]
+
+
+We’ll suppose that for Dr. Split all the $a$’s equal to 1 (like having 4 prior observations, one in each cell). The normalizing constant is $D$=1/6.
+
+So the posterior distribution is:
+\[\pi _{_S}^*({p_{RD}},{p_{RL}},{p_{ND}},{p_{NL}}) \propto p_{RD}^{{n_{RD}} + {a_{RD}} - 1} \cdot p_{RL}^{{n_{RL}} + {a_{RL}} - 1} \cdot p_{ND}^{{n_{ND}} + {a_{ND}} - 1} \cdot p_{NL}^{{n_{NL}} + {a_{NL}} - 1} \cdot I\{ {p_{RD}} + {p_{RL}} + {p_{ND}} + {p_{NL}} = 1\} \]
+
+(which is also Dirichlet).  Then reparametrizing,
+\[\pi _{_S}^*({p_{R.D}},{p_{R.L}},{p_D}) \propto p_{R.D}^{{n_{RD}} + {a_{RD}} - 1} \cdot p_{N.D}^{{n_{ND}} + {a_{ND}} - 1} \cdot p_{R.L}^{{n_{RL}} + {a_{RL}} - 1} \cdot p_{N.L}^{{n_{NL}} + {a_{NL}} - 1} \cdot p_D^{{n_D} + {a_D} - 1} \cdot p_L^{{n_L} + {a_L} - 1}I\{ ... = 1\} \]
+
+using ${p_{RD}} = {p_{R.D}}{p_D}$  and ${p_{RL}} = {p_{R.L}}{p_L}$  and \[{a_{RD}} + {a_{ND}} = {a_D}\]  etc.
