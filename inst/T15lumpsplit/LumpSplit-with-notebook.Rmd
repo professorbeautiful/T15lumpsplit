@@ -266,10 +266,10 @@ require(shinyBS)
 #markdown::markdownToHTML(text = out)
 ```
 
-The module begins with a dilemma, a small two-by-two table counting responding and nonresponding patients for two groups labeled D and L. Response rate is very high in  group D, very low in group L, but most of the patients are in L. The dilemma: to decide whether to pursue "personalized medicine" for group D, how informative is group L? 
+The module begins with a dilemma, a small two-by-two table counting responding and nonresponding patients for two groups labeled D and L. Response rate is very high in  group D, very low in group L, but most of the patients are in L. The dilemma: in deciding whether to pursue "personalized medicine" for group D, how should we use the data for group L (if at all)? 
 
 
-This example is used as a jumping off point for individual investigations into a cluster of connected statistical concepts (thus a web) important for data scientists. The connected topics are listed below. Those students interested in technical details of derivations or coding have links at hand for relevant documents.
+This example is used as a jumping off point for individual investigations into a cluster of connected statistical concepts (thus a web) important for data scientists. The connected topics are listed below. Those students interested in technical details of derivations or coding can follow links provided to the relevant documents.
 
 
 ```{r overviewTOC_dup}
