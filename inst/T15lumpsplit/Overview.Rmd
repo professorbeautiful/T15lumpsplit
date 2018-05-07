@@ -1,1 +1,11 @@
-adfsdf
+#### OVERVIEW of Sub-Modules
+
+*Date: "`r date()`"     Author: "Roger Day, University of Pittsburgh"*
+
+The module *"Bias, variance, smoothing, and shrinking"* begins with the *"lump versus split dilemma"* sub-module, in the context of a study treating patients and recording responses.  The dilemma: in deciding whether to pursue "personalized medicine" for one small group, how should we use the data from other patients (if at all)? 
+
+This example is used as a jumping off point for individual investigations into a web of connected statistical topics important for data scientists. Each is visited in a Sub-Module. The anticipated connected topics are listed below. (Expand by clicking the checkbox.) 
+
+Along the way, students are asked a few thought questions, and to report on any "Questions" and "Aha's" (observations, discoveries, delightful connections) that arise. 
+
+Those students interested in technical details of derivations or coding can follow links provided to some relevant documents.
