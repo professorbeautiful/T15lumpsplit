@@ -81,6 +81,16 @@ To view the data, click here:
 
 ```
 
+
+### Parametrizations of the probabilities
+
+```{r}
+shiny::includeHTML('Rmd-text-snippets/parametrize.html')
+#inclRmd('Rmd-text-snippets/parametrize.Rmd')
+TextQuestion('Why focus on this parameter?')
+```
+
+
 ```{r QA2}
 QandAha()
 ```
