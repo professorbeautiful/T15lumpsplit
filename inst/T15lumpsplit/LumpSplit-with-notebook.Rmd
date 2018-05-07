@@ -274,7 +274,18 @@ This example is used as a jumping off point for individual investigations into a
 
 ```{r overviewTOC_dup}
 #source('navTOCid.R', local=T)
-
+TOCnum = nextNumber(sequenceType="TOC")
+navTOCid = paste0('navTOC',TOCnum);
+#cat('navTOCid', navTOCid, '\n')
+cbInputId = paste0('cbInputId', navTOCid)
+cbInputJS = paste0('input.',cbInputId)
+output[['navTOCid']] <- renderUI({
+  list(checkboxInput(cbInputId, "show/hide outline of topics", value=FALSE),
+       conditionalPanel(condition = cbInputJS,
+                        tagList(inclRmd("navTOC.Rmd")) )
+  )
+})
+uiOutput('navTOCid')
 ```
 
 
