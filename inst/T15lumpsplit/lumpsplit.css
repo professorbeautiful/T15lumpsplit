@@ -1,0 +1,13 @@
+/* Headers */
+h1,h2{
+  font-size: 20pt;
+}
+h3{
+  font-size: 16pt;
+}
+h4,h5,h6{
+  font-size: 14pt;
+}
+#title{
+  font-size: 14pt;
+}
