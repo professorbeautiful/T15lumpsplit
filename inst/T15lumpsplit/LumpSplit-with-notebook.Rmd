@@ -222,31 +222,35 @@ ContoursPanelLegend = list(
 ```
 
 ```{r responseRates}
-output$responseRates = renderText({
-  paste(input$mRD, '/', input$mRD+input$mND, "for D, and ",
-        input$mRL, '/', input$mRL+input$mNL, "for L.")
+output$responseRates = renderUI({
+  wellPanel(
+    splitLayout("", "Group 'D'", "Group 'L'" ),
+      splitLayout(div(br(),br(),HTML("<b>R</b>esponders")),
+                   numericInput('mRD', 'mRD', DLdata[1,1]),
+                  numericInput('mRL', 'mRL', DLdata[2,1])
+      ),
+      splitLayout(div(br(),br(),HTML("<b>N</b>onResponders")),
+                   numericInput('mND', 'mND', DLdata[1,2]),
+                  numericInput('mNL', 'mNL', DLdata[2,2])
+      ), 
+    splitLayout("Response rates:",
+                paste(input$mRD, '/', input$mRD+input$mND, 
+                      " = ", input$mRD/(input$mRD+input$mND)),
+                paste(input$mRL, '/', input$mRL+input$mNL, 
+                      " = ", 
+                      round(digits=3,
+                            input$mRL/(input$mRL+input$mNL)))
+    )
+  )
 })
 
-panelOfData = wellPanel(
+panelOfData = list(
   strong(em("Data: Response by Predictor")),
   checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
   conditionalPanel(
     'input.toggleShowData',
-    wellPanel(
-      splitLayout("", "Responders", "non-responders"),
-      splitLayout("Group 'L'",
-                  numericInput('mRL', 'mRL', DLdata[2,1]),
-                  numericInput('mNL', 'mNL', DLdata[2,2])
-      ),
-      splitLayout( "Group 'D'",
-                   numericInput('mRD', 'mRD', DLdata[1,1]),
-                   numericInput('mND', 'mND', DLdata[1,2])
-      ), 
-      "X = observed response rate, ",
-      br(),
-      textOutput(outputId = 'responseRates'),
+      uiOutput(outputId = 'responseRates'),
       hr()
-    )
   )
 )
 ```
