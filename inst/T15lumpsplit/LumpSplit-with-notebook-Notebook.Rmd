@@ -123,8 +123,15 @@ QandAha()
 
 #### <a name='Bayes_mixture'> Approach: Bayes mixture of "Lump" and "Split"</a>
 
+```{r child = 'DrSplit.Rmd'}
+```
+
+```{r child = 'DrLump.Rmd'}
+```
+
 ```{r child = 'lumpsplitwho-mixture.Rmd'}
 ```
+
 
 ```{r QA3}
 QandAha()
