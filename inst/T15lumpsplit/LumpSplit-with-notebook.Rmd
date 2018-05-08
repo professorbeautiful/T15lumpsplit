@@ -282,10 +282,6 @@ panelOfBifurcation = wellPanel(
 ```{r UI_begins}
 #### UI fluidPage####
 require(shinyBS)
-#inclRmd('Overview.Rmd')
-# You can only use inclRmd once; otherwise "duplicate label 'unnamed-chunk-1"
-#out = knitr::knit_child('Overview.Rmd', quiet=TRUE)
-#markdown::markdownToHTML(text = out)
 ```
 
 ```{r Overview}
