@@ -14,7 +14,7 @@
  +	D = dark hair, L = light hair; but hair color is strongly tied to ethnicity… which is strongly tied to a key genetic variant
 * -> The bias-variance axis in many settings:
 ```{r hide=TRUE}
-interactiveSection(codeToRun=eval(parse(text=linkout('Reproducibility-lump-split-page-1.pdf'))), showResult = FALSE)
+interactiveSection(codeToRun="eval(parse(text=linkout('Reproducibility-lump-split-page-1.pdf')))", showResult = FALSE)
 ```
 
 ###### Other navigation links
