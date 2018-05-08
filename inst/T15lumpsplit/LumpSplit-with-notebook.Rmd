@@ -259,11 +259,21 @@ output$responseRates = renderUI({
   )
 })
 
+# observeEvent(eventExpr = input$resetData, handlerExpr =  {
+#   
+#   isolate({
+#     # updateNumericInput(session, 'mRD', value=DLdata['D','R'])
+#     # updateNumericInput(session, 'mRL', value=DLdata['L','R'])
+#     # updateNumericInput(session, 'mND', value=DLdata['D','N'])
+#     # updateNumericInput(session, 'mNL', value=DLdata['L','N'])
+#   })
+# })
 panelOfData = list(
   strong(em("Data: Response by Predictor")),
   checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
   conditionalPanel(
     'input.toggleShowData',
+      #actionButton(inputId = 'resetData', label = "Reset data"),
       uiOutput(outputId = 'responseRates'),
       hr()
   )
