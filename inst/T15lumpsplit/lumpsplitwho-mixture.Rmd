@@ -23,4 +23,4 @@ So the posterior distribution is:
 (which is also Dirichlet).  Then reparametrizing,
 \[\pi _{_S}^*({p_{R.D}},{p_{R.L}},{p_D}) \propto p_{R.D}^{{n_{RD}} + {a_{RD}} - 1} \cdot p_{N.D}^{{n_{ND}} + {a_{ND}} - 1} \cdot p_{R.L}^{{n_{RL}} + {a_{RL}} - 1} \cdot p_{N.L}^{{n_{NL}} + {a_{NL}} - 1} \cdot p_D^{{n_D} + {a_D} - 1} \cdot p_L^{{n_L} + {a_L} - 1}I\{ ... = 1\} \]
 
-using ${p_{RD}} = {p_{R.D}}{p_D}$  and ${p_{RL}} = {p_{R.L}}{p_L}$  and \[{a_{RD}} + {a_{ND}} = {a_D}\]  etc.
+using ${p_{RD}} = {p_{R.D}}{p_D}$  and ${p_{RL}} = {p_{R.L}}{p_L}$  and ${a_{RD}} + {a_{ND}} = {a_D}$  etc.
