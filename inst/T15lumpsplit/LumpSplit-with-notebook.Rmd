@@ -255,7 +255,7 @@ observeEvent(eventExpr = input$resetData, handlerExpr =  {
   })
 })
 
-panelOfData = wellPanel(
+panelOfData = div(
   strong(em("Data: Response by Predictor")),
   checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
   conditionalPanel(
