@@ -217,7 +217,8 @@ ContoursPanelLegend = list(
       checkboxInput("checkPosterior", 
                     "Blue = posterior distribution",
                     TRUE)),
-  "Shaded: 50% highest posterior region"
+  "Shaded: 50% highest posterior region",
+  "X:   observed data"
 )
 ```
 
@@ -296,7 +297,8 @@ navTOCid = paste0('navTOC',TOCnum);
 cbInputId = paste0('cbInputId', navTOCid)
 cbInputJS = paste0('input.',cbInputId)
 output[['navTOCid']] <- renderUI({
-  list(checkboxInput(cbInputId, "show/hide outline of topics", value=FALSE),
+  list(checkboxInput(cbInputId, 
+                     strong(em("show/hide outline of topics")), value=FALSE),
        conditionalPanel(condition = cbInputJS,
                         tagList(inclRmd("navTOC.Rmd")) )
   )
@@ -304,7 +306,12 @@ output[['navTOCid']] <- renderUI({
 uiOutput('navTOCid')
 ```
 
-
+```{r submoduleTitle}
+##  <a name="LSnotebookBegin"> The Lump versus Split Dilemma </a>
+hr()
+h2(style="text-align: center;", 'The Lump versus Split Dilemma')
+hr()
+```
 
 
 ```{r include notebook}
