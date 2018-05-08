@@ -223,14 +223,45 @@ ContoursPanelLegend = list(
 ```
 
 ```{r responseRates}
+output$responseRates = renderUI({
+  splitLayout(HTML("Response <br>rates:"),
+                HTML(paste(
+                  input$mRD, '/', input$mRD+input$mND, 
+                  "<br> = ",
+                  round(digits=3,
+                        input$mRD/(input$mRD+input$mND)))),
+                HTML(paste(
+                  input$mRL, '/', input$mRL+input$mNL, 
+                  "<br> = ", 
+                  round(digits=3,
+                        input$mRL/(input$mRL+input$mNL))))
+    )
+  # paste(input$mRD, '/', input$mRD+input$mND, "for D, and ",
+  #       input$mRL, '/', input$mRL+input$mNL, "for L.")
+})
 includeCSS('rotate-text.css')
 rotateMe = function(html) {
-                      HTML(paste("<span class='rotateMe'>",
-                               html, "</span>" 
-                    ))
+  HTML(paste("<span class='rotateMe'>",
+             html, "</span>" 
+  ))
 }
-output$responseRates = renderUI({
-  wellPanel(
+observeEvent(eventExpr = input$resetData, handlerExpr =  {
+
+  isolate({
+    updateNumericInput(session, 'mRD', value=DLdata['D','R'])
+    updateNumericInput(session, 'mRL', value=DLdata['L','R'])
+    updateNumericInput(session, 'mND', value=DLdata['D','N'])
+    updateNumericInput(session, 'mNL', value=DLdata['L','N'])
+  })
+})
+
+panelOfData = wellPanel(
+  strong(em("Data: Response by Predictor")),
+  checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
+  conditionalPanel(
+    'input.toggleShowData',
+    wellPanel(
+          actionButton(inputId = 'resetData', label = "Reset data"),
     splitLayout("", "Group 'D'", "Group 'L'" ),
     splitLayout(div(br(),br(),
                     rotateMe( "<b>R</b>esponders" 
@@ -243,39 +274,12 @@ output$responseRates = renderUI({
                     )),
                 numericInput('mND', 'mND', DLdata[1,2]),
                 numericInput('mNL', 'mNL', DLdata[2,2])
-    ), 
-    splitLayout(HTML("Response <br>rates:"),
-                HTML(paste(
-                  input$mRD, '/', input$mRD+input$mND, 
-                  "<br> = ",
-                  round(digits=3,
-                        input$mRD/(input$mRD+input$mND)))),
-                HTML(paste(
-                  input$mRL, '/', input$mRL+input$mNL, 
-                  "<br> = ", 
-                  round(digits=3,
-                        input$mRL/(input$mRL+input$mNL))))
-    )
-  )
-})
-
-# observeEvent(eventExpr = input$resetData, handlerExpr =  {
-#   
-#   isolate({
-#     # updateNumericInput(session, 'mRD', value=DLdata['D','R'])
-#     # updateNumericInput(session, 'mRL', value=DLdata['L','R'])
-#     # updateNumericInput(session, 'mND', value=DLdata['D','N'])
-#     # updateNumericInput(session, 'mNL', value=DLdata['L','N'])
-#   })
-# })
-panelOfData = list(
-  strong(em("Data: Response by Predictor")),
-  checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
-  conditionalPanel(
-    'input.toggleShowData',
-      #actionButton(inputId = 'resetData', label = "Reset data"),
+    ),
+    "X = observed response rate, ",
+      br(),
       uiOutput(outputId = 'responseRates'),
       hr()
+    )
   )
 )
 ```
