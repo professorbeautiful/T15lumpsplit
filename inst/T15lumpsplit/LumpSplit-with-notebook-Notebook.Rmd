@@ -85,8 +85,11 @@ To view the data, click here:
 
 ### Parametrizations of the probabilities
 
+```{r child = 'Rmd-text-snippets/parametrize.Rmd'}
+```
+
 ```{r}
-includeHTML('Rmd-text-snippets/parametrize.html')
+#includeHTML('Rmd-text-snippets/parametrize.html')
 #inclRmd('Rmd-text-snippets/parametrize.Rmd')
 TextQuestion('Why focus on this parameter?')
 ```
@@ -129,7 +132,7 @@ QandAha()
 ```{r child = 'DrLump.Rmd'}
 ```
 
-```{r child = 'lumpsplitwho-mixture.Rmd'}
+```{r child = 'DrWho.Rmd'}
 ```
 
 

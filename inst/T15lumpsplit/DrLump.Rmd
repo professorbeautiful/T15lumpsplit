@@ -1,4 +1,6 @@
-Dr. Lump disagrees!   “Of course hair color is irrelevant!  My prior for ${p_R}$ is  Beta( ${a_R}$, ${a_N}$).”
+###### Dr. Lump disagrees!  
+
+“Of course hair color is irrelevant!  My prior for ${p_R}$ is  Beta( ${a_R}$, ${a_N}$).”
 To be fair, we’ll give Dr. Lump four pseudo-observations too, two for ${p_R}$  and two for  ${p_D}$. So ${a_R} = {a_N} = {a_D} = {a_L} = 1$ .  Dr. Lump’s likelihood is 
 \[\begin{array}{c}
 p_{RD}^{{n_{RD}}} \cdot p_{RL}^{{n_{RL}}} \cdot p_{ND}^{{n_{ND}}} \cdot p_{NL}^{{n_{NL}}} = ({p_R}{p_D})_{}^{{n_{RD}}} \cdot ({p_R}{p_L})_{}^{{n_{RL}}} \cdot ({p_N}{p_D})_{}^{{n_{ND}}} \cdot ({p_N}{p_L})_{}^{{n_{NL}}}\\

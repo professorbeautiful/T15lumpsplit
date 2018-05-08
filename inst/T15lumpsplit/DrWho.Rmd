@@ -1,0 +1,18 @@
+###### Dr. Who doesn't know *who* to believe:
+
+Dr. Who is not confident in either Dr. Split or Dr. Lump.  Maybe one’s right ($\phi  = Split$ ), maybe the other ( $\phi  = Lump$). Here is a prior that might represent this view:
+
+\[\pi _{Who}^{}({\bf{p}}) = \pi _{Who}^{}(\phi  = Split)\pi _{Split}^{}({\bf{p}}) + \pi _{Who}^{}(\phi  = Lump)\pi _{Lump}^{}({\bf{p}}).\]
+ 
+NOTE: This marginalizes out the nuisance parameter $\phi $ over the joint distribution of ( ${p_{R.D}},\phi $)!
+
+Then Dr. Who’s posterior is:
+ \[\pi _{Who}^*({p_{R.D}}) = \pi _{Who}^*(\phi  = Split)\pi _{Split}^*({p_{R.D}}) + \pi _{Who}^*(\phi  = Lump)\pi _{Lump}^*({p_{R.D}})\]
+ 
+where
+ \[\pi _{Who}^*(\phi  = Split) = \frac{{\pi (Split){m_{Split}}}}{{\pi (Split){m_{Split}} + \pi (Lump){m_{Lump}}}},\]
+and the $m$ values are the respective marginal distributions of the data  $({n_{RD}},{n_{RL}},{n_{ND}},{n_{NL}})$ if you knew $\phi $   --  in other words, the "conditional marginals".  
+
+```{r}
+TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing the data, is this still true AFTER seeing the data?
+")
