@@ -335,22 +335,23 @@ div(list(fluidRow(
                    style = "overflow-y:scroll; max-height: 600px"
          , inclRmd('LumpSplit-with-notebook-Notebook.Rmd')
          )),
-  column(width = 4, panelOfData,
+  column(width = 4, 
+         panelOfData,
          panelOfBifurcation,
-                    panelOfInputs,
-                  ContoursPanelLegend,
-                  br(),
-                  tagAppendAttributes(
-                    div(
-                      textOutput(outputId="title_1_ID"),
-                      textOutput(outputId="title_2_ID"),
-                      textOutput(outputId="title_3_ID")
-                    ),
-                    style=
-                      'text-align:center; font-size:large; font-weight:bold'),
-                  a(name='viewPlot'),
-                  plotOutput(outputId = 'thePlot')
-                )
+         tagAppendAttributes(
+           div(
+             textOutput(outputId="title_1_ID"),
+             textOutput(outputId="title_2_ID"),
+             textOutput(outputId="title_3_ID")
+           ),
+           style=
+             'text-align:center; font-size:small;
+                    font-weight:bold'),
+         a(name='viewPlot'),
+         plotOutput(outputId = 'thePlot'),
+         panelOfInputs,
+         ContoursPanelLegend
+  )
 )
 ))
 ```
