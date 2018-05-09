@@ -4,15 +4,69 @@ Dr. Who is not confident in either Dr. Split or Dr. Lump.  Maybe one’s right (
 
 \[\pi _{Who}^{}({\bf{p}}) = \pi _{Who}^{}(\phi  = Split)\pi _{Split}^{}({\bf{p}}) + \pi _{Who}^{}(\phi  = Lump)\pi _{Lump}^{}({\bf{p}}).\]
  
-NOTE: This marginalizes out the nuisance parameter $\phi $ over the joint distribution of ( ${p_{R.D}},\phi $)!
+NOTE: This marginalizes out the nuisance parameter $\phi$ over the joint distribution of ( ${p_{R.D}},\phi$)!
 
 Then Dr. Who’s posterior is:
  \[\pi _{Who}^*({p_{R.D}}) = \pi _{Who}^*(\phi  = Split)\pi _{Split}^*({p_{R.D}}) + \pi _{Who}^*(\phi  = Lump)\pi _{Lump}^*({p_{R.D}})\]
  
 where
  \[\pi _{Who}^*(\phi  = Split) = \frac{{\pi (Split){m_{Split}}}}{{\pi (Split){m_{Split}} + \pi (Lump){m_{Lump}}}},\]
-and the $m$ values are the respective marginal distributions of the data  $({n_{RD}},{n_{RL}},{n_{ND}},{n_{NL}})$ if you knew $\phi $   --  in other words, the "conditional marginals".  
+and the $m$ values are the respective marginal distributions of the data  $({n_{RD}},{n_{RL}},{n_{ND}},{n_{NL}})$ if you knew $\phi$   --  in other words, the "conditional marginals".  
 
 ```{r}
 TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing the data, is this still true AFTER seeing the data?
 ")
+```
+
+###### calculation of the Bayes factor, and plotting the mixture.
+
+If *Split* is correct, then the (marginal) probability of getting the data we observed is:
+
+
+ \[\begin{array}{l}
+{m_{Split}} = [{\bf{n}}|\phi  = Split] = \int\limits_{\bf{p}} {} [{\bf{n}}|{\bf{p}},\phi  = Split][{\bf{p}}]\\
+{\rm{    }} = \int\limits_{\bf{p}} {\frac{{n!}}{{{n_{RD}}!{n_{ND}}!{n_{RL}}!{n_{NL}}!}}p_{RD}^{{n_{RD}}} \cdot p_{ND}^{{n_{ND}}} \cdot p_{RL}^{{n_{RL}}} \cdot p_{NL}^{{n_{NL}}}}  \cdot p_{RD}^{{a_{RD}} - 1} \cdot p_{ND}^{{a_{ND}} - 1} \cdot p_{RL}^{{a_{RL}} - 1} \cdot p_{NL}^{{a_{NL}} - 1}{D^{ - 1}}({\bf{a}})\\
+{\rm{    }} = \frac{{100!}}{{3!2!5!90!}}D(4,3,6,91){D^{ - 1}}(1,1,1,1)\\
+{\rm{    }} = \frac{{100!}}{{103!}}3!\\
+{\rm{    }} = 5.654477e - 006
+\end{array}\]
+
+If *Lump* is correct, then the (marginal) probability of getting the data we observed is:
+
+\[\begin{array}{l}
+{m_{Lump}} = [{\bf{n}}|\phi  = Lump] = \int\limits_{\bf{p}} {} [{\bf{n}}|{\bf{p}},\phi  = Lump][{\bf{p}}]\\
+{\rm{      = }}\int\limits_{\bf{p}} {} [{n_R}|{\bf{p}},\phi  = Lump][{n_D}|{\bf{p}},\phi  = Lump][{n_{RD}}|{n_R},{n_D},{\bf{p}},\phi  = Lump][{\bf{p}}]\\
+{\rm{    }} = \int\limits_{\bf{p}} {\frac{{n!}}{{{n_R}!{n_N}!}}p_R^{{n_R}}p_N^{{n_N}} \cdot \frac{{n!}}{{{n_D}!{n_L}!}}p_D^{{n_D}}p_L^{{n_L}}}  \cdot \frac{{\left( {\begin{array}{*{20}{c}}
+{{n_R}}\\
+{{n_{RD}}}
+\end{array}} \right)\left( {\begin{array}{*{20}{c}}
+{{n_L}}\\
+{{n_{LD}}}
+\end{array}} \right)}}{{\left( {\begin{array}{*{20}{c}}
+{{n_{}}}\\
+{{n_D}}
+\end{array}} \right)}} \cdot p_R^{{a_R} - 1}p_N^{{a_N} - 1}{B^{ - 1}}({a_R},{a_N}) \cdot p_D^{{a_D} - 1}p_L^{{a_L} - 1}{B^{ - 1}}({a_D},{a_L})\\
+{\rm{    }} = \frac{{n!}}{{{n_R}!{n_N}!}}\frac{{n!}}{{{n_D}!{n_L}!}}\frac{{\left( {\begin{array}{*{20}{c}}
+{{n_R}}\\
+{{n_{RD}}}
+\end{array}} \right)\left( {\begin{array}{*{20}{c}}
+{{n_N}}\\
+{{n_{ND}}}
+\end{array}} \right)}}{{\left( {\begin{array}{*{20}{c}}
+{{n_{}}}\\
+{{n_D}}
+\end{array}} \right)}}B({n_R} + {a_R},{n_N} + {a_N})B({n_D} + {a_D},{n_L} + {a_L}){B^{ - 1}}({a_R},{a_N}){B^{ - 1}}({a_D},{a_L})\\
+ = {\rm{choose(100,8)*choose(100,5)*dhyper(3,8,92,5)*Beta(9,93)*Beta(6,96)/Beta(1,1)/Beta(1,1)}}\\
+ = 3.05226e - 007
+\end{array}\]
+
+###### Bayes Factor, Posterior odds (and probability) of the "null hypothesis""
+
+The  Bayes Factor is the ratio,
+\[{m_{Split}}/{m_{Lump}} = {\rm{18.52554}}\]
+
+If *Split* and *Lump* have equal prior probability (prior odds = 1),
+then the posterior odds is
+\[\tt{(prior odds)}{m_{Split}}/{m_{Lump}} = {\rm{18.52554}}\]
+
+	 
