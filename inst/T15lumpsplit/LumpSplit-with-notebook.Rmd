@@ -371,6 +371,9 @@ div(list(fluidRow(
          , inclRmd('LumpSplit-with-notebook-Notebook.Rmd')
          )),
   column(width = 4, 
+        wellPanel(id = "leftScrollPanel",
+                   style = "overflow-y:scroll; max-height: 600px"
+         , 
          panelOfData,
          panelOfBifurcation,
          tagAppendAttributes(
@@ -387,7 +390,7 @@ div(list(fluidRow(
          "X = observed response rate, ",
          panelOfInputs,
          ContoursPanelLegend
-  )
+  ))
 )
 ))
 ```
