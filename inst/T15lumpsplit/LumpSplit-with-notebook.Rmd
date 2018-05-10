@@ -328,7 +328,16 @@ require(shinyBS)
 ```
 
 ```{r Overview}
-inclRmd('Overview.Rmd')
+output[['overviewId']] <- renderUI({
+  list(
+    checkboxInput('cbOverviewId', 
+                  strong(em("show/hide the Overview")),
+                  value=TRUE),
+    conditionalPanel(condition = 'input.cbOverviewId',
+                     tagList(inclRmd("Overview.Rmd")) )
+  )
+})
+uiOutput('overviewId')
 ```
 
 ```{r overviewTOC_dup}
@@ -339,10 +348,12 @@ navTOCid = paste0('navTOC',TOCnum);
 cbInputId = paste0('cbInputId', navTOCid)
 cbInputJS = paste0('input.',cbInputId)
 output[['navTOCid']] <- renderUI({
-  list(checkboxInput(cbInputId, 
-                     strong(em("show/hide outline of topics")), value=FALSE),
-       conditionalPanel(condition = cbInputJS,
-                        tagList(inclRmd("navTOC.Rmd")) )
+  list(
+    checkboxInput(cbInputId, 
+                  strong(em("show/hide outline of topics")),
+                  value=FALSE),
+    conditionalPanel(condition = cbInputJS,
+                     tagList(inclRmd("navTOC.Rmd")) )
   )
 })
 uiOutput('navTOCid')
