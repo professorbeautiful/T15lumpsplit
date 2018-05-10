@@ -181,17 +181,30 @@ fluidRow(
 )
 ```
 
-```{r}
-# navTOCid = paste0('navTOC',TOCnum); TOCnum = TOCnum+1
-# output[[navTOCid]] <- renderUI({ tagList(inclRmd("navTOC.Rmd") )})
-# conditionalPanel('false', uiOutput(navTOCid))
-#source('navTOCid.R', local=T)
-
-```
-
-
-```{r}
-##source('navTOCid.R', local=T)
+```{r conditionalPanelWithCheckbox}
+conditionalPanelWithCheckbox = function(
+  labelString, 
+  filename,
+  html='',
+  initialValue=FALSE
+) {
+   labelStringNoSpaces = gsub(" ", "_", labelString)
+   labelStringId = paste0(labelStringNoSpaces, 'Id')
+   cbStringId = paste0('cb', labelStringId)
+   if(!missing(filename))
+     html = c(tagList(inclRmd(filename)), html)
+   output[[labelStringId]] <- renderUI({
+     list(
+       checkboxInput(cbStringId, 
+                     strong(em(
+                       paste0("show/hide the ", labelString))),
+                     value=initialValue),
+       conditionalPanel(condition = paste0('input.', cbStringId),
+                        html )
+     )
+   })
+   uiOutput(labelStringId)
+}
 ```
 
 ```{r panelOfInputs}
@@ -251,6 +264,9 @@ output$responseRates = renderUI({
   # paste(input$mRD, '/', input$mRD+input$mND, "for D, and ",
   #       input$mRL, '/', input$mRL+input$mNL, "for L.")
 })
+```
+
+```{r data table}
 includeCSS('rotate-text.css')
 dataRowLabel = function(html, angle=360-40, color='green') {
   ### rotating works wiht div and p but not with span
@@ -264,17 +280,8 @@ dataRowLabel = function(html, angle=360-40, color='green') {
   "'>",
   html, "</div>" 
   ))
-# HTML(paste("<div style='
-#   color=", color, ";",
-#   paste0(collapse=" ", 
-#          "-", c("webkit","ms","moz","o"),
-#         "-transform:rotate(", angle, "deg);"),
-#   "'>",
-#   html, "</div>" 
-  # ))
 }
 observeEvent(eventExpr = input$resetData, handlerExpr =  {
-
   isolate({
     updateNumericInput(session, 'mRD', value=DLdata['D','R'])
     updateNumericInput(session, 'mRL', value=DLdata['L','R'])
@@ -283,11 +290,13 @@ observeEvent(eventExpr = input$resetData, handlerExpr =  {
   })
 })
 
-panelOfData = div(
-  strong(em("Data: Response by Predictor")),
-  checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
-  conditionalPanel(
-    'input.toggleShowData',
+panelOfData = 
+  conditionalPanelWithCheckbox(
+    labelString = "Response by Predictor Table", 
+    html = 
+  # checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
+  # conditionalPanel(
+  #   'input.toggleShowData',
     wellPanel(
           actionButton(inputId = 'resetData', label = "Reset data"),
     splitLayout(style='color:green;', "", 
@@ -308,16 +317,28 @@ panelOfData = div(
       uiOutput(outputId = 'responseRates'),
       hr()
     )
-  )
 )
 ```
 
 ```{r panelOfBifurcation}
-panelOfBifurcation = wellPanel(
-  strong(em("Bifurcated analysis: P>0.05? then lump. P<0.05? then split")),
-  checkboxInput('toggleShowFisher', 'Show/Hide the Fisher test', FALSE)
+output$fisherResult = renderUI({
+    Pvalue = fisher.test(rValues$DLdata)$p.value
+    div('Fisher exact test result:',
+        br(),
+        paste0('P = ', Pvalue, '\n')
+    )
+})
+ 
+panelOfBifurcation = 
+    conditionalPanelWithCheckbox(
+      labelString = 'Classical bifurcated analysis',
+      html = list(
+  strong(em(span("P>0.05? then lump. P<0.05? then split"))),
+  uiOutput('fisherResult')
+#  checkboxInput('toggleShowFisher', 'Show/Hide the Fisher test', FALSE)
+#)
+      )
 )
-  
 ```
 
 
@@ -326,29 +347,12 @@ panelOfBifurcation = wellPanel(
 #### UI fluidPage####
 require(shinyBS)
 ```
-```{r conditionalPanelWithCheckbox}
-conditionalPanelWithCheckbox = function(
-  labelString = 'Overview', filename = 'Overview.Rmd',
-  initialValue=FALSE
-) {
-   labelStringNoSpaces = gsub(" ", "_", labelString)
-   labelStringId = paste0(labelStringNoSpaces, 'Id')
-   cbStringId = paste0('cb', labelStringId)
-   output[[labelStringId]] <- renderUI({
-     list(
-       checkboxInput(cbStringId, 
-                     strong(em(
-                       paste0("show/hide the ", labelString))),
-                     value=initialValue),
-       conditionalPanel(condition = paste0('input.', cbStringId),
-                        tagList(inclRmd(filename)) )
-     )
-   })
-   uiOutput(labelStringId)
-}
-```
+
 ```{r Overview}
-conditionalPanelWithCheckbox(initialValue = TRUE)
+conditionalPanelWithCheckbox(
+  labelString = 'Overview', 
+  filename = 'Overview.Rmd', html = '',
+  initialValue = TRUE)
 ```
 
 ```{r topics}
