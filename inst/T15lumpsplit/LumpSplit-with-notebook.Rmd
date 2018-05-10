@@ -3,7 +3,7 @@ title: "Bias, variance, smoothing, and shrinking"
 output: 
   html_document:
     css: lumpsplit.css
-runtime: shiny
+runtime: shiny    
 ---
 
 
@@ -252,10 +252,26 @@ output$responseRates = renderUI({
   #       input$mRL, '/', input$mRL+input$mNL, "for L.")
 })
 includeCSS('rotate-text.css')
-rotateMe = function(html) {
-  HTML(paste("<span class='rotateMe'>",
-             html, "</span>" 
+dataRowLabel = function(html, angle=360-40, color='green') {
+  ### rotating works wiht div and p but not with span
+  HTML(paste("<div style='
+  color:", color, ";",
+  "height:80px; width:120px; 
+  vertical-align:bottom; horizontal-align:right;",
+  paste0(collapse=" ", 
+         "-", c("webkit","ms","moz","o"),
+        "-transform:rotate(", angle, "deg);"),
+  "'>",
+  html, "</div>" 
   ))
+# HTML(paste("<div style='
+#   color=", color, ";",
+#   paste0(collapse=" ", 
+#          "-", c("webkit","ms","moz","o"),
+#         "-transform:rotate(", angle, "deg);"),
+#   "'>",
+#   html, "</div>" 
+  # ))
 }
 observeEvent(eventExpr = input$resetData, handlerExpr =  {
 
@@ -274,20 +290,20 @@ panelOfData = div(
     'input.toggleShowData',
     wellPanel(
           actionButton(inputId = 'resetData', label = "Reset data"),
-    splitLayout("", "Group 'D'", "Group 'L'" ),
-    splitLayout(div(br(),br(),
-                    rotateMe( "<b>R</b>esponders" 
-                    )),
-                numericInput('mRD', 'mRD', DLdata[1,1]),
-                numericInput('mRL', 'mRL', DLdata[2,1])
+    splitLayout(style='color:green;', "", 
+                HTML("Group '<strong>D</strong>'"), 
+                HTML("Group '<strong>L</strong>'"), 
+                cellWidths = c("40%",'30%','30%')),
+    fluidRow(
+      column(4, dataRowLabel( "<b>R</b>esponders")),
+      column(4, numericInput('mRD', '#RD', DLdata[1,1])),
+      column(4, numericInput('mRL', '#RL', DLdata[2,1]))
     ),
-    splitLayout(div(br(),br(),
-                    rotateMe( "<b>N</b>onResponders"
-                    )),
-                numericInput('mND', 'mND', DLdata[1,2]),
-                numericInput('mNL', 'mNL', DLdata[2,2])
+    fluidRow(
+      column(4, dataRowLabel( "<b>N</b>onResponders")),
+      column(4, numericInput('mND', '#ND', DLdata[1,2])),
+      column(4, numericInput('mNL', '#NL', DLdata[2,2]))
     ),
-    "X = observed response rate, ",
       br(),
       uiOutput(outputId = 'responseRates'),
       hr()
@@ -361,6 +377,7 @@ div(list(fluidRow(
                     font-weight:bold'),
          a(name='viewPlot'),
          plotOutput(outputId = 'thePlot'),
+         "X = observed response rate, ",
          panelOfInputs,
          ContoursPanelLegend
   )
