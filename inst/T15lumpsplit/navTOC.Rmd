@@ -3,6 +3,7 @@
 *	Bayesian estimation
  +	Mixture of models:  "Dr. Who"
  +  Optimizing the mixture with cross-validation
+      -> Callout:  "avoiding leaky cross-validation"
  +	Bivariate normal prior on logit scale
  +	The famous ECMO data set.
 *	The role of prior information, explored by introducing different identities for "D" and "L".
