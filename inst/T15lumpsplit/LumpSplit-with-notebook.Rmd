@@ -328,7 +328,8 @@ require(shinyBS)
 ```
 ```{r conditionalPanelWithCheckbox}
 conditionalPanelWithCheckbox = function(
-  labelString = 'Overview', filename = 'Overview.Rmd'
+  labelString = 'Overview', filename = 'Overview.Rmd',
+  initialValue=FALSE
 ) {
    labelStringNoSpaces = gsub(" ", "_", labelString)
    labelStringId = paste0(labelStringNoSpaces, 'Id')
@@ -338,7 +339,7 @@ conditionalPanelWithCheckbox = function(
        checkboxInput(cbStringId, 
                      strong(em(
                        paste0("show/hide the ", labelString))),
-                     value=TRUE),
+                     value=initialValue),
        conditionalPanel(condition = paste0('input.', cbStringId),
                         tagList(inclRmd(filename)) )
      )
@@ -347,12 +348,12 @@ conditionalPanelWithCheckbox = function(
 }
 ```
 ```{r Overview}
-conditionalPanelWithCheckbox()
+conditionalPanelWithCheckbox(initialValue = TRUE)
 ```
 
 ```{r topics}
 conditionalPanelWithCheckbox(
-  labelString = 'Topics', filename = 'navTOC.Rmd')
+  labelString = 'Topics', filename = 'navTOC.Rmd', initialValue=FALSE)
 ```
 
 ```{r submoduleTitle}
