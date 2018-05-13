@@ -56,6 +56,7 @@ TOCnum =  0
 
 ```{r servercode}
 source("Plight-Pdark-posterior-new.R", local=TRUE)
+source("DrWhoBayesFactor.R")
 rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
                          title_1='title 1',
                          DLdata = DLdata)
@@ -72,7 +73,7 @@ plotPlightPdarkPosteriorReactive = reactive( {
                            tau=tau, phi=phi, mu0=logit(mu0), 
                            showPrior = input$checkPrior, 
                            showPosterior = input$checkPosterior,
-                           showSandLandWho = FALSE, #  ToDo
+                           showSandLandWho = TRUE, #  ToDo
                            fudgeFactor = input$fudgeFactor)
   rValues$title_3 <<- paste0(
     "  tau=", input$tauInput,  
@@ -234,6 +235,10 @@ panelOfInputs =
 
 ```{r show-hide-contours}
 ContoursPanelLegend = list(
+#  "X:   observed data", br(),
+  "L:  Dr.Lump's MP estimate", br(),
+  "S:  Dr.Split's MP estimate", br(),
+  "W:  Dr.Who's MP estimate",
   div(style="color:orange", 
       checkboxInput("checkPrior", 
                     "Orange = prior distribution",
@@ -242,8 +247,7 @@ ContoursPanelLegend = list(
       checkboxInput("checkPosterior", 
                     "Blue = posterior distribution",
                     TRUE)),
-  "Shaded: 50% highest posterior region",
-  "X:   observed data"
+  "Shaded: 50% highest posterior region"
 )
 ```
 

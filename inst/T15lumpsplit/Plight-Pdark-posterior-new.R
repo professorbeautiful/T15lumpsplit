@@ -1,8 +1,8 @@
 plotPlightPdarkPosterior = function(
-  DLdata = matrix(c(3,5,2,90),nrow=2),
-  tau, phi, mu0,
+  DLdata = matrix(c(3,5,2,90),nrow=2, dimnames = list(c('D','L'), c('R','N'))),
+  tau=1, phi=1, mu0=0.5,
   showPrior = TRUE, showPosterior=TRUE, showLikelihood=TRUE,
-  showSandLandWho = FALSE,
+  showSandLandWho = TRUE,
   fudgeFactor = 0.001,
   addFudge = TRUE
 ) {
@@ -35,7 +35,7 @@ plotPlightPdarkPosterior = function(
   circlepoints = cbind(cos(angles),sin(angles))
   plot(0:1, 0:1, xlab = "Pr(R | D)", ylab = "Pr(R | L)", pch=" ",
        cex=2)
-  if(showPrior) {
+if(showPrior) {
     for (plevel in seq(.1,.9,.1)) {
       qlevel = qchisq(p=plevel, df=2)
       contourlevel1 = antilogit(logit.prior.mean
@@ -48,7 +48,10 @@ plotPlightPdarkPosterior = function(
         lines(contourlevel1[xorder,1], contourlevel1[xorder,2],col = ColorForPrior, lty=2)
       }
     }
-    points(antilogit(mu0), antilogit(mu0),pch = "M", cex=3, col=ColorForPrior)
+    symbols(add = TRUE, antilogit(mu0), antilogit(mu0),
+           circles = 0.05, inches=F, bg='black') #ColorForPrior)
+    points(antilogit(mu0), antilogit(mu0), pch = "M",
+           cex=1, col=ColorForPrior)
   }
   if(showPosterior) {
     for (plevel in seq(.1,.9,.1)) {
@@ -63,7 +66,44 @@ plotPlightPdarkPosterior = function(
         lines(contourlevel2[xorder,1], contourlevel2[xorder,2], col = ColorForPosterior,lty=2)
       }
     }
-    points(antilogit(postmean.logit[1,1]), antilogit(postmean.logit[2,1]), pch = "M", cex=3, col = ColorForPosterior)
+    abline(a=0, b=1, col='grey', lty=2, lwd=2)
+    if(showSandLandWho) {
+      ### careful.... rows are groups, columns outcomes.
+      Spoint = c(x=DLdata['D', 'R']/sum(DLdata[ 'D', ]),
+                 y=DLdata['L', 'R']/sum(DLdata[ 'L', ]) )
+      Lpoint = rep(times=2,
+                   sum(DLdata[ , 'R'])/sum(DLdata) )
+      BayesFactor = DrWhoBayesFactor(DLdata)
+      BayesProbSplit = BayesFactor/(1+BayesFactor)
+      Wpoint = Spoint*BayesProbSplit + Lpoint*(1-BayesProbSplit)
+      addCircledLetter = function(pointLocation, bg='white',
+                                  col='black', circleColor='black',
+                                  size=0.05, pch, cex=1){
+        symbols(add = TRUE,
+                x=pointLocation[1],
+                y=pointLocation[2],
+                circles = size, col=circleColor, inches=F, bg=bg)
+        points(x=pointLocation[1],
+               y=pointLocation[2],
+               pch = pch,
+               cex=1, col=col)
+      }
+      #points(Spoint[1], Spoint[2], pch='S', cex=2, col='black')
+      #points(Lpoint[1], Lpoint[2], pch='L', cex=2, col='black')
+      addCircledLetter(pointLocation = c(Lpoint[1], Lpoint[2]), pch='L')
+      addCircledLetter(pointLocation = c(Spoint[1], Spoint[2]), pch='S')
+      addCircledLetter(pointLocation = c(Wpoint[1], Wpoint[2]), pch='W',
+                       circleColor='red', bg=NULL, col='red')
+    }
+
+    # points(antilogit(postmean.logit[1,1]),
+    #        antilogit(postmean.logit[2,1]), pch = "M",
+    #        cex=2, col = ColorForPosterior)
+    pointLocation = antilogit(
+      c(postmean.logit[1,1], postmean.logit[2,1]))
+    addCircledLetter(pointLocation,  bg='lightgrey',
+           pch = "M", cex=1, col=ColorForPosterior)
+
   }
 #  if(showLikelihood) {
 #    argmin = function(v, target=0) which(abs(v-target) == min(abs(v-target))[1])
@@ -85,12 +125,19 @@ plotPlightPdarkPosterior = function(
 #       lines(c(D1, D1, D2, D2), c(L1, L2, L2, L1), col= ColorForLikelihood)
 #      }
 #  }
-  points(antilogit(logit.hat)[1], antilogit(logit.hat)[2],
-         pch = "X", cex=3)
+  #points(antilogit(logit.hat)[1], antilogit(logit.hat)[2],
+  #       pch = "X", cex=1)
   mtext(text = paste("posterior mean for Pr(R | D) = ",
-                     round(digits=4, postmean.p[1])),
-        side=3, cex=2,
+                     round(digits=2, postmean.p[1])),
+        side=3, cex=1, line = 1,
      col = ColorForPosterior)
+   text(x = postmean.p[1], y = 1, pos = 3,
+        labels = expression("\u2193"),   ### only \u2193 works.
+# HTML('<pre class="r"><code>cat(&quot;\U2660   \U2665  \U2666  \U2663&quot;)</code></pre>
+#                        <p>♠ ♥ ♦ ♣</p>'"︎
+# DOWNWARDS BLACK ARROW  ## The fat one doesn't show up.
+#        Unicode: U+2B07 U+FE0E, UTF-8: E2 AC 87 EF B8 8E︎",
+col='blue', xpd=TRUE)
   abline(v=postmean.p[1],col=ColorForPosterior, lty=2, lwd=2)
 }
 
