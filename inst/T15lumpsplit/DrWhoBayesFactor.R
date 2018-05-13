@@ -22,16 +22,18 @@ mSplit = function(data=DLdata)
       DirNormalizer(rep(1, length(data)), log=TRUE)
   )
 mLump = function(data=DLdata) {
-  rs = rowSums(data)
-  cs = colSums(data)
+  rs = rowSums(data)[1]
+  cs = colSums(data)[1]
+  n = sum(data)
   choose(sum(data), rs[1])*
       choose(sum(data), cs[1])*
-      dhyper(data[1,1],data[1,2],data[2,1],data[2,2])*
+      dhyper(data[1,1],rs,n-rs,cs)*
       Beta(9,93)*Beta(6,96)
 }
       #/Beta(1,1)/Beta(1,1) ##prior
 DrWhoBayesFactor = function(data=DLdata) {
-  mSplit(data)/mLump(data)
+  BF = mSplit(data)/mLump(data)
+  cat("Bayes Factor", BF, '\n')
+  BF
   #6/101/102/103
 }
-DrWhoBayesFactor()
