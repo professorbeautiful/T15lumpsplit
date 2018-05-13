@@ -51,7 +51,7 @@ QandAha()
 The Problem:  A new treatment is given to 100 patients.  
 Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respond, yielding a response rate of 60%. for now we call them "D people", and the others "L people".
 
-Goal: decide whether to treat the "D" patients.
+Goal: decide whether to treat the "D" patients (or at least, whether to put resources into studying it further for "D" patients).
 
 If you *"lump"*, you will estimate that the response rate (`Pr(R|D)`) for D people is *8%*. 
 
@@ -135,7 +135,7 @@ QandAha()
 
 #### <a name='Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
 
-Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R|D) and Pr(R|L). This allows data on the two probabilities to be shared between them, without the extreme "Dr. Lump".
+Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R|D) and Pr(R|L). This allows data on the two probabilities to be shared between them, smoothly instead of a crude mixture of the two extreme views of   "Dr. Lump" and "Dr. Split".
 ```{r}
 QandAha()
 ```
@@ -143,12 +143,12 @@ Once we have this joint prior distribution, we compute the joint posterior.
 ```{r QA4}
 QandAha()
 ```
-To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits ("logit" means "log(odds)").
+To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits ("logit" means "log(odds)"; details <a href='www/logit-info.htm').
 Then we set a bivariate normal distribution on the logits.
 
 We also convert the observed proportions to logits. We estimate the variances using the delta method applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
 
-(This doesn't work well if the count is near zero , and not at all at zero.
+(This doesn't work well if the count is near zero, and not at all at zero.
 For this reason a "continuity fudge" is applied, if necessary.)
 
 The link to bivariate normal details is here:
