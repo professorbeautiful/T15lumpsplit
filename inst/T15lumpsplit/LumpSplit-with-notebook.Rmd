@@ -90,8 +90,8 @@ lumpReact = observe({
     cat("lumpID\n")
     rValues$tau <- 1; rValues$phi <- 0.001   
     ### Lump:  no individual variation:   D is same as L.
-    rValues$title_1 <- "Lump"
-    rValues$title_2 <- "Prior belief: Pr(R|D) = Pr(R|L)"
+    rValues$title_1 <- "Dr. Lump"
+    rValues$title_2 <- HTML("Prior belief: <br>Pr(R|D) = Pr(R|L)")
   }
 })  
 ```
@@ -114,8 +114,8 @@ splitReact = observe({
     cat("splitID\n")
     rValues$tau <<- 0; rValues$phi <<- 1   
     ### Split:  D unconnected to L.
-    rValues$title_1 <<- "Split"
-    rValues$title_2 <<- "Prior belief: Pr(R|D) is unrelated to Pr(R|L)."
+    rValues$title_1 <<- "Dr. Split"
+    rValues$title_2 <<- HTML("Prior belief:<br> Pr(R|D) is unrelated to Pr(R|L).")
   }
 }) 
 ```
@@ -125,8 +125,8 @@ whoReact = observe({
   if(length(input$whoID) > 0) {
     cat("whoID\n")
     ### Who:  discrete mixture of Lump and Split.
-    rValues$title_1 <<- "Who: discrete mixture of Lump and Split."
-    rValues$title_2 <<- "Prior belief: Pr(Lump)=Pr(Split)=1/2."
+    rValues$title_1 <<- "Dr. Who: \ndiscrete mixture of Lump and Split."
+    rValues$title_2 <<- HTML("Prior belief: <BR> Pr(Lump)=Pr(Split)=1/2.")
   }
 }) 
 ```
@@ -136,8 +136,8 @@ mixedReact = observe({
   if(length(input$mixedID) > 0) {
     cat("mixedID\n")
     rValues$tau <<- 1/2; rValues$phi <<- 1/2 
-    rValues$title_1 <<- "Compromise: lump some, split some"
-    rValues$title_2 <<- "Prior belief:  Pr(R|D)  is somewhat related to Pr(R|L). "
+    rValues$title_1 <<- HTML("Compromise: <br>lump some, split some")
+    rValues$title_2 <<- HTML("Prior belief: <br> Pr(R|D) is somewhat related to Pr(R|L). ")
   }
 })
 ```
@@ -153,14 +153,16 @@ updateViews = observe({
 
 
 ```{r thePlot}
-output$title_1_ID = renderText({rValues$title_1})
-output$title_2_ID = renderText({rValues$title_2})
-output$title_3_ID = renderText({rValues$title_3})
+output$title_1_ID = renderUI({rValues$title_1})
+output$title_2_ID = renderUI({rValues$title_2})
+output$title_3_ID = renderUI({rValues$title_3})
 
-output$thePlot = renderPlot(width=500, height=500,
+output$thePlot = renderPlot(height=250,
                             {
-                              par(mai=c(1.4,1.4,1.1,0.6))
-                              par(mar=c(5,5,4,2) + 0.2)
+                              par(mai=c(1,1,1,0.6))
+                              par(mar=c(4,4,2,2) + 0.2)
+                              #c(bottom, left, top, right)
+                              par(pty='s')
                               plotPlightPdarkPosteriorReactive()
                             })
 ```
@@ -387,31 +389,31 @@ div(list(fluidRow(
          panelOfBifurcation,
          tagAppendAttributes(
            div(
-             textOutput(outputId="title_1_ID"),
-             textOutput(outputId="title_2_ID"),
-             textOutput(outputId="title_3_ID")
+             uiOutput(outputId="title_1_ID"),
+             uiOutput(outputId="title_2_ID"),
+             uiOutput(outputId="title_3_ID")
            ),
            style=
              'text-align:center; font-size:small;
                     font-weight:bold'),
-         a(name='viewPlot'),
-         plotOutput(outputId = 'thePlot'),
-         "X = observed response rate, ",
-         panelOfInputs,
-         ContoursPanelLegend
+         #a(name='viewPlot'),
+         plotOutput(outputId = 'thePlot', height=260),
+         #"X = observed response rate, ",
+         ContoursPanelLegend,
+         panelOfInputs
   ))
 )
 ))
 ```
 
 ```{r}
-div(list(br(),br(),br(),br(),br(),br(),br(),br()))
+#div(list(br(),br(),br(),br(),br(),br(),br(),br()))
 ```
 ```{r include navTOCid}
 #source('navTOCid.R', local=T)
 ```
 ```{r}
-div(list(br(),br(),br(),br()))
+#div(list(br(),br(),br(),br()))
 ```
 
 
