@@ -57,6 +57,17 @@ If you *"lump"*, you will estimate that the response rate (`Pr(R|D)`) for D peop
 
 If you *"split"*, you will estimate that the response rate (`Pr(R|D)`) for D people is *60%*. 
 
+```{r plotLumpSplitPoints}
+output$plotLumpSplitPoints = renderPlot({
+  plotPlightPdarkPosterior(showPrior = FALSE, showPosterior=FALSE, showLikelihood=FALSE,
+  showS = TRUE,
+  showL = TRUE,
+  showW = FALSE)
+})
+
+div(plotOutput('plotLumpSplitPoints'))
+```
+
 Lumping gives an answer with low variance (N=100) but high bias-- because it is including many people who are not D.
 
 Splitting gives an answer with high variance (N=5) but low bias-- because it is including only people who ARE D:  it is directly asking our question.
