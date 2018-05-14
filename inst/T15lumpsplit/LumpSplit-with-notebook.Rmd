@@ -73,7 +73,9 @@ plotPlightPdarkPosteriorReactive = reactive( {
                            tau=tau, phi=phi, mu0=logit(mu0), 
                            showPrior = input$checkPrior, 
                            showPosterior = input$checkPosterior,
-                           showSandLandWho = TRUE, #  ToDo
+                           showS = TRUE, #  ToDo
+                           showL = TRUE, #  ToDo
+                           showW = TRUE, #  ToDo
                            fudgeFactor = input$fudgeFactor)
   rValues$title_3 <<- paste0(
     "  tau=", input$tauInput,  

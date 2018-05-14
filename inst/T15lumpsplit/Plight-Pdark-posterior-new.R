@@ -2,7 +2,9 @@ plotPlightPdarkPosterior = function(
   DLdata = matrix(c(3,5,2,90),nrow=2, dimnames = list(c('D','L'), c('R','N'))),
   tau=1, phi=1, mu0=0.5,
   showPrior = TRUE, showPosterior=TRUE, showLikelihood=TRUE,
-  showSandLandWho = TRUE,
+  showS = TRUE,
+  showL = TRUE,
+  showW = TRUE,
   fudgeFactor = 0.001,
   addFudge = TRUE
 ) {
@@ -67,44 +69,20 @@ if(showPrior) {
       }
     }
     abline(a=0, b=1, col='grey', lty=2, lwd=2)
-    if(showSandLandWho) {
-      ### careful.... rows are groups, columns outcomes.
-      Spoint = c(x=DLdata['D', 'R']/sum(DLdata[ 'D', ]),
-                 y=DLdata['L', 'R']/sum(DLdata[ 'L', ]) )
-      Lpoint = rep(times=2,
-                   sum(DLdata[ , 'R'])/sum(DLdata) )
-      BayesFactor = DrWhoBayesFactor(DLdata)
-      BayesProbSplit = BayesFactor/(1+BayesFactor)
-      Wpoint = Spoint*BayesProbSplit + Lpoint*(1-BayesProbSplit)
-      addCircledLetter = function(pointLocation, bg='white',
-                                  col='black', circleColor='black',
-                                  size=0.05, pch, cex=1){
-        symbols(add = TRUE,
-                x=pointLocation[1],
-                y=pointLocation[2],
-                circles = size, col=circleColor, inches=F, bg=bg)
-        points(x=pointLocation[1],
-               y=pointLocation[2],
-               pch = pch,
-               cex=1, col=col)
-      }
-      #points(Spoint[1], Spoint[2], pch='S', cex=2, col='black')
-      #points(Lpoint[1], Lpoint[2], pch='L', cex=2, col='black')
-      addCircledLetter(pointLocation = c(Lpoint[1], Lpoint[2]), pch='L')
-      addCircledLetter(pointLocation = c(Spoint[1], Spoint[2]), pch='S')
-      addCircledLetter(pointLocation = c(Wpoint[1], Wpoint[2]), pch='W',
-                       circleColor='red', bg=NULL, col='red')
+    addCircledLetter = function(pointLocation, bg='white',
+                                col='black', circleColor='black',
+                                size=0.05, pch, cex=1){
+      symbols(add = TRUE,
+              x=pointLocation[1],
+              y=pointLocation[2],
+              circles = size, col=circleColor, inches=F, bg=bg)
+      points(x=pointLocation[1],
+             y=pointLocation[2],
+             pch = pch,
+             cex=1, col=col)
     }
-
-    # points(antilogit(postmean.logit[1,1]),
-    #        antilogit(postmean.logit[2,1]), pch = "M",
-    #        cex=2, col = ColorForPosterior)
-    pointLocation = antilogit(
-      c(postmean.logit[1,1], postmean.logit[2,1]))
-    addCircledLetter(pointLocation,  bg='lightgrey',
-           pch = "M", cex=1, col=ColorForPosterior)
-
-  }
+    #points(Spoint[1], Spoint[2], pch='S', cex=2, col='black')
+    #points(Lpoint[1], Lpoint[2], pch='L', cex=2, col='black')
 #  if(showLikelihood) {
 #    argmin = function(v, target=0) which(abs(v-target) == min(abs(v-target))[1])
 #     probs = seq(0.01, 0.99, by = 0.01)
@@ -127,6 +105,33 @@ if(showPrior) {
 #  }
   #points(antilogit(logit.hat)[1], antilogit(logit.hat)[2],
   #       pch = "X", cex=1)
+    if(showS) {
+      ### careful.... rows are groups, columns outcomes.
+      Spoint = c(x=DLdata['D', 'R']/sum(DLdata[ 'D', ]),
+                 y=DLdata['L', 'R']/sum(DLdata[ 'L', ]) )
+      addCircledLetter(pointLocation = c(Spoint[1], Spoint[2]), pch='S')
+    }
+    if(showL) {
+      Lpoint = rep(times=2,
+                   sum(DLdata[ , 'R'])/sum(DLdata) )
+      addCircledLetter(pointLocation = c(Lpoint[1], Lpoint[2]), pch='L')
+    }
+    if(showW) {
+      BayesFactor = DrWhoBayesFactor(DLdata)
+      BayesProbSplit = BayesFactor/(1+BayesFactor)
+      Wpoint = Spoint*BayesProbSplit + Lpoint*(1-BayesProbSplit)
+      addCircledLetter(pointLocation = c(Wpoint[1], Wpoint[2]), pch='W',
+                       circleColor='red', bg=NULL, col='red')
+    }
+    # points(antilogit(postmean.logit[1,1]),
+    #        antilogit(postmean.logit[2,1]), pch = "M",
+    #        cex=2, col = ColorForPosterior)
+    pointLocation = antilogit(
+      c(postmean.logit[1,1], postmean.logit[2,1]))
+    addCircledLetter(pointLocation,  bg='lightgrey',
+                     pch = "M", cex=1, col=ColorForPosterior)
+
+  }
   mtext(text = paste("posterior mean for Pr(R | D) = ",
                      round(digits=2, postmean.p[1])),
         side=3, cex=1, line = 1,
