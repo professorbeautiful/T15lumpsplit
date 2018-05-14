@@ -386,7 +386,7 @@ div(list(fluidRow(
   column(width = 8, 
          wellPanel(id = "leftScrollPanel",
                    style = "overflow-y:scroll; max-height: 600px"
-         , inclRmd('LumpSplit-with-notebook-Notebook.Rmd')
+         , inclRmd('Submodule-LumpSplit.Rmd')
          )),
   column(width = 4, 
         wellPanel(id = "leftScrollPanel",
