@@ -6,7 +6,10 @@ plotPlightPdarkPosterior = function(
   showL = TRUE,
   showW = TRUE,
   fudgeFactor = 0.001,
-  addFudge = TRUE
+  addFudge = TRUE,
+  ColorForPrior="orange",
+  ColorForPosterior="blue",
+  ColorForLikelihood="black"
 ) {
 
   logit.hat = logit(apply(DLdata, 1, function(r)r[1]/sum(r)))
