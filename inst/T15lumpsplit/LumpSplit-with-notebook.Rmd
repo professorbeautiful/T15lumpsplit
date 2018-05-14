@@ -179,6 +179,11 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(
 #source('navTOCid.R', local=T)
 ```
 
+```{r, results='asis'}
+#cat("\U2B07")
+# This shows you can get a fat arrow... but not in a plot.
+```
+
 ```{r withDebuggingPanel}
 ##  <a name='debugging'>** **</a>
 fluidRow(
