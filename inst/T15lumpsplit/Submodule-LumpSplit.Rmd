@@ -71,21 +71,19 @@ div(plotOutput('plotLumpSplitPoints'))
 Lumping gives an answer with low variance (N=100) but high bias-- because the answer reflects far more L  people than D people. The confidence interval follows the diagonal where $Pr(R|D)=Pr(R|L)$.
 
 Splitting gives an answer with high variance (N=5) but low bias-- because it is including only people who ARE D:  it is directly asking our question. The very wide horizontal confidence interval reflects this high variance.
-
-We will call the patient "feature" $X$. Its values is D or L.
-The identity of $X$ will be explored later.
-
-The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
-
 To view the data, click here:
+
 ```{r}
 (interactiveSection(
   codeToRun = "updateCheckboxInput(session=thisSession, inputId='toggleShowData', value=TRUE)", 
   buttonLabel= "show data")
 )
-
 ```
 
+We will call the patient "feature" $X$. Its values is D or L.
+The identity of $X$ will be explored later.
+
+The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
 
 ### Parametrizations of the probabilities
 
