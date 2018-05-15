@@ -11,6 +11,7 @@ plotPlightPdarkPosterior = function(
   ColorForPosterior="blue",
   ColorForLikelihood="black"
 ) {
+  par(pty='s')
   plot(0:1, 0:1, xlab = "Pr(R | D)", ylab = "Pr(R | L)", pch=" ",
        cex=2)
   abline(a=0, b=1, col='grey', lty=2, lwd=2)
