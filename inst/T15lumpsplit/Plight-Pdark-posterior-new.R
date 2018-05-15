@@ -14,7 +14,7 @@ plotPlightPdarkPosterior = function(
   plot(0:1, 0:1, xlab = "Pr(R | D)", ylab = "Pr(R | L)", pch=" ",
        cex=2)
   abline(a=0, b=1, col='grey', lty=2, lwd=2)
-  addCircledLetter = function(pointLocation, bg='white',
+  addCircledLetter = function(pointLocation, bg=NA,
                               col='black', circleColor='black',
                               size=0.05, pch, cex=1){
     symbols(add = TRUE,
@@ -24,18 +24,36 @@ plotPlightPdarkPosterior = function(
     points(x=pointLocation[1],
            y=pointLocation[2],
            pch = pch,
-           cex=1, col=col)
+           cex=cex, col=col)
   }
   if(showS) {
     ### careful.... rows are groups, columns outcomes.
     Spoint = c(x=DLdata['D', 'R']/sum(DLdata[ 'D', ]),
                y=DLdata['L', 'R']/sum(DLdata[ 'L', ]) )
-    addCircledLetter(pointLocation = c(Spoint[1], Spoint[2]), pch='S')
+    confInterval_D = binom.test(x = DLdata['D', 'R'],
+                                n = sum(DLdata[ 'D', ])
+    )$conf.int
+    print(confInterval_D)
+    lines(confInterval_D, rep(Spoint[2], 2), lwd=3)
+    confInterval_L = binom.test(x = DLdata['L', 'R'],
+                                n = sum(DLdata[ 'L', ])
+    )$conf.int
+    print(confInterval_L)
+    lines(rep(Spoint[1], 2), confInterval_L, lwd=3)
+    addCircledLetter(
+      pointLocation = c(Spoint[1], Spoint[2]),
+      pch='S', col='red', cex=2)
   }
   if(showL) {
     Lpoint = rep(times=2,
                  sum(DLdata[ , 'R'])/sum(DLdata) )
-    addCircledLetter(pointLocation = c(Lpoint[1], Lpoint[2]), pch='L')
+    confInterval = binom.test(x = sum(DLdata[ , 'R']),
+               n = sum(DLdata))$conf.int
+    print(confInterval)
+    lines(confInterval, confInterval, lwd=3)
+    addCircledLetter(
+      pointLocation = c(Lpoint[1], Lpoint[2]),
+      pch='L', col = 'red', cex=2)
   }
   if(showW) {
     BayesFactor = DrWhoBayesFactor(DLdata)
