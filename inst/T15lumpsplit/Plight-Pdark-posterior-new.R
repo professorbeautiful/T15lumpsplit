@@ -11,7 +11,40 @@ plotPlightPdarkPosterior = function(
   ColorForPosterior="blue",
   ColorForLikelihood="black"
 ) {
-
+  plot(0:1, 0:1, xlab = "Pr(R | D)", ylab = "Pr(R | L)", pch=" ",
+       cex=2)
+  abline(a=0, b=1, col='grey', lty=2, lwd=2)
+  addCircledLetter = function(pointLocation, bg='white',
+                              col='black', circleColor='black',
+                              size=0.05, pch, cex=1){
+    symbols(add = TRUE,
+            x=pointLocation[1],
+            y=pointLocation[2],
+            circles = size, col=circleColor, inches=F, bg=bg)
+    points(x=pointLocation[1],
+           y=pointLocation[2],
+           pch = pch,
+           cex=1, col=col)
+  }
+  if(showS) {
+    ### careful.... rows are groups, columns outcomes.
+    Spoint = c(x=DLdata['D', 'R']/sum(DLdata[ 'D', ]),
+               y=DLdata['L', 'R']/sum(DLdata[ 'L', ]) )
+    addCircledLetter(pointLocation = c(Spoint[1], Spoint[2]), pch='S')
+  }
+  if(showL) {
+    Lpoint = rep(times=2,
+                 sum(DLdata[ , 'R'])/sum(DLdata) )
+    addCircledLetter(pointLocation = c(Lpoint[1], Lpoint[2]), pch='L')
+  }
+  if(showW) {
+    BayesFactor = DrWhoBayesFactor(DLdata)
+    BayesProbSplit = BayesFactor/(1+BayesFactor)
+    Wpoint = Spoint*BayesProbSplit + Lpoint*(1-BayesProbSplit)
+    addCircledLetter(pointLocation = c(Wpoint[1], Wpoint[2]), pch='W',
+                     circleColor='red', bg=NULL, col='red')
+  }
+  #### bivariate normal contours ####
   logit.hat = logit(apply(DLdata, 1, function(r)r[1]/sum(r)))
   varhat = apply(DLdata, 1, function(r)sum(1/r))
   if(any(DLdata==0)) fudgeFactor = max(fudgeFactor, 0.001)
@@ -38,8 +71,6 @@ plotPlightPdarkPosterior = function(
   angles = seq(0,2*pi,length=100)
   qlevel = qchisq(p=0.99, df=2)
   circlepoints = cbind(cos(angles),sin(angles))
-  plot(0:1, 0:1, xlab = "Pr(R | D)", ylab = "Pr(R | L)", pch=" ",
-       cex=2)
 if(showPrior) {
     for (plevel in seq(.1,.9,.1)) {
       qlevel = qchisq(p=plevel, df=2)
@@ -71,19 +102,6 @@ if(showPrior) {
         lines(contourlevel2[xorder,1], contourlevel2[xorder,2], col = ColorForPosterior,lty=2)
       }
     }
-    abline(a=0, b=1, col='grey', lty=2, lwd=2)
-    addCircledLetter = function(pointLocation, bg='white',
-                                col='black', circleColor='black',
-                                size=0.05, pch, cex=1){
-      symbols(add = TRUE,
-              x=pointLocation[1],
-              y=pointLocation[2],
-              circles = size, col=circleColor, inches=F, bg=bg)
-      points(x=pointLocation[1],
-             y=pointLocation[2],
-             pch = pch,
-             cex=1, col=col)
-    }
     #points(Spoint[1], Spoint[2], pch='S', cex=2, col='black')
     #points(Lpoint[1], Lpoint[2], pch='L', cex=2, col='black')
 #  if(showLikelihood) {
@@ -108,24 +126,6 @@ if(showPrior) {
 #  }
   #points(antilogit(logit.hat)[1], antilogit(logit.hat)[2],
   #       pch = "X", cex=1)
-    if(showS) {
-      ### careful.... rows are groups, columns outcomes.
-      Spoint = c(x=DLdata['D', 'R']/sum(DLdata[ 'D', ]),
-                 y=DLdata['L', 'R']/sum(DLdata[ 'L', ]) )
-      addCircledLetter(pointLocation = c(Spoint[1], Spoint[2]), pch='S')
-    }
-    if(showL) {
-      Lpoint = rep(times=2,
-                   sum(DLdata[ , 'R'])/sum(DLdata) )
-      addCircledLetter(pointLocation = c(Lpoint[1], Lpoint[2]), pch='L')
-    }
-    if(showW) {
-      BayesFactor = DrWhoBayesFactor(DLdata)
-      BayesProbSplit = BayesFactor/(1+BayesFactor)
-      Wpoint = Spoint*BayesProbSplit + Lpoint*(1-BayesProbSplit)
-      addCircledLetter(pointLocation = c(Wpoint[1], Wpoint[2]), pch='W',
-                       circleColor='red', bg=NULL, col='red')
-    }
     # points(antilogit(postmean.logit[1,1]),
     #        antilogit(postmean.logit[2,1]), pch = "M",
     #        cex=2, col = ColorForPosterior)
@@ -133,20 +133,19 @@ if(showPrior) {
       c(postmean.logit[1,1], postmean.logit[2,1]))
     addCircledLetter(pointLocation,  bg='lightgrey',
                      pch = "M", cex=1, col=ColorForPosterior)
-
+    mtext(text = paste("posterior mean for Pr(R | D) = ",
+                       round(digits=2, postmean.p[1])),
+          side=3, cex=1, line = 1,
+          col = ColorForPosterior)
+    text(x = postmean.p[1], y = 1, pos = 3,
+         labels = expression("\u2193"),   ### only \u2193 works.
+         # HTML('<pre class="r"><code>cat(&quot;\U2660   \U2665  \U2666  \U2663&quot;)</code></pre>
+         #                        <p>♠ ♥ ♦ ♣</p>'"︎
+         # DOWNWARDS BLACK ARROW  ## The fat one doesn't show up.
+         #        Unicode: U+2B07 U+FE0E, UTF-8: E2 AC 87 EF B8 8E︎",
+         col='blue', xpd=TRUE)
+    abline(v=postmean.p[1],col=ColorForPosterior, lty=2, lwd=2)
   }
-  mtext(text = paste("posterior mean for Pr(R | D) = ",
-                     round(digits=2, postmean.p[1])),
-        side=3, cex=1, line = 1,
-     col = ColorForPosterior)
-   text(x = postmean.p[1], y = 1, pos = 3,
-        labels = expression("\u2193"),   ### only \u2193 works.
-# HTML('<pre class="r"><code>cat(&quot;\U2660   \U2665  \U2666  \U2663&quot;)</code></pre>
-#                        <p>♠ ♥ ♦ ♣</p>'"︎
-# DOWNWARDS BLACK ARROW  ## The fat one doesn't show up.
-#        Unicode: U+2B07 U+FE0E, UTF-8: E2 AC 87 EF B8 8E︎",
-col='blue', xpd=TRUE)
-  abline(v=postmean.p[1],col=ColorForPosterior, lty=2, lwd=2)
 }
 
 
