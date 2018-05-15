@@ -1,4 +1,4 @@
-dataTableComponent = function(...) {
+dataTableComponent = function() {
   thisDTCNumber = nextNumber(sequenceType = "DTC")
   outputIdThisDTC = paste0('DTC', thisDTCNumber)
   panelIdThisDTC = paste0('id', outputIdThisDTC)
@@ -11,7 +11,7 @@ dataTableComponent = function(...) {
         updateNumericInput(session, 'mNL', value=DLdata['L','N'])
       })
     })
-    panelOfData(panelIdThisDTC, ...)
+    panelOfData(panelIdThisDTC)
   })
   uiOutput(outputId = outputIdThisDTC)
 }
@@ -31,7 +31,7 @@ dataRowLabel = function(html, angle=360-40, color='green') {
 }
 
 ### Do not call panelOfData() directly
-panelOfData = function(...) {
+panelOfData = function(panelIdThisDTC) {
   conditionalPanelWithCheckbox(
     labelString = "Response by Predictor Table",
     html =
@@ -55,7 +55,7 @@ panelOfData = function(...) {
           column(4, numericInput('mNL', '#NL', DLdata[2,2]))
         ),
         br(),
-        uiOutput(outputId = 'responseRates'),
+        uiOutput(outputId = panelIdThisDTC),
         hr()
       )
   )
