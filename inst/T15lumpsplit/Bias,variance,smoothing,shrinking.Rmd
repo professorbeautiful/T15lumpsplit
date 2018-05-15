@@ -342,7 +342,8 @@ div(list(fluidRow(
         wellPanel(id = "leftScrollPanel",
                    style = "overflow-y:scroll; max-height: 600px"
          , 
-         panelOfData,
+         #panelOfData,
+         dataTableComponent(),
          panelOfBifurcation,
          tagAppendAttributes(
            div(

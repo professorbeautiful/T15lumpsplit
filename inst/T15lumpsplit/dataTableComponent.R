@@ -1,7 +1,7 @@
-dataTableComponent = function() {
+dataTableComponent = function(...) {
   thisDTCNumber = nextNumber(sequenceType = "DTC")
   outputIdThisDTC = paste0('DTC', thisDTCNumber)
-  textareaIdThisDTC = paste0('id', outputIdThisDTC)
+  panelIdThisDTC = paste0('id', outputIdThisDTC)
   output[[outputIdThisDTC]] = renderUI({
     observeEvent(eventExpr = input$resetData, handlerExpr =  {
       isolate({
@@ -11,6 +11,7 @@ dataTableComponent = function() {
         updateNumericInput(session, 'mNL', value=DLdata['L','N'])
       })
     })
+    panelOfData(panelIdThisDTC, ...)
   })
   uiOutput(outputId = outputIdThisDTC)
 }
@@ -29,7 +30,8 @@ dataRowLabel = function(html, angle=360-40, color='green') {
   ))
 }
 
-panelOfData =
+### Do not call panelOfData() directly
+panelOfData = function(...) {
   conditionalPanelWithCheckbox(
     labelString = "Response by Predictor Table",
     html =
@@ -57,4 +59,4 @@ panelOfData =
         hr()
       )
   )
-
+}
