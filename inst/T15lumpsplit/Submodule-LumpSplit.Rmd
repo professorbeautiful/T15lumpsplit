@@ -1,12 +1,17 @@
 ---
 runtime: shiny
 output: 
-  html_notebook: 
-    number_sections: yes
-    toc: yes
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
 ---
 
 ```{r listings}
+source('initializations.R', local=TRUE)
 # ls()
 # cat('-=-=-=-=\n')
 # ls(pos=1)
@@ -19,12 +24,9 @@ output:
 
 ```{r hide=TRUE}
 require('shiny')
-#inclRmd('lumpsplit.Rmd')
-## Yes, you can have 2 inclRmd in one file.
-## But this one busted the shiny responses.
 ```
 
-#### Introduction to this sub-module
+##	"Lumping" versus "splitting" in science. 
 
 In science, advances often proceed by "splitting": things that seem initially the same are classified as different. The classification may be tentativedistinction, until it proves to be useful. 
 Other advances proceed by "lumping":  identifying things that seem different but have a deep connection.
@@ -57,17 +59,20 @@ If you *"lump"*, you will estimate that the response rate (`Pr(R|D)`) for D peop
 
 If you *"split"*, you will estimate that the response rate (`Pr(R|D)`) for D people is *60%*. 
 
-```{r plotLumpSplitPoints}
-output$plotLumpSplitPoints = renderPlot({
+```{r plotLumpSplitPoints, fig.height=300}
+output$plotLumpSplitPoints = renderPlot(
+  height = 300, {
   plotPlightPdarkPosterior(DLdata=rValues$DLdata,
                            showPrior = FALSE, showPosterior=FALSE, showLikelihood=FALSE,
   showS = TRUE,
   showL = TRUE,
   showW = FALSE)
 })
-
-div(plotOutput('plotLumpSplitPoints'), 
-             dataTableComponent()
+fluidRow(column(6,
+                h3(style='color:red;', "L = Lump, S = Split"),
+                plotOutput('plotLumpSplitPoints')),
+         column(6,
+                dataTableComponent())
 )
 ```
 
@@ -111,7 +116,7 @@ QandAha()
 * [Bayes joint prior, logit scale](#Bayes_joint_prior).  
 * Approaches used in the famous ECMO data set. (ToDo)
 
-#### <a name='Classical test'> Approach: Classical test: is X independent of the outcome Y?</a>
+#### <a name='Classical test'> Classical estimation bifurcating on a hypothesis test</a>
 
 A time-honored but fading technique is to perform a classical hypothesis test.
 Here the hypothesis is "X is independent of Y";  the response rate of D people does not differ from L people.  Then, depending on the hypothesis test result, one answer or the other is selected. 
@@ -131,14 +136,21 @@ QandAha()
 
 #### <a name='Bayes_mixture'> Approach: Bayes mixture of "Lump" and "Split"</a>
 
+##### Dr. Split speaks:
+
 ```{r child = 'DrSplit.Rmd'}
 ```
+##### Dr. Lump disagrees!  
 
 ```{r child = 'DrLump.Rmd'}
 ```
 
+##### Dr. Who doesn't know *who* to believe:
+
+
 ```{r child = 'DrWho.Rmd'}
 ```
+
 
 
 ```{r QA3}

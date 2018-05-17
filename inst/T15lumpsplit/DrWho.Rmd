@@ -1,4 +1,3 @@
-###### Dr. Who doesn't know *who* to believe:
 
 Dr. Who is not confident in either Dr. Split or Dr. Lump.  Maybe one’s right ($\phi  = Split$ ), maybe the other ( $\phi  = Lump$). Here is a prior that might represent this view:
 

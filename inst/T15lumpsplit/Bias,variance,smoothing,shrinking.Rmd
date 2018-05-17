@@ -2,10 +2,14 @@
 title: "Bias, variance, smoothing, and shrinking"
 output: 
   html_document:
-    css: lumpsplit.css
+      toc: true
+      toc_float:
+        collapsed: false
+        smooth_scroll: false
+      number_sections: true
+
 runtime: shiny    
 ---
-
 
 
 ```{r setup, include=FALSE}
@@ -13,6 +17,8 @@ knitr::opts_chunk$set(echo = FALSE)
 options(knitr.duplicate.label = 'allow')
 #options(error=browser)
 require(T15lumpsplit)
+require(shiny)
+#source('rstudio.markdownToHTML.R', local=TRUE)
 ```
 
 ```{r setup numbering, warning=FALSE}
@@ -305,6 +311,9 @@ panelOfBifurcation =
 #### UI fluidPage####
 require(shinyBS)
 ```
+*Date: "`r date()`"     Author: "Roger Day, University of Pittsburgh"*
+# OVERVIEW of this Module
+
 
 ```{r Overview}
 conditionalPanelWithCheckbox(
@@ -315,7 +324,7 @@ conditionalPanelWithCheckbox(
 
 ```{r topics}
 conditionalPanelWithCheckbox(
-  labelString = 'Topics', filename = 'navTOC.Rmd', initialValue=FALSE)
+  labelString = 'Topics', filename = 'topics.Rmd', initialValue=FALSE)
 ```
 
 ```{r submoduleTitle}
@@ -327,19 +336,20 @@ hr()
 
 
 ```{r include notebook}
-div(list(fluidRow(
-  column(width = 8, 
-         wellPanel(id = "leftScrollPanel",
-                   style = "overflow-y:scroll; max-height: 600px"
-         , inclRmd('Submodule-LumpSplit.Rmd')
-         )),
-  column(width = 4, 
-        wellPanel(id = "leftScrollPanel",
-                   style = "overflow-y:scroll; max-height: 600px"
-         , 
+div(
+#  list(fluidRow(column(width = 8, 
+         # wellPanel(id = "leftScrollPanel",
+                   # style = "overflow-y:scroll; max-height: 600px"
+         # ,
+         inclRmd('Submodule-LumpSplit.Rmd'),
+ #        ),
+  # column(width = 4, 
+  #       wellPanel(id = "leftScrollPanel",
+  #                  style = "overflow-y:scroll; max-height: 600px"
+  #        , 
          #panelOfData,
-         dataTableComponent(),
-         panelOfBifurcation,
+         #dataTableComponent(),
+         #panelOfBifurcation,
          tagAppendAttributes(
            div(
              uiOutput(outputId="title_1_ID"),
@@ -354,9 +364,7 @@ div(list(fluidRow(
          #"X = observed response rate, ",
          ContoursPanelLegend,
          panelOfInputs
-  ))
 )
-))
 ```
 
 ```{r}

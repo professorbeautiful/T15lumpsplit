@@ -32,13 +32,13 @@ dataRowLabel = function(html, angle=360-40, color='green') {
 
 ### Do not call panelOfData() directly
 panelOfData = function(panelIdThisDTC) {
-  conditionalPanelWithCheckbox(
-    labelString = "Response by Predictor Table",
-    html =
+  #conditionalPanelWithCheckbox(
+    #labelString = "Response by Predictor Table",
+    #html =
       # checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
       # conditionalPanel(
       #   'input.toggleShowData',
-      wellPanel(
+      div(
         actionButton(inputId = 'resetData', label = "Reset data"),
         splitLayout(style='color:green;', "",
                     HTML("Group '<strong>D</strong>'"),
@@ -58,5 +58,5 @@ panelOfData = function(panelIdThisDTC) {
         uiOutput(outputId = panelIdThisDTC),
         hr()
       )
-  )
+  #)
 }

@@ -1,6 +1,3 @@
-#### OVERVIEW of Sub-Modules
-
-*Date: "`r date()`"     Author: "Roger Day, University of Pittsburgh"*
 
 The module *"Bias, variance, smoothing, and shrinking"* begins with the *"lump versus split dilemma"* sub-module, in the context of a study treating patients and recording responses.  The dilemma: in deciding whether to pursue "personalized medicine" for one small group, how should we use the data from other patients (if at all)? 
 
