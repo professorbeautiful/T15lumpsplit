@@ -2,13 +2,12 @@
 title: "Bias, variance, smoothing, and shrinking"
 output: 
   html_document:
-      toc: true
-      toc_float:
-        collapsed: false
-        smooth_scroll: false
+    toc: true
+    toc_float: 
+      collapsed: false
+      smooth_scroll: false
       number_sections: true
-
-runtime: shiny    
+runtime: shiny
 ---
 
 
