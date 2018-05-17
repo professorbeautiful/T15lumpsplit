@@ -123,7 +123,7 @@ interactiveSection(
   buttonLabel= "run fishertest")
 ```
 
-Since the P-value is significant, the "null hypothesis" (that "Dr. Lump" is correct) is rejected. The traditional consequence is that we use Dr. Split's estimate:  60%.
+If the P-value is significant, the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%.
 ```{r}
 QandAha()
 ```
@@ -169,6 +169,10 @@ We also convert the observed proportions to logits. We estimate the variances us
 (This doesn't work well if the count is near zero, and not at all at zero.
 For this reason a "continuity fudge" is applied, if necessary.)
 
+Finally, Pr(R|D) marginalized over Pr(R|L) is:
+
+
+
 The link to bivariate normal details is here:
 
 ```{r linkoutbivariate}
@@ -192,6 +196,9 @@ Assembling the results of the approaches to estimating Pr(R|D):
 
 ```{r}
 ### ToDo
+data.frame(Lump=0.08, Split=0.60, Who=0.57, CV=0.47, 
+           BayesLogit=NA)
+### ToDo extract the point estimate from BayesLogit.
 ```
 
 ###  Save your Comments and Answers
