@@ -10,14 +10,11 @@
 ###	2 alleles of a gene known to affect this drug's pharmacodynamics
 ###	2 alleles of one gene out of a hundred tested, chosen because they are known to affect this drug's pharmacodynamics
 ###	2 alleles of one gene out of a hundred thousand tested; nothing known
-##	Curse of dimensionality,
-##	Multiple testing and estimation with high-dimensional priors,
 ###	D = dark hair, L = light hair
 ###	D = dark hair, L = light hair; but hair color is strongly tied to ethnicity… which is strongly tied to a key genetic variant
-## -> The bias-variance axis in many settings:
-```{r hide=TRUE}
-interactiveSection(codeToRun="eval(parse(text=linkout('Reproducibility-lump-split-page-1.pdf')))", showResult = FALSE)
-```
+##	Curse of dimensionality,
+##	Multiple testing and estimation with high-dimensional priors,
+
 
 ###### Other navigation links
 ## -> Top of the [Notebook](#notebookBegin) .

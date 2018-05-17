@@ -320,7 +320,12 @@ conditionalPanelWithCheckbox(
   filename = 'Overview.Rmd', html = '',
   initialValue = TRUE)
 ```
+The general scope of the bias-variance axis in many settings is here:
+```{r hide=TRUE}
+interactiveSection(codeToRun="eval(parse(text=linkout('Reproducibility-lump-split-page-1.pdf')))", showResult = FALSE)
+```
 
+The list of topics developed or in development is here:
 ```{r topics}
 conditionalPanelWithCheckbox(
   labelString = 'Topics', filename = 'topics.Rmd', initialValue=FALSE)
