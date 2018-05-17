@@ -27,7 +27,7 @@ If *Split* is correct, then the (marginal) probability of getting the data we ob
 {\rm{    }} = \int\limits_{\bf{p}} {\frac{{n!}}{{{n_{RD}}!{n_{ND}}!{n_{RL}}!{n_{NL}}!}}p_{RD}^{{n_{RD}}} \cdot p_{ND}^{{n_{ND}}} \cdot p_{RL}^{{n_{RL}}} \cdot p_{NL}^{{n_{NL}}}}  \cdot p_{RD}^{{a_{RD}} - 1} \cdot p_{ND}^{{a_{ND}} - 1} \cdot p_{RL}^{{a_{RL}} - 1} \cdot p_{NL}^{{a_{NL}} - 1}{D^{ - 1}}({\bf{a}})\\
 {\rm{    }} = \frac{{100!}}{{3!2!5!90!}}D(4,3,6,91){D^{ - 1}}(1,1,1,1)\\
 {\rm{    }} = \frac{{100!}}{{103!}}3!\\
-{\rm{    }} = 5.654477e - 006
+{\rm{    }} = 5.654477 \times 10^{ -6}
 \end{array}\]
 
 If *Lump* is correct, then the (marginal) probability of getting the data we observed is:
@@ -56,7 +56,7 @@ If *Lump* is correct, then the (marginal) probability of getting the data we obs
 {{n_D}}
 \end{array}} \right)}}B({n_R} + {a_R},{n_N} + {a_N})B({n_D} + {a_D},{n_L} + {a_L}){B^{ - 1}}({a_R},{a_N}){B^{ - 1}}({a_D},{a_L})\\
  = {\rm{choose(100,8)*choose(100,5)*dhyper(3,8,92,5)*Beta(9,93)*Beta(6,96)/Beta(1,1)/Beta(1,1)}}\\
- = 3.05226e - 007
+ = 3.05226 \times 10^{ -7}
 \end{array}\]
 
 ###### Bayes Factor, Posterior odds (and probability) of the "null hypothesis""
@@ -64,8 +64,18 @@ If *Lump* is correct, then the (marginal) probability of getting the data we obs
 The  Bayes Factor is the ratio,
 \[{m_{Split}}/{m_{Lump}} = {\rm{18.52554}}\]
 
-If *Split* and *Lump* have equal prior probability (prior odds = 1),
+If *Dr.Split* and *Dr.Lump* have equal prior probability (prior odds = 1),
 then the posterior odds is
 \[\tt{(prior odds)}{m_{Split}}/{m_{Lump}} = {\rm{18.52554}}\]
 
-	 
+and  the posterior probability that *Dr.Lump* is right is
+
+\[{\rm{Pr(}}\phi  = Lump|data) = {m_{Lump}}/({m_{Split}} + {m_{Lump}}) = 0.051215\]
+
+Then Dr. Who's estimate is 
+
+$\begin{array}{l}
+\Pr (R|D,Who) = \Pr (Lump) \times \Pr (R|D,Lump) + \Pr (Split) \times \Pr (R|D,Split)\\
+\quad \quad \quad \quad \quad \quad \quad  = 0.05\quad \quad \quad  \times 0.08\quad \quad \quad \quad \quad \quad  + 0.95\quad \quad \quad  \times 0.60\\
+\quad \quad \quad \quad \quad \quad \quad  = {\rm{ 0.574}}
+\end{array}$
