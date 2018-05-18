@@ -46,8 +46,8 @@ source('includeHTMLtrimmed.R', local=T)
 
 logit = function(p) log(p/(1-p))
 antilogit = function(x) 1 - 1/(1+exp(x))
-DLdata = matrix(c(3,5,2,90),nrow=2)
-dimnames(DLdata) = list(c("D","L"),c("R","N"))
+DLdataOriginal = matrix(c(3,5,2,90),nrow=2)
+dimnames(DLdataOriginal) = list(c("D","L"),c("R","N"))
 ColorForPrior="orange";     
 ColorForPosterior="blue";     
 ColorForLikelihood="black"
@@ -64,7 +64,9 @@ source("Plight-Pdark-posterior-new.R", local=TRUE)
 source("DrWhoBayesFactor.R")
 rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
                          title_1='title 1',
-                         DLdata = DLdata)
+                         DLdata = DLdataOriginal,
+                         DLdataMyChoice = DLdataOriginal,
+                         resetting = FALSE)
 ```
 
 ```{r plotPlightPdarkPosteriorReactive}
@@ -73,7 +75,7 @@ plotPlightPdarkPosteriorReactive = reactive( {
   tau <- input$tauInput
   phi <- input$phiInput
   mu0 <- input$mu0Input
-  cat("tau=", tau, " phi=", phi, " mu0=", mu0, "\n")
+  #cat("tau=", tau, " phi=", phi, " mu0=", mu0, "\n")
   plotPlightPdarkPosterior(DLdata=rValues$DLdata,
                            tau=tau, phi=phi, mu0=logit(mu0), 
                            fudgeFactor = input$fudgeFactor)
@@ -99,15 +101,38 @@ lumpReact = observe({
 ```
 
 ```{r updateDLdata}
-updateDLdata = observe({
+updateDLdata = observeEvent(priority = 2, label='updateDLdata',
+  eventExpr = c(input$mRD, input$mND, input$mRL, input$mNL), 
+  handlerExpr = {
     try(silent = TRUE, {
+      isolate({
+        cat('input$mRD', input$mRD, 
+            '  rValues$resetting=', rValues$resetting, '\n')
         rValues$DLdata[1,1] =  input$mRD
         rValues$DLdata[1,2] =  input$mND
         rValues$DLdata[2,1] =  input$mRL
         rValues$DLdata[2,2] =  input$mNL
+        if(rValues$resetting ==  FALSE) { 
+          print('changing DLdataMyChoice also')
+          rValues$DLdataMyChoice[1,1] = input$mRD
+          rValues$DLdataMyChoice[1,2] = input$mND
+          rValues$DLdataMyChoice[2,1] = input$mRL
+          rValues$DLdataMyChoice[2,2] = input$mNL
+        }
+      })
     })
-  cat('input$mRD', input$mRD, '\n')
 })
+
+updateDLdataMyChoice = observeEvent(label='updateDLdataMyChoice',
+    eventExpr = c(input$mRD, input$mND, input$mRL, input$mNL), 
+      handlerExpr = {
+         print('changing DLdataMyChoice also')
+          rValues$DLdataMyChoice[1,1] = input$mRD
+          rValues$DLdataMyChoice[1,2] = input$mND
+          rValues$DLdataMyChoice[2,1] = input$mRL
+          rValues$DLdataMyChoice[2,2] = input$mNL
+      }
+)
 ```
 
 ```{r splitReact}

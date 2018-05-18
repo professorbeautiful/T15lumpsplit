@@ -34,12 +34,12 @@ plotPlightPdarkPosterior = function(
     confInterval_D = binom.test(x = DLdata['D', 'R'],
                                 n = sum(DLdata[ 'D', ])
     )$conf.int
-    print(confInterval_D)
+    #print(confInterval_D)
     lines(confInterval_D, rep(Spoint[2], 2), lwd=3)
     confInterval_L = binom.test(x = DLdata['L', 'R'],
                                 n = sum(DLdata[ 'L', ])
     )$conf.int
-    print(confInterval_L)
+    #print(confInterval_L)
     lines(rep(Spoint[1], 2), confInterval_L, lwd=3)
     addCircledLetter(
       pointLocation = c(Spoint[1], Spoint[2]),
@@ -50,7 +50,7 @@ plotPlightPdarkPosterior = function(
                  sum(DLdata[ , 'R'])/sum(DLdata) )
     confInterval = binom.test(x = sum(DLdata[ , 'R']),
                n = sum(DLdata))$conf.int
-    print(confInterval)
+    #print(confInterval)
     lines(confInterval, confInterval, lwd=3)
     addCircledLetter(
       pointLocation = c(Lpoint[1], Lpoint[2]),
