@@ -190,6 +190,29 @@ For this example dataset, we perform leave-one-out cross-validation as follows:
 source('Lump-Split-crossvalidation.R', local=TRUE, echo = FALSE)
 ```
 
+
+##### Approach: Bayes joint prior on logits
+
+```{r BayesLogitPlot}
+div(
+  tagAppendAttributes(
+           div(
+             uiOutput(outputId="title_1_ID"),
+             uiOutput(outputId="title_2_ID"),
+             uiOutput(outputId="title_3_ID")
+           ),
+           style=
+             'text-align:center; font-size:small;
+                    font-weight:bold'),
+         #a(name='viewPlot'),
+         plotOutput(outputId = 'thePlot', height=260),
+         #"X = observed response rate, ",
+         ContoursPanelLegend,
+         panelOfInputs
+)
+```
+
+
 #### Summary of approaches 
 
 Assembling the results of the approaches to estimating Pr(R|D):

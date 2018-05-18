@@ -100,12 +100,12 @@ lumpReact = observe({
 
 ```{r updateDLdata}
 updateDLdata = observe({
-  try(silent = TRUE, {
-    rValues$DLdata[1,1] = input$mRD
-    rValues$DLdata[1,2] = input$mND
-    rValues$DLdata[2,1] = input$mRL
-    rValues$DLdata[2,2] = input$mNL
-  })
+    try(silent = TRUE, {
+        rValues$DLdata[1,1] =  input$mRD
+        rValues$DLdata[1,2] =  input$mND
+        rValues$DLdata[2,1] =  input$mRL
+        rValues$DLdata[2,2] =  input$mNL
+    })
   cat('input$mRD', input$mRD, '\n')
 })
 ```
@@ -345,7 +345,7 @@ div(
          # wellPanel(id = "leftScrollPanel",
                    # style = "overflow-y:scroll; max-height: 600px"
          # ,
-         inclRmd('Submodule-LumpSplit.Rmd'),
+         inclRmd('Submodule-LumpSplit.Rmd')
  #        ),
   # column(width = 4, 
   #       wellPanel(id = "leftScrollPanel",
@@ -354,20 +354,7 @@ div(
          #panelOfData,
          #dataTableComponent(),
          #panelOfBifurcation,
-         tagAppendAttributes(
-           div(
-             uiOutput(outputId="title_1_ID"),
-             uiOutput(outputId="title_2_ID"),
-             uiOutput(outputId="title_3_ID")
-           ),
-           style=
-             'text-align:center; font-size:small;
-                    font-weight:bold'),
-         #a(name='viewPlot'),
-         plotOutput(outputId = 'thePlot', height=260),
-         #"X = observed response rate, ",
-         ContoursPanelLegend,
-         panelOfInputs
+         
 )
 ```
 
