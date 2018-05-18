@@ -103,23 +103,31 @@ lumpReact = observe({
 ```
 
 ```{r updateDLdata}
-updateDLdata = observeEvent(priority = 2, label='updateDLdata',
-  eventExpr = c(input$mRD, input$mND, input$mRL, input$mNL), 
+cellNames = c('RD', 'ND', 'RL', 'NL')
+firstCellIds = paste0('m', cellNames, 'idPanelDTC1')
+names(firstCellIds) = cellNames
+updateDLdata = observeEvent(
+  priority = 2,
+  label='updateDLdata',
+  eventExpr = #c(input$mRD, input$mND, input$mRL, input$mNL)
+    c(input[[firstCellIds[1]]], 
+      input[[firstCellIds[2]]],
+      input[[firstCellIds[3]]], 
+      input[[firstCellIds[4]]]),
   handlerExpr = {
     try(silent = TRUE, {
       isolate({
         cat('input$mRD', input$mRD, 
             '  rValues$resetting=', rValues$resetting, '\n')
-        rValues$DLdata[1,1] =  input$mRD
-        rValues$DLdata[1,2] =  input$mND
-        rValues$DLdata[2,1] =  input$mRL
-        rValues$DLdata[2,2] =  input$mNL
+        rValues$DLdata[1,1] =  input[[firstCellIds['RD']]]
+        rValues$DLdata[1,2] =  input[[firstCellIds['ND']]]
+        rValues$DLdata[2,1] =  input[[firstCellIds['RL']]]
+        rValues$DLdata[2,2] =  input[[firstCellIds['NL']]]
         if(rValues$resetting ==  FALSE) { 
           print('changing DLdataMyChoice also')
-          rValues$DLdataMyChoice[1,1] = input$mRD
-          rValues$DLdataMyChoice[1,2] = input$mND
-          rValues$DLdataMyChoice[2,1] = input$mRL
-          rValues$DLdataMyChoice[2,2] = input$mNL
+          for(feature in 1:2) for(outcome in 1:2)
+            rValues$DLdataMyChoice[feature,outcome] = 
+              rValues$DLdata[feature,outcome]  
         }
       })
     })
