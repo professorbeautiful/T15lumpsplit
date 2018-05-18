@@ -8,36 +8,37 @@ updateTableCells = function(data, isResetting=FALSE) {
   if( ! isResetting)
     rValues$DLdataMyChoice = DLdataMyChoice
 }
-
 dataTableComponent = function() {
   thisDTCNumber = nextNumber(sequenceType = "DTC")
   outputIdThisDTC = paste0('outputDTC', thisDTCNumber)
   panelIdThisDTC = paste0('idPanelDTC', thisDTCNumber)
   resetIdThisDTC = paste0('idResetDTC', thisDTCNumber)
   myChoiceIdThisDTC = paste0('idMyChoiceDTC', thisDTCNumber)
-  output[[outputIdThisDTC]] = renderUI({
-    #### resetIdThisDTC ####
-    observeEvent(
-      eventExpr = input[[resetIdThisDTC]],
-      handlerExpr =  {
-        updateDLdataMyChoice$suspend()
-        isolate({
-          rValues$resetting = TRUE
-          print('        rValues$resetting = TRUE')
-          updateTableCells(data = DLdataOriginal, isResetting=TRUE)
-        })
-        updateDLdataMyChoice$resume()
-
+  #### resetIdThisDTC ####
+  observeEvent(
+    eventExpr = input[[resetIdThisDTC]],
+    handlerExpr =  {
+      #updateDLdataMyChoice$suspend()
+      isolate({
+        rValues$resetting = TRUE
+        print('        rValues$resetting = TRUE')
+        updateTableCells(data = DLdataOriginal, isResetting=TRUE)
       })
-    #### myChoiceIdThisDTC ####
-    observeEvent(
-      eventExpr = input[[myChoiceIdThisDTC]],
-      priority = 1,
-      handlerExpr =  {
+      #updateDLdataMyChoice$resume()
+
+    })
+  #### myChoiceIdThisDTC ####
+  observeEvent(
+    eventExpr = input[[myChoiceIdThisDTC]],
+    priority = 1,
+    handlerExpr =  {
       isolate({
         updateTableCells(data = rValues$DLdataMyChoice, isResetting=FALSE)
       })
     })
+
+  output[[outputIdThisDTC]] = renderUI({
+
     panelOfData(panelIdThisDTC=panelIdThisDTC,
                 resetIdThisDTC=resetIdThisDTC,
                 myChoiceIdThisDTC=myChoiceIdThisDTC)

@@ -123,16 +123,16 @@ updateDLdata = observeEvent(priority = 2, label='updateDLdata',
     })
 })
 
-updateDLdataMyChoice = observeEvent(label='updateDLdataMyChoice',
-    eventExpr = c(input$mRD, input$mND, input$mRL, input$mNL), 
-      handlerExpr = {
-         print('changing DLdataMyChoice also')
-          rValues$DLdataMyChoice[1,1] = input$mRD
-          rValues$DLdataMyChoice[1,2] = input$mND
-          rValues$DLdataMyChoice[2,1] = input$mRL
-          rValues$DLdataMyChoice[2,2] = input$mNL
-      }
-)
+# updateDLdataMyChoice = observeEvent(label='updateDLdataMyChoice',
+#     eventExpr = c(input$mRD, input$mND, input$mRL, input$mNL), 
+#       handlerExpr = {
+#          print('changing DLdataMyChoice also')
+#           rValues$DLdataMyChoice[1,1] = input$mRD
+#           rValues$DLdataMyChoice[1,2] = input$mND
+#           rValues$DLdataMyChoice[2,1] = input$mRL
+#           rValues$DLdataMyChoice[2,2] = input$mNL
+#       }
+# )
 ```
 
 ```{r splitReact}
