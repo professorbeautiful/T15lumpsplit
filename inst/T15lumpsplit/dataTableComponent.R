@@ -10,12 +10,16 @@ updateTableCells = function(data, isResetting=FALSE) {
 }
 dataTableComponent = function() {
   thisDTCNumber = nextNumber(sequenceType = "DTC")
+  cat('Creating dataTableComponent thisDTCNumber = ', thisDTCNumber, '\n')
   outputIdThisDTC = paste0('outputDTC', thisDTCNumber)
   panelIdThisDTC = paste0('idPanelDTC', thisDTCNumber)
   resetIdThisDTC = paste0('idResetDTC', thisDTCNumber)
+  syncIdThisDTC = paste0('syncIdDTC', thisDTCNumber)
+
   myChoiceIdThisDTC = paste0('idMyChoiceDTC', thisDTCNumber)
   #### resetIdThisDTC ####
-  observeEvent(
+  observeEvent(label =
+                 paste0('observeEvent resetIdThisDTC #', resetIdThisDTC),
     eventExpr = input[[resetIdThisDTC]],
     handlerExpr =  {
       #updateDLdataMyChoice$suspend()
@@ -25,18 +29,45 @@ dataTableComponent = function() {
         updateTableCells(data = DLdataOriginal, isResetting=TRUE)
       })
       #updateDLdataMyChoice$resume()
-
     })
   #### myChoiceIdThisDTC ####
-  observeEvent(
+  observeEvent(label = paste0('observeEvent myChoiceIdThisDTC #', myChoiceIdThisDTC),
     eventExpr = input[[myChoiceIdThisDTC]],
     priority = 1,
     handlerExpr =  {
+      #cat('Creating ', label, '\n')
       isolate({
         updateTableCells(data = rValues$DLdataMyChoice, isResetting=FALSE)
       })
     })
 
+  #### synchronizeOtherDataTables ####
+  #  If a cell in this table changes, symc all the corresponding cells in other tables.
+  createSyncActor = function(cell, syncIdThisDTC=syncIdThisDTC){
+    thisDTCNumber = getSequenceLength(sequenceType = "DTC")
+    thisCellId = paste0(cell, panelIdThisDTC)
+    observeEvent(label = paste0('synchronizeOtherDataTables_',
+                                thisDTCNumber),
+               eventExpr = input[[thisCellId]],
+               priority = 1,
+               handlerExpr =  {
+                 #rValues$isResetting = FALSE
+                 ### NOTE; there could be more DTC's, so don't use thisDTCNum for loop.
+                 #cat('Creating ', label, '\n')
+                 for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
+                   if(anyDTCnum != thisDTCNumber) {
+                     otherCellId = paste0(cell, 'idPanelDTC', anyDTCnum)
+                     updateNumericInput(session, inputId = otherCellId,
+                                        value=input[[thisCellId]])
+                     #updateTableCells(data = rValues$DLdataMyChoice, isResetting=TRUE)
+                   }
+                 }
+               })
+  }
+  for(cell in paste0('m', c('RD', 'ND', 'RL', 'NL')))
+    createSyncActor(cell, syncIdThisDTC=syncIdThisDTC)
+
+  #### Output of dataTableComponent ####
   output[[outputIdThisDTC]] = renderUI({
 
     panelOfData(panelIdThisDTC=panelIdThisDTC,
@@ -60,14 +91,14 @@ dataRowLabel = function(html, angle=360-40, color='green') {
   ))
 }
 
-### Do not call panelOfData() directly
+### Do not call panelOfData() directly. Use dataTableComponent().
 panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC) {
       span(
         actionButton(inputId = resetIdThisDTC, label = "Reset data to original"),
         actionButton(inputId = myChoiceIdThisDTC,
                      label = "Reset data to my choice"),
         conditionalPanelWithCheckbox(
-          labelString = "Response by Predictor Table",
+          labelString = paste("Response by Predictor Table ", panelIdThisDTC),
           html = div(
             # checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
             # conditionalPanel(
@@ -78,13 +109,13 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC) {
                         cellWidths = c("40%",'30%','30%')),
             fluidRow(
               column(4, dataRowLabel( "<b>R</b>esponders")),
-              column(4, numericInput('mRD', '#RD', DLdata[1,1])),
-              column(4, numericInput('mRL', '#RL', DLdata[2,1]))
+              column(4, numericInput(paste0('mRD', panelIdThisDTC), '#RD', DLdata[1,1])),
+              column(4, numericInput(paste0('mRL', panelIdThisDTC), '#RL', DLdata[2,1]))
             ),
             fluidRow(
               column(4, dataRowLabel( "<b>N</b>onResponders")),
-              column(4, numericInput('mND', '#ND', DLdata[1,2])),
-              column(4, numericInput('mNL', '#NL', DLdata[2,2]))
+              column(4, numericInput(paste0('mND', panelIdThisDTC), '#ND', DLdata[1,2])),
+              column(4, numericInput(paste0('mNL', panelIdThisDTC), '#NL', DLdata[2,2]))
             ),
             br(),
             uiOutput(outputId = panelIdThisDTC)
@@ -92,3 +123,4 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC) {
       )
   )
 }
+
