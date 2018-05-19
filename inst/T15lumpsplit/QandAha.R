@@ -3,7 +3,7 @@ QandAha = function(buttonLabel= "save") {
   outputIdThisQA = paste0('QA', thisQANumber)
   textareaIdThisQA = paste0('id', outputIdThisQA)
   output[[outputIdThisQA]] = renderUI({
-    textAreaInput(inputId = textareaIdThisQA,
+    textAreaInput(inputId = textareaIdThisQA, width='100%',
                   label = paste("(", thisQANumber, ")",
                                 "Ask a question and/or describe an 'aha' here.")
     )
