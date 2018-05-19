@@ -1,6 +1,8 @@
 ---
 output: 
   html_document:
+    number_sections: true
+    toc: true
 runtime: shiny
 ---
 
@@ -20,7 +22,7 @@ source('initializations.R', local=TRUE)
 require('shiny')
 ```
 
-##	"Lumping" versus "splitting" in science. 
+## "Lumping" versus "splitting" in science. 
 
 In science, advances often proceed by "splitting": things that seem initially the same are classified as different. The classification may be tentativedistinction, until it proves to be useful. 
 Other advances proceed by "lumping":  identifying things that seem different but have a deep connection.
@@ -247,7 +249,7 @@ saveComments <<- function() {
 interactiveSection(codeToRun = "saveComments()")
 ```
 
-# Other topics to be developed:
+## Other topics to be developed:
 ##	The famous ECMO data set.
 ##	The role of prior information, explored by introducing different identities for "D" and "L".
 ###	2 alleles of a gene known to affect this drug's pharmacodynamics
