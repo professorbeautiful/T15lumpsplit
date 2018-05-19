@@ -1,13 +1,18 @@
 
 updateTableCells = function(data, isResetting=FALSE) {
   DLdataMyChoice = rValues$DLdataMyChoice
-  updateNumericInput(session, 'mRD', value=data['D','R'])
-  updateNumericInput(session, 'mND', value=data['D','N'])
-  updateNumericInput(session, 'mRL', value=data['L','R'])
-  updateNumericInput(session, 'mNL', value=data['L','N'])
+  cat('updateTableCells:' , firstCellIds, '\n')
+  cat('updateTableCells: data = ', data, '\n')
+  firstCellIds = as.vector(firstCellIds)
+  updateNumericInput(session, firstCellIds[1], value=data['D','R'])
+  updateNumericInput(session, firstCellIds[2], value=data['D','N'])
+  updateNumericInput(session, firstCellIds[3], value=data['L','R'])
+  updateNumericInput(session, firstCellIds[4], value=data['L','N'])
   if( ! isResetting)
     rValues$DLdataMyChoice = DLdataMyChoice
 }
+
+#### dataTableComponent ####
 dataTableComponent = function() {
   thisDTCNumber = nextNumber(sequenceType = "DTC")
   cat('Creating dataTableComponent thisDTCNumber = ', thisDTCNumber, '\n')
