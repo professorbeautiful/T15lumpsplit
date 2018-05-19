@@ -373,7 +373,7 @@ conditionalPanelWithCheckbox(
   labelString = 'Topics', filename = 'topics.Rmd', initialValue=FALSE)
 ```
 
-## 2sharps The Lump versus Split Dilemma
+## The Lump versus Split Dilemma
 
 ```{r submoduleTitle}
 ##  <a name="LSnotebookBegin"> link The Lump versus Split Dilemma </a>
@@ -418,7 +418,7 @@ source('initializations.R', local=TRUE)
 require('shiny')
 ```
 
-## "Lumping" versus "splitting" in science. 
+### "Lumping" versus "splitting" in science. 
 
 In science, advances often proceed by "splitting": things that seem initially the same are classified as different. The classification may be tentativedistinction, until it proves to be useful. 
 Other advances proceed by "lumping":  identifying things that seem different but have a deep connection.
@@ -475,14 +475,7 @@ fluidRow(
 Lumping gives an answer with low variance (N=100) but high bias-- because the answer reflects far more L  people than D people. The confidence interval follows the diagonal where $Pr(R|D)=Pr(R|L)$.
 
 Splitting gives an answer with high variance (N=5) but low bias-- because it is including only people who ARE D:  it is directly asking our question. The very wide horizontal confidence interval reflects this high variance.
-To view the data, click here:
 
-```{r}
-(interactiveSection(
-  codeToRun = "updateCheckboxInput(session=thisSession, inputId='toggleShowData', value=TRUE)", 
-  buttonLabel= "show data")
-)
-```
 
 We will call the patient "feature" $X$. Its values is D or L.
 The identity of $X$ will be explored later.
@@ -514,10 +507,10 @@ QandAha()
 
 ##### <a name='Classical test'> Classical estimation bifurcating on a hypothesis test</a>
 
-A time-honored but fading technique is to perform a classical hypothesis test.
-Here the hypothesis is "X is independent of Y";  the response rate of D people does not differ from L people.  Then, depending on the hypothesis test result, one answer or the other is selected. 
+A time-honored but fading technique is to use a classical hypothesis test, to guide which of two analyses to present.
+Here the hypothesis is "X is independent of Y";  the response rate of D people does not differ from L people.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
 
-A Fisher exact test is frequently performed to test independence in a 2x2 table like this one.
+One test frequently performed to test independence in a 2x2 table like this one is the *Fisher exact test*.
 
 ```{r fisher}
 interactiveSection(
@@ -525,24 +518,14 @@ interactiveSection(
   buttonLabel= "run fishertest")
 ```
 
-If the P-value is significant, the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%.
+If the P-value is "significant", the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%.
 ```{r}
 QandAha()
 ```
 
-##### <a name='Bayes_mixture'> Approach: Bayes mixture of "Lump" and "Split"</a>
+##### <a name='Bayes_mixture'> Approach: Dr. Who's Bayes mixture of "Lump" and "Split"</a>
 
-###### Dr. Split speaks:
-
-```{r child = 'DrSplit.Rmd'}
-```
-
-###### Dr. Lump disagrees!  
-
-```{r child = 'DrLump.Rmd'}
-```
-
-###### Dr. Who doesn't know *who* to believe:
+Dr. Who doesn't know *who* to believe, but is prepared to let the data make the right compromise.
 
 
 ```{r child = 'DrWho.Rmd'}
