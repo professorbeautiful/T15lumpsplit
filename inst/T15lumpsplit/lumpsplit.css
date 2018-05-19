@@ -1,12 +1,14 @@
 /* Headers */
 h1,h2{
   font-size: 20pt;
+  color: green;
+  font-style: italic;
 }
 h3{
-  font-size: 16pt;
+  font-size: 18pt;
 }
 h4,h5,h6{
-  font-size: 14pt;
+  font-size: 16pt;
 }
 #title{
   font-size: 14pt;
