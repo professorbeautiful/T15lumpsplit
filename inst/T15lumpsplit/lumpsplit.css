@@ -1,4 +1,7 @@
 /* Headers */
+/*  includeCSS does not work here but inclusion in the YAML does--
+in the body, not in the TOC. */
+
 h1,h2{
   font-size: 20pt;
   color: green;
@@ -6,6 +9,7 @@ h1,h2{
 }
 h3{
   font-size: 18pt;
+  color:red;
 }
 h4,h5,h6{
   font-size: 16pt;
@@ -13,3 +17,12 @@ h4,h5,h6{
 #title{
   font-size: 14pt;
 }
+#TOC {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  overflow:auto;
+}
+

@@ -1,0 +1,12 @@
+/* can only have one file in the YAML css clause */
+#TOC {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  overflow:auto;
+}
+h3 {
+  color: red;
+}

@@ -2,12 +2,12 @@
 title: "Bias, variance, smoothing, and shrinking"
 output: 
   html_document:
-    css: TOC.css
+    css: lumpsplit.css
     number_sections: true
     toc: true
-    toc_depth: 5
+    toc_depth: 6
     toc_float: 
-      collapsed: false
+      collapsed: true
       smooth_scroll: false
 runtime: shiny
 ---
@@ -20,6 +20,8 @@ options(knitr.duplicate.label = 'allow')
 require(T15lumpsplit)
 require(shiny)
 #source('rstudio.markdownToHTML.R', local=TRUE)
+includeCSS('TOC.css')    ### includeCSS doesn't work here
+includeCSS('lumpsplit.css')
 ```
 
 ```{r setup numbering, warning=FALSE}
