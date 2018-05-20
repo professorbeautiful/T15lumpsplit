@@ -23,7 +23,11 @@ dataTableComponent = function() {
 
   myChoiceIdThisDTC = paste0('idMyChoiceDTC', thisDTCNumber)
   #### resetIdThisDTC ####
-  observeEvent(label =
+  assign(
+    paste0(
+      'observeEvent_resetIdThisDTC_', resetIdThisDTC),
+    pos=1,
+         observeEvent(label =
                  paste0('observeEvent resetIdThisDTC #', resetIdThisDTC),
     eventExpr = input[[resetIdThisDTC]],
     handlerExpr =  {
@@ -35,8 +39,13 @@ dataTableComponent = function() {
       })
       #updateDLdataMyChoice$resume()
     })
+  )
   #### myChoiceIdThisDTC ####
-  observeEvent(label = paste0('observeEvent myChoiceIdThisDTC #', myChoiceIdThisDTC),
+  assign(
+    paste0(
+      'observeEvent_myChoiceIdThisDTC_', resetIdThisDTC),
+    pos=1,
+    observeEvent(label = paste0('observeEvent myChoiceIdThisDTC #', myChoiceIdThisDTC),
     eventExpr = input[[myChoiceIdThisDTC]],
     priority = 1,
     handlerExpr =  {
@@ -45,29 +54,36 @@ dataTableComponent = function() {
         updateTableCells(data = rValues$DLdataMyChoice, isResetting=FALSE)
       })
     })
-
+  )
   #### synchronizeOtherDataTables ####
-  #  If a cell in this table changes, symc all the corresponding cells in other tables.
+  #  If a cell in this table changes, sync all the corresponding cells in other tables.
   createSyncActor = function(cell, syncIdThisDTC=syncIdThisDTC){
     thisDTCNumber = getSequenceLength(sequenceType = "DTC")
     thisCellId = paste0(cell, panelIdThisDTC)
-    observeEvent(label = paste0('synchronizeOtherDataTables_',
-                                thisDTCNumber),
-               eventExpr = input[[thisCellId]],
-               priority = 1,
-               handlerExpr =  {
-                 #rValues$isResetting = FALSE
-                 ### NOTE; there could be more DTC's, so don't use thisDTCNum for loop.
-                 #cat('Creating ', label, '\n')
-                 for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
-                   if(anyDTCnum != thisDTCNumber) {
-                     otherCellId = paste0(cell, 'idPanelDTC', anyDTCnum)
-                     updateNumericInput(session, inputId = otherCellId,
-                                        value=input[[thisCellId]])
-                     #updateTableCells(data = rValues$DLdataMyChoice, isResetting=TRUE)
-                   }
-                 }
-               })
+    assign(
+      paste0(
+        'observeEvent_synchronizeOtherDataTables_ThisDTC_', resetIdThisDTC),
+      pos=1,
+      observeEvent(label = paste0('synchronizeOtherDataTables_',
+                                  thisDTCNumber),
+                   eventExpr = input[[thisCellId]],
+                   priority = 3,
+                   handlerExpr =  {
+                     #rValues$isResetting = FALSE
+                     ### NOTE; there could be more DTC's, so don't use thisDTCNum for loop.
+                     #cat('Creating ', label, '\n')
+                     for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
+                       if(anyDTCnum != thisDTCNumber) {
+                         suspenderExpression = parse(text=
+                                                       paste0())
+                         otherCellId = paste0(cell, 'idPanelDTC', anyDTCnum)
+                         updateNumericInput(session, inputId = otherCellId,
+                                            value=input[[thisCellId]])
+                         #updateTableCells(data = rValues$DLdataMyChoice, isResetting=TRUE)
+                       }
+                     }
+                   })
+    )
   }
   for(cell in paste0('m', c('RD', 'ND', 'RL', 'NL')))
     createSyncActor(cell, syncIdThisDTC=syncIdThisDTC)
