@@ -114,10 +114,10 @@ updateDLdata = observeEvent(
   priority = 2,
   label='updateDLdata',
   eventExpr = #c(input$mRD, input$mRL, input$mND, input$mNL)
-    c(input[[firstCellIds[1]]], 
-      input[[firstCellIds[2]]],
-      input[[firstCellIds[3]]], 
-      input[[firstCellIds[4]]]),
+    c(input[[firstCellIds[1]]], # RD. Must by 1,2,3,4
+      input[[firstCellIds[2]]], #RL
+      input[[firstCellIds[3]]], #ND
+      input[[firstCellIds[4]]]), #NL
   handlerExpr = {
     try(silent = TRUE, {
       isolate({
@@ -356,7 +356,6 @@ require(shinyBS)
 *Date: "`r date()`"     Author: "Roger Day, University of Pittsburgh"*
 
 # OVERVIEW of this Module
-## another 3rd Level
 
 ```{r Overview}
 conditionalPanelWithCheckbox(
@@ -466,13 +465,17 @@ output$plotLumpSplitPoints = renderPlot(
 })
 fluidRow(
   column(6, 
-         span(style='color:red; text-align:center', 
-              "L = Lump, S = Split"),
+         # span(style='color:red; text-align:center', 
+              # "L = Lump, S = Split"),
          plotOutput('plotLumpSplitPoints')),
   column(6,
+         br(),br(),br(),
          dataTableComponent())
 )
+div(br(),br(),br())
 ```
+
+
 
 Lumping gives an answer with low variance (N=100) but high bias-- because the answer reflects far more L  people than D people. The confidence interval follows the diagonal where $Pr(R|D)=Pr(R|L)$.
 
@@ -635,7 +638,7 @@ saveComments <<- function() {
 interactiveSection(codeToRun = "saveComments()")
 ```
 
-## Other topics to be developed:
+# Other topics to be developed:
 ##	The famous ECMO data set.
 ##	The role of prior information, explored by introducing different identities for "D" and "L".
 ###	2 alleles of a gene known to affect this drug's pharmacodynamics

@@ -27,8 +27,10 @@ plotPlightPdarkPosterior = function(
            pch = pch,
            cex=cex, col=col)
   }
+  if(showS | showL)
+    title('L = Lump, S = Split', col.main='red')
   if(showS) {
-    ### careful.... rows are groups, columns outcomes.
+      ### careful.... rows are groups, columns outcomes.
     Spoint = c(x=DLdata['D', 'R']/sum(DLdata[ 'D', ]),
                y=DLdata['L', 'R']/sum(DLdata[ 'L', ]) )
     confInterval_D = binom.test(x = DLdata['D', 'R'],
