@@ -1,8 +1,36 @@
+'
+When a user changes a data number:
+  rValues$isResetting=TRUE
+  rValues$DLdata is changed
+  rValues$DLdataMyChoice is changed
+  rValues$isLoopingSync == TRUE
+  All corresponding numericInput cells are changed.
+  rValues$isLoopingSync == FALSE
+  rValues$isResetting=FALSE
+When a user clicks "Reset":
+  rValues$isResetting=TRUE
+  DLdataOriginal is copied to rValues$DLdata
+    (plots all respond)
+    (DLdataMyChoice is NOT changed)
+  All corresponding numericInput cells are changed; no downstream.
+  rValues$isResetting=FALSE
+When a user clicks "MyChoice":
+  rValues$isResetting=TRUE
+  rValues$DLdataMyChoice  is copied to rValues$DLdata
+    (plots all respond)
+    (DLdataMyChoice is NOT changed)
+  All corresponding numericInput cells are changed; no downstream .
+  rValues$isResetting=FALSE
 
-updateTableCells = function(data, isResetting=FALSE) {
+'
+cellNames = c('RD', 'RL', 'ND', 'NL')
+firstCellIds = paste0('m', cellNames, 'idPanelDTC', '1')
+names(firstCellIds) = cellNames
+
+updateDLnumericInputs = function(data, isResetting=FALSE) {
   DLdataMyChoice = rValues$DLdataMyChoice
-  cat('updateTableCells:' , firstCellIds, '\n')
-  cat('updateTableCells: data = ', data, '\n')
+  cat('updateDLnumericInputs:' , firstCellIds, '\n')
+  cat('updateDLnumericInputs: data = ', data, '\n')
   firstCellIds = as.vector(firstCellIds)
   updateNumericInput(session, firstCellIds[1], value=data['D','R'])
   updateNumericInput(session, firstCellIds[2], value=data['D','N'])
@@ -20,74 +48,118 @@ dataTableComponent = function() {
   panelIdThisDTC = paste0('idPanelDTC', thisDTCNumber)
   resetIdThisDTC = paste0('idResetDTC', thisDTCNumber)
   syncIdThisDTC = paste0('syncIdDTC', thisDTCNumber)
-
   myChoiceIdThisDTC = paste0('idMyChoiceDTC', thisDTCNumber)
+
   #### resetIdThisDTC ####
-  assign(
-    paste0(
-      'observeEvent_resetIdThisDTC_', resetIdThisDTC),
+  myName = paste0('observeEvent_resetIdThisDTC_', resetIdThisDTC)
+  assign(myName,
     pos=1,
-         observeEvent(label =
-                 paste0('observeEvent resetIdThisDTC #', resetIdThisDTC),
-    eventExpr = input[[resetIdThisDTC]],
-    handlerExpr =  {
-      #updateDLdataMyChoice$suspend()
-      isolate({
-        rValues$resetting = TRUE
-        print('        rValues$resetting = TRUE')
-        updateTableCells(data = DLdataOriginal, isResetting=TRUE)
-      })
-      #updateDLdataMyChoice$resume()
-    })
+    observeEvent(label =
+                   paste0('observeEvent resetIdThisDTC #', resetIdThisDTC),
+                 eventExpr = input[[resetIdThisDTC]],
+                 handlerExpr =  {
+                   #updateDLdataMyChoice$suspend()
+                   cat(myName, '\n')
+                   isolate({
+                     rValues$isResetting <<- TRUE
+                     cat(myName, ':   rValues$isResetting = TRUE\n')
+                     updateDLnumericInputs(data = DLdataOriginal, isResetting=TRUE)
+                   })
+                   #updateDLdataMyChoice$resume()
+                 })
   )
-  #### myChoiceIdThisDTC ####
-  assign(
-    paste0(
-      'observeEvent_myChoiceIdThisDTC_', resetIdThisDTC),
-    pos=1,
-    observeEvent(label = paste0('observeEvent myChoiceIdThisDTC #', myChoiceIdThisDTC),
-    eventExpr = input[[myChoiceIdThisDTC]],
-    priority = 1,
-    handlerExpr =  {
-      #cat('Creating ', label, '\n')
-      isolate({
-        updateTableCells(data = rValues$DLdataMyChoice, isResetting=FALSE)
+
+  #### myChoiceIdThisDTC --  restore MyChoice data ####
+  myName =
+    paste0('observeEvent_myChoiceIdThisDTC_', resetIdThisDTC)
+  assign(myName, pos=1,
+    observeEvent(
+      label = myName,
+      eventExpr = input[[myChoiceIdThisDTC]],
+      #priority = 1,
+      handlerExpr =  {
+        cat(myName, '\n')
+        isolate({
+          cat(myName, '  isResetting=', rValues$isResetting, '\n')
+          updateDLnumericInputs(data = rValues$DLdataMyChoice, isResetting=FALSE)
+        })
       })
-    })
   )
+
   #### synchronizeOtherDataTables ####
   #  If a cell in this table changes, sync all the corresponding cells in other tables.
   createSyncActor = function(cell, syncIdThisDTC=syncIdThisDTC){
     thisDTCNumber = getSequenceLength(sequenceType = "DTC")
     thisCellId = paste0(cell, panelIdThisDTC)
-    assign(
-      paste0(
-        'observeEvent_synchronizeOtherDataTables_ThisDTC_', resetIdThisDTC),
+    myName = paste0(
+      'observeEvent_synchronizeOtherDataTables_ThisDTC_', thisDTCNumber)
+    assign(myName,
       pos=1,
-      observeEvent(label = paste0('synchronizeOtherDataTables_',
-                                  thisDTCNumber),
+      observeEvent(label = myName,
                    eventExpr = input[[thisCellId]],
-                   priority = 3,
+                   #priority = 3,
                    handlerExpr =  {
-                     #rValues$isResetting = FALSE
                      ### NOTE; there could be more DTC's, so don't use thisDTCNum for loop.
                      #cat('Creating ', label, '\n')
+                     rValues$isLoopingSync = TRUE
                      for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
                        if(anyDTCnum != thisDTCNumber) {
-                         suspenderExpression = parse(text=
-                                                       paste0())
+                         # suspenderExpression = parse(text=
+                         #                               paste0())
                          otherCellId = paste0(cell, 'idPanelDTC', anyDTCnum)
+                         rValues$isResetting = TRUE
                          updateNumericInput(session, inputId = otherCellId,
                                             value=input[[thisCellId]])
-                         #updateTableCells(data = rValues$DLdataMyChoice, isResetting=TRUE)
+                         rValues$isResetting = FALSE
+                         #updateDLnumericInputs(data = rValues$DLdataMyChoice, isResetting=TRUE)
                        }
                      }
+                     rValues$isLoopingSync = FALSE
                    })
     )
   }
   for(cell in paste0('m', c('RD', 'ND', 'RL', 'NL')))
     createSyncActor(cell, syncIdThisDTC=syncIdThisDTC)
 
+  #### updateDLdata -- ####
+  cellNames = c('RD', 'RL', 'ND', 'NL')
+  theCellIds = paste0('m', cellNames, 'idPanelDTC', thisDTCNumber)
+  names(theCellIds) = cellNames
+  myName = paste0('updateDLdata_ThisDTC_', thisDTCNumber)
+  assign(myName,
+    pos=1,
+    observeEvent(
+      #priority = 2,
+      label=myName,
+      eventExpr = #c(input$mRD, input$mRL, input$mND, input$mNL)
+        c(input[[theCellIds[1]]], # RD. Must by 1,2,3,4
+          input[[theCellIds[2]]], #RL
+          input[[theCellIds[3]]], #ND
+          input[[theCellIds[4]]]), #NL
+      handlerExpr = {
+        cat(myName, "\n")
+        if(rValues$isLoopingSync == FALSE)
+          try(silent = FALSE, {
+            isolate({
+              cat('      input$mRD=', input[[theCellIds[1]]], '\n')
+              # rValues$DLdata[1,1] =  input[[firstCellIds['RD']]]
+              # rValues$DLdata[2,1] =  input[[firstCellIds['RL']]]
+              # rValues$DLdata[1,2] =  input[[firstCellIds['ND']]]
+              # rValues$DLdata[2,2] =  input[[firstCellIds['NL']]]
+              rValues$DLdata[1,1] =  input[[theCellIds[1]]]
+              rValues$DLdata[2,1] =  input[[theCellIds[2]]]
+              rValues$DLdata[1,2] =  input[[theCellIds[3]]]
+              rValues$DLdata[2,2] =  input[[theCellIds[4]]]
+              if(rValues$isResetting ==  FALSE) {
+                print('changing DLdataMyChoice also')
+                for(feature in 1:2) for(outcome in 1:2)
+                  rValues$DLdataMyChoice[feature,outcome] =
+                    rValues$DLdata[feature,outcome]
+              }
+            })
+          }) ### End of try()
+      })
+  )
   #### Output of dataTableComponent ####
   output[[outputIdThisDTC]] = renderUI({
 

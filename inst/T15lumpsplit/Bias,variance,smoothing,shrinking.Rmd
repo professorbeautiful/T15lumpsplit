@@ -72,7 +72,8 @@ rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
                          title_1='title 1',
                          DLdata = DLdataOriginal,
                          DLdataMyChoice = DLdataOriginal,
-                         resetting = FALSE)
+                         isResetting = FALSE,
+                         isLoopingSync = FALSE)
 ```
 
 ```{r plotPlightPdarkPosteriorReactive}
@@ -106,52 +107,6 @@ lumpReact = observe({
 })  
 ```
 
-```{r updateDLdata}
-cellNames = c('RD', 'RL', 'ND', 'NL')
-firstCellIds = paste0('m', cellNames, 'idPanelDTC1')
-names(firstCellIds) = cellNames
-updateDLdata = observeEvent(
-  priority = 2,
-  label='updateDLdata',
-  eventExpr = #c(input$mRD, input$mRL, input$mND, input$mNL)
-    c(input[[firstCellIds[1]]], # RD. Must by 1,2,3,4
-      input[[firstCellIds[2]]], #RL
-      input[[firstCellIds[3]]], #ND
-      input[[firstCellIds[4]]]), #NL
-  handlerExpr = {
-    try(silent = TRUE, {
-      isolate({
-        cat('input$mRD=', input[[firstCellIds[1]]], 
-            '  rValues$resetting=', rValues$resetting, '\n')
-        # rValues$DLdata[1,1] =  input[[firstCellIds['RD']]]
-        # rValues$DLdata[2,1] =  input[[firstCellIds['RL']]]
-        # rValues$DLdata[1,2] =  input[[firstCellIds['ND']]]
-        # rValues$DLdata[2,2] =  input[[firstCellIds['NL']]]
-        rValues$DLdata[1,1] =  input[[firstCellIds[1]]]
-        rValues$DLdata[2,1] =  input[[firstCellIds[2]]]
-        rValues$DLdata[1,2] =  input[[firstCellIds[3]]]
-        rValues$DLdata[2,2] =  input[[firstCellIds[4]]]
-        if(rValues$resetting ==  FALSE) { 
-          print('changing DLdataMyChoice also')
-          for(feature in 1:2) for(outcome in 1:2)
-            rValues$DLdataMyChoice[feature,outcome] = 
-              rValues$DLdata[feature,outcome]  
-        }
-      })
-    })
-})
-
-# updateDLdataMyChoice = observeEvent(label='updateDLdataMyChoice',
-#     eventExpr = c(input$mRD, input$mND, input$mRL, input$mNL), 
-#       handlerExpr = {
-#          print('changing DLdataMyChoice also')
-#           rValues$DLdataMyChoice[1,1] = input$mRD
-#           rValues$DLdataMyChoice[1,2] = input$mND
-#           rValues$DLdataMyChoice[2,1] = input$mRL
-#           rValues$DLdataMyChoice[2,2] = input$mNL
-#       }
-# )
-```
 
 ```{r splitReact}
 splitReact = observe({
