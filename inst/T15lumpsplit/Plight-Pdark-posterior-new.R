@@ -1,5 +1,7 @@
 plotPlightPdarkPosterior = function(
-  DLdata = matrix(c(3,5,2,90),nrow=2, dimnames = list(c('D','L'), c('R','N'))),
+  DLdata =
+    matrix(c(3,2,5,90), nrow=2,
+           dimnames = list( outcome=c("R","N"), feature=c("D","L"))),
   tau=1, phi=1, mu0=0.5,
   showPrior = TRUE, showPosterior=TRUE, showLikelihood=TRUE,
   showS = TRUE,
@@ -31,15 +33,15 @@ plotPlightPdarkPosterior = function(
     title('L = Lump, S = Split', col.main='red')
   if(showS) {
       ### careful.... rows are groups, columns outcomes.
-    Spoint = c(x=DLdata['D', 'R']/sum(DLdata[ 'D', ]),
-               y=DLdata['L', 'R']/sum(DLdata[ 'L', ]) )
-    confInterval_D = binom.test(x = DLdata['D', 'R'],
-                                n = sum(DLdata[ 'D', ])
+    Spoint = c(x=DLdata['R', 'D']/sum(DLdata[ , 'D']),
+               y=DLdata['R', 'L']/sum(DLdata[ , 'L']) )
+    confInterval_D = binom.test(x = DLdata['R', 'D'],
+                                n = sum(DLdata[ , 'D'])
     )$conf.int
     #print(confInterval_D)
     lines(confInterval_D, rep(Spoint[2], 2), lwd=3)
-    confInterval_L = binom.test(x = DLdata['L', 'R'],
-                                n = sum(DLdata[ 'L', ])
+    confInterval_L = binom.test(x = DLdata['R', 'L'],
+                                n = sum(DLdata[ , 'L'])
     )$conf.int
     #print(confInterval_L)
     lines(rep(Spoint[1], 2), confInterval_L, lwd=3)
@@ -49,8 +51,8 @@ plotPlightPdarkPosterior = function(
   }
   if(showL) {
     Lpoint = rep(times=2,
-                 sum(DLdata[ , 'R'])/sum(DLdata) )
-    confInterval = binom.test(x = sum(DLdata[ , 'R']),
+                 sum(DLdata[ 'R', ])/sum(DLdata) )
+    confInterval = binom.test(x = sum(DLdata[ 'R', ]),
                n = sum(DLdata))$conf.int
     #print(confInterval)
     lines(confInterval, confInterval, lwd=3)
@@ -66,13 +68,13 @@ plotPlightPdarkPosterior = function(
                      circleColor='red', bg=NULL, col='red')
   }
   #### bivariate normal contours ####
-  logit.hat = logit(apply(DLdata, 1, function(r)r[1]/sum(r)))
-  varhat = apply(DLdata, 1, function(r)sum(1/r))
+  logit.hat = logit(apply(DLdata, 'feature', function(r)r[1]/sum(r)))
+  varhat = apply(DLdata, 'feature', function(r)sum(1/r))
   if(any(DLdata==0)) fudgeFactor = max(fudgeFactor, 0.001)
     # if wanted, or if needed (if any zero cells).
   DLdataFudged = DLdata + fudgeFactor
-  logit.hat.fudged = logit(apply(DLdataFudged, 1, function(r)r[1]/sum(r)))
-  varhat.fudged = apply(DLdataFudged, 1, function(r)sum(1/r))
+  logit.hat.fudged = logit(apply(DLdataFudged, 'feature', function(r)r[1]/sum(r)))
+  varhat.fudged = apply(DLdataFudged, 'feature', function(r)sum(1/r))
   ### deltat method with protection from zero's.
   sig11 = sig12 = sig21 = matrix(c(tau+phi,tau,tau,tau+phi),nrow=2)
   sig22 = sig11 + diag(varhat)   ## marginal variance of the data?

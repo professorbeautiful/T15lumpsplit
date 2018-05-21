@@ -30,12 +30,13 @@ names(firstCellIds) = cellNames
 updateDLnumericInputs = function(data, isResetting=FALSE) {
   DLdataMyChoice = rValues$DLdataMyChoice
   cat('updateDLnumericInputs:' , firstCellIds, '\n')
+  cat('updateDLnumericInputs:' , firstCellIds, '\n')
   cat('updateDLnumericInputs: data = ', data, '\n')
   firstCellIds = as.vector(firstCellIds)
-  updateNumericInput(session, firstCellIds[1], value=data['D','R'])
-  updateNumericInput(session, firstCellIds[2], value=data['D','N'])
-  updateNumericInput(session, firstCellIds[3], value=data['L','R'])
-  updateNumericInput(session, firstCellIds[4], value=data['L','N'])
+  updateNumericInput(session, firstCellIds[1], value=data['R','D'])
+  updateNumericInput(session, firstCellIds[2], value=data['N','D'])
+  updateNumericInput(session, firstCellIds[3], value=data['R','L'])
+  updateNumericInput(session, firstCellIds[4], value=data['N','L'])
   if( ! isResetting)
     rValues$DLdataMyChoice = DLdataMyChoice
 }
@@ -153,8 +154,8 @@ dataTableComponent = function() {
               if(rValues$isResetting ==  FALSE) {
                 print('changing DLdataMyChoice also')
                 for(feature in 1:2) for(outcome in 1:2)
-                  rValues$DLdataMyChoice[feature,outcome] =
-                    rValues$DLdata[feature,outcome]
+                  rValues$DLdataMyChoice[outcome, feature] =
+                    rValues$DLdata[outcome, feature]
               }
             })
           }) ### End of try()
@@ -202,13 +203,17 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC) {
                         cellWidths = c("40%",'30%','30%')),
             fluidRow(
               column(4, dataRowLabel( "<b>R</b>esponders")),
-              column(4, numericInput(paste0('mRD', panelIdThisDTC), '#RD', DLdata[1,1])),
-              column(4, numericInput(paste0('mRL', panelIdThisDTC), '#RL', DLdata[2,1]))
+              column(4, numericInput(paste0('mRD', panelIdThisDTC),
+                                     '#RD', DLdataOriginal['R', 'D'])),
+              column(4, numericInput(paste0('mRL', panelIdThisDTC),
+                                     '#RL', DLdataOriginal['R', 'L']))
             ),
             fluidRow(
               column(4, dataRowLabel( "<b>N</b>onResponders")),
-              column(4, numericInput(paste0('mND', panelIdThisDTC), '#ND', DLdata[1,2])),
-              column(4, numericInput(paste0('mNL', panelIdThisDTC), '#NL', DLdata[2,2]))
+              column(4, numericInput(paste0('mND', panelIdThisDTC),
+                                     '#ND', DLdataOriginal['N', 'D'])),
+              column(4, numericInput(paste0('mNL', panelIdThisDTC),
+                                     '#NL', DLdataOriginal['N', 'L']))
             ),
             br(),
             uiOutput(outputId = panelIdThisDTC)
