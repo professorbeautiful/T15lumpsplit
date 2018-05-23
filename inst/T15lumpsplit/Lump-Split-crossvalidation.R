@@ -39,7 +39,7 @@ output$crossvalidationPlot = renderPlot({
     # penaltyFunction = function(outcome, prediction)
     #   -log(dbinom((outcome=='R'), size = 1, prob=prediction))
     weights<-seq(0,1,length=100)
-    estimators = weights*0.60+(1-weights)*0.08
+    estimators = weights*proportionThisGroup+(1-weights)*proportionOverall
 
     penaltyVector = sapply(weights, totalPenalty,
                            penalty= penaltyFunction)
@@ -78,13 +78,17 @@ output$crossvalidationPlot = renderPlot({
     #####  adding a right-hand-side vertical axis #####
     par(new=T)
     plot(weights, estimators, axes=F, type='l', lty=2,
-         col='darkgreen', ylab='', ylim=c(0.05, 0.60))
+         col='darkgreen', ylab='', ylim=c(0.0, proportionThisGroup*1.05))
     axis(4, col='darkgreen', col.axis='darkgreen')
     mtext('estimate Pr(R|D)', side = 4, col='darkgreen', line = 2)
     points(optimalWeight, optimalEstimate,
            col='darkgreen', pch=17, cex=2)
-    text(0, 0.08, "0.08", col='darkgreen', adj=0)
-    text(1, 0.60, "0.60", col='darkgreen', adj=1)
+    text(0, proportionOverall,
+         as.character(round(digits=2, proportionOverall)),
+         col='darkgreen', adj=0)
+    text(1, proportionThisGroup,
+         as.character(round(digits=2, proportionThisGroup)),
+         col='darkgreen', adj=1)
     text(optimalWeight,
          estimators[which(weights==optimalWeight)],
          round(digits=2, optimalEstimate),
