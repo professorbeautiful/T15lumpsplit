@@ -1,26 +1,21 @@
 '
-When a user changes a data number:
-  rValues$isResetting=TRUE
-  rValues$DLdata is changed
-  rValues$DLdataMyChoice is changed
-  rValues$isLoopingSync == TRUE
-  All corresponding numericInput cells are changed.
-  rValues$isLoopingSync == FALSE
-  rValues$isResetting=FALSE
-When a user clicks "Reset":
-  rValues$isResetting=TRUE
-  DLdataOriginal is copied to rValues$DLdata
-    (plots all respond)
-    (DLdataMyChoice is NOT changed)
-  All corresponding numericInput cells are changed; no downstream.
-  rValues$isResetting=FALSE
-When a user clicks "MyChoice":
-  rValues$isResetting=TRUE
-  rValues$DLdataMyChoice  is copied to rValues$DLdata
-    (plots all respond)
-    (DLdataMyChoice is NOT changed)
-  All corresponding numericInput cells are changed; no downstream .
-  rValues$isResetting=FALSE
+When numericInput[n] changes,
+     numericInput[1] changes.
+When numericInput[1] changes,
+    if [ORANGE path] not blocked,
+      rValues$DLdataMyChoice is changed,
+    else
+      unblock ORANGE path.
+When   rValues$DLdataMyChoice is changed
+or  Button MyChoice is clicked,
+      copy rValues$DLdataMyChoice to rValues$DLdata.
+When   rValues$DLdata is changed
+    block the ORANGE path,
+    THEN  update numericInput[1].
+When numericInput[1] changes,
+      update numericInput[n].
+When  Button reset is clicked,
+    copy DLdataOriginal to rValues$DLdata.
 
 '
 cellNames = c('RD', 'ND', 'RL', 'NL')
