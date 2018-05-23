@@ -205,16 +205,20 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC) {
             fluidRow(
               column(4, dataRowLabel( "<b>R</b>esponders")),
               column(4, numericInput(paste0('mRD', panelIdThisDTC),
-                                     '#RD', DLdataOriginal['R', 'D'])),
+                                     '#RD', DLdataOriginal['R', 'D']),
+                    min=0),
               column(4, numericInput(paste0('mRL', panelIdThisDTC),
-                                     '#RL', DLdataOriginal['R', 'L']))
+                                     '#RL', DLdataOriginal['R', 'L']),
+                     min=0)
             ),
             fluidRow(
               column(4, dataRowLabel( "<b>N</b>onResponders")),
               column(4, numericInput(paste0('mND', panelIdThisDTC),
-                                     '#ND', DLdataOriginal['N', 'D'])),
+                                     '#ND', DLdataOriginal['N', 'D']),
+                     min=0),
               column(4, numericInput(paste0('mNL', panelIdThisDTC),
-                                     '#NL', DLdataOriginal['N', 'L']))
+                                     '#NL', DLdataOriginal['N', 'L']),
+                     min=0)
             ),
             br(),
             uiOutput(outputId = panelIdThisDTC)
