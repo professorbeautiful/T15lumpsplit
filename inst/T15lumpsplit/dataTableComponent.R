@@ -193,6 +193,7 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC) {
         actionButton(inputId = myChoiceIdThisDTC,
                      label = "Reset data to my choice"),
         conditionalPanelWithCheckbox(
+          initialValue = TRUE,
           labelString = paste("Response by Predictor Table ", panelIdThisDTC),
           html = div(
             # checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
