@@ -154,16 +154,17 @@ dataTableComponent = function() {
               # rValues$DLdata[2,1] =  input[[firstCellIds['RL']]]
               # rValues$DLdata[1,2] =  input[[firstCellIds['ND']]]
               # rValues$DLdata[2,2] =  input[[firstCellIds['NL']]]
-              rValues$DLdata[1,1] =  input[[theCellIds[1]]]
-              rValues$DLdata[2,1] =  input[[theCellIds[2]]]
-              rValues$DLdata[1,2] =  input[[theCellIds[3]]]
-              rValues$DLdata[2,2] =  input[[theCellIds[4]]]
-              if(rValues$isResetting ==  FALSE) {
-                print('changing DLdataMyChoice also')
-                for(feature in 1:2) for(outcome in 1:2)
-                  rValues$DLdataMyChoice[outcome, feature] =
-                    rValues$DLdata[outcome, feature]
-              }
+              rValues$DLdata[1,1] =  as.numeric(input[[theCellIds[1]]])
+              rValues$DLdata[2,1] =  as.numeric(input[[theCellIds[2]]])
+              rValues$DLdata[1,2] =  as.numeric(input[[theCellIds[3]]])
+              rValues$DLdata[2,2] =  as.numeric(input[[theCellIds[4]]])
+              cat('No longer seting rValues$DLdataMyChoice here\n')
+              # if(rValues$isResetting ==  FALSE) {
+              #   print('changing DLdataMyChoice also')
+              #   for(feature in 1:2) for(outcome in 1:2)
+              #     rValues$DLdataMyChoice[outcome, feature] =
+              #       rValues$DLdata[outcome, feature]
+              # }
             })
           }) ### End of try()
       })
