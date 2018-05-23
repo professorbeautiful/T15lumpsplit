@@ -217,35 +217,42 @@ conditionalPanelWithCheckbox = function(
 
 ```{r panelOfInputs}
 panelOfInputs = 
-  wellPanel(strong(em("Declaring the Prior Distribution ")),
-    checkboxInput(inputId= 'togglePanelOfInputs', 
-                  label = 'togglePanelOfInputs',value = TRUE),
-    conditionalPanel(
-      "input.togglePanelOfInputs",
-      wellPanel(
-        numericInput("phiInput", "prior variance | group (phi)", 
-                     value=0, min = 0.00, step=0.1),
-        numericInput("tauInput", "shared additional variance (tau)", 
-                     value=1, min = 0.00, step=0.1),
-        numericInput("mu0Input", "shared prior mean", 
-                     value=0.5, min = 0.001, step=0.1, max=0.999),
-        actionButton("lumpID", label = "Lump"),
-        actionButton("splitID", label = "Split"),
-        actionButton("mixedID", label = "Mixed")
-      ),
-      numericInput(inputId = 'fudgeFactor', 
+  wellPanel(
+    #checkboxInput(inputId= 'togglePanelOfInputs', label =
+    HTML(
+      'strong(em(
+                    "Prior Distribution Inputs"))'), 
+    #value = TRUE),
+    #conditionalPanel(
+    #  "input.togglePanelOfInputs",
+    fluidRow(
+      column(3, actionButton("lumpID", label = "Lump")),
+      column(3, actionButton("splitID", label = "Split")),
+      column(3, actionButton("mixedID", label = "Mixed")),
+      column(3, numericInput(inputId = 'fudgeFactor', 
                    label = 'continuity fudge factor',
-                   value=0.001)
-    ))
+                   value=0.001))
+    ),
+    fluidRow(
+      column(4,
+             numericInput("phiInput", 
+                          "prior variance | group (phi)", 
+                          value=0, min = 0.00, step=0.1)),
+      column(4,
+             numericInput("tauInput", 
+                          "shared additional variance (tau)", 
+                          value=1, min = 0.00, step=0.1)
+      ),
+      column(4,
+             numericInput("mu0Input", "shared prior mean (mu)", 
+                          value=0.5, min = 0.001, step=0.1, max=0.999))
+    )
+  )
 ```
 
 
 ```{r show-hide-contours}
 ContoursPanelLegend = list(
-#  "X:   observed data", br(),
-  "L:  Dr.Lump's MP estimate", br(),
-  "S:  Dr.Split's MP estimate", br(),
-  "W:  Dr.Who's MP estimate",
   div(style="color:orange", 
       checkboxInput("checkPrior", 
                     "Orange = prior distribution",
@@ -254,7 +261,13 @@ ContoursPanelLegend = list(
       checkboxInput("checkPosterior", 
                     "Blue = posterior distribution",
                     TRUE)),
-  "Shaded: 50% highest posterior region"
+  "Shaded: 50% highest posterior region",
+#  "X:   observed data", br(),
+  div(style='color:red',
+      "L:  Dr.Lump's MP estimate", br(),
+      "S:  Dr.Split's MP estimate", br(),
+      "W:  Dr.Who's MP estimate"
+  )
 )
 ```
 
@@ -413,15 +426,16 @@ If you *"split"*, you will estimate that the response rate (`Pr(R|D)`) for D peo
 output$plotLumpSplitPoints = renderPlot(
   height = 300, {
   plotPlightPdarkPosterior(DLdata=rValues$DLdata,
-                           showPrior = FALSE, showPosterior=FALSE, showLikelihood=FALSE,
-  showS = TRUE,
-  showL = TRUE,
-  showW = FALSE)
-})
+                           showPrior = FALSE, 
+                           showPosterior=FALSE, showLikelihood=FALSE,
+                           showS = TRUE,
+                           showL = TRUE,
+                           showW = FALSE)
+  })
 fluidRow(
   column(6, 
          # span(style='color:red; text-align:center', 
-              # "L = Lump, S = Split"),
+         # "L = Lump, S = Split"),
          plotOutput('plotLumpSplitPoints')),
   column(6,
          br(),br(),br(),
@@ -536,31 +550,46 @@ For this example dataset, we perform leave-one-out cross-validation as follows:
 source('Lump-Split-crossvalidation.R', local=TRUE, echo = FALSE)
 ```
 ```{r}
-div(
-  plotOutput('crossvalidationPlot'),
-  dataTableComponent()
+fluidRow(
+  column(6, 
+         plotOutput('crossvalidationPlot')),
+  column(6,
+         br(),br(),br(),
+         dataTableComponent())
 )
 ```
 
 ##### Approach: Bayes joint prior on logits
 
 ```{r BayesLogitPlot}
+#a(name='viewPlot')
 div(
-  dataTableComponent(),
-  tagAppendAttributes(
-    div(
-      uiOutput(outputId="title_1_ID"),
-      uiOutput(outputId="title_2_ID"),
-      uiOutput(outputId="title_3_ID")
-    ),
-    style=
-      'text-align:center; font-size:small;
+  fluidRow(
+    column(6, 
+           tagAppendAttributes(
+             div(
+               uiOutput(outputId="title_1_ID"),
+               uiOutput(outputId="title_2_ID"),
+               uiOutput(outputId="title_3_ID")
+             ),
+             style=
+               'text-align:center; font-size:small;
                     font-weight:bold'),
-  #a(name='viewPlot'),
-  plotOutput(outputId = 'thePlot', height=260),
-  #"X = observed response rate, ",
-  ContoursPanelLegend,
-  panelOfInputs
+           plotOutput(outputId = 'thePlot', height=260)
+    ),
+    column(6,
+           br(),br(),br(),
+           dataTableComponent()
+    )
+  ),
+  fluidRow(
+    column(4, 
+           ContoursPanelLegend
+    ),
+    column(8,
+           panelOfInputs
+    )
+  )
 )
 ```
 
