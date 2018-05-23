@@ -23,23 +23,29 @@ When a user clicks "MyChoice":
   rValues$isResetting=FALSE
 
 '
-cellNames = c('RD', 'RL', 'ND', 'NL')
+cellNames = c('RD', 'ND', 'RL', 'NL')
 firstCellIds = paste0('m', cellNames, 'idPanelDTC', '1')
 names(firstCellIds) = cellNames
 
 updateDLnumericInputs = function(data, isResetting=FALSE) {
-  DLdataMyChoice = rValues$DLdataMyChoice
+  rValues$isResetting = isResetting
+  DLdataMyChoice = rValues$DLdataMyChoice # save in case needed.
   cat('updateDLnumericInputs:' , firstCellIds, '\n')
-  cat('updateDLnumericInputs:' , firstCellIds, '\n')
+  cat('updateDLnumericInputs: isResetting = ' ,
+      isResetting, ' ', rValues$isResetting, '\n')
   cat('updateDLnumericInputs: data = ', data, '\n')
   firstCellIds = as.vector(firstCellIds)
   updateNumericInput(session, firstCellIds[1], value=data['R','D'])
   updateNumericInput(session, firstCellIds[2], value=data['N','D'])
   updateNumericInput(session, firstCellIds[3], value=data['R','L'])
   updateNumericInput(session, firstCellIds[4], value=data['N','L'])
-  if( ! isResetting)
+  if( isResetting | rValues$isResetting) {
+    cat(' resetting, so restore myChoice \n')
     rValues$DLdataMyChoice = DLdataMyChoice
   }
+}
+
+
 
 #### dataTableComponent ####
 dataTableComponent = function() {
@@ -123,8 +129,8 @@ dataTableComponent = function() {
   for(cell in paste0('m', c('RD', 'ND', 'RL', 'NL')))
     createSyncActor(cell, syncIdThisDTC=syncIdThisDTC)
 
-  #### updateDLdata -- ####
-  cellNames = c('RD', 'RL', 'ND', 'NL')
+  ### updateDLdata -- ####
+  cellNames = c('RD', 'ND', 'RL', 'NL')
   theCellIds = paste0('m', cellNames, 'idPanelDTC', thisDTCNumber)
   names(theCellIds) = cellNames
   myName = paste0('updateDLdata_ThisDTC_', thisDTCNumber)
@@ -135,8 +141,8 @@ dataTableComponent = function() {
       label=myName,
       eventExpr = #c(input$mRD, input$mRL, input$mND, input$mNL)
         c(input[[theCellIds[1]]], # RD. Must by 1,2,3,4
-          input[[theCellIds[2]]], #RL
-          input[[theCellIds[3]]], #ND
+          input[[theCellIds[2]]], #ND
+          input[[theCellIds[3]]], #RL
           input[[theCellIds[4]]]), #NL
       handlerExpr = {
         cat(myName, "\n")
