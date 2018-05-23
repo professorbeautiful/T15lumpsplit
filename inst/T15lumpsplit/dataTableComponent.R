@@ -1,6 +1,8 @@
 '
 When numericInput[n] changes,
-     numericInput[1] changes.
+     update numericInput[1]
+When numericInput[1] changes,
+      update numericInput[n].
 When numericInput[1] changes,
     if [ORANGE path] not blocked,
       rValues$DLdataMyChoice is changed,
@@ -11,36 +13,103 @@ or  Button MyChoice is clicked,
       copy rValues$DLdataMyChoice to rValues$DLdata.
 When   rValues$DLdata is changed
     block the ORANGE path,
-    THEN  update numericInput[1].
-When numericInput[1] changes,
-      update numericInput[n].
+    THEN  update numericInputs for firstCellIds.
 When  Button reset is clicked,
     copy DLdataOriginal to rValues$DLdata.
-
 '
+
+#### firstCellIds ####
 cellNames = c('RD', 'ND', 'RL', 'NL')
 firstCellIds = paste0('m', cellNames, 'idPanelDTC', '1')
-names(firstCellIds) = cellNames
+#names(firstCellIds) = cellNames
 
-updateDLnumericInputs = function(data, isResetting=FALSE) {
-  rValues$isResetting = isResetting
-  DLdataMyChoice = rValues$DLdataMyChoice # save in case needed.
-  cat('updateDLnumericInputs:' , firstCellIds, '\n')
-  cat('updateDLnumericInputs: isResetting = ' ,
-      isResetting, ' ', rValues$isResetting, '\n')
-  cat('updateDLnumericInputs: data = ', data, '\n')
-  firstCellIds = as.vector(firstCellIds)
-  updateNumericInput(session, firstCellIds[1], value=data['R','D'])
-  updateNumericInput(session, firstCellIds[2], value=data['N','D'])
-  updateNumericInput(session, firstCellIds[3], value=data['R','L'])
-  updateNumericInput(session, firstCellIds[4], value=data['N','L'])
-  if( isResetting | rValues$isResetting) {
-    cat(' resetting, so restore myChoice \n')
-    rValues$DLdataMyChoice = DLdataMyChoice
-  }
-}
+'When numericInput[1] changes,
+  if [ORANGE path] not blocked, rValues$DLdataMyChoice is changed,
+  else unblock ORANGE path.'
+### Respond to firstCellIds, Change DLdataMyChoice ####
+myName = ('updateDLdataMyChoice')
+assign(myName,
+       pos=1,
+       observeEvent(
+         #priority = 2,
+         label=myName,
+         eventExpr = #c(input$mRD, input$mRL, input$mND, input$mNL)
+           c(input[[firstCellIds[1]]], # RD. Must by 1,2,3,4
+             input[[firstCellIds[2]]], #ND
+             input[[firstCellIds[3]]], #RL
+             input[[firstCellIds[4]]]), #NL
+         handlerExpr = {
+           cat('START updateDLdataMyChoice: isLoopingSync=',
+               rValues$isLoopingSync, ' isResetting=', rValues$isResetting, "\n")
+           if(rValues$isLoopingSync == FALSE
+              & rValues$isResetting == FALSE) {
+             try(silent = FALSE, {
+               isolate({
+                 cat('updateDLdataMyChoice: changing MyChoice', '\n')
+                 rValues$DLdataMyChoice[1,1] =  as.numeric(input[[firstCellIds[1]]])
+                 rValues$DLdataMyChoice[2,1] =  as.numeric(input[[firstCellIds[2]]])
+                 rValues$DLdataMyChoice[1,2] =  as.numeric(input[[firstCellIds[3]]])
+                 rValues$DLdataMyChoice[2,2] =  as.numeric(input[[firstCellIds[4]]])
+                 rValues$isResetting = FALSE
+               })
+             }) ### end of try
+           } ### end of if
+           cat('END updateDLdataMyChoice: isLoopingSync=',
+               rValues$isLoopingSync, ' isResetting=', rValues$isResetting, "\n")
+         }
+       )
+)
 
+'When   rValues$DLdataMyChoice is changed
+or  Button MyChoice is clicked,
+copy rValues$DLdataMyChoice to rValues$DLdata.'
+#### copy rValues$DLdataMyChoice to rValues$DLdata. ####
+myName = ('copyDLdataMyChoice2DLdata')
+assign(myName,
+       pos=1,
+       observeEvent(
+         #priority = 2,
+         label=myName,
+         eventExpr =
+           rValues$DLdataMyChoice,
+         handlerExpr = {
+           cat('copyDLdataMyChoice2DLdata', "\n")
+             try(silent = FALSE, {
+               isolate({
+                 rValues$DLdata = rValues$DLdataMyChoice
+               })
+             }) ### End of try()
+         }
+       )
+)
 
+#### updateDLnumericInputs from DLdata ####
+'When   rValues$DLdata is changed
+    block the ORANGE path,
+    THEN  update numericInputs for firstCellIds.'
+myName = ('updateDLnumericInputs')
+assign(myName,
+       pos=1,
+       observeEvent(
+         #priority = 2,
+         label=myName,
+         eventExpr = rValues$DLdata,
+         handlerExpr = {
+           cat('updateDLnumericInputs: setting isResetting to TRUE', "\n")
+           rValues$isResetting = TRUE
+           try(silent = FALSE, {
+             isolate({  ### isolates should not be necessary in handlerExpr.
+               firstCellIds = as.vector(firstCellIds)
+               updateNumericInput(session, firstCellIds[1], value=rValues$DLdata['R','D'])
+               updateNumericInput(session, firstCellIds[2], value=rValues$DLdata['N','D'])
+               updateNumericInput(session, firstCellIds[3], value=rValues$DLdata['R','L'])
+               updateNumericInput(session, firstCellIds[4], value=rValues$DLdata['N','L'])
+             })
+           }) ### End of try()
+           cat('updateDLnumericInputs:isResetting is now ', rValues$isResetting, "\n")
+         }
+       )
+)
 
 #### dataTableComponent ####
 dataTableComponent = function() {
@@ -52,11 +121,16 @@ dataTableComponent = function() {
   syncIdThisDTC = paste0('syncIdDTC', thisDTCNumber)
   myChoiceIdThisDTC = paste0('idMyChoiceDTC', thisDTCNumber)
 
+  theCellIds = paste0('m', cellNames, 'idPanelDTC', thisDTCNumber)
+  names(theCellIds) = cellNames
+
   #### resetIdThisDTC ####
+  'When  Button reset is clicked,
+    copy DLdataOriginal to rValues$DLdata.'
   myName = paste0('observeEvent_resetIdThisDTC_', thisDTCNumber)
   assign(myName,
     pos=1,
-    observeEvent(label =myName,
+    observeEvent(label = myName,
                  eventExpr = input[[resetIdThisDTC]],
                  handlerExpr =  {
                    #updateDLdataMyChoice$suspend()
@@ -64,10 +138,9 @@ dataTableComponent = function() {
                    isolate({
                      rValues$isResetting <<- TRUE
                      cat(myName, ':   rValues$isResetting = TRUE\n')
-
-                     updateDLnumericInputs(data = DLdataOriginal, isResetting=TRUE)
-
-                     })
+                     rValues$DLdata = DLdataOriginal
+                     # rValues$isResetting <<- FALSE #Not necessary?
+                   })
                    #updateDLdataMyChoice$resume()
                  })
   )
@@ -84,7 +157,7 @@ dataTableComponent = function() {
         cat(myName, '\n')
         isolate({
           cat(myName, '  isResetting=', rValues$isResetting, '\n')
-          updateDLnumericInputs(data = rValues$DLdataMyChoice, isResetting=FALSE)
+          rValues$DLdata = rValues$DLdataMyChoice
         })
       })
   )
@@ -124,46 +197,7 @@ dataTableComponent = function() {
   for(cell in paste0('m', c('RD', 'ND', 'RL', 'NL')))
     createSyncActor(cell, syncIdThisDTC=syncIdThisDTC)
 
-  ### updateDLdata -- ####
-  cellNames = c('RD', 'ND', 'RL', 'NL')
-  theCellIds = paste0('m', cellNames, 'idPanelDTC', thisDTCNumber)
-  names(theCellIds) = cellNames
-  myName = paste0('updateDLdata_ThisDTC_', thisDTCNumber)
-  assign(myName,
-    pos=1,
-    observeEvent(
-      #priority = 2,
-      label=myName,
-      eventExpr = #c(input$mRD, input$mRL, input$mND, input$mNL)
-        c(input[[theCellIds[1]]], # RD. Must by 1,2,3,4
-          input[[theCellIds[2]]], #ND
-          input[[theCellIds[3]]], #RL
-          input[[theCellIds[4]]]), #NL
-      handlerExpr = {
-        cat(myName, "\n")
-        if(rValues$isLoopingSync == FALSE)
-          try(silent = FALSE, {
-            isolate({
-              cat('      input$mRD=', input[[theCellIds[1]]], '\n')
-              # rValues$DLdata[1,1] =  input[[firstCellIds['RD']]]
-              # rValues$DLdata[2,1] =  input[[firstCellIds['RL']]]
-              # rValues$DLdata[1,2] =  input[[firstCellIds['ND']]]
-              # rValues$DLdata[2,2] =  input[[firstCellIds['NL']]]
-              rValues$DLdata[1,1] =  as.numeric(input[[theCellIds[1]]])
-              rValues$DLdata[2,1] =  as.numeric(input[[theCellIds[2]]])
-              rValues$DLdata[1,2] =  as.numeric(input[[theCellIds[3]]])
-              rValues$DLdata[2,2] =  as.numeric(input[[theCellIds[4]]])
-              cat('No longer seting rValues$DLdataMyChoice here\n')
-              # if(rValues$isResetting ==  FALSE) {
-              #   print('changing DLdataMyChoice also')
-              #   for(feature in 1:2) for(outcome in 1:2)
-              #     rValues$DLdataMyChoice[outcome, feature] =
-              #       rValues$DLdata[outcome, feature]
-              # }
-            })
-          }) ### End of try()
-      })
-  )
+
   #### Output of dataTableComponent ####
   output[[outputIdThisDTC]] = renderUI({
 
