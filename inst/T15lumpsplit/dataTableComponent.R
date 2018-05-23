@@ -39,7 +39,7 @@ updateDLnumericInputs = function(data, isResetting=FALSE) {
   updateNumericInput(session, firstCellIds[4], value=data['N','L'])
   if( ! isResetting)
     rValues$DLdataMyChoice = DLdataMyChoice
-}
+  }
 
 #### dataTableComponent ####
 dataTableComponent = function() {
@@ -52,11 +52,10 @@ dataTableComponent = function() {
   myChoiceIdThisDTC = paste0('idMyChoiceDTC', thisDTCNumber)
 
   #### resetIdThisDTC ####
-  myName = paste0('observeEvent_resetIdThisDTC_', resetIdThisDTC)
+  myName = paste0('observeEvent_resetIdThisDTC_', thisDTCNumber)
   assign(myName,
     pos=1,
-    observeEvent(label =
-                   paste0('observeEvent resetIdThisDTC #', resetIdThisDTC),
+    observeEvent(label =myName,
                  eventExpr = input[[resetIdThisDTC]],
                  handlerExpr =  {
                    #updateDLdataMyChoice$suspend()
@@ -64,15 +63,17 @@ dataTableComponent = function() {
                    isolate({
                      rValues$isResetting <<- TRUE
                      cat(myName, ':   rValues$isResetting = TRUE\n')
+
                      updateDLnumericInputs(data = DLdataOriginal, isResetting=TRUE)
-                   })
+
+                     })
                    #updateDLdataMyChoice$resume()
                  })
   )
 
   #### myChoiceIdThisDTC --  restore MyChoice data ####
   myName =
-    paste0('observeEvent_myChoiceIdThisDTC_', resetIdThisDTC)
+    paste0('observeEvent_myChoiceIdThisDTC_', thisDTCNumber)
   assign(myName, pos=1,
     observeEvent(
       label = myName,
