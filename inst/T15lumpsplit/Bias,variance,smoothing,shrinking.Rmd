@@ -535,7 +535,12 @@ For this example dataset, we perform leave-one-out cross-validation as follows:
 ```{r}
 source('Lump-Split-crossvalidation.R', local=TRUE, echo = FALSE)
 ```
-
+```{r}
+div(
+  plotOutput('crossvalidationPlot'),
+  dataTableComponent()
+)
+```
 
 ##### Approach: Bayes joint prior on logits
 
