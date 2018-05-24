@@ -83,9 +83,13 @@ plotPlightPdarkPosteriorReactive = reactive( {
   phi <- input$phiInput
   mu0 <- input$mu0Input
   #cat("tau=", tau, " phi=", phi, " mu0=", mu0, "\n")
-  plotPlightPdarkPosterior(DLdata=rValues$DLdata,
+  rValues$bivariateNormResults <<-
+    plotPlightPdarkPosterior(DLdata=rValues$DLdata,
                            tau=tau, phi=phi, mu0=logit(mu0), 
-                           fudgeFactor = input$fudgeFactor)
+                           fudgeFactor = input$fudgeFactor,
+                           showConfIntBinormal = TRUE
+    )
+  
   rValues$title_3 <<- paste0(
     "  tau=", input$tauInput,  
     ",  phi=", input$phiInput,  
@@ -529,7 +533,8 @@ We also convert the observed proportions to logits. We estimate the variances us
 (This doesn't work well if the count is near zero, and not at all at zero.
 For this reason a "continuity fudge" is applied, if necessary.)
 
-Finally, Pr(R|D) marginalized over Pr(R|L) is:
+Finally, Pr(R|D) marginalized over Pr(R|L) has posterior mean =  
+`r output$postmean.p = renderText(paste0('(', paste0(round(digits=2, rValues$bivariateNormResults$postmean.p), collapse=", "), ')')); span(textOutput('postmean.p'))`  .
 
 
 

@@ -4,6 +4,7 @@ plotPlightPdarkPosterior = function(
            dimnames = list( outcome=c("R","N"), feature=c("D","L"))),
   tau=1, phi=1, mu0=0.5,
   showPrior = TRUE, showPosterior=TRUE, showLikelihood=TRUE,
+  showConfIntBinormal = FALSE,
   showS = TRUE,
   showL = TRUE,
   showW = TRUE,
@@ -84,7 +85,17 @@ plotPlightPdarkPosterior = function(
     sig12%*%solve(sig22) %*% (logit.hat.fudged-logit.prior.mean)
   postmean.p = antilogit(postmean.logit)
   postvar.logit = sig11 - sig12%*%solve(sig22)%*%sig21
-  ####################
+  Jac = function(p) p^(-1)+(1-p)^(-1)
+  postvar.p = sapply(1:2, function(d) postvar.logit[d]/Jac(postmean.p)^2)
+  confints.logit = sapply(1:2,
+                         function(d)postmean.logit[d]
+                         +c(-1,1)*postvar.logit[d]
+  )
+  confints.p = antilogit(confints.logit)
+  cat('confints.p\n')
+  print(confints.p)
+
+  #### Prepare to plot contours ################
 
   svdSig11 = svd(sig11)
   sqrtSig11 = svdSig11$v %*% diag(sqrt(svdSig11$d)) %*% svdSig11$u
@@ -169,6 +180,16 @@ if(showPrior) {
          col='blue', xpd=TRUE)
     abline(v=postmean.p[1],col=ColorForPosterior, lty=2, lwd=2)
   }
+  if(showConfIntBinormal){
+    lines(confints.p[ , 1], rep(postmean.p[2], 2), lwd=3)
+    lines(rep(postmean.p[1], 2), confints.p[ , 2],lwd=3)
+
+  }
+  return(invisible(list(postmean.logit=postmean.logit,
+                          postmean.p=postmean.p,
+                          postvar.logit=postvar.logit,
+                          postvar.p=postvar.p,
+                          confints.p=confints.p)))
 }
 
 
