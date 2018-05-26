@@ -281,12 +281,12 @@ output$responseRates = renderUI({
                 HTML(paste(
                   input$mRD, '/', input$mRD+input$mND, 
                   "<br> = ",
-                  round(digits=3,
+                  signif(digits=3,
                         input$mRD/(input$mRD+input$mND)))),
                 HTML(paste(
                   input$mRL, '/', input$mRL+input$mNL, 
                   "<br> = ", 
-                  round(digits=3,
+                  signif(digits=3,
                         input$mRL/(input$mRL+input$mNL))))
     )
   # paste(input$mRD, '/', input$mRD+input$mND, "for D, and ",
@@ -559,11 +559,11 @@ For this reason a "continuity fudge" is applied, if necessary.)
 
 output$postmean.p = renderText(
   paste0(
-    round(digits=2, rValues$bivariateNormResults$postmean.p[1]),
+    signif(digits=2, rValues$bivariateNormResults$postmean.p[1]),
     ' (95% confidence interval: ', 
-    round(digits=2, rValues$bivariateNormResults$confints.p[1 , 1]),
+    signif(digits=2, rValues$bivariateNormResults$confints.p[1 , 1]),
     '-',
-    round(digits=2, rValues$bivariateNormResults$confints.p[2 , 1]),
+    signif(digits=2, rValues$bivariateNormResults$confints.p[2 , 1]),
     ')'
   )
 )
@@ -619,7 +619,7 @@ Assembling the results of the approaches to estimating Pr(R|D):
 
 output$estimateTable = 
   renderTable(
-    round(digits=2, 
+    signif(digits=2, 
           data.frame(
             Lump=rValues$DLdata['R', ]/sum(rValues$DLdata[ , ]), 
             Split=rValues$DLdata['R','D']/sum(rValues$DLdata[ ,'D']), 

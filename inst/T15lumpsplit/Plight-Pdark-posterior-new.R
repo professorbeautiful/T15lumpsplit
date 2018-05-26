@@ -168,7 +168,7 @@ if(showPrior) {
     addCircledLetter(pointLocation,  bg='lightgrey',
                      pch = "M", cex=1, col=ColorForPosterior)
     mtext(text = paste("posterior mean for Pr(R | D) = ",
-                       round(digits=2, postmean.p[1])),
+                       signif(digits=2, postmean.p[1])),
           side=3, cex=1, line = 1,
           col = ColorForPosterior)
     text(x = postmean.p[1], y = 1, pos = 3,
