@@ -1,0 +1,7 @@
+ \[\begin{array}{l}
+{m_{Split}} = [{\bf{n}}|\phi  = Split] = \int\limits_{\bf{p}} {} [{\bf{n}}|{\bf{p}},\phi  = Split][{\bf{p}}]\\
+{\rm{    }} = \int\limits_{\bf{p}} {\frac{{n!}}{{{n_{RD}}!{n_{ND}}!{n_{RL}}!{n_{NL}}!}}p_{RD}^{{n_{RD}}} \cdot p_{ND}^{{n_{ND}}} \cdot p_{RL}^{{n_{RL}}} \cdot p_{NL}^{{n_{NL}}}}  \cdot p_{RD}^{{a_{RD}} - 1} \cdot p_{ND}^{{a_{ND}} - 1} \cdot p_{RL}^{{a_{RL}} - 1} \cdot p_{NL}^{{a_{NL}} - 1}{D^{ - 1}}({\bf{a}})\\
+{\rm{    }} = \frac{{100!}}{{3!2!5!90!}}D(4,3,6,91){D^{ - 1}}(1,1,1,1)\\
+{\rm{    }} = \frac{{100!}}{{103!}}3!\\
+{\rm{    }} = 5.654477 \times 10^{ -6}
+\end{array}\]

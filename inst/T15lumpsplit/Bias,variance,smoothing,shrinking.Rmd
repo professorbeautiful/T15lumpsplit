@@ -515,35 +515,6 @@ Dr. Who doesn't know *who* to believe, but is prepared to let the data make the 
 QandAha()
 ```
 
-##### <a name='Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
-
-Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R|D) and Pr(R|L). This allows data on the two probabilities to be shared between them, smoothly instead of a crude mixture of the two extreme views of   "Dr. Lump" and "Dr. Split".
-```{r}
-QandAha()
-```
-Once we have this joint prior distribution, we compute the joint posterior.
-```{r QA4}
-QandAha()
-```
-To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits ("logit" means "log(odds)"; details <a href='www/logit-info.htm').
-Then we set a bivariate normal distribution on the logits.
-
-We also convert the observed proportions to logits. We estimate the variances using the delta method applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
-
-(This doesn't work well if the count is near zero, and not at all at zero.
-For this reason a "continuity fudge" is applied, if necessary.)
-
-Finally, Pr(R|D) marginalized over Pr(R|L) has posterior mean =  
-`r output$postmean.p = renderText(paste0('(', paste0(round(digits=2, rValues$bivariateNormResults$postmean.p), collapse=", "), ')')); span(textOutput('postmean.p'))`  .
-
-
-
-The link to bivariate normal details is here:
-
-```{r linkoutbivariate}
-  interactiveSection(codeToRun = 
-linkout('./lump,split-bivariate-normal-derivation.pdf'))
-```
 
 #####  Approach: Optimizing the mixture with cross-validation
 
@@ -566,6 +537,46 @@ fluidRow(
 
 ##### Approach: Bayes joint prior on logits
 
+##### <a name='Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
+
+Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R|D) and Pr(R|L). This allows data on the two probabilities to be shared between them, smoothly instead of a crude mixture of the two extreme views of   "Dr. Lump" and "Dr. Split".
+```{r}
+QandAha()
+```
+Once we have this joint prior distribution, we compute the joint posterior.
+```{r QA4}
+QandAha()
+```
+To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits ("logit" means "log(odds)"; details <a href='www/logit-info.htm').
+Then we set a bivariate normal distribution on the logits.
+
+We also convert the observed proportions to logits. We estimate the variances using the delta method applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
+
+(This doesn't work well if the count is near zero, and not at all at zero.
+For this reason a "continuity fudge" is applied, if necessary.)
+
+```{r}
+
+output$postmean.p = renderText(
+  paste0(
+    round(digits=2, rValues$bivariateNormResults$postmean.p[1]),
+    ' (95% confidence interval: ', 
+    round(digits=2, rValues$bivariateNormResults$confints.p[1 , 1]),
+    '-',
+    round(digits=2, rValues$bivariateNormResults$confints.p[2 , 1]),
+    ')'
+  )
+)
+```
+
+Finally, Pr(R|D) marginalized over Pr(R|L) has posterior mean =  `r  (textOutput('postmean.p'))`  .
+
+The link to bivariate normal details is here:
+
+```{r linkoutbivariate}
+  interactiveSection(codeToRun = 
+linkout('./lump,split-bivariate-normal-derivation.pdf'))
+```
 ```{r BayesLogitPlot}
 #a(name='viewPlot')
 div(
@@ -605,8 +616,18 @@ Assembling the results of the approaches to estimating Pr(R|D):
 
 ```{r}
 ### ToDo
-data.frame(Lump=0.08, Split=0.60, Who=0.57, CV=0.47, 
-           BayesLogit=NA)
+
+output$estimateTable = 
+  renderTable(
+    round(digits=2, 
+          data.frame(
+            Lump=rValues$DLdata['R', ]/sum(rValues$DLdata[ , ]), 
+            Split=rValues$DLdata['R','D']/sum(rValues$DLdata[ ,'D']), 
+            Who=0.57, 
+            CV=0.47, 
+           BayesLogit=rValues$bivariateNormResults$postmean.p[1]
+           )
+    ))
 ### ToDo extract the point estimate from BayesLogit.
 ```
 

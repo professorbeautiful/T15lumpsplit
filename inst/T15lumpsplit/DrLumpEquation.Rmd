@@ -1,0 +1,25 @@
+
+\[\begin{array}{l}
+   {m_{Lump}} = [{\bf{n}}|\phi  = Lump] = \int\limits_{\bf{p}} {} [{\bf{n}}|{\bf{p}},\phi  = Lump][{\bf{p}}]\\
+   {\rm{      = }}\int\limits_{\bf{p}} {} [{n_R}|{\bf{p}},\phi  = Lump][{n_D}|{\bf{p}},\phi  = Lump][{n_{RD}}|{n_R},{n_D},{\bf{p}},\phi  = Lump][{\bf{p}}]\\
+   {\rm{    }} = \int\limits_{\bf{p}} {\frac{{n!}}{{{n_R}!{n_N}!}}p_R^{{n_R}}p_N^{{n_N}} \cdot \frac{{n!}}{{{n_D}!{n_L}!}}p_D^{{n_D}}p_L^{{n_L}}}  \cdot \frac{{\left( {\begin{array}{*{20}{c}}
+     {{n_R}}\\
+     {{n_{RD}}}
+     \end{array}} \right)\left( {\begin{array}{*{20}{c}}
+       {{n_L}}\\
+       {{n_{LD}}}
+       \end{array}} \right)}}{{\left( {\begin{array}{*{20}{c}}
+         {{n_{}}}\\
+         {{n_D}}
+         \end{array}} \right)}} \cdot p_R^{{a_R} - 1}p_N^{{a_N} - 1}{B^{ - 1}}({a_R},{a_N}) \cdot p_D^{{a_D} - 1}p_L^{{a_L} - 1}{B^{ - 1}}({a_D},{a_L})\\
+   {\rm{    }} = \frac{{n!}}{{{n_R}!{n_N}!}}\frac{{n!}}{{{n_D}!{n_L}!}}\frac{{\left( {\begin{array}{*{20}{c}}
+     {{n_R}}\\
+     {{n_{RD}}}
+     \end{array}} \right)\left( {\begin{array}{*{20}{c}}
+       {{n_N}}\\
+       {{n_{ND}}}
+       \end{array}} \right)}}{{\left( {\begin{array}{*{20}{c}}
+         {{n_{}}}\\
+         {{n_D}}
+         \end{array}} \right)}}B({n_R} + {a_R},{n_N} + {a_N})B({n_D} + {a_D},{n_L} + {a_L}){B^{ - 1}}({a_R},{a_N}){B^{ - 1}}({a_D},{a_L})\\
+   \end{array}\]
