@@ -54,14 +54,16 @@ conditionalPanelWithCheckbox(
 )
 ```
 
-Here is the code if interested:
+Here is the code if you are interested:
+
 ```{r}
 conditionalPanelWithCheckbox(
-  labelString = 'Show/hide equations for Dr. Lump\'s marginal probability', 
-  filename = '',
-  html=div(
-              paste(readLines(con='DrWhoBayesFactor.R'),
-                    collapse='<br>')
+  labelString = 'code for the Lump and Split marginal probabilities',
+  html=
+    div(
+              HTML(gsub('  ', '&nbsp;&nbsp;',
+                        paste(readLines(con='DrWhoBayesFactor.R'),
+                    collapse='<br>\n')))
   ),
   initialValue=FALSE
 )
