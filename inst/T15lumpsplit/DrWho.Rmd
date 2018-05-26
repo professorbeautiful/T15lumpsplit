@@ -27,9 +27,12 @@ If *Split* is correct, then the (marginal) probability of getting the data we ob
   })
   `.
 
+
+TODO:  why doesn't this checkbox govern the content?
+
 ```{r}
 conditionalPanelWithCheckbox(
-  labelString = 'equations for Dr. Split marginal probability', 
+  labelString = 'equations for Dr. Split\'s marginal probability', 
   filename = 'DrSplitEquation.Rmd',
   html='',
   initialValue=FALSE
