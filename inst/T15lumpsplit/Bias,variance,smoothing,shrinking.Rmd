@@ -185,9 +185,9 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(
 #cat("\U2B07")
 # This shows you can get a fat arrow... but not in a plot.
 ```
-
+##<a name='section-debugging'>** **</a>
 ```{r withDebuggingPanel}
-##  <a name='debugging'>** **</a>
+
 fluidRow(
   shinyDebuggingPanel::withDebuggingPanel() 
 )
@@ -346,7 +346,7 @@ conditionalPanelWithCheckbox(
   labelString = 'Topics', filename = 'topics.Rmd', initialValue=FALSE)
 ```
 
-## The Lump versus Split Dilemma
+## The Lump versus Split Dilemma <a name="section-LSnotebookBegin"> 
 
 ```{r submoduleTitle}
 ##  <a name="LSnotebookBegin"> link The Lump versus Split Dilemma </a>
@@ -476,14 +476,14 @@ TextQuestion('Why focus on this parameter?')
 QandAha()
 ```
 
-#### Approaches
+### Approaches
 
-* [Classical test: is X independent of the outcome Y?](#Classical test)
+* [Classical test: is X independent of the outcome Y?](#ClassicalTest)
 * [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
 * [Bayes joint prior, logit scale](#Bayes_joint_prior).  
 * Approaches used in the famous ECMO data set. (ToDo)
 
-##### <a name='Classical test'> Classical estimation bifurcating on a hypothesis test</a>
+#### <a name='section-ClassicalTest'> Classical estimation bifurcating on a hypothesis test</a>
 
 A time-honored but fading technique is to use a classical hypothesis test, to guide which of two analyses to present.
 Here the hypothesis is "X is independent of Y";  the response rate of D people does not differ from L people.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
@@ -501,7 +501,7 @@ If the P-value is "significant", the "null hypothesis" (that "Dr. Lump" is corre
 QandAha()
 ```
 
-##### <a name='Bayes_mixture'> Approach: Dr. Who's Bayes mixture of "Lump" and "Split"</a>
+#### <a name='Bayes_mixture'> Approach: Dr. Who's Bayes mixture of "Lump" and "Split"</a>
 
 Dr. Who doesn't know *who* to believe, but is prepared to let the data make the right compromise.
 
@@ -516,7 +516,7 @@ QandAha()
 ```
 
 
-#####  Approach: Optimizing the mixture with cross-validation
+####  Approach: Optimizing the mixture with cross-validation
 
 Cross-validation is a technique in which the performance of a model can be checked as if on an independent dataset, without actually having a separate dataset. `K-fold cross-validation` divides the dataset into K disjoint subsets of observations, and loops over these sets. Each subset is, in turn, used as a `test set`. We remove it from the full dataset, re-build the model on the reduced dataset (the `training set`), and evaluate predictions of that model on the removed observations in the test set. Performance metrics are usually averaged across the K repetitions. When $K=N$, the size of the full dataset, the procedure is called `leave-one-out cross-validation`, since each test set is of size one.
 
@@ -535,9 +535,9 @@ fluidRow(
 )
 ```
 
-##### Approach: Bayes joint prior on logits
+#### Approach: Bayes joint prior on logits
 
-##### <a name='Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
+#### <a name='Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
 
 Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R|D) and Pr(R|L). This allows data on the two probabilities to be shared between them, smoothly instead of a crude mixture of the two extreme views of   "Dr. Lump" and "Dr. Split".
 ```{r}
