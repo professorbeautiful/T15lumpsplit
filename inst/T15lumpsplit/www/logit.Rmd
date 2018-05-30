@@ -1,0 +1,8 @@
+The function ${odds:[0,1] \to {\Re ^ + }}$ represents a probability $p \in [0,1]$ as a non-negative number: $\left( {\frac{p}{{1 - p}}} \right)$. 
+
+The word  “logit”  means log odds: ${{\mathop{\rm logit}\nolimits}:[0,1] \to {\Re }}$, 
+
+defined by 
+${\mathop{\rm logit}\nolimits} (p) = \log \left( {\frac{p}{{1 - p}}} \right)$. 
+The inverse of the logit function is 
+${\mathop{\rm logit ^ {-1}}\nolimits} (z) = {\frac{\exp(z)}{{1 + \exp(z)}}}$.
