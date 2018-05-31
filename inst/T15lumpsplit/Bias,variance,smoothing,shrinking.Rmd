@@ -134,7 +134,8 @@ whoReact = observe({
     cat("whoID\n")
     ### Who:  discrete mixture of Lump and Split.
     rValues$title_1 <<- "Dr. Who: \ndiscrete mixture of Lump and Split."
-    rValues$title_2 <<- HTML("Prior belief: <BR> Pr(Lump)=Pr(Split)=1/2.")
+    rValues$title_2 <<- HTML(paste0("Prior belief: <BR> Pr(Split)=",
+                                    rValues$WhoPriorProb))
   }
 }) 
 ```
