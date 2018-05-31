@@ -17,7 +17,7 @@ TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing
 ")
 ```
 
-###### calculation of the Bayes factor, and plotting the mixture.
+##### calculation of the Bayes factor, and plotting the mixture.
 
 If *Split* is correct, then the (marginal) probability of getting the data we observed is:
 `r output$mSplit = renderText({
@@ -67,11 +67,18 @@ conditionalPanelWithCheckbox(
 )
 ```
 
-###### Bayes Factor, Posterior odds (and probability) of the "null hypothesis"
+##### Bayes Factor, Posterior odds (and probability) of the "null hypothesis"
 
-The  Bayes Factor is the ratio
-\[{m_{Split}}/{m_{Lump}} \], 
-and also the ratio of posterior odds to prior odds.
+The  Bayes Factor is the ratio of these marginal probabilities of the data,
+and also the ratio of posterior odds to prior odds:
+\[BF = \frac{m_{Split}}{m_{Lump}} = \frac{Pr(Split|data)}{Pr(Lump|data)}
+\div \frac{Pr(Split)}{Pr(Lump)}.\]
+
+```{r}
+output$BF = renderText({DrWhoBayesFactor(rValues$DLdata)})
+```
+
+In our case, the Bayes Factor is `r textOutput('BF', inline=TRUE)`.
 
 If *Dr.Split* and *Dr.Lump* have equal prior probability (prior odds = 1),
 then the posterior odds is the Bayes factor,
@@ -79,10 +86,27 @@ and  the posterior probability that *Dr.Lump* is right is
 
 \[{\rm{Pr(}}\phi  = Lump|data) = {m_{Lump}}/({m_{Split}} + {m_{Lump}})\]
 
-Then Dr. Who's estimate is 
+More generally, 
 
-$\begin{array}{l}
-\Pr (R|D,Who) = \Pr (Lump) \times \Pr (R|D,Lump) + \Pr (Split) \times \Pr (R|D,Split)\\
-\quad \quad \quad \quad \quad \quad \quad  = 0.05\quad \quad \quad  \times 0.08\quad \quad \quad \quad \quad \quad  + 0.95\quad \quad \quad  \times 0.60\\
-\quad \quad \quad \quad \quad \quad \quad  = {\rm{ 0.574}}
-\end{array}$
+\[\begin{array}{l}
+\Pr (R|D,Who) = \Pr (Lump|data) \times \Pr (R|D,Lump) + \Pr (Split|data) \times \Pr (R|D,Split)\\\]
+
+```{r}
+output$bayesAverage = renderText({
+  paste0('Pr(Lump) *  mLump + Pr(Split) * mSplit',
+         '= ',
+         signif(digits=3,
+                (1/2) * mLump(rValues$DLdata) +
+                  (1/2) * mSplit(rValues$DLdata))
+  )
+})
+```
+which equals  `r textOutput('bayesAverage')`.
+
+You can adjust the prior probability and observe how the posterior probability changes:
+
+the posterior odds that *Dr.Lump* is right is
+
+\[{\rm{Odds}(\phi = Lump|data) = \rm{Odds(}\phi  = Lump) \times {m_{Lump}}/{m_{Split}}}\]
+
+Finally to convert  TODO 

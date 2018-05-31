@@ -30,12 +30,14 @@ try(rm(envNextNumberTOC, pos=1), silent = TRUE)
 try(rm(envNextNumberQA, pos=1), silent = TRUE)
 try(rm(envNextNumberTextQuestion, pos=1), silent = TRUE)
 try(rm(envNextNumberDTC, pos=1), silent = TRUE)  ## data table
+try(rm(envNextNumberWhoPriorProbNumericInput, pos=1), silent = TRUE)  ## data table
 ### Note that the .GlobalEnv seen here is different from your R session... and it persists across Rmd runs!
 
 source('nextNumber.R', local=TRUE)
 source('interactiveSection.R', local=TRUE)
 source('QandAha.R', local=TRUE)
 source('TextQuestion.R', local=TRUE)
+source('WhoPriorProbNumericInput.R', local=TRUE)
 ```
 
 
@@ -73,7 +75,9 @@ rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
                          DLdata = DLdataOriginal,
                          DLdataMyChoice = DLdataOriginal,
                          isResetting = FALSE,
-                         isLoopingSync = FALSE)
+                         isLoopingSync = FALSE,
+                         WhoPriorProbProb = 1/2
+)
 ```
 
 ```{r plotPlightPdarkPosteriorReactive}
@@ -185,7 +189,7 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(
 #cat("\U2B07")
 # This shows you can get a fat arrow... but not in a plot.
 ```
-##<a name='section-debugging'>** **</a>
+##<a name='section-debugging'>**Debugging utility**</a>
 ```{r withDebuggingPanel}
 
 fluidRow(
@@ -391,7 +395,7 @@ source('initializations.R', local=TRUE)
 require('shiny')
 ```
 
-### "Lumping" versus "splitting" in science. 
+### ["Lumping" versus "splitting" in science.](#Lumping_versus_ splitting_in_science) 
 
 In science, advances often proceed by "splitting": things that seem initially the same are classified as different. The classification may be tentativedistinction, until it proves to be useful. 
 Other advances proceed by "lumping":  identifying things that seem different but have a deep connection.
@@ -536,8 +540,6 @@ fluidRow(
 )
 ```
 
-#### Approach: Bayes joint prior on logits
-
 #### <a name='Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
 
 Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R|D) and Pr(R|L). This allows data on the two probabilities to be shared between them, smoothly instead of a crude mixture of the two extreme views of   "Dr. Lump" and "Dr. Split".
@@ -548,7 +550,12 @@ Once we have this joint prior distribution, we compute the joint posterior.
 ```{r QA4}
 QandAha()
 ```
-To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits ("logit" means "log(odds)"; details <a href='www/logit-info.htm').
+To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits ("logit" means "log(odds)").
+```{r}
+conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rmd')
+```
+
+
 Then we set a bivariate normal distribution on the logits.
 
 We also convert the observed proportions to logits. We estimate the variances using the delta method applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
@@ -656,7 +663,7 @@ interactiveSection(codeToRun = "saveComments()")
 
 ##	The role of external information, explored by introducing different identities for "D" and "L".
 
-So, when should we lump? When should we split? Should we aim to compromise, and if so, how should we strike the balance? 
+So, when should we lump? When should we split? Should we aim to compromise, and if so, how should we strike the balance?  <a node='Lumping_versus_ splitting_in_science'> Lumping and splitting in science </a>
 
 In this section we explore different scenarios of external information, to see how they affect the estimation of ${Pr(R|D}$.
 
@@ -664,18 +671,17 @@ In this section we explore different scenarios of external information, to see h
 
 ###	Strong prior belief that $X$ is important
 
-What if D and L represent two alleles of a gene believed to affect this drug's pharmacodynamics? "Dr. Who" can express this by choosing a prior odds that favors Dr. Split over Dr. Lump. Experiment by choosing such a value here, 
-```{r WhoPriorOdds}
-numericInput(inputId = 'WhoPriorOdds', label = 'Dr.Who\'s Prior Probability ,Pr(Split is correct)', value = 0, min = 0, max=1, step = 0.1)
+What if D and L represent two alleles of a gene believed to affect this drug's pharmacodynamics? "Dr. Who" can express this by choosing a prior odds that favors Dr. Split over Dr. Lump. Experiment by choosing such a value here: 
+
+```{r WhoPriorProbProb}
+WhoPriorProbNumericInput()
 ```
 
-and reviewing previous results at these locations:
+and reviewing revised results at these previous locations:
 
 ```{r}
 QandAha('')
 ```
-
-
 
 ###	Multiple features, with some prior belief
 
@@ -685,22 +691,23 @@ Suppose that we have features for a hundred genes which were *previously* identi
 TextQuestion(' How would you modify the "classical" approach that chooses Lump or Split based on a hypothesis test?')
 ```
 
+
+```{r}
+TextQuestion(' How would you account for this knowledge in one of the two Bayesian approaches?')
+```
+
 ###	Best feature of 100, with some prior belief
 
-As before, suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. Our feature $X$ is select to be the best of the bunch.
-
-```{r}
-TextQuestion(' How would you modify the "classical" approach that chooses Lump or Split based on a hypothesis test?')
-
-```
+As before, suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. But this time, our feature $X$ is select to be the best of the one hundred features.
 
 
-```{r}
-TextQuestion(' How would you modify the "classical" approach that chooses Lump or Split based on a hypothesis test?')
-```
--> Revisit [Classica bifurcation](#ClassicalTest) 
 
-###	2 alleles of one gene out of a hundred thousand tested; nothing known
+
+
+### Two alleles of one gene out of a hundred thousand tested; nothing known
+
+
+
 ###	D = dark hair, L = light hair
 ###	D = dark hair, L = light hair; but hair color is strongly tied to ethnicity… which is strongly tied to a key genetic variant
 # Other topics to be developed:
@@ -709,12 +716,12 @@ TextQuestion(' How would you modify the "classical" approach that chooses Lump o
 ##	Multiple testing and estimation with high-dimensional priors,
 
 
-##### Other navigation links
-## -> Top of the [Lump/Split Submodule](#LSnotebookBegin) .
-## -> [Debugging panel](#debugging) .
-## -> [Code for the Plot](#plotCode).
-## -> [viewPlot](#viewPlot).
-* [Classical test: is X independent of the outcome Y?](#ClassicalTest)
+## Other navigation links
+* -> Top of the [Lump/Split Submodule](#LSnotebookBegin) .
+* -> [Debugging panel](#debugging) .
+* -> [Code for the Plot](#plotCode).
+* -> [viewPlot](#viewPlot).
+* -> [Classical test: is X independent of the outcome Y?](#ClassicalTest)
 
 
 
