@@ -88,8 +88,8 @@ and  the posterior probability that *Dr.Lump* is right is
 
 More generally, 
 
-\[\begin{array}{l}
-Pr (R|D,Who) = Pr (Lump|data) \times Pr (R|D,Lump) + Pr (Split|data) \times \Pr (R|D,Split)\]
+\[
+\Pr (R|D,Who) = \Pr (Lump|data) \times \Pr (R|D,Lump) + \Pr (Split|data) \times \Pr (R|D,Split)\]
 
 ```{r}
 output$bayesAverage = renderText({
