@@ -303,12 +303,10 @@ source('dataTableComponent.R', local=TRUE)
 ```
 
 ```{r panelOfBifurcation}
-output$fisherResult = renderUI({
+output$fisherResult = renderText({
     Pvalue = fisher.test(rValues$DLdata)$p.value
-    div('Fisher exact test result:',
-        br(),
-        paste0('P = ', Pvalue, '\n')
-    )
+    paste0('Fisher exact test result:',
+        '   P = ', signif(digits=3, Pvalue), '\n')
 })
  
 panelOfBifurcation = 
@@ -498,7 +496,7 @@ One test frequently performed to test independence in a 2x2 table like this one 
 # interactiveSection(
   # codeToRun = "cat('P = ', fisher.test(DLdata)$p.value, '\n')",
   # buttonLabel= "run fishertest")
-uiOutput('fisherResult')
+textOutput('fisherResult')
 ```
 
 If the P-value is "significant", the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%.
