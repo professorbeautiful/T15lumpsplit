@@ -19,13 +19,12 @@ TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing
 
 ##### calculation of the Bayes factor, and plotting the mixture.
 
-If *Split* is correct, then the (marginal) probability of getting the data we observed is:
+If *Split* is correct, then the (marginal) probability of getting the data we observed is 
 `r output$mSplit = renderText({
-  options(digits=3); 
-  mSplit(); 
-  textOutput('mSplit')
+  signif(digits=3, mSplit(rValues$DLdata)); 
   })
-  `.
+  textOutput('mSplit', inline=TRUE)
+`.
 
 
 ```{r}
@@ -39,13 +38,14 @@ conditionalPanelWithCheckbox(
 
 If *Lump* is correct, then the (marginal) probability of getting the data we observed is:
 `r output$mLump = renderText({
-  options(digits=3); 
-  mLump(); 
-  textOutput('mLump')})`.
-  
+  signif(digits=3, mLump(rValues$DLdata)); 
+  })
+  textOutput('mLump', inline=TRUE)
+`.
+
 ```{r}
 conditionalPanelWithCheckbox(
-  labelString = 'equations for Dr. Lump\'s marginal probability', 
+  labelString = 'Equations for Dr. Lump\'s marginal probability', 
   filename = 'DrLumpEquation.Rmd',
   html='',
   initialValue=FALSE
@@ -56,7 +56,7 @@ Here is the code if you are interested:
 
 ```{r}
 conditionalPanelWithCheckbox(
-  labelString = 'code for the Lump and Split marginal probabilities',
+  labelString = 'Code for the Lump and Split marginal probabilities',
   html=
     div(
               HTML(gsub('  ', '&nbsp;&nbsp;',
@@ -89,7 +89,7 @@ and  the posterior probability that *Dr.Lump* is right is
 More generally, 
 
 \[\begin{array}{l}
-\Pr (R|D,Who) = \Pr (Lump|data) \times \Pr (R|D,Lump) + \Pr (Split|data) \times \Pr (R|D,Split)\\\]
+Pr (R|D,Who) = Pr (Lump|data) \times Pr (R|D,Lump) + Pr (Split|data) \times \Pr (R|D,Split)\]
 
 ```{r}
 output$bayesAverage = renderText({
