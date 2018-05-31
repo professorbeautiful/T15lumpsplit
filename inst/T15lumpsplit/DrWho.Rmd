@@ -17,7 +17,7 @@ TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing
 ")
 ```
 
-##### calculation of the Bayes factor, and plotting the mixture.
+##### Marginal probability for each hypothesis Split and Lump
 
 If *Split* is correct, then the (marginal) probability of getting the data we observed is 
 `r output$mSplit = renderText({
@@ -29,7 +29,7 @@ If *Split* is correct, then the (marginal) probability of getting the data we ob
 
 ```{r}
 conditionalPanelWithCheckbox(
-  labelString = 'equations for Dr. Split\'s marginal probability', 
+  labelString = 'Equations for Dr. Split\'s marginal probability', 
   filename = 'DrSplitEquation.Rmd',
   html='',
   initialValue=FALSE
@@ -67,7 +67,7 @@ conditionalPanelWithCheckbox(
 )
 ```
 
-##### Bayes Factor, Posterior odds (and probability) of the "null hypothesis"
+##### The Bayes Factor: posterior odds (and probability) of the "null hypothesis"
 
 The  Bayes Factor is the ratio of these marginal probabilities of the data,
 and also the ratio of posterior odds to prior odds:
@@ -109,4 +109,3 @@ the posterior odds that *Dr.Lump* is right is
 
 \[{\rm{Odds}(\phi = Lump|data) = \rm{Odds(}\phi  = Lump) \times {m_{Lump}}/{m_{Split}}}\]
 
-Finally to convert  TODO 
