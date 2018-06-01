@@ -5,8 +5,7 @@ Version: 0.2.0
 Date: 2018-06-01
 Author: Roger Day
 Maintainer: Roger Day<day01@pitt.edu>
-Description: A tutorial module for biomedical informatics students,
-relating "personalized medicine" to topics in statistics.
+Description: A tutorial module for biomedical informatics students, relating "personalized medicine" to topics in statistics.
 License: MIT + file LICENSE
 Imports: shiny, devtools, magrittr, shinyBS
 Encoding: UTF-8
