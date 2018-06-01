@@ -10,6 +10,7 @@ WhoPriorProbNumericInput = function() {
   observeEvent(input[[numInputIdThisWhoPriorProb]],
                {
                  rValues$WhoPriorProb = input[[numInputIdThisWhoPriorProb]]
+                 rValues$WhoPriorOdds = rValues$WhoPriorProb/(1-rValues$WhoPriorProb)
                })
   uiOutput(outputId = outputIdThisWhoPriorProb)
 }

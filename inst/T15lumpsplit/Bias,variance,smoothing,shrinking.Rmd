@@ -76,7 +76,8 @@ rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
                          DLdataMyChoice = DLdataOriginal,
                          isResetting = FALSE,
                          isLoopingSync = FALSE,
-                         WhoPriorProbProb = 1/2
+                         WhoPriorProbProb = 1/2,
+                         WhoPriorOdds = 1
 )
 ```
 
