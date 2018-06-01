@@ -211,10 +211,10 @@ conditionalPanelWithCheckbox = function(
   if(!missing(filename))
      html = c(tagList(inclRmd(filename)), html)
    output[[labelStringId]] <- renderUI({
-     list(
+     wellPanel(
        checkboxInput(cbStringId, 
                      strong(em(
-                       paste0("show/hide the ", labelString))),
+                       paste0("Show/hide: ", labelString))),
                      value=initialValue),
        conditionalPanel(condition = paste0('input.', cbStringId),
                         html )
