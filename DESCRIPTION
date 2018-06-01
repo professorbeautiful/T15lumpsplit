@@ -1,10 +1,13 @@
 Package: T15lumpsplit
 Type: Package
-Title: T15lumpsplit tutorial
-Version: 0.1.0
+Title: T15lumpsplit tutorial on bias, variance, smoothing and shrinking. 
+Version: 0.2.0
+Date: 2018-06-01
 Author: Roger Day
 Maintainer: Roger Day<day01@pitt.edu>
-Description: Developing tutorial module for the NLM T15
-License: What license is it under?
+Description: A tutorial module for biomedical informatics students,
+relating "personalized medicine" to topics in statistics.
+License: MIT + file LICENSE
+Imports: shiny, devtools, magrittr, shinyBS
 Encoding: UTF-8
 LazyData: true
