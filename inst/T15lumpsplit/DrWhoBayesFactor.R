@@ -37,3 +37,7 @@ DrWhoBayesFactor = function(theData=rValues$DLdata) {
   BF
   #6/101/102/103
 }
+
+posteriorOdds = function(priorOdds, theData)
+  priorOdds * DrWhoBayesFactor(theData)
+
