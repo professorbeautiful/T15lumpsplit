@@ -309,23 +309,12 @@ output$fisherResult = renderText({
     paste0('Fisher exact test result:',
         '   P = ', signif(digits=3, Pvalue), '\n')
 })
- 
-panelOfBifurcation = 
-    conditionalPanelWithCheckbox(
-      labelString = 'Classical bifurcated analysis',
-      html = list(
-  strong(em(span("P>0.05? then lump. P<0.05? then split"))),
-  uiOutput('fisherResult')
-#  checkboxInput('toggleShowFisher', 'Show/Hide the Fisher test', FALSE)
-#)
-      )
-)
+
 ```
 
 
 
 ```{r UI_begins}
-#### UI fluidPage####
 require(shinyBS)
 ```
 *Date: "`r date()`"     Author: "Roger Day, University of Pittsburgh"*
