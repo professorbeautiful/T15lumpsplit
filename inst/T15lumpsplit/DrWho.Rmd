@@ -3,7 +3,21 @@ Dr. Who is not confident in either Dr. Split or Dr. Lump.  Maybe one’s right (
 
 \[\pi _{Who}^{}({\bf{p}}) = \pi _{Who}^{}(\phi  = Split)\pi _{Split}^{}({\bf{p}}) + \pi _{Who}^{}(\phi  = Lump)\pi _{Lump}^{}({\bf{p}}).\]
  
-NOTE: This marginalizes out (sums over) the nuisance parameter $\phi$ over the joint distribution of ( ${p_{R.D}},\phi$)!
+NOTE: This marginalizes out (sums over) the nuisance parameter $\phi$ over the joint distribution of ( ${p_{R.D}},\phi$)!  For details on Bayes Theorem, including conditioning and marginalizing, see here:
+
+
+```{r hide=TRUE}
+interactiveSection(codeToRun="eval(parse(text=linkout(
+                   'bayes_decision_analysis.pdf')))", 
+                   showResult = FALSE)
+# conditionalPanelWithCheckbox(
+#   labelString = 'Principles of Bayesian analysis', 
+#   html = HTML('<img src="www/bayes decision analysis.pdf" 
+#       alt="bayes"  width="4200" height="4200">')
+# , initialValue = FALSE
+#   
+# )
+```
 
 Then Dr. Who’s posterior is:
  \[\pi _{Who}^*({p_{R.D}}) = \pi _{Who}^*(\phi  = Split)\pi _{Split}^*({p_{R.D}}) + \pi _{Who}^*(\phi  = Lump)\pi _{Lump}^*({p_{R.D}})\]
