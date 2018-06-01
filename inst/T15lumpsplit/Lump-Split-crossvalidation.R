@@ -54,10 +54,10 @@ output$crossvalidationPlot = renderPlot({
          xlab='weights',
          ylab="",
          #     ylim=c(0,max(penaltyVector)),
-         type='l', col='red', axes=F)
+         type='l', col='orange', axes=F)
     axis(1)
-    axis(2, col='red', col.axis='red')
-    mtext(text = 'penalty', side = 2, col='red',line=2)
+    axis(2, col='orange', col.axis='orange')
+    mtext(text = 'penalty', side = 2, col='orange',line=2)
     optimalWeight = weights[which(penaltyVector==min(penaltyVector))]  [1]
     cat('optimalWeight = ', optimalWeight, '\n')
     proportionOverall = sum(theData[ 'R', ])/sum(theData)
@@ -66,33 +66,33 @@ output$crossvalidationPlot = renderPlot({
     cat('optimal estimate for dark = ', optimalEstimate, '\n')
     points(optimalWeight,
            totalPenalty(optimalWeight, penalty=penaltyFunction),
-           col='red', pch=17, cex=2)
+           col='orange', pch=17, cex=2)
     text(optimalWeight,
          totalPenalty(optimalWeight, penalty=penaltyFunction),
-         col='red', pos=3,
+         col='orange', pos=3,
          labels = round(digits=2, optimalWeight))
-    abline(h=min(penaltyVector),col='red')
+    abline(h=min(penaltyVector),col='orange')
     title('cross-validation optimization',
-          'lump <---------------------------------> split')
+          'lump <-------------------------------------------> split')
 
     #####  adding a right-hand-side vertical axis #####
     par(new=T)
     plot(weights, estimators, axes=F, type='l', lty=2,
-         col='darkgreen', ylab='', ylim=c(0.0, proportionThisGroup*1.05))
-    axis(4, col='darkgreen', col.axis='darkgreen')
-    mtext('estimate Pr(R|D)', side = 4, col='darkgreen', line = 2)
+         col='blue', ylab='', ylim=c(0.0, proportionThisGroup*1.05))
+    axis(4, col='blue', col.axis='blue')
+    mtext('estimate Pr(R|D)', side = 4, col='blue', line = 2)
     points(optimalWeight, optimalEstimate,
-           col='darkgreen', pch=17, cex=2)
+           col='blue', pch=17, cex=2)
     text(0, proportionOverall,
          as.character(round(digits=2, proportionOverall)),
-         col='darkgreen', adj=0)
+         col='blue', adj=0)
     text(1, proportionThisGroup,
          as.character(round(digits=2, proportionThisGroup)),
-         col='darkgreen', adj=1)
+         col='blue', adj=1)
     text(optimalWeight,
          estimators[which(weights==optimalWeight)],
          round(digits=2, optimalEstimate),
-         col='darkgreen', pos = 3)
+         col='blue', pos = 3)
     par(savedPar)  # restore original plot settings
   }
 )

@@ -31,7 +31,7 @@ plotPlightPdarkPosterior = function(
            cex=cex, col=col)
   }
   if(showS | showL)
-    title('L = Lump, S = Split', col.main='red')
+    title('L = Lump, S = Split', col.main='orange')
   if(showS) {
       ### careful.... rows are groups, columns outcomes.
     Spoint = c(x=DLdata['R', 'D']/sum(DLdata[ , 'D']),
@@ -48,7 +48,7 @@ plotPlightPdarkPosterior = function(
     lines(rep(Spoint[1], 2), confInterval_L, lwd=3)
     addCircledLetter(
       pointLocation = c(Spoint[1], Spoint[2]),
-      pch='S', col='red', cex=2)
+      pch='S', col='orange', cex=2)
   }
   if(showL) {
     Lpoint = rep(times=2,
@@ -59,14 +59,14 @@ plotPlightPdarkPosterior = function(
     lines(confInterval, confInterval, lwd=3)
     addCircledLetter(
       pointLocation = c(Lpoint[1], Lpoint[2]),
-      pch='L', col = 'red', cex=2)
+      pch='L', col = 'orange', cex=2)
   }
   if(showW) {
     BayesFactor = DrWhoBayesFactor(DLdata)
     BayesProbSplit = BayesFactor/(1+BayesFactor)
     Wpoint = Spoint*BayesProbSplit + Lpoint*(1-BayesProbSplit)
     addCircledLetter(pointLocation = c(Wpoint[1], Wpoint[2]), pch='W',
-                     circleColor='red', bg=NULL, col='red')
+                     circleColor='orange', bg=NULL, col='orange')
   }
   #### bivariate normal contours ####
   logit.hat = logit(apply(DLdata, 'feature', function(r)r[1]/sum(r)))
