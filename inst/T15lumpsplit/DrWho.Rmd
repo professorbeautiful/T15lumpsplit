@@ -115,7 +115,7 @@ output$bayesAverage = renderText({
   )
 })
 ```
-which equals  `r textOutput('bayesAverage')`.
+which equals  `r textOutput('bayesAverage', inline=TRUE)`.
 
 You can adjust the prior probability and observe how the posterior probability changes:
 

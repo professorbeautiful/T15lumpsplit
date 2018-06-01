@@ -487,7 +487,7 @@ One test frequently performed to test independence in a 2x2 table like this one 
 # interactiveSection(
   # codeToRun = "cat('P = ', fisher.test(DLdata)$p.value, '\n')",
   # buttonLabel= "run fishertest")
-textOutput('fisherResult')
+textOutput('fisherResult', inline=TRUE)
 ```
 
 If the P-value is "significant", the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%.
@@ -571,7 +571,7 @@ output$postmean.p = renderText(
 )
 ```
 
-Finally, Pr(R|D) marginalized over Pr(R|L) has posterior mean =  `r  (textOutput('postmean.p'))`  .
+Finally, Pr(R|D) marginalized over Pr(R|L) has posterior mean =  `r  (textOutput('postmean.p', inline=TRUE))` .
 
 The link to bivariate normal details is here:
 
