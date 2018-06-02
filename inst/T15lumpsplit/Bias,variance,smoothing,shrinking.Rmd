@@ -329,9 +329,9 @@ conditionalPanelWithCheckbox(
   initialValue = TRUE)
 ```
 The general scope of the bias-variance axis in many settings is here:
+actionLink('bivnorm', label=HTML('<font color=blue>here</font>'))
 ```{r hide=TRUE}
-interactiveSection(codeToRun="eval(parse(text=linkout('Reproducibility-lump-split-page-1.pdf')))", showResult = FALSE)
-### NOTE: you must re-build the package to detect the file.
+linkout('Reproducibility-lump-split-page-1.pdf')
 ```
 
 The list of topics developed or in development is here:
@@ -574,12 +574,19 @@ output$postmean.p = renderText(
 
 Finally, Pr(R|D) marginalized over Pr(R|L) has posterior mean =  `r  (textOutput('postmean.p', inline=TRUE))` .
 
-The link to bivariate normal details is here:
-
 ```{r linkoutbivariate}
-  interactiveSection(codeToRun = 
-linkout('./lump,split-bivariate-normal-derivation.pdf'))
+observeEvent(eventExpr = {input$bivnorm},
+             { 
+                 linkout(
+                   './lump,split-bivariate-normal-derivation.pdf') 
+             }
+)
 ```
+The link to bivariate normal details is 
+`r
+actionLink('bivnorm', label=HTML('<font color=blue>here</font>'))
+`
+
 ```{r BayesLogitPlot}
 #a(name='viewPlot')
 div(
