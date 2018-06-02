@@ -641,27 +641,6 @@ output$estimateTable =
 ### ToDo extract the point estimate from BayesLogit.
 ```
 
-###  Save your Comments and Answers
-```{r assembleComments}
-assembleComments <<- function() {
-  lastQANumber = nextNumber(sequenceType = "QA") - 1
-  answers = sapply(1:lastQANumber, function(num) {
-    outputIdThisQA = paste0('QA', num)
-    textareaIdThisQA = paste0('id', outputIdThisQA)
-    return(input[[textareaIdThisQA]])
-  })
-  unlist(answers[-which(sapply(answers, is.null))])
-}
-saveComments <<- function() {
-  answers = assembleComments()
-  writeLines(answers, file(paste0('answers.',
-                                 Sys.info()["user"],
-                                 '.txt'))
-  )
-}
-
-interactiveSection(codeToRun = "saveComments()")
-```
 
 ##	The role of external information, explored by introducing different identities for "D" and "L".
 
@@ -717,6 +696,28 @@ As before, suppose that we have features for a hundred genes which were *previou
 ##	Curse of dimensionality,
 ##	Multiple testing and estimation with high-dimensional priors,
 
+
+###  Save your Comments and Answers
+```{r assembleComments}
+assembleComments <<- function() {
+  lastQANumber = nextNumber(sequenceType = "QA") - 1
+  answers = sapply(1:lastQANumber, function(num) {
+    outputIdThisQA = paste0('QA', num)
+    textareaIdThisQA = paste0('id', outputIdThisQA)
+    return(input[[textareaIdThisQA]])
+  })
+  unlist(answers[-which(sapply(answers, is.null))])
+}
+saveComments <<- function() {
+  answers = assembleComments()
+  writeLines(answers, file(paste0('answers.',
+                                 Sys.info()["user"],
+                                 '.txt'))
+  )
+}
+
+interactiveSection(codeToRun = "saveComments()")
+```
 
 ## Other navigation links
 * -> Top of the [Lump/Split Submodule](#LSnotebookBegin) .
