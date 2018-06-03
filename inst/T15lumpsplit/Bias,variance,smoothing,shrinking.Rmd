@@ -331,7 +331,7 @@ conditionalPanelWithCheckbox(
 The general scope of the bias-variance axis in many settings is here:
 actionLink('bivnorm', label=HTML('<font color=blue>here</font>'))
 ```{r hide=TRUE}
-linkout('Reproducibility-lump-split-page-1.pdf')
+             linkout('Reproducibility-lump-split-page-1.pdf')
 ```
 
 The list of topics developed or in development is here:
@@ -662,11 +662,9 @@ So, when should we lump? When should we split? Should we aim to compromise, and 
 
 In this section we explore different scenarios of external information, to see how they affect the estimation of ${Pr(R|D}$.
 
+###	Strong prior belief that $X$ is *un*important
 
-
-###	Strong prior belief that $X$ is important
-
-What if D and L represent two alleles of a gene believed to affect this drug's pharmacodynamics? "Dr. Who" can express this by choosing a prior odds that favors Dr. Split over Dr. Lump. Experiment by choosing such a value here: 
+What if D and L represent dark hair color and light hair color? "Dr. Who" may be highly skeptical that this $X$ really affects response, and express this by choosing a prior odds that favors Dr. Lump  over Dr. Split. Experiment by choosing such a value for prior odds here: 
 
 ```{r WhoPriorProbProb}
 WhoPriorProbNumericInput()
@@ -677,6 +675,27 @@ and reviewing revised results at these previous locations:
 ```{r}
 QandAha('')
 ```
+
+
+###	Strong prior belief that $X$ is important
+
+What if D and L represent two alleles of a gene believed to affect this drug's pharmacodynamics? Or perhaps, D = dark hair, L = light hair, but hair color is strongly tied to ethnicity in this sample … which is strongly tied to a key genetic variant.
+
+"Dr. Who" can express this by choosing a prior odds that favors Dr. Split over Dr. Lump. Experiment by choosing such a value here: 
+
+```{r WhoPriorProbProb}
+WhoPriorProbNumericInput()
+```
+
+and reviewing revised results at these previous locations:
+
+* TODO: links to previous figures and results.
+* TODO: a way to return to here.
+
+```{r}
+QandAha('')
+```
+
 
 ###	Multiple features, with some prior belief
 
@@ -695,20 +714,19 @@ TextQuestion(' How would you account for this knowledge in one of the two Bayesi
 
 As before, suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. But this time, our feature $X$ is select to be the best of the one hundred features.
 
+This situation entails dealing with "multiple comparisons". Pure chance can make a feature seem strongly associated with the response outcome when in reality it is not associated. When the best-appearing relationship is selected out of a large number, we can be fooled into thinking the strength of evidence is stronger than it really is. *"The more questions you ask, the more wrong answers you are likely to get."*
 
+One way to handle multiple comparisons is through a classical frequentist multiple testing adjustment. This evaluates the chance of getting a P-value as low as (or lower than) the minimum of the P-values for the features. The best-known of these methods are the Bonferroni, Sidak, and permutation /randomization tests. Descriptions of these methods are easy to find elsewhere. 
 
+Another classical approach, the Benjamini-Hochberg method, is widely used in high-throughput biological assays. It has a technical advantage in that the stated "false discovery rate" is accurate. However, it has peculiar behavior.
 
+Another approach is through *empirical Bayes*, a method that presumes that the associations of the features with the outcome are drawn from a distribution. This allows a kind of sharing of information analogous to the sharing of information between the X=D and X=L people, but sharing across features instead of subgroups defined by one feature. 
+
+**One key point**: none of these methods utilizes prior belief about the plausibility of the features. To utilize prior belief, 
 
 ### Two alleles of one gene out of a hundred thousand tested; nothing known
 
-
-
-###	D = dark hair, L = light hair
-###	D = dark hair, L = light hair; but hair color is strongly tied to ethnicity… which is strongly tied to a key genetic variant
-# Other topics to be developed:
-##	The famous ECMO data set.
-##	Curse of dimensionality,
-##	Multiple testing and estimation with high-dimensional priors,
+The Benjamini-Hochberg method is often used in this situation. 
 
 
 ###  Save your Comments and Answers
@@ -732,6 +750,12 @@ saveComments <<- function() {
 
 interactiveSection(codeToRun = "saveComments()")
 ```
+
+
+# Other topics to be developed:
+##	The famous ECMO data set.
+##	Curse of dimensionality,
+##	Multiple testing and estimation with high-dimensional priors,
 
 ## Other navigation links
 * -> Top of the [Lump/Split Submodule](#LSnotebookBegin) .
