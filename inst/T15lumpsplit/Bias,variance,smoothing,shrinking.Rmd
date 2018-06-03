@@ -328,16 +328,19 @@ conditionalPanelWithCheckbox(
   filename = 'Overview.Rmd', html = '',
   initialValue = TRUE)
 ```
-The general scope of the bias-variance axis in many settings is here:
-actionLink('bivnorm', label=HTML('<font color=blue>here</font>'))
-```{r hide=TRUE}
+The general scope of the bias-variance axis in many settings is 
+```{r biasVariancePicture}
+actionLink('biasVariancePicture', label=HTML('<font color=blue>here.</font>'))
+observeEvent({input$biasVariancePicture},
              linkout('Reproducibility-lump-split-page-1.pdf')
+)
 ```
 
 The list of topics developed or in development is here:
+
 ```{r topics}
 conditionalPanelWithCheckbox(
-  labelString = 'Topics', filename = 'topics.Rmd', initialValue=FALSE)
+  labelString = 'Topics in development', filename = 'topics.Rmd', initialValue=FALSE)
 ```
 
 ## The Lump versus Split Dilemma <a name="section-LSnotebookBegin"> 
