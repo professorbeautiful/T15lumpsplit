@@ -41,3 +41,5 @@ DrWhoBayesFactor = function(theData=rValues$DLdata) {
 posteriorOdds = function(priorOdds, theData)
   priorOdds * DrWhoBayesFactor(theData)
 
+posteriorProb = function(priorOdds, theData)
+  antilogit(posteriorOdds(priorOdds, theData))

@@ -52,8 +52,8 @@ source('includeHTMLtrimmed.R', local=T)
 
 ```{r initial values, echo=FALSE}
 
-logit = function(p) log(p/(1-p))
-antilogit = function(x) 1 - 1/(1+exp(x))
+logit <<- function(p) log(p/(1-p))
+antilogit <<- function(x) 1 - 1/(1+exp(x))
 DLdataOriginal = matrix(c(3,2,5,90),nrow=2)
 dimnames(DLdataOriginal) = list( outcome=c("R","N"), feature=c("D","L"))
 ColorForPrior="orange";     
@@ -620,25 +620,39 @@ div(
 ```
 
 
-#### Summary of approaches 
+#### Summary table of estimates 
 
 Assembling the results of the approaches to estimating Pr(R|D):
 
 ```{r}
-### ToDo
-
 output$estimateTable = 
-  renderTable(
-    signif(digits=2, 
-          data.frame(
-            Lump=rValues$DLdata['R', ]/sum(rValues$DLdata[ , ]), 
-            Split=rValues$DLdata['R','D']/sum(rValues$DLdata[ ,'D']), 
-            Who=0.57, 
-            CV=0.47, 
-           BayesLogit=rValues$bivariateNormResults$postmean.p[1]
-           )
-    ))
-### ToDo extract the point estimate from BayesLogit.
+  renderTable({
+    Lump=sum(rValues$DLdata['R', ])/sum(rValues$DLdata) 
+    Split=rValues$DLdata['R','D']/sum(rValues$DLdata[ ,'D']) 
+    cat('Lump=', Lump, '\n')
+    cat('Split=', Split, '\n')
+    postProb = posteriorProb(rValues$WhoPriorOdds, rValues$DLdata)
+    cat('postProb=', postProb, '\n')
+    WhoProbSplit = Split*postProb + Lump*(1-postProb)
+    cat('WhoProbSplit=', WhoProbSplit, '\n')
+    options(digits=2) 
+    result = data.frame(
+      Lump=Lump 
+      ,Split=Split 
+      ,Who=WhoProbSplit 
+      ,CV=rValues$CVoptimalEstimate
+      ,BayesLogit=rValues$bivariateNormResults$postmean.p[1]
+    )
+    options(digits=7)
+    result
+  })
+tableOutput('estimateTable')
+```
+
+As you change Dr. Who's prior probability or the data values, observe the changes in this summary table.
+
+```{r}
+QandAha()
 ```
 
 

@@ -63,6 +63,7 @@ output$crossvalidationPlot = renderPlot({
     proportionOverall = sum(theData[ 'R', ])/sum(theData)
     proportionThisGroup =  sum(theData[ 'R', 'D'])/sum(theData[ , 'D'])
     optimalEstimate = estimators[which(weights==optimalWeight)]
+    rValues$CVoptimalEstimate = optimalEstimate
     cat('optimal estimate for dark = ', optimalEstimate, '\n')
     points(optimalWeight,
            totalPenalty(optimalWeight, penalty=penaltyFunction),
