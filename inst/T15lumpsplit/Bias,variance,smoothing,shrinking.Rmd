@@ -669,7 +669,7 @@ In this section we explore different scenarios of external information, to see h
 
 What if D and L represent dark hair color and light hair color? "Dr. Who" may be highly skeptical that this $X$ really affects response, and express this by choosing a prior odds that favors Dr. Lump  over Dr. Split. Experiment by choosing such a value for prior odds here: 
 
-```{r WhoPriorProbProb}
+```{r }
 WhoPriorProbNumericInput()
 ```
 
@@ -686,7 +686,7 @@ What if D and L represent two alleles of a gene believed to affect this drug's p
 
 "Dr. Who" can express this by choosing a prior odds that favors Dr. Split over Dr. Lump. Experiment by choosing such a value here: 
 
-```{r WhoPriorProbProb}
+```{r}
 WhoPriorProbNumericInput()
 ```
 
