@@ -1,5 +1,9 @@
 require("magrittr")
-inclRmd <- function(path) {
+inclRmd <- function(path, wd, openMe=FALSE) {
+  if(!missing(wd)) {
+    savedwd = getwd()
+    setwd(wd)
+  }
   tee = function(x, outputpath) {
     writeLines(capture.output(x), con=outputpath)
     return(x)
@@ -21,4 +25,9 @@ inclRmd <- function(path) {
   #print(str(knitrOutput))
   #return(knitrOutput)
   tee(., paste0(path, '.inclOutput.Rmd'))
+  if(openMe)
+    browseURL(paste0(path, '.inclOutput.Rmd'))
+  if(!missing(wd))
+    setwd(savedwd)
+  return(knitrOutput)
 }
