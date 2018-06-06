@@ -728,7 +728,9 @@ One way to handle multiple comparisons is through a classical frequentist multip
 
 Another classical approach, the Benjamini-Hochberg method, is widely used in high-throughput biological assays. It has a technical advantage in that the stated "false discovery rate" is accurate. However, it has peculiar behavior.
 
-Another approach is through *empirical Bayes*, a method that presumes that the associations of the features with the outcome are drawn from a distribution. This allows a kind of sharing of information analogous to the sharing of information between the X=D and X=L people, but sharing across features instead of subgroups defined by one feature. 
+Another approach is through *empirical Bayes*, a method that presumes that the associations of the features with the outcome are drawn from a distribution. This allows a kind of sharing of information analogous to the sharing of information between the X=D and X=L people, but sharing across features instead of subgroups defined by one feature. The following link develops the empirical Bayes idea in the context of medical decision-making.
+
+`r linkoutLink(fileName = 'www/Intro_to_Hierarchical_Bayes_and_Empirical_Bayes.pdf', linkouttext='An Introduction to Hierarchical Bayes and Empirical Bayes')
 
 **One key point**: none of these methods utilizes prior belief about the plausibility of the features. To utilize prior belief, 
 
