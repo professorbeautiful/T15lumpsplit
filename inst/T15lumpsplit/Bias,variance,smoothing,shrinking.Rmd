@@ -513,7 +513,6 @@ Dr. Who doesn't know *who* to believe, but is prepared to let the data make the 
 QandAha()
 ```
 
-
 ####  Approach: Optimizing the mixture with cross-validation
 
 Cross-validation is a technique in which the performance of a model can be checked as if on an independent dataset, without actually having a separate dataset. `K-fold cross-validation` divides the dataset into K disjoint subsets of observations, and loops over these sets. Each subset is, in turn, used as a `test set`. We remove it from the full dataset, re-build the model on the reduced dataset (the `training set`), and evaluate predictions of that model on the removed observations in the test set. Performance metrics are usually averaged across the K repetitions. When $K=N$, the size of the full dataset, the procedure is called `leave-one-out cross-validation`, since each test set is of size one.
@@ -524,6 +523,7 @@ For this example dataset, we perform leave-one-out cross-validation as follows:
 source('Lump-Split-crossvalidation.R', local=TRUE, echo = FALSE)
 ```
 ```{r}
+a(name='section-a_crossvalidationPlot')
 fluidRow(
   column(6, 
          plotOutput('crossvalidationPlot')),
@@ -591,7 +591,7 @@ actionLink('bivnorm', label=HTML('<font color=blue>here</font>'))
 `
 
 ```{r BayesLogitPlot}
-#a(name='viewPlot')
+a(name='section-a_viewPlot')
 div(
   fluidRow(
     column(6, 
