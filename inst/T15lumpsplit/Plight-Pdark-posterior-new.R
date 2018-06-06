@@ -15,59 +15,39 @@ plotPlightPdarkPosterior = function(
   ColorForLikelihood="black"
 ) {
   par(pty='s')
+  letterVerticalPosition = -0.30
   plot(0:1, 0:1, xlab = "Pr(R | D)", ylab = "Pr(R | L)", pch=" ",
        cex=2)
   abline(a=0, b=1, col='grey', lty=2, lwd=2)
-  addCircledLetter = function(pointLocation, bg=NA,
+  addCircledLetter = function(labelLocation,
+                              pointLocation,
+                              bg=NA,
                               col='black', circleColor='black',
                               size=0.05, pch, cex=1){
+    if(!missing(pointLocation)) {
+      lines(rbind(pointLocation, labelLocation), col=circleColor,
+            lty=1, lwd=2, xpd=NA)
+      symbols(add = TRUE,
+              x=pointLocation[1],
+             y=pointLocation[2],
+             circles=size/5,
+             col=circleColor, inches=F, bg=bg,
+             xpd=NA)
+    }
     symbols(add = TRUE,
-            x=pointLocation[1],
-            y=pointLocation[2],
-            circles = size, col=circleColor, inches=F, bg=bg)
-    points(x=pointLocation[1],
-           y=pointLocation[2],
+            x=labelLocation[1],
+            y=labelLocation[2],
+            circles = size, col=circleColor, inches=F, bg=bg,
+            xpd=NA)
+    points(x=labelLocation[1],
+           y=labelLocation[2],
            pch = pch,
-           cex=cex, col=col)
+           cex=cex, col=col, xpd=NA)
   }
-  if(showS | showL)
-    title('L = Lump, S = Split', col.main='orange')
-  if(showS) {
-      ### careful.... rows are groups, columns outcomes.
-    Spoint = c(x=DLdata['R', 'D']/sum(DLdata[ , 'D']),
-               y=DLdata['R', 'L']/sum(DLdata[ , 'L']) )
-    confInterval_D = binom.test(x = DLdata['R', 'D'],
-                                n = sum(DLdata[ , 'D'])
-    )$conf.int
-    #print(confInterval_D)
-    lines(confInterval_D, rep(Spoint[2], 2), lwd=3)
-    confInterval_L = binom.test(x = DLdata['R', 'L'],
-                                n = sum(DLdata[ , 'L'])
-    )$conf.int
-    #print(confInterval_L)
-    lines(rep(Spoint[1], 2), confInterval_L, lwd=3)
-    addCircledLetter(
-      pointLocation = c(Spoint[1], Spoint[2]),
-      pch='S', col='orange', cex=2)
-  }
-  if(showL) {
-    Lpoint = rep(times=2,
-                 sum(DLdata[ 'R', ])/sum(DLdata) )
-    confInterval = binom.test(x = sum(DLdata[ 'R', ]),
-               n = sum(DLdata))$conf.int
-    #print(confInterval)
-    lines(confInterval, confInterval, lwd=3)
-    addCircledLetter(
-      pointLocation = c(Lpoint[1], Lpoint[2]),
-      pch='L', col = 'orange', cex=2)
-  }
-  if(showW) {
-    BayesFactor = DrWhoBayesFactor(DLdata)
-    BayesProbSplit = BayesFactor/(1+BayesFactor)
-    Wpoint = Spoint*BayesProbSplit + Lpoint*(1-BayesProbSplit)
-    addCircledLetter(pointLocation = c(Wpoint[1], Wpoint[2]), pch='W',
-                     circleColor='orange', bg=NULL, col='orange')
-  }
+  # if(showS | showL) {
+  #   #title('L = Lump, S = Split', col.main='orange')
+  # }
+
   #### bivariate normal contours ####
   logit.hat = logit(apply(DLdata, 'feature', function(r)r[1]/sum(r)))
   varhat = apply(DLdata, 'feature', function(r)sum(1/r))
@@ -165,7 +145,7 @@ if(showPrior) {
     #        cex=2, col = ColorForPosterior)
     pointLocation = antilogit(
       c(postmean.logit[1,1], postmean.logit[2,1]))
-    addCircledLetter(pointLocation,  bg='lightgrey',
+    addCircledLetter(pointLocation, pointLocation, bg='lightgrey',
                      pch = "M", cex=1, col=ColorForPosterior)
     mtext(text = paste("posterior mean for Pr(R | D) = ",
                        signif(digits=2, postmean.p[1])),
@@ -184,6 +164,49 @@ if(showPrior) {
     lines(confints.p[ , 1], rep(postmean.p[2], 2), lwd=3)
     lines(rep(postmean.p[1], 2), confints.p[ , 2],lwd=3)
 
+  }
+  if(showS) {
+    ### careful.... rows are groups, columns outcomes.
+    Spoint = c(x=DLdata['R', 'D']/sum(DLdata[ , 'D']),
+               y=DLdata['R', 'L']/sum(DLdata[ , 'L']) )
+    confInterval_D = binom.test(x = DLdata['R', 'D'],
+                                n = sum(DLdata[ , 'D'])
+    )$conf.int
+    #print(confInterval_D)
+    lines(confInterval_D, rep(Spoint[2], 2), lwd=3)
+    confInterval_L = binom.test(x = DLdata['R', 'L'],
+                                n = sum(DLdata[ , 'L'])
+    )$conf.int
+    #print(confInterval_L)
+    lines(rep(Spoint[1], 2), confInterval_L, lwd=3, col='green')
+    addCircledLetter(
+      pointLocation = c(Spoint[1], Spoint[2]),
+      labelLocation = c(Spoint[1], letterVerticalPosition),
+      pch='S', col='darkgreen', cex=1.4)
+  }
+  if(showL) {
+    Lpoint = rep(times=2,
+                 sum(DLdata[ 'R', ])/sum(DLdata) )
+    confInterval = binom.test(x = sum(DLdata[ 'R', ]),
+                              n = sum(DLdata))$conf.int
+    #print(confInterval)
+    lines(confInterval, confInterval, lwd=3)
+    addCircledLetter(
+      pointLocation = c(Lpoint[1], Lpoint[2]),
+      labelLocation = c(Lpoint[1], letterVerticalPosition),
+      pch='L', bg='white', col = 'darkgreen', cex=1.4)
+  }
+  if(showW) {
+    BayesFactor = DrWhoBayesFactor(DLdata)
+    BayesProbSplit = BayesFactor/(1+BayesFactor)
+    Wpoint = Spoint*BayesProbSplit + Lpoint*(1-BayesProbSplit)
+    midpoint = Spoint[1]/2 + Lpoint[1]/2
+    addCircledLetter(
+      pointLocation = c(Wpoint[1], Wpoint[2]),
+      labelLocation = c(midpoint, letterVerticalPosition),
+      pch='W', cex=1.4,
+      circleColor='darkgreen',
+      bg='white', col='darkgreen')
   }
   return(invisible(list(postmean.logit=postmean.logit,
                           postmean.p=postmean.p,
