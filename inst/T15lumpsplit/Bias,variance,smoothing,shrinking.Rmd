@@ -54,7 +54,7 @@ source('includeHTMLtrimmed.R', local=T)
 
 logit <<- function(p) log(p/(1-p))
 antilogit <<- function(x) 1 - 1/(1+exp(x))
-DLdataOriginal = matrix(c(3,2,5,90),nrow=2)
+DLdataOriginal = matrix(c(3,3,4,90),nrow=2)
 dimnames(DLdataOriginal) = list( outcome=c("R","N"), feature=c("D","L"))
 ColorForPrior="orange";     
 ColorForPosterior="blue";     
