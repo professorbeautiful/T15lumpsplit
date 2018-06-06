@@ -330,11 +330,11 @@ conditionalPanelWithCheckbox(
 ```
 The general scope of the bias-variance axis in many settings is 
 ```{r biasVariancePicture}
-actionLink('biasVariancePicture', label=HTML('<font color=blue>here.</font>'))
-observeEvent({input$biasVariancePicture},
-             linkout('Reproducibility-lump-split-page-1.pdf')
+linkoutLink(linkouttext='here.', 
+             fileName='Reproducibility-lump-split-page-1.pdf'
 )
 ```
+
 
 The list of topics developed or in development is here:
 
@@ -674,6 +674,11 @@ WhoPriorProbNumericInput()
 ```
 
 and reviewing revised results at these previous locations:
+
+* `r linkinLink('a_crossvalidationPlot', 'Cross-validation plot')`
+  (an advantage of linkinLink--if it worked:  capturing the current location for return)
+* [Cross-validation plot](#a_crossvalidationPlot)
+* [Bivariate logit plot](#a_viewPlot)
 
 ```{r}
 QandAha('')
