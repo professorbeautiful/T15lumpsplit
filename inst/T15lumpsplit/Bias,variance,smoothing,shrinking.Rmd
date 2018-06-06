@@ -499,7 +499,7 @@ If the P-value is "significant", the "null hypothesis" (that "Dr. Lump" is corre
 QandAha()
 ```
 
-#### <a name='Bayes_mixture'> Approach: Dr. Who's Bayes mixture of "Lump" and "Split"</a>
+#### <a name='section-a_Bayes_mixture'> Approach: Dr. Who's Bayes mixture of "Lump" and "Split"</a>
 
 Dr. Who doesn't know *who* to believe, but is prepared to let the data make the right compromise.
 
