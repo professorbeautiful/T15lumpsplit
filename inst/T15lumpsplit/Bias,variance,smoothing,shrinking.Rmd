@@ -230,9 +230,8 @@ conditionalPanelWithCheckbox = function(
 panelOfInputs = 
   wellPanel(
     #checkboxInput(inputId= 'togglePanelOfInputs', label =
-    HTML(
-      'strong(em(
-                    "Prior Distribution Inputs"))'), 
+      strong(em(
+                    "Prior Distribution Inputs")), 
     #value = TRUE),
     #conditionalPanel(
     #  "input.togglePanelOfInputs",
