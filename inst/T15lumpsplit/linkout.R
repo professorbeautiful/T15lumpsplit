@@ -1,3 +1,5 @@
+#### NOTE: you will have to rebuild the package to make the file visible ####
+
 linkout = function(fileName) {
   theFile = system.file(
   package="T15lumpsplit",
