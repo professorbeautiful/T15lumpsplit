@@ -556,7 +556,7 @@ conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rm
 
 Then we set a bivariate normal distribution on the logits.
 
-We also convert the observed proportions to logits. We estimate the variances using the delta method applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
+We also convert the observed proportions to logits. We estimate the variances using the delta method (see `r linkout('www/the-delta-method.pdf')`) applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
 
 (This doesn't work well if the count is near zero, and not at all at zero.
 For this reason a "continuity fudge" is applied, if necessary.)
