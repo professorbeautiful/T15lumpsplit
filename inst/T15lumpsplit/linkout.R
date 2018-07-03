@@ -25,25 +25,32 @@ linkoutLink = function(fileName, linkouttext) {
   )
 }
 
-## This doesn't work yet.
-## This address works: http://127.0.0.1:7767/Bias,variance,smoothing,shrinking.Rmd#section-a_crossvalidationPlot
-##  ( in address bar)
 linkinLink = function(anchorName, linktext) {
   # For going to a local anchor
   thisNumber = nextNumber(sequenceType = "linkinLink")
   IdThisLinkin = paste0('linkinLink', thisNumber)
   thisAnchorName <<- anchorName
-  observeEvent(input[[IdThisLinkin]], {
-    print(anchorName)
-    print(force(anchorName))
-    print(thisAnchorName)
-    linkin(force(thisAnchorName))
-  }
-  )
-  actionLink(IdThisLinkin,
-             label=HTML(
-               paste0('<font color=blue>', linktext, '</font>'))
-  )
+  # observeEvent(input[[IdThisLinkin]], {
+  #   print(anchorName)
+  #   print(force(anchorName))
+  #   print(thisAnchorName)
+  #   linkin(force(thisAnchorName))
+  #   rValues$currentAnchor = currentAnchor
+  # }
+  # )
+  onclickAction = paste0("currentLocationId='", IdThisLinkin, "';
+    Shiny.onInputChange('currentLocationId',
+                         currentLocationId);")
+  labelString = HTML(
+    paste0('<font color=b
+           lue>', linktext, '</font>'))
+  a(id=IdThisLinkin,
+    onclick=onclickAction,
+                   href='#section-a_crossvalidationPlot',
+                   labelString)
+  # actionLink(IdThisLinkin,
+  #            label=labelString
+  # )
 }
 
 linkin = function(anchorName) {

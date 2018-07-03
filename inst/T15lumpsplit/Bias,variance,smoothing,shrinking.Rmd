@@ -683,6 +683,7 @@ and reviewing revised results at these previous locations:
 * [Cross-validation plot](#a_crossvalidationPlot)
 * [Bivariate logit plot](#a_viewPlot)
 
+
 ```{r}
 QandAha('')
 ```
@@ -701,6 +702,9 @@ WhoPriorProbNumericInput()
 and reviewing revised results at these previous locations:
 
 * TODO: links to previous figures and results.
+```{r}
+#linkinLink('')
+```
 * TODO: a way to return to here.
 
 ```{r}
