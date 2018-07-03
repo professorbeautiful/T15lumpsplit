@@ -50,7 +50,7 @@ plotPlightPdarkPosterior = function(
 
   #### bivariate normal contours ####
   logit.hat = logit(apply(DLdata, 'feature', function(r)r[1]/sum(r)))
-  varhat = apply(DLdata, 'feature', function(r)sum(1/r))
+  #varhat = apply(DLdata, 'feature', function(r)sum(1/r))
   if(any(DLdata==0)) fudgeFactor = max(fudgeFactor, 0.001)
     # if wanted, or if needed (if any zero cells).
   DLdataFudged = DLdata + fudgeFactor
@@ -58,7 +58,7 @@ plotPlightPdarkPosterior = function(
   varhat.fudged = apply(DLdataFudged, 'feature', function(r)sum(1/r))
   ### deltat method with protection from zero's.
   sig11 = sig12 = sig21 = matrix(c(tau+phi,tau,tau,tau+phi),nrow=2)
-  sig22 = sig11 + diag(varhat)   ## marginal variance of the data?
+  sig22 = sig11 + diag(varhat.fudged)   ## marginal variance of the data?
   logit.prior.mean = c(mu0, mu0)
   ## always use fudged here:
   postmean.logit = logit.prior.mean +
