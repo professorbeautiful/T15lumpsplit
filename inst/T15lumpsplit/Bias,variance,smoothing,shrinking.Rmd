@@ -20,7 +20,8 @@ options(knitr.duplicate.label = 'allow')
 require(T15lumpsplit)
 require(shiny)
 #source('rstudio.markdownToHTML.R', local=TRUE)
-includeCSS('TOC.css')    ### includeCSS doesn't work here
+includeCSS('TOC.css')    
+### includeCSS doesn't work here. Instead it's in the YAML.
 includeCSS('lumpsplit.css')
 ```
 
