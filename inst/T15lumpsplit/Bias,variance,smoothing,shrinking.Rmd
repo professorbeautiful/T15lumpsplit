@@ -200,6 +200,10 @@ fluidRow(
 )
 ```
 
+```{r}
+includeScript('navigateToId.js')
+```
+
 ```{r conditionalPanelWithCheckbox}
 conditionalPanelWithCheckbox = function(
   labelString, 
@@ -679,10 +683,8 @@ WhoPriorProbNumericInput()
 and reviewing revised results at these previous locations:
 
 * `r linkinLink('a_crossvalidationPlot', 'Cross-validation plot')`
-  (an advantage of linkinLink--if it worked:  capturing the current location for return)
-* [Cross-validation plot](#a_crossvalidationPlot)
-* [Bivariate logit plot](#a_viewPlot)
-
+* `r linkinLink('a_viewPlot', 'Bivariate logit plot')`
+(Press ESC key to return here.)
 
 ```{r}
 QandAha('')

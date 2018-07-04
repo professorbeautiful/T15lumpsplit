@@ -1,4 +1,4 @@
-#### NOTE: you will have to rebuild the package to make the file visible ####
+#### NOTE: you will have to rebuild the package to make a local file visible ####
 
 linkout = function(fileName) {
   theFile = system.file(
@@ -9,9 +9,6 @@ linkout = function(fileName) {
   eval(parse(text=theCommand))
 #  "system('open ", theFile, "')")
 }
-
-# NOTE: for local anchors, the name is prepended with 'section-'
-# at the target, but not at the clickbait.
 
 linkoutLink = function(fileName, linkouttext) {
   # For opening a file in the package
@@ -25,46 +22,28 @@ linkoutLink = function(fileName, linkouttext) {
   )
 }
 
+
+# NOTE: for local anchors, the name is prepended with 'section-'
+# at the target, but not at the clickbait.
 linkinLink = function(anchorName, linktext) {
   # For going to a local anchor
   thisNumber = nextNumber(sequenceType = "linkinLink")
   IdThisLinkin = paste0('linkinLink', thisNumber)
   thisAnchorName <<- anchorName
-  # observeEvent(input[[IdThisLinkin]], {
-  #   print(anchorName)
-  #   print(force(anchorName))
-  #   print(thisAnchorName)
-  #   linkin(force(thisAnchorName))
-  #   rValues$currentAnchor = currentAnchor
-  # }
-  # )
+
   onclickAction = paste0("currentLocationId='", IdThisLinkin, "';
     Shiny.onInputChange('currentLocationId',
                          currentLocationId);")
   labelString = HTML(
-    paste0('<font color=b
-           lue>', linktext, '</font>'))
+    paste0('<font color=blue style="text-decoration: underline">',
+           linktext,
+           '</font>'))
   a(id=IdThisLinkin,
     onclick=onclickAction,
                    href='#section-a_crossvalidationPlot',
                    labelString)
-  # actionLink(IdThisLinkin,
-  #            label=labelString
-  # )
 }
 
-linkin = function(anchorName) {
-  port = rValues$thisSession$clientData$url_port
-  print(paste("port=", port))
-  address = paste0(
-    'http://127.0.0.1:', port,
-    '/Bias,variance,smoothing,shrinking.Rmd#section-',
-    anchorName)
-  theCommand = paste0(
-    'browseURL("', address, '")')
-  print(paste('theCommand=', theCommand))
-  eval(parse(text=theCommand))
-}
 #From session help:
 #url_protocol, url_hostname, url_port, url_pathname, url_search,
 #url_hash_initial and url_hash can be used to get the components of the URL that
