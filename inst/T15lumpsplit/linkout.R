@@ -29,18 +29,24 @@ linkinLink = function(anchorName, linktext) {
   # For going to a local anchor
   thisNumber = nextNumber(sequenceType = "linkinLink")
   IdThisLinkin = paste0('linkinLink', thisNumber)
-  thisAnchorName <<- anchorName
 
-  onclickAction = paste0("currentLocationId='", IdThisLinkin, "';
+  onclickAction = paste0(
+    "savedYposition=window.scrollY; ",
+    "Shiny.onInputChange('savedYposition',
+    savedYposition);",
+
+    "currentLocationId='", IdThisLinkin, "';
     Shiny.onInputChange('currentLocationId',
-                         currentLocationId);")
+    currentLocationId);"
+    )
   labelString = HTML(
     paste0('<font color=blue style="text-decoration: underline">',
            linktext,
            '</font>'))
   a(id=IdThisLinkin,
     onclick=onclickAction,
-                   href='#section-a_crossvalidationPlot',
+                   href=paste0('#section-',
+                               anchorName),
                    labelString)
 }
 
