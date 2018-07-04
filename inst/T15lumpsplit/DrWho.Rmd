@@ -5,9 +5,24 @@ Dr. Who is not confident in either Dr. Split or Dr. Lump.  Maybe one’s right (
  
 NOTE: This marginalizes out (sums over) the nuisance parameter $\phi$ over the joint distribution of ( ${p_{R.D}},\phi$)!  
 
-(For details on Bayes Theorem, including conditioning and marginalizing, see 
+
+Briefly Bayes Theorem without a nuisance parameter is:
+
+\[\begin{array}{l}
+\quad [\theta |X] = \frac{{[X,\theta ]}}{X} = \frac{{[X,\theta ]}}{{\int\limits_\theta  {} [X,\theta ]}} = \frac{{[X|\theta ][\theta ]}}{{\int\limits_\theta  {} [X,\theta ]}}\\
+\end{array}\]
+
+And Bayes Theorem with a nuisance parameter is:
+
+\[\begin{array}{l}
+\quad [\theta |X] = \sum\limits_\phi  {} [\theta ,\phi |X] = \frac{{\sum\limits_\phi  {} [X,\theta ,\phi ]}}{{\sum\limits_{\phi ,\theta } {} [X,\theta ,\phi ]}}
+\end{array}\]
+
+Here the nuisance parameter $\phi$ is which is right, $Split$ or $Lump$.
+
+(For more details on Bayes Theorem, including conditioning and marginalizing, see 
 `r linkoutLink(fileName = 'bayes_decision_analysis.pdf',
-linkouttext='here')`.)
+linkouttext='here')`). 
 
 
 Then Dr. Who’s posterior is:
