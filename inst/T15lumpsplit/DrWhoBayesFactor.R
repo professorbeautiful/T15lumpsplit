@@ -13,7 +13,7 @@ multiChoose = function(nVec=rValues$DLdata, log=FALSE) {
   if(! log) answer = exp(answer)
   return(answer)
 }
-Beta = function(a,b)
+BetaNorm = function(a,b)
   DirNormalizer(c(a,b))
 mSplit = function(theData=rValues$DLdata)
   exp(
@@ -28,7 +28,7 @@ mLump = function(theData=rValues$DLdata) {
   choose(sum(theData), rs[1])*
       choose(sum(theData), cs[1])*
       dhyper(theData[1,1],rs,n-rs,cs)*
-      Beta(9,93)*Beta(6,96)
+      BetaNorm(9,93)*BetaNorm(6,96)
 }
       #/Beta(1,1)/Beta(1,1) ##prior
 DrWhoBayesFactor = function(theData=rValues$DLdata) {
