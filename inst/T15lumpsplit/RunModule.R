@@ -1,5 +1,8 @@
+### RunModule.R
+
 options(servr.daemon = TRUE)
 #### Still not working--- the shiny and the TeX don't process.
+#### Update: won't work at all now. Can't find output etc from shinyServer
 
 homeDir = getwd()
 setwd('inst/T15lumpsplit')
