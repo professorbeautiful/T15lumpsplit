@@ -31,6 +31,7 @@ try(rm(envNextNumberTOC, pos=1), silent = TRUE)
 try(rm(envNextNumberQA, pos=1), silent = TRUE)
 try(rm(envNextNumberTextQuestion, pos=1), silent = TRUE)
 try(rm(envNextNumberDTC, pos=1), silent = TRUE)  ## data table
+try(rm(envNextNumberTQ, pos=1), silent = TRUE)  ## data table
 try(rm(envNextNumberWhoPriorProbNumericInput, pos=1), silent = TRUE)  ## data table
 ### Note that the .GlobalEnv seen here is different from your R session... and it persists across Rmd runs!
 
