@@ -1,7 +1,6 @@
 library(shiny)
 source('inclRmd.R', local=T)
 
-# Define UI for application that draws a histogram
 ui <- fluidPage(
   div(uiOutput('lumpsplitUI'))
 )
@@ -11,7 +10,8 @@ server <- function(input, output, session) {
   input <<- input
   output <<- output
   output[['lumpsplitUI']] <- renderUI({
-    tagList(inclRmd("LumpSplit-with-notebook.Rmd") )})
+    inclRmd("Bias,variance,smoothing,shrinking.Rmd")
+  })
 }
 
 
