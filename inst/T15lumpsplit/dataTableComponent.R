@@ -114,7 +114,7 @@ assign(myName,
 #### dataTableComponent ####
 dataTableComponent = function() {
   thisDTCNumber = nextNumber(sequenceType = "DTC")
-  cat('Creating dataTableComponent thisDTCNumber = ', thisDTCNumber, '\n')
+  #cat('Creating dataTableComponent thisDTCNumber = ', thisDTCNumber, '\n')
   outputIdThisDTC = paste0('outputDTC', thisDTCNumber)
   panelIdThisDTC = paste0('idPanelDTC', thisDTCNumber)
   resetIdThisDTC = paste0('idResetDTC', thisDTCNumber)
