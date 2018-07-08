@@ -18,7 +18,7 @@ And Bayes Theorem with a nuisance parameter is:
 \quad [\theta |X] = \sum\limits_\phi  {} [\theta ,\phi |X] = \frac{{\sum\limits_\phi  {} [X,\theta ,\phi ]}}{{\sum\limits_{\phi ,\theta } {} [X,\theta ,\phi ]}}
 \end{array}\]
 
-Here the nuisance parameter $\phi$ is which is right, $Split$ or $Lump$.
+Here the nuisance parameter $\phi$ is: whose opinion is right, $Split$ or $Lump$?
 
 (For more details on Bayes Theorem, including conditioning and marginalizing, see 
 `r linkoutLink(fileName = 'bayes_decision_analysis.pdf',
@@ -85,6 +85,92 @@ conditionalPanelWithCheckbox(
   ),
   initialValue=FALSE
 )
+```
+
+The posterior distribution for Dr. Who marginalizes over $\phi$. It is a mixture, as graphed here.
+
+```{r}
+output$whoMixturePlot = 
+  renderPlot(expr =  {
+    pSeq = seq(0,1, length=100)
+    par(mfrow=c(1,2))
+    prior.s = dbeta(pSeq, 1, 1)
+    prior.l = dbeta(pSeq, 2, 2)
+    prior.w = (1/2) * prior.s + (1/2) * prior.l
+    plot(pSeq, prior.s, col='blue', type='l',
+         xlab='probability', ylab='density',
+         ylim=c(0,15),
+         main='Priors') 
+    lines(pSeq, prior.l,  col='red')
+    lines(pSeq, prior.w,  col='darkgreen', lwd=2)
+    everyTenth = (1:length(pSeq)) %% 10 == 0
+    points(pSeq[everyTenth], prior.s[everyTenth], pch='S', col='blue')
+    points(pSeq[everyTenth], prior.l[everyTenth], pch='L', col='red')
+    points(pSeq[everyTenth], prior.w[everyTenth], pch='W', col='darkgreen')
+    Sexpression = as.expression(
+      bquote("S:  " * italic(
+        p[R.D]) %~% italic(Beta)(2, 2) )  )
+    text(0, 11, labels = Sexpression,
+         col='blue', cex=1.5, pos=4
+    )
+    Lexpression = as.expression(
+      bquote( "L:  " * italic(
+        p[R.D]==p[R]) %~% Beta(2, 2) ) ) 
+    text(0, 9, labels = Lexpression,
+         col='red', cex=1.5, pos=4
+    )
+    Wexpression = as.expression(
+      bquote( "W:  " * italic("Dr. Who mixture" ) ) )
+    text(0, 7, labels = Wexpression,
+         col='red', cex=1.5, pos=4
+    )
+
+    nRD=rValues$DLdata['R','D']
+    nND=rValues$DLdata['N','D']
+    posterior.s = dbeta(pSeq, 
+                    1+nRD, 
+                    1+nND)
+    nR=sum(rValues$DLdata['R', ])
+    nN=sum(rValues$DLdata['N', ])
+    posterior.l = dbeta(pSeq, 
+                        2+nR, 2+nN)
+    postProb = posteriorProb(priorOdds = 1, theData = rValues$DLdata)
+    cat('mSplit is ', mSplit(rValues$DLdata), '\n')
+    cat('mLump is ', mLump(rValues$DLdata), '\n')
+    cat('DrWhoBayesFactor is ', DrWhoBayesFactor(rValues$DLdata), '\n')
+    cat('postProb is ', postProb, '\n')
+    posterior.w = (postProb) * posterior.s + (1-postProb) * posterior.l
+
+    plot(pSeq, posterior.s, col='blue', type='l',
+         xlab='probability', ylab='density',
+         ylim=c(0,15),
+         main='Posteriors') 
+    lines(pSeq, posterior.l,  col='red')
+    lines(pSeq, posterior.w,  col='darkgreen', lwd=2)
+
+    points(pSeq[everyTenth], posterior.s[everyTenth], pch='S', col='blue')
+    points(pSeq[everyTenth], posterior.l[everyTenth], pch='L', col='red')
+    points(pSeq[everyTenth], posterior.w[everyTenth], pch='W', col='darkgreen')
+
+    Sexpression = as.expression(
+      bquote("S:  " * italic(
+        p[R.D]) %~% italic(Beta)(2+.(nRD), 2+.(nND))) ) 
+    text(0,11, labels = Sexpression,
+         col='blue', cex=1.5, pos=4
+    )
+    Lexpression = as.expression(
+      bquote( "L:  " * italic(
+        p[R.D]==p[R]) %~% Beta(2+.(nR), 2+.(nN))) ) 
+    text(0, 9, labels = Lexpression,
+         col='red', cex=1.5, pos=4
+    )
+    Wexpression = as.expression(
+      bquote( "W:  " * italic("Dr. Who mixture" ) ) )
+    text(0, 7, labels = Wexpression,
+         col='red', cex=1.5, pos=4
+    )
+  })
+plotOutput('whoMixturePlot')
 ```
 
 ##### The Bayes Factor: posterior odds (and probability) of the "null hypothesis"
