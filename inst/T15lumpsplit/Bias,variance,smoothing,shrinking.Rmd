@@ -20,7 +20,7 @@ options(knitr.duplicate.label = 'allow')
 require(T15lumpsplit)
 require(shiny)
 require(devtools)
-require(magrittr);require(shinyBS);require(shinyapps);
+require(magrittr);require(shinyBS)
 require(knitr);require(rmarkdown);require(shinyDebuggingPane) 
 #source('rstudio.markdownToHTML.R', local=TRUE)
 includeCSS('TOC.css')    
