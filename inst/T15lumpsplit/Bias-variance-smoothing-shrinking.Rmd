@@ -21,7 +21,7 @@ require(T15lumpsplit)
 require(shiny)
 require(devtools)
 require(magrittr);require(shinyBS)
-require(knitr);require(rmarkdown);require(shinyDebuggingPane) 
+require(knitr);require(rmarkdown);#require(shinyDebuggingPanel) 
 #source('rstudio.markdownToHTML.R', local=TRUE)
 includeCSS('TOC.css')    
 ### includeCSS doesn't work here. Instead it's in the YAML.
@@ -184,8 +184,8 @@ output$thePlot = renderPlot(height=250,
 ```
 
 ```{r makeDebuggingPanelOutput}
-shinyDebuggingPanel::makeDebuggingPanelOutput(
-  session, toolsInitialState = FALSE) 
+# shinyDebuggingPanel::makeDebuggingPanelOutput(
+  # session, toolsInitialState = FALSE) 
 ```
 
 
@@ -200,9 +200,9 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(
 ##<a name='section-debugging'>**Debugging utility**</a>
 ```{r withDebuggingPanel}
 
-fluidRow(
-  shinyDebuggingPanel::withDebuggingPanel() 
-)
+# fluidRow(
+#   shinyDebuggingPanel::withDebuggingPanel()
+# )
 ```
 
 ```{r}
