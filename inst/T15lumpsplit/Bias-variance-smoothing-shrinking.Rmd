@@ -436,7 +436,8 @@ If you *"split"*, you will estimate that the response rate (`Pr(R|D)`) for D peo
 
 #### Plot of Lump and Split estimates
 
-```{r plotLumpSplitPoints, fig.height=300}
+```{r plotLumpSplitPoints}
+# I removed fig.height=300
 output$plotLumpSplitPoints = renderPlot(
   height = 300, {
   plotPlightPdarkPosterior(DLdata=rValues$DLdata,
