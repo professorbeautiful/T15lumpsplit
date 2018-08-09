@@ -25,7 +25,7 @@ if(!require(T15lumpsplit))
 if(!require(shinyDebuggingPanel))
   devtools::install_github('professorbeautiful/shinyDebuggingPanel')
 require(magrittr);require(shinyBS)
-require(knitr);require(rmarkdown);#require(shinyDebuggingPanel) 
+require(knitr);require(rmarkdown);
 #source('rstudio.markdownToHTML.R', local=TRUE)
 includeCSS('TOC.css')    
 ### includeCSS doesn't work here. Instead it's in the YAML.
@@ -188,8 +188,8 @@ output$thePlot = renderPlot(height=250,
 ```
 
 ```{r makeDebuggingPanelOutput}
-# shinyDebuggingPanel::makeDebuggingPanelOutput(
-  # session, toolsInitialState = FALSE) 
+ shinyDebuggingPanel::makeDebuggingPanelOutput(
+   session, toolsInitialState = FALSE) 
 ```
 
 
@@ -201,12 +201,34 @@ output$thePlot = renderPlot(height=250,
 #cat("\U2B07")
 # This shows you can get a fat arrow... but not in a plot.
 ```
-##<a name='section-debugging'>**Debugging utility**</a>
+
+```{r}
+    #### zoomAdvice ####
+  output$zoomAdvice = renderText({
+    text = ""
+    try({
+      if(input$innerWidth > 1800)
+        text = "Suggest zoom in. (Cmd+)"
+      if(input$innerWidth < 1600)
+        text = "Suggest zoom out. (Cmd-)"
+    })
+    paste0(text, '(', input$innerWidth, ')')
+  })
+
+div(
+  shiny::includeScript('www/zoom_triggers.js'),
+  shiny::includeScript('www/readInnerWindow.js'),
+  textOutput('zoomAdvice')  
+)
+```
+
+<a name='section-debugging'> </a>
+
 ```{r withDebuggingPanel}
 
-# fluidRow(
-#   shinyDebuggingPanel::withDebuggingPanel()
-# )
+fluidRow(
+  shinyDebuggingPanel::withDebuggingPanel()
+)
 ```
 
 ```{r}
