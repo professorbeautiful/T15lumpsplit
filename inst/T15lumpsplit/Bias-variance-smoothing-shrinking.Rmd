@@ -202,24 +202,13 @@ output$thePlot = renderPlot(height=250,
 # This shows you can get a fat arrow... but not in a plot.
 ```
 
-```{r}
+```{r zoomRange}
     #### zoomAdvice ####
-  output$zoomAdvice = renderText({
-    text = ""
-    try({
-      if(input$innerWidth > 1800)
-        text = "Suggest zoom in. (Cmd+)"
-      if(input$innerWidth < 1600)
-        text = "Suggest zoom out. (Cmd-)"
-    })
-    paste0(text, '(', input$innerWidth, ')')
-  })
+zoomRange <<- c(1200, 1400)
+```
 
-div(
-  shiny::includeScript('www/zoom_triggers.js'),
-  shiny::includeScript('www/readInnerWindow.js'),
-  textOutput('zoomAdvice')  
-)
+```{r zoomAdvice}
+inclRmd('www/zoomAdvice.Rmd')
 ```
 
 <a name='section-debugging'> </a>
