@@ -194,8 +194,9 @@ output$thePlot = renderPlot(height=250,
 ```
 
 ```{r makeDebuggingPanelOutput}
- shinyDebuggingPanel::makeDebuggingPanelOutput(
-   session, toolsInitialState = FALSE) 
+shinyDebuggingPanel::makeDebuggingPanelOutput(
+   session, toolsInitialState = FALSE, 
+   condition='ctrlDpressed') 
 ```
 
 
@@ -227,7 +228,8 @@ fluidRow(
 ```
 
 ```{r}
-includeScript('navigateToId.js')
+includeScript('navigateToId.js')   ### ESCAPE key to return.
+includeScript('www/KeyToToggleDebugging.js')
 ```
 
 ```{r conditionalPanelWithCheckbox}
