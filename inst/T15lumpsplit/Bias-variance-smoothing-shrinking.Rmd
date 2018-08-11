@@ -1,12 +1,12 @@
 ---
 title: "Bias, variance, smoothing, and shrinking"
-output: 
+output:
   html_document:
     css: lumpsplit.css
     number_sections: true
     toc: true
     toc_depth: 6
-    toc_float: 
+    toc_float:
       collapsed: true
       smooth_scroll: false
 runtime: shiny
