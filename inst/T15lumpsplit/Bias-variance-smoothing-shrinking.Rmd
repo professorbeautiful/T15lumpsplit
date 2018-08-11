@@ -1,15 +1,21 @@
 ---
 title: "Bias, variance, smoothing, and shrinking"
+resource_files:
+- www/zoomAdvice.Rmd
+- www/zoom_triggers.js
+- www/readInnerWindow.js
+- www/the-delta-method.pdf
+- www/BayesEquation.Rmd
+runtime: shiny
 output:
   html_document:
     css: lumpsplit.css
-    number_sections: true
-    toc: true
+    number_sections: yes
+    toc: yes
     toc_depth: 6
     toc_float:
-      collapsed: true
-      smooth_scroll: false
-runtime: shiny
+      collapsed: yes
+      smooth_scroll: no
 ---
 
 
