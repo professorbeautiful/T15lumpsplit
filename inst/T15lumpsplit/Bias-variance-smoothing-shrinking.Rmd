@@ -367,6 +367,7 @@ require(shinyBS)
 # OVERVIEW of this Module
 
 ```{r Overview}
+h2("NOTE: this is a work in progress!")
 conditionalPanelWithCheckbox(
   labelString = 'Overview', 
   filename = 'Overview.Rmd', html = '',
@@ -374,9 +375,42 @@ conditionalPanelWithCheckbox(
 ```
 The general scope of the bias-variance axis in many settings is 
 ```{r biasVariancePicture}
-linkoutLink(linkouttext='here.', 
-             fileName='Reproducibility-lump-split-page-1.pdf'
+# conditionalPanelWithCheckbox(
+#   'linkouttext',
+#   #filename,
+#   html=tagList(  tags$iframe(style="height:600px; width:100%",
+#                              src='Reproducibility-lump-split-page-1.pdf')
+#                  ),
+#                  initialValue=FALSE
+#                )
+# linkoutLink(linkouttext='here.',
+#              fileName='Reproducibility-lump-split-page-1.pdf'
+# )
+# conditionalPanelWithCheckbox(
+#   labelString = 'bias-variance axis ',
+#   html = 
+#     tags$iframe(style="height:600px; width:100%",
+#                 src="Reproducibility-lump-split-page-1.pdf"),
+#   initialValue = FALSE)
+# br()
+#### THIS WORKS. In the Preview window, iframe is turned into external to Preview  app. but not from the browser, that's OK. ###
+wellPanel(
+  checkboxInput('Reproducibility', 
+                strong(em(showhideString('The bias-variance axis', FALSE)
+                )),
+                value=FALSE),
+  conditionalPanel(condition = paste0('input.', 'Reproducibility'),
+                   tags$iframe(style="height:600px; width:100%",
+                               src="Reproducibility-lump-split-page-1.pdf") )
+  #### HERE ####
 )
+#### bias-variance axis ####
+# conditionalPanelWithCheckbox(
+#   labelString = 'bias-variance axis ',
+#   html =
+#     tags$iframe(style="height:600px; width:100%",
+#                 src="Reproducibility-lump-split-page-1.pdf"),
+#   initialValue = FALSE)
 ```
 
 
