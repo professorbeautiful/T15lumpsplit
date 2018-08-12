@@ -233,6 +233,9 @@ includeScript('www/KeyToToggleDebugging.js')
 ```
 
 ```{r conditionalPanelWithCheckbox}
+showhideString = function(labelString, value)
+  paste0(ifelse(value, "Hide: ", "Show: "), labelString )
+
 conditionalPanelWithCheckbox = function(
   labelString, 
   filename,
@@ -244,14 +247,23 @@ conditionalPanelWithCheckbox = function(
    cbStringId = paste0('cb', labelStringId)
   if(!missing(filename))
      html = c(tagList(inclRmd(filename)), html)
+   observeEvent(
+     input[[cbStringId]], {
+       fullString = showhideString(labelString, input[[cbStringId]])
+       updateCheckboxInput(
+         session, cbStringId,
+         label=fullString)
+     }
+   )
    output[[labelStringId]] <- renderUI({
      wellPanel(
        checkboxInput(cbStringId, 
-                     strong(em(
-                       paste0("Show/hide: ", labelString))),
+                     strong(em(showhideString(labelString, initialValue)
+                       )),
                      value=initialValue),
        conditionalPanel(condition = paste0('input.', cbStringId),
                         html )
+       #### HERE ####
      )
    })
    uiOutput(labelStringId)
