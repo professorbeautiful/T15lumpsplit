@@ -1,12 +1,20 @@
 #### NOTE: you will have to rebuild the package to make a local file visible ####
 
 linkout = function(fileName) {
-  theFile = system.file(
-  package="T15lumpsplit",
-  'T15lumpsplit/', fileName)
-  theCommand = paste0(
-    "browseURL('", theFile, "')")
-  eval(parse(text=theCommand))
+  # theFile = system.file(
+  # package="T15lumpsplit",
+  # 'T15lumpsplit/', fileName)
+  conditionalPanelWithCheckbox(
+    labelString,
+    filename,
+    html=tagList(  tags$iframe(style="height:600px; width:100%",
+                               src=theFile)
+    ),
+    initialValue=FALSE
+  )
+  #theCommand = paste0(
+  #  "browseURL('", theFile, "')")
+  #eval(parse(text=theCommand))
 #  "system('open ", theFile, "')")
 }
 
@@ -14,8 +22,16 @@ linkoutLink = function(fileName, linkouttext) {
   # For opening a file in the package
   thisNumber = nextNumber(sequenceType = "linkoutLink")
   IdThisLinkout = paste0('linkoutLink', thisNumber)
-  observeEvent(input[[IdThisLinkout]], linkout(fileName)
-  )
+  conditionalPanelWithCheckbox(
+               #linkout(fileName)
+                 linkouttext,
+                 #filename,
+                 html=tagList(  tags$iframe(style="height:600px; width:100%",
+                                            src=fileName)
+                 ),
+                 initialValue=FALSE
+               )
+
   actionLink(IdThisLinkout,
              label=HTML(
                paste0('<font color=blue>', linkouttext, '</font>'))
