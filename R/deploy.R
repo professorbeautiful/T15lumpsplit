@@ -33,7 +33,7 @@
       deployApp()
     },
     finally={
-      cat("shinyapps::showLogs(appDir = 'inst/" %&% app %&% "')\n")
+      cat("rsconnect::showLogs(appDir = 'inst/" %&% app %&% "')\n")
       setwd("../..")
     })
   }
@@ -41,6 +41,6 @@
 
 .runDeployed = function(app="T15lumpsplit"){
   system("open https://trials.shinyapps.io/" %&% app)
-  cat("shinyapps::showLogs(appDir = 'inst/" %&% app %&% "')\n")
+  cat("rsconnect::showLogs(appDir = 'inst/" %&% app %&% "')\n")
 }
 
