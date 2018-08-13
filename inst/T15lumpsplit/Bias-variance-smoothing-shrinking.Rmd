@@ -196,7 +196,7 @@ output$thePlot = renderPlot(height=250,
 ```{r makeDebuggingPanelOutput}
 shinyDebuggingPanel::makeDebuggingPanelOutput(
    session, toolsInitialState = FALSE, 
-   condition='ctrlDpressed') 
+   condition='ctrlDpressed === true') 
 ```
 
 
