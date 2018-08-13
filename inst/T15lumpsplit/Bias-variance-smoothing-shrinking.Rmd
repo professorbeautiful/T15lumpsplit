@@ -429,15 +429,17 @@ QandAha()
 ### Hypothetical medical study
 
 The Problem:  A new treatment is given to 100 patients.  
-Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respond, yielding a response rate of 60%. for now we call them "D people", and the others "L people".
+Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respond, yielding a response rate of 60%. for now we call them "D patients", and the others "L patients".
 
-Goal: decide whether to treat the "D" patients (or at least, whether to put resources into studying it further for "D" patients).
+Goal: decide whether to treat the "D patients" (or at least, whether to put resources into studying it further for "D patients").
 
-If you *"lump"*, you will estimate that the response rate (`Pr(R|D)`) for D people is *8%*. 
+If you *"lump"*, you will estimate that the response rate (`Pr(R|D)`) for D patients is *8%*. 
 
-If you *"split"*, you will estimate that the response rate (`Pr(R|D)`) for D people is *60%*. 
+If you *"split"*, you will estimate that the response rate (`Pr(R|D)`) for D patients is *60%*. 
 
 #### Plot of Lump and Split estimates
+
+In the following plot, we see the estimate and the confidence interval for `Pr(R|D)`, depending on whether the *"lump"* or *"split"* approach is taken.
 
 ```{r plotLumpSplitPoints}
 # I removed fig.height=300
@@ -464,12 +466,12 @@ div(br(),br(),br())
 
 
 
-Lumping gives an answer with low variance (N=100) but high bias-- because the answer reflects far more L  people than D people. The confidence interval follows the diagonal where $Pr(R|D)=Pr(R|L)$.
+Lumping gives an answer with low variance ($N$=100) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. The confidence interval follows the diagonal where $Pr(R|D)=Pr(R|L)$.
 
-Splitting gives an answer with high variance (N=5) but low bias-- because it is including only people who ARE D:  it is directly asking our question. The very wide horizontal confidence interval reflects this high variance.
+Splitting gives an answer with high variance ($N$=5) but low bias-- because it is including only patients who ARE $D$:  it is directly asking our question. The very wide horizontal confidence interval reflects this high variance.
 
 
-We will call the patient "feature" $X$. Its values is D or L.
+We will call the person's "feature" $X$, with possible values $D$ or $L$.
 The identity of $X$ will be explored later.
 
 The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
@@ -500,7 +502,7 @@ QandAha()
 #### <a name='section-ClassicalTest'> Classical estimation bifurcating on a hypothesis test</a>
 
 A time-honored but fading technique is to use a classical hypothesis test, to guide which of two analyses to present.
-Here the hypothesis is "X is independent of Y";  the response rate of D people does not differ from L people.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
+Here the hypothesis is "X is independent of Y";  the response rate of D patients does not differ from L patients.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
 
 One test frequently performed to test independence in a 2x2 table like this one is the *Fisher exact test*.
 
@@ -784,7 +786,7 @@ conditionalPanelWithCheckboxPDF(
 
 
 
-Another approach is through *empirical Bayes*, a method that presumes that the associations of the features with the outcome are drawn from a distribution. This allows a kind of sharing of information analogous to the sharing of information between the X=D and X=L people, but sharing across features instead of across subgroups defined by one feature. 
+Another approach is through *empirical Bayes*, a method that presumes that the associations of the features with the outcome are drawn from a distribution. This allows a kind of sharing of information analogous to the sharing of information between the X=D and X=L patients, but sharing across features instead of across subgroups defined by one feature. 
 
 One popular alternative with an empirical Bayes flavor is the "Qvalue" method. 
 
@@ -800,7 +802,7 @@ The following link develops the empirical Bayes idea in the context of medical d
 conditionalPanelWithCheckboxPDF(
   labelString="An Introduction to Hierarchical Bayes and Empirical Bayes", 
   filename='www/Intro_to_Hierarchical_Bayes_and_Empirical_Bayes.pdf',
-  cbStringId='EmpircalBayes')
+  cbStringId='EmpiricalBayes')
 ```
 
 
