@@ -1,3 +1,8 @@
+##
+## OK to run .installFromGithub,
+# but to deploy Bias-variance-smoothing-shrinking,
+# use the Publish or Republish buttons.
+
 
 # NOTE: I had tried to run rstan, and followed directions
 # for soft links as in "NOTES on rstan for monte carlo markov chain.rtf"
@@ -24,9 +29,7 @@
   for (app in apps) {
     if(substr(app, 1, 5) == "inst/")
       warning(".deploy: do not include 'inst' in app name.")
-    cat("wd is " %&% getwd() %&% "\n")
-    cat("wd changing to " %&% "inst/" %&% app %&% "\n")
-    setwd("inst/" %&% app)
+    setwd(paste0("inst/", app))
     tryCatch({
       require("rsconnect")
       deployApp()
@@ -39,7 +42,7 @@
 }
 
 .runDeployed = function(app="T15lumpsplit"){
-  system("open https://trials.shinyapps.io/" %&% app)
-  cat("rsconnect::showLogs(appDir = 'inst/" %&% app %&% "')\n")
+  system(paste("open https://trials.shinyapps.io/", app) )
+  cat("rsconnect::showLogs(appDir = 'inst/", app, "')\n")
 }
 
