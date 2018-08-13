@@ -1,3 +1,10 @@
+
+rerun = function()
+  rmarkdown::run("inst/T15lumpsplit/Bias-variance-smoothing-shrinking.Rmd",
+                 shiny_args = list(launch.browser = TRUE))
+
+## Yippee! this works. Bypasses the viewer... and the PDF opens.
+
 ##
 ## OK to run .installFromGithub,
 # but to deploy Bias-variance-smoothing-shrinking,
