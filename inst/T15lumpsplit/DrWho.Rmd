@@ -20,9 +20,14 @@ And Bayes Theorem with a nuisance parameter is:
 
 Here the nuisance parameter $\phi$ is: whose opinion is right, $Split$ or $Lump$?
 
-(For more details on Bayes Theorem, including conditioning and marginalizing, see 
-`r linkoutLink(fileName = 'bayes_decision_analysis.pdf',
-linkouttext='here')`). 
+More details on Bayes Theorem, including conditioning and marginalizing, are here: 
+```{r}
+conditionalPanelWithCheckboxPDF(
+  labelString="Details on Bayes Theorem", 
+  filename='bayes_decision_analysis.pdf',
+  cbStringId='bayes_decision_analysis')
+```
+
 
 
 Then Dr. Who’s posterior is:

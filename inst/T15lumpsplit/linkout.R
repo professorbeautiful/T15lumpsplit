@@ -22,20 +22,29 @@ linkoutLink = function(fileName, linkouttext) {
   # For opening a file in the package
   thisNumber = nextNumber(sequenceType = "linkoutLink")
   IdThisLinkout = paste0('linkoutLink', thisNumber)
-  conditionalPanelWithCheckbox(
-               #linkout(fileName)
-                 linkouttext,
-                 #filename,
-                 html=tagList(  tags$iframe(style="height:600px; width:100%",
-                                            src=fileName)
-                 ),
-                 initialValue=FALSE
-               )
 
-  actionLink(IdThisLinkout,
-             label=HTML(
-               paste0('<font color=blue>', linkouttext, '</font>'))
-  )
+  # actionLink(IdThisLinkout,
+  #            label=HTML(
+  #              paste0('<font color=blue>', linkouttext, '</font>'))
+  # )
+  # conditionalPanelWithCheckbox(
+  #              #linkout(fileName)
+  #                linkouttext,
+  #                #filename,
+  #                html=tagList(  tags$iframe(style="height:600px; width:100%",
+  #                                           src=fileName)
+  #                ),
+  #                initialValue=FALSE
+  #              )
+    div(
+      checkboxInput(IdThisLinkout,
+                  strong(em(showhideString(linkouttext, FALSE)
+                  )),
+                  value=FALSE),
+    conditionalPanel(condition = paste0('input.', IdThisLinkout),
+                     tags$iframe(style="height:600px; width:100%",
+                                 src=fileName) )
+    )
 }
 
 

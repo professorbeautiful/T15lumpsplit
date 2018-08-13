@@ -53,6 +53,7 @@ source('interactiveSection.R', local=TRUE)
 source('QandAha.R', local=TRUE)
 source('TextQuestion.R', local=TRUE)
 source('WhoPriorProbNumericInput.R', local=TRUE)
+source('conditionalPanelWithCheckbox.R', local=TRUE)
 ```
 
 
@@ -234,43 +235,6 @@ includeScript('navigateToId.js')   ### ESCAPE key to return.
 includeScript('www/KeyToToggleDebugging.js')
 ```
 
-```{r conditionalPanelWithCheckbox}
-showhideString = function(labelString, value)
-  paste0(ifelse(value, "Hide: ", "Show: "), labelString )
-
-conditionalPanelWithCheckbox = function(
-  labelString, 
-  filename,
-  html='',
-  initialValue=FALSE
-) {
-   labelStringNoSpaces = gsub("[ .'?!]", "_", labelString)
-   labelStringId = paste0(labelStringNoSpaces, 'Id')
-   cbStringId = paste0('cb', labelStringId)
-  if(!missing(filename))
-     html = c(tagList(inclRmd(filename)), html)
-   observeEvent(
-     input[[cbStringId]], {
-       fullString = showhideString(labelString, input[[cbStringId]])
-       updateCheckboxInput(
-         session, cbStringId,
-         label=fullString)
-     }
-   )
-   output[[labelStringId]] <- renderUI({
-     wellPanel(
-       checkboxInput(cbStringId, 
-                     strong(em(showhideString(labelString, initialValue)
-                       )),
-                     value=initialValue),
-       conditionalPanel(condition = paste0('input.', cbStringId),
-                        html )
-       #### HERE ####
-     )
-   })
-   uiOutput(labelStringId)
-}
-```
 
 ```{r panelOfInputs}
 panelOfInputs = 
@@ -375,44 +339,16 @@ conditionalPanelWithCheckbox(
   filename = 'Overview.Rmd', html = '',
   initialValue = TRUE)
 ```
-The general scope of the bias-variance axis in many settings is 
+The general scope of the bias-variance axis in many settings is here:
+
 ```{r biasVariancePicture}
-# conditionalPanelWithCheckbox(
-#   'linkouttext',
-#   #filename,
-#   html=tagList(  tags$iframe(style="height:600px; width:100%",
-#                              src='Reproducibility-lump-split-page-1.pdf')
-#                  ),
-#                  initialValue=FALSE
-#                )
-# linkoutLink(linkouttext='here.',
-#              fileName='Reproducibility-lump-split-page-1.pdf'
-# )
-# conditionalPanelWithCheckbox(
-#   labelString = 'bias-variance axis ',
-#   html = 
-#     tags$iframe(style="height:600px; width:100%",
-#                 src="Reproducibility-lump-split-page-1.pdf"),
-#   initialValue = FALSE)
-# br()
-#### THIS WORKS. In the Preview window, iframe is turned into external to Preview  app. but not from the browser, that's OK. ###
-wellPanel(
-  checkboxInput('Reproducibility', 
-                strong(em(showhideString('The bias-variance axis', FALSE)
-                )),
-                value=FALSE),
-  conditionalPanel(condition = paste0('input.', 'Reproducibility'),
-                   tags$iframe(style="height:600px; width:100%",
-                               src="Reproducibility-lump-split-page-1.pdf") )
-  #### HERE ####
-)
+#### THIS WORKS. In the Preview window, iframe is turned into external to Preview  app. but not from the browser, that's OK. ####
+
 #### bias-variance axis ####
-# conditionalPanelWithCheckbox(
-#   labelString = 'bias-variance axis ',
-#   html =
-#     tags$iframe(style="height:600px; width:100%",
-#                 src="Reproducibility-lump-split-page-1.pdf"),
-#   initialValue = FALSE)
+conditionalPanelWithCheckboxPDF(labelString='The bias-variance axis',
+     filename="Reproducibility-lump-split-page-1.pdf",
+     cbStringId='cbStringIdReproducibility')
+
 ```
 
 
@@ -575,13 +511,13 @@ One test frequently performed to test independence in a 2x2 table like this one 
 textOutput('fisherResult', inline=TRUE)
 ```
 
-If the P-value is "significant", the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%.
+If the P-value is "significant", the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PEOPLE!
 
 ```{r QA-fisher}
 QandAha()
 ```
 
-#### <a name='section-a_Bayes_mixture'> Approach: Dr. Who's Bayes mixture of "Lump" and "Split"</a>
+#### <a name='section-Bayes_mixture'> Approach: Dr. Who's Bayes mixture of "Lump" and "Split"</a>
 
 Dr. Who doesn't know *who* to believe, but is prepared to let the data make the right compromise.
 
@@ -619,7 +555,7 @@ TextQuestion("What advantage does the cross-validation approach here have, relat
 QandAha()
 ```
 
-#### <a name='Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
+#### <a name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
 
 Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R|D) and Pr(R|L). This allows data on the two probabilities to be shared between them, smoothly instead of a crude mixture of the two extreme views of   "Dr. Lump" and "Dr. Split".
 ```{r QA-smooth-joint-prior}
@@ -635,9 +571,14 @@ conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rm
 
 Then we set a bivariate normal distribution on the logits.
 
-We also convert the observed proportions to logits. We estimate the variances using the
- `r linkoutLink('www/the-delta-method.pdf',
-'"delta method"')`
+We also convert the observed proportions to logits. We estimate the variances using the delta method. Details are here:
+```{r}
+conditionalPanelWithCheckboxPDF(
+  labelString="The delta method", 
+  filename='www/the-delta-method.pdf',
+  cbStringId='delta_method')
+```
+
 applied to the Poisson distribution, whereby the variance of the logarithm of a count is roughly the reciprocal of the count.
 
 (This doesn't work well if the count is near zero, and not at all at zero.
@@ -811,23 +752,57 @@ TextQuestion(' How would you account for this knowledge in one of the two Bayesi
 As before, suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. But this time, our feature $X$ is select to be the best of the one hundred features.
 
 This situation entails dealing with "multiple comparisons". Pure chance can make a feature seem strongly associated with the response outcome when in reality it is not associated. When the best-appearing relationship is selected out of a large number, we can be fooled into thinking the strength of evidence is stronger than it really is. *"The more questions you ask, the more wrong answers you are likely to get."*
-`r linkoutLink(fileName='Multiple comparisons- introduction.pdf', linkouttext='Intro to multiple comparisons')`. 
+```{r}
+conditionalPanelWithCheckboxPDF(
+  labelString="Intro to multiple comparisons", 
+  filename='Multiple comparisons- introduction.pdf',
+  cbStringId='multiple_comparisons')
+```
 
 
-One way to handle multiple comparisons is through a classical frequentist multiple testing adjustment. This evaluates the chance of getting a P-value as low as (or lower than) the minimum of the P-values for the features. The best-known of these methods are the Bonferroni, Sidak, and permutation /randomization tests. View 
-`r linkoutLink(fileName='Multiple comparisons- classic methods.pdf', linkouttext='descriptions of these methods')`. 
- and `r linkoutLink(fileName='Multiple comparisons- disturbing examples.pdf', linkouttext='some troubling examples')`.
+One way to handle multiple comparisons is through a classical frequentist multiple testing adjustment. This evaluates the chance of getting a P-value as low as (or lower than) the minimum of the P-values for the features. The best-known of these methods are the Bonferroni, Sidak, and permutation /randomization tests. Here are some details on these approaches: 
+```{r}
+conditionalPanelWithCheckboxPDF(
+  labelString="Multiple comparisons- classic methods", 
+  filename='Multiple comparisons- classic methods.pdf',
+  cbStringId='Multiple_comparisons_classic')
+```
+```{r}
+conditionalPanelWithCheckboxPDF(
+  labelString="Multiple comparisons- disturbing examples", 
+  filename='Multiple comparisons- disturbing examples.pdf',
+  cbStringId='Multiple_comparisons_disturbing')
+```
 
-Another classical approach, the Benjamini-Hochberg method, is widely used in high-throughput biological assays. It has a technical advantage in that the stated "false discovery rate" is accurate. However, it has  `r linkoutLink(fileName='Benjamini-Hochberg.pdf', linkouttext='peculiar and disturbing behavior')`  
+Another classical approach, the Benjamini-Hochberg method, is widely used in high-throughput biological assays. It has a technical advantage in that the stated "false discovery rate" is accurate. However, it has peculiar and disturbing behavior:
+```{r}
+conditionalPanelWithCheckboxPDF(
+  labelString="The Benjamini-Hochberg method", 
+  filename='Benjamini-Hochberg.pdf',
+  cbStringId='Benjamini_Hochberg')
+```
+
 
 
 Another approach is through *empirical Bayes*, a method that presumes that the associations of the features with the outcome are drawn from a distribution. This allows a kind of sharing of information analogous to the sharing of information between the X=D and X=L people, but sharing across features instead of across subgroups defined by one feature. 
 
-One popular alternative with an empirical Bayes flavor is the . `r linkoutLink(fileName='Storey-Tibshirani.pdf', linkouttext='"Qvalue" method')` of Storey and Tibshirani.
+One popular alternative with an empirical Bayes flavor is the "Qvalue" method. 
+
+```{r}
+conditionalPanelWithCheckboxPDF(
+  labelString="The Storey-Tibshirani Qvalue method", 
+  filename='Storey-Tibshirani.pdf',
+  cbStringId='Storey_Tibshirani')
+```
 
 The following link develops the empirical Bayes idea in the context of medical decision-making.
+```{r}
+conditionalPanelWithCheckboxPDF(
+  labelString="An Introduction to Hierarchical Bayes and Empirical Bayes", 
+  filename='www/Intro_to_Hierarchical_Bayes_and_Empirical_Bayes.pdf',
+  cbStringId='EmpircalBayes')
+```
 
-`r linkoutLink(fileName = 'www/Intro_to_Hierarchical_Bayes_and_Empirical_Bayes.pdf', linkouttext='An Introduction to Hierarchical Bayes and Empirical Bayes') `
 
 ```{r QA-emp-Bayes}
 QandAha()
