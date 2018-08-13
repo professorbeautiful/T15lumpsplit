@@ -15,7 +15,7 @@ plotPlightPdarkPosterior = function(
   ColorForLikelihood="black"
 ) {
   par(pty='s')
-  letterVerticalPosition = -0.30
+  letterVerticalPosition = -0.25
   plot(0:1, 0:1, xlab = "Pr(R | D)", ylab = "Pr(R | L)", pch=" ",
        cex=2)
   abline(a=0, b=1, col='grey', lty=2, lwd=2)
@@ -23,16 +23,17 @@ plotPlightPdarkPosterior = function(
                               pointLocation,
                               bg=NA,
                               col='black', circleColor='black',
-                              size=0.05, pch, cex=1){
+                              size=0.05, pch, cex=1,
+                              lwd=1, lcol='darkgrey', lty=2){
     if(!missing(pointLocation)) {
-      lines(rbind(pointLocation, labelLocation), col=circleColor,
-            lty=1, lwd=2, xpd=NA)
+      lines(rbind(pointLocation, labelLocation),
+            lty=lty, lwd=lwd, xpd=NA, col=lcol)
       symbols(add = TRUE,
               x=pointLocation[1],
-             y=pointLocation[2],
-             circles=size/5,
-             col=circleColor, inches=F, bg=bg,
-             xpd=NA)
+              y=pointLocation[2],
+              circles=size/5,
+              col=circleColor, inches=F, bg=bg,
+              xpd=NA)
     }
     symbols(add = TRUE,
             x=labelLocation[1],
@@ -177,8 +178,8 @@ if(showPrior) {
     confInterval_L = binom.test(x = DLdata['R', 'L'],
                                 n = sum(DLdata[ , 'L'])
     )$conf.int
-    #print(confInterval_L)
-    lines(rep(Spoint[1], 2), confInterval_L, lwd=3, col='green')
+    # print(confInterval_L)
+    # lines(rep(Spoint[1], 2), confInterval_L, lwd=3, col='green')
     addCircledLetter(
       pointLocation = c(Spoint[1], Spoint[2]),
       labelLocation = c(Spoint[1], letterVerticalPosition),
