@@ -80,14 +80,14 @@ conditionalPanelWithCheckbox(
 Here is the code if you are interested:
 
 ```{r}
+DrWhoBayesFactor.code = readLines(con='DrWhoBayesFactor.R')
+DrWhoBayesFactor.code = 
+ HTML(gsub('  ', '&nbsp;&nbsp;',
+                        paste(DrWhoBayesFactor.code,
+                    collapse='<br>\n')))
 conditionalPanelWithCheckbox(
   labelString = 'Code for the Lump and Split marginal probabilities',
-  html=
-    div(
-              HTML(gsub('  ', '&nbsp;&nbsp;',
-                        paste(readLines(con='DrWhoBayesFactor.R'),
-                    collapse='<br>\n')))
-  ),
+  html=DrWhoBayesFactor.code,
   initialValue=FALSE
 )
 ```
