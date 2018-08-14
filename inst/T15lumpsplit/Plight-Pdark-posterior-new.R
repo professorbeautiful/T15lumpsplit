@@ -15,22 +15,28 @@ plotPlightPdarkPosterior = function(
   ColorForLikelihood="black"
 ) {
   par(pty='s')
-  letterVerticalPosition = -0.25
+  letterVerticalPosition = -0.21
   plot(0:1, 0:1, xlab = "Pr(R | D)", ylab = "Pr(R | L)", pch=" ",
-       cex=2)
+       cex=2, xaxs='i', yaxs='i')
   abline(a=0, b=1, col='grey', lty=2, lwd=2)
   addCircledLetter = function(labelLocation,
                               pointLocation,
                               bg=NA,
                               col='black', circleColor='black',
                               size=0.05, pch, cex=1,
-                              lwd=1, lcol='darkgrey', lty=2){
+                              lwd=1, lcol='darkgreen', lty=2){
     if(!missing(pointLocation)) {
       lines(rbind(pointLocation, labelLocation),
             lty=lty, lwd=lwd, xpd=NA, col=lcol)
       symbols(add = TRUE,
               x=pointLocation[1],
               y=pointLocation[2],
+              circles=size/5,
+              col=circleColor, inches=F, bg=bg,
+              xpd=NA)
+      symbols(add = TRUE,
+              x=pointLocation[1],
+              y=0,
               circles=size/5,
               col=circleColor, inches=F, bg=bg,
               xpd=NA)
@@ -167,7 +173,6 @@ if(showPrior) {
 
   }
   if(showS) {
-    ### careful.... rows are groups, columns outcomes.
     Spoint = c(x=DLdata['R', 'D']/sum(DLdata[ , 'D']),
                y=DLdata['R', 'L']/sum(DLdata[ , 'L']) )
     confInterval_D = binom.test(x = DLdata['R', 'D'],
@@ -175,11 +180,15 @@ if(showPrior) {
     )$conf.int
     #print(confInterval_D)
     lines(confInterval_D, rep(Spoint[2], 2), lwd=3)
+    ### lighthair:
     confInterval_L = binom.test(x = DLdata['R', 'L'],
                                 n = sum(DLdata[ , 'L'])
     )$conf.int
     # print(confInterval_L)
     # lines(rep(Spoint[1], 2), confInterval_L, lwd=3, col='green')
+    text(Spoint[1], Spoint[2]+0.04, xpd=NA, #adj = c(0,0.1),
+         labels = paste0("Split"),col='darkgreen' )
+                         #signif(digits=3, Spoint[1])))
     addCircledLetter(
       pointLocation = c(Spoint[1], Spoint[2]),
       labelLocation = c(Spoint[1], letterVerticalPosition),
@@ -190,8 +199,11 @@ if(showPrior) {
                  sum(DLdata[ 'R', ])/sum(DLdata) )
     confInterval = binom.test(x = sum(DLdata[ 'R', ]),
                               n = sum(DLdata))$conf.int
-    #print(confInterval)
+    print(confInterval)
+    print(Lpoint)
     lines(confInterval, confInterval, lwd=3)
+    text(Lpoint, Lpoint+0.04, crt=45, srt=45, col='darkgreen',
+         labels = paste0("Lump")) #\nPr(R|D)=",signif(digits=3, Lpoint)))
     addCircledLetter(
       pointLocation = c(Lpoint[1], Lpoint[2]),
       labelLocation = c(Lpoint[1], letterVerticalPosition),
