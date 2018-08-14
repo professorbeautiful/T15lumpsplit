@@ -529,7 +529,7 @@ One test frequently performed to test independence in a 2x2 table like this one 
 textOutput('fisherResult', inline=TRUE)
 ```
 
-If the P-value is "significant", the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PEOPLE!
+If the P-value is "significant" (which by tradition means "less than 5%"), the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!
 
 ```{r QA-fisher}
 QandAha()
@@ -549,7 +549,7 @@ QandAha()
 
 ####  Approach: Optimizing the mixture with cross-validation
 
-Cross-validation is a technique in which the performance of a model can be checked as if on an independent dataset, without actually having a separate dataset. `K-fold cross-validation` divides the dataset into K disjoint subsets of observations, and loops over these sets. Each subset is, in turn, used as a `test set`. We remove it from the full dataset, re-build the model on the reduced dataset (the `training set`), and evaluate predictions of that model on the removed observations in the test set. Performance metrics are usually averaged across the K repetitions. When $K=N$, the size of the full dataset, the procedure is called `leave-one-out cross-validation`, since each test set is of size one.
+Cross-validation is a technique in which the performance of a model can be checked as if on an independent dataset, without actually having a separate dataset. *$K$-fold cross-validation* divides the dataset into K disjoint subsets of observations, and loops over these sets. Each subset is, in turn, used as a `test set`. We remove it from the full dataset, re-build the model on the reduced dataset (the `training set`), and evaluate predictions of that model on the removed observations in the test set. Performance metrics are usually averaged across the $K$ repetitions. When $K=N$, the size of the full dataset, the procedure is called `leave-one-out cross-validation`, since each test set is of size one.
 
 For this example dataset, we perform leave-one-out cross-validation as follows:
 
