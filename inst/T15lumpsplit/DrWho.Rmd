@@ -6,7 +6,7 @@ Dr. Who is not confident in either Dr. Split or Dr. Lump.  Maybe one’s right (
 NOTE: This marginalizes out (sums over) the nuisance parameter $\phi$ over the joint distribution of ( ${p_{R.D}},\phi$)!  
 
 
-Briefly Bayes Theorem without a nuisance parameter is:
+Briefly Bayes Theorem without a nuisance parameter is (eliminating the usual $\Pr$ & using square brackets, for brevity):
 
 \[\begin{array}{l}
 \quad [\theta |X] = \frac{{[X,\theta ]}}{X} = \frac{{[X,\theta ]}}{{\int\limits_\theta  {} [X,\theta ]}} = \frac{{[X|\theta ][\theta ]}}{{\int\limits_\theta  {} [X,\theta ]}}\\
@@ -29,8 +29,12 @@ conditionalPanelWithCheckboxPDF(
 ```
 
 
+To apply the Bayes theorem principles:
+* We know the data,so we condition on $\bf{n}$. 
+* We dont' know -- and don't care about -- $\phi$ ($\phi$ is the "nuisance parameter"), so we "marginalize" over it.
+* All that's left is $\bf{p}$, what we care about.
 
-Then Dr. Who’s posterior is:
+Then,  Dr. Who’s posterior distribution for ${\bf{p}}$ is:
  \[\pi _{Who}^*({p_{R.D}}) = \pi _{Who}^*(\phi  = Split)\pi _{Split}^*({p_{R.D}}) + \pi _{Who}^*(\phi  = Lump)\pi _{Lump}^*({p_{R.D}})\]
  
 where
@@ -51,7 +55,7 @@ If *Split* is correct, then the (marginal) probability of getting the data we ob
   textOutput('mSplit', inline=TRUE)
 `.
 
-
+For the technical details, take a look here:
 ```{r}
 conditionalPanelWithCheckbox(
   labelString = 'Equations for Dr. Split\'s marginal probability', 
@@ -68,6 +72,7 @@ If *Lump* is correct, then the (marginal) probability of getting the data we obs
   textOutput('mLump', inline=TRUE)
 `.
 
+For the technical details, take a look here:
 ```{r}
 conditionalPanelWithCheckbox(
   labelString = 'Equations for Dr. Lump\'s marginal probability', 
@@ -77,7 +82,7 @@ conditionalPanelWithCheckbox(
 )
 ```
 
-Here is the code if you are interested:
+Here is the code to calculating the marginals and the Bayes factor if you are interested:
 
 ```{r}
 DrWhoBayesFactor.code = readLines(con='DrWhoBayesFactor.R')
@@ -92,7 +97,7 @@ conditionalPanelWithCheckbox(
 )
 ```
 
-The posterior distribution for Dr. Who marginalizes over $\phi$. It is a mixture, as graphed here.
+The posterior distribution for Dr. Who, which marginalizes over $\phi$ as we have seen, is a mixture, as graphed here.
 
 ```{r}
 output$whoMixturePlot = 
@@ -114,13 +119,13 @@ output$whoMixturePlot =
     points(pSeq[everyTenth], prior.w[everyTenth], pch='W', col='darkgreen')
     Sexpression = as.expression(
       bquote("S:  " * italic(
-        p[R.D]) %~% italic(Beta)(2, 2) )  )
+        p[R.D]) %~% italic(Be*ta)(2, 2) )  )
     text(0, 11, labels = Sexpression,
          col='blue', cex=1.5, pos=4
     )
     Lexpression = as.expression(
       bquote( "L:  " * italic(
-        p[R.D]==p[R]) %~% Beta(2, 2) ) ) 
+        p[R.D]==p[R]) %~% Be*ta(2, 2) ) ) 
     text(0, 9, labels = Lexpression,
          col='red', cex=1.5, pos=4
     )
@@ -159,13 +164,13 @@ output$whoMixturePlot =
 
     Sexpression = as.expression(
       bquote("S:  " * italic(
-        p[R.D]) %~% italic(Beta)(2+.(nRD), 2+.(nND))) ) 
+        p[R.D]) %~% italic(Be*ta)(2+.(nRD), 2+.(nND))) ) 
     text(0,11, labels = Sexpression,
          col='blue', cex=1.5, pos=4
     )
     Lexpression = as.expression(
       bquote( "L:  " * italic(
-        p[R.D]==p[R]) %~% Beta(2+.(nR), 2+.(nN))) ) 
+        p[R.D]==p[R]) %~% Be*ta(2+.(nR), 2+.(nN))) ) 
     text(0, 9, labels = Lexpression,
          col='red', cex=1.5, pos=4
     )
@@ -176,6 +181,9 @@ output$whoMixturePlot =
     )
   })
 plotOutput('whoMixturePlot')
+dataTableComponent(showhide='hide')
+TextQuestion("Experiment with changing #RL in the range 2 to 9. What happens?  And... why? ")
+QandAha()
 ```
 
 ##### The Bayes Factor: posterior odds (and probability) of the "null hypothesis"
@@ -186,14 +194,18 @@ and also the ratio of posterior odds to prior odds:
 \div \frac{Pr(Split)}{Pr(Lump)}.\]
 
 ```{r}
+output$BForig = renderText({DrWhoBayesFactor(DLdataOriginal)})
+```
+
+```{r}
 output$BF = renderText({DrWhoBayesFactor(rValues$DLdata)})
 ```
 
-In our case, the Bayes Factor is `r textOutput('BF', inline=TRUE)`.
+In our case, the Bayes Factor is `r textOutput('BForig', inline=TRUE)`, for the original data, and if you have modified the numbers in the table, the Bayes factor is now `r textOutput('BF', inline=TRUE)`.
 
 If *Dr.Split* and *Dr.Lump* have equal prior probability (prior odds = 1),
 then the posterior odds is the Bayes factor,
-and  the posterior probability that *Dr.Lump* is right is
+and  the posterior probability that *Dr.Lump* is correct is
 
 \[{\rm{Pr(}}\phi  = Lump|data) = {m_{Lump}}/({m_{Split}} + {m_{Lump}})\]
 
@@ -212,11 +224,11 @@ output$bayesAverage = renderText({
   )
 })
 ```
-which equals  `r textOutput('bayesAverage', inline=TRUE)`.
+which equals  `r textOutput('bayesAverage', inline=TRUE)` for the current data table.
 
 You can adjust the prior probability and observe how the posterior probability changes:
 
-the posterior odds that *Dr.Lump* is right is
+The posterior odds that *Dr.Lump* is correct is
 
-\[{\rm{Odds}(\phi = Lump|data) = \rm{Odds(}\phi  = Lump) \times {m_{Lump}}/{m_{Split}}}\]
+\[{\rm{Odds}(\phi = Lump|data) = \rm{Odds(}\phi  = Lump) \times {m_{Lump}}/{m_{Split}}}\].
 
