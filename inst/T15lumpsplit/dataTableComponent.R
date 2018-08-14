@@ -112,7 +112,7 @@ assign(myName,
 )
 
 #### dataTableComponent ####
-dataTableComponent = function() {
+dataTableComponent = function(showhide='show') {
   thisDTCNumber = nextNumber(sequenceType = "DTC")
   #cat('Creating dataTableComponent thisDTCNumber = ', thisDTCNumber, '\n')
   outputIdThisDTC = paste0('outputDTC', thisDTCNumber)
@@ -203,7 +203,8 @@ dataTableComponent = function() {
 
     panelOfData(panelIdThisDTC=panelIdThisDTC,
                 resetIdThisDTC=resetIdThisDTC,
-                myChoiceIdThisDTC=myChoiceIdThisDTC)
+                myChoiceIdThisDTC=myChoiceIdThisDTC,
+                showhide=showhide)
   })
   uiOutput(outputId = outputIdThisDTC)
 }
@@ -223,13 +224,14 @@ dataRowLabel = function(html, angle=360-40, color='green') {
 }
 
 ### Do not call panelOfData() directly. Use dataTableComponent().
-panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC) {
+panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
+                       showhide='show') {
       span(
         actionButton(inputId = resetIdThisDTC, label = "Reset data to original"),
         actionButton(inputId = myChoiceIdThisDTC,
                      label = "Reset data to my choice"),
         conditionalPanelWithCheckbox(
-          initialValue = TRUE,
+          initialValue = (showhide=='show'),
           labelString = paste("Response by Predictor Table ", panelIdThisDTC),
           html = div(
             # checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
