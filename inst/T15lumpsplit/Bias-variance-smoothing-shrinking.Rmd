@@ -452,7 +452,8 @@ Goal: decide whether to treat the "D patients" (or at least, whether to put reso
 
 ####Lump and Split estimates
 
-Examine the data table below.
+Examine the data table below. (You can change the numbers in the table and observe the results. Be sure to reset them when done.)
+
 If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for D patients is the same as `Pr(R)`, utilizing the whole set of patients, which is  
 `r reactive(round(100*estimates()$lump))`*%*. 
 
@@ -483,13 +484,15 @@ fluidRow(
 )
 div(br(),br(),br())
 ```
-You can change the numbers in the table and observe the results. (Be sure to reset them when done.)
 
-Lumping gives an answer with low variance ($N$=100) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. The confidence interval follows the diagonal where $Pr(R|D)=Pr(R|L)$.
 
-Splitting gives an answer with high variance ($N$=5) but low bias-- because it is including only patients who ARE in the $D$ group:  it is directly asking our question. The very wide horizontal confidence interval reflects this high variance.
+Lumping gives an answer with low variance ($N$=100) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. So we get a precise answer to what might be the wrong question. The confidence interval follows the diagonal where $Pr(R|D)=Pr(R|L)$.
+
+Splitting gives an answer with high variance ($N$=5) but low bias-- because it is including only patients who ARE in the $D$ group:  it is directly asking the right question, but with little precision. The very wide horizontal confidence interval reflects this high variance.
 
 #### Parametrizations of the probabilities
+
+To proceed to deeper approaches, we need some notation.
 
 ```{r child = 'Rmd-text-snippets/parametrize.Rmd'}
 ```
