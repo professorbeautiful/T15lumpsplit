@@ -7,8 +7,13 @@ linkout = function(fileName) {
   conditionalPanelWithCheckbox(
     labelString,
     filename,
-    html=tagList(  tags$iframe(style="height:600px; width:100%",
-                               src=theFile)
+    html=tagList(  tags$iframe(
+      style="height:600px; width:100%;
+                        padding:0px;
+      margin:0px;
+      border: 0px
+      ",
+      src=theFile)
     ),
     initialValue=FALSE
   )
@@ -42,8 +47,13 @@ linkoutLink = function(fileName, linkouttext) {
                   )),
                   value=FALSE),
     conditionalPanel(condition = paste0('input.', IdThisLinkout),
-                     tags$iframe(style="height:600px; width:100%",
-                                 src=fileName) )
+                     tags$iframe(
+                       style="height:600px; width:100%;
+                        padding:0px;
+                        margin:0px;
+                        border: 0px
+                       ",
+                       src=fileName) )
     )
 }
 
