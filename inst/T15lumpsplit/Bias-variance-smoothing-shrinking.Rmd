@@ -429,17 +429,37 @@ QandAha()
 ### Hypothetical medical study
 
 The Problem:  A new treatment is given to 100 patients.  
-Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respond, yielding a response rate of 60%. for now we call them "D patients", and the others "L patients".
+Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respond, yielding a response rate of 60%. for now we call them "D patients", and the others "L patients". Which subgroup a patient belongs to we will call the person's "feature" $X$, with possible values $D$ or $L$.
+The actual identity of $X$ will be explored later.
+
+The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
 
 Goal: decide whether to treat the "D patients" (or at least, whether to put resources into studying it further for "D patients").
+```{r}
+  estimates = reactive({
+  list(
+    lump = sum(rValues$DLdata['R', ])/sum(rValues$DLdata[ , ]),
+    split = (rValues$DLdata['R', 'D'])/sum(rValues$DLdata[ , 'D']),
+    confInterval_Split = binom.test(x = rValues$DLdata['R', 'D'],
+                                n = sum(rValues$DLdata[ , 'D']) )$conf.int,
+    confInterval_Lump = binom.test(x = sum(rValues$DLdata['R', ]),
+                                n = sum(rValues$DLdata[ , ]) )$conf.int
+  )
+})
+  
+```
 
-If you *"lump"*, you will estimate that the response rate (`Pr(R|D)`) for D patients is *8%*. 
 
-If you *"split"*, you will estimate that the response rate (`Pr(R|D)`) for D patients is *60%*. 
+####Lump and Split estimates
 
-#### Plot of Lump and Split estimates
+Examine the data table below.
+If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for D patients is the same as `Pr(R)`, utilizing the whole set of patients, which is  
+`r reactive(round(100*estimates()$lump))`*%*. 
 
-In the following plot, we see the estimate and the confidence interval for `Pr(R|D)`, depending on whether the *"lump"* or *"split"* approach is taken.
+If you *"split"*, you will estimate that the response rate (`Pr(R|D)`), utilizing the D patients only, is 
+`r reactive(round(100*estimates()$split))`*%*. 
+
+In the following plot, we see the estimate and the confidence interval for `Pr(R|D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
 
 ```{r plotLumpSplitPoints}
 # I removed fig.height=300
@@ -463,18 +483,11 @@ fluidRow(
 )
 div(br(),br(),br())
 ```
-
-
+You can change the numbers in the table and observe the results. (Be sure to reset them when done.)
 
 Lumping gives an answer with low variance ($N$=100) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. The confidence interval follows the diagonal where $Pr(R|D)=Pr(R|L)$.
 
-Splitting gives an answer with high variance ($N$=5) but low bias-- because it is including only patients who ARE $D$:  it is directly asking our question. The very wide horizontal confidence interval reflects this high variance.
-
-
-We will call the person's "feature" $X$, with possible values $D$ or $L$.
-The identity of $X$ will be explored later.
-
-The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
+Splitting gives an answer with high variance ($N$=5) but low bias-- because it is including only patients who ARE in the $D$ group:  it is directly asking our question. The very wide horizontal confidence interval reflects this high variance.
 
 #### Parametrizations of the probabilities
 
