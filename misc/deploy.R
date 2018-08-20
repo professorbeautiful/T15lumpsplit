@@ -7,9 +7,9 @@ rerun = function()
 
 ##
 ## OK to run .installFromGithub,
-# but to deploy Bias-variance-smoothing-shrinking,
+# but TO DEPLOY Bias-variance-smoothing-shrinking,
 # use the Publish or Republish buttons.
-
+##################
 
 # NOTE: I had tried to run rstan, and followed directions
 # for soft links as in "NOTES on rstan for monte carlo markov chain.rtf"
