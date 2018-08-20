@@ -861,14 +861,6 @@ interactiveSection(codeToRun = "saveComments()")
 ##	Curse of dimensionality,
 ##	Multiple testing and estimation with high-dimensional priors,
 
-## Other navigation links
-* -> Top of the [Lump/Split Submodule](#LSnotebookBegin) .
-* -> [Debugging panel](#debugging) .
-* -> [Code for the Plot](#plotCode).
-* -> [viewPlot](#viewPlot).
-* -> [Classical test: is X independent of the outcome Y?](#ClassicalTest)
-
-
 
 
 ```{r include navTOCid}
