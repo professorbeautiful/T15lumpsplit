@@ -673,27 +673,41 @@ div(
 Assembling the results of the approaches to estimating Pr(R|D):
 
 ```{r}
+tableOfEstimates = reactive({
+  nRD=rValues$DLdata['R','D']
+  nND=rValues$DLdata['N','D']
+  posterior.mean.s = (1+nRD)/(2+nRD+nND)
+  nR=sum(rValues$DLdata['R', ])
+  nN=sum(rValues$DLdata['N', ])
+  posterior.mean.l = (2+nR)/(4+nN)
+  
+  pProbSplit = posteriorProb(theData=rValues$DLdata)
+  pProbLump = (1-pProbSplit)
+  posterior.mean.w = 
+    pProbSplit * posterior.mean.s +
+    pProbLump * posterior.mean.l
+
+  LumpRawMean=(nR)/(nN)
+  SplitRawMean=(nRD)/(nRD+nND)
+    result = data.frame(
+      LumpObs=LumpRawMean,
+      SplitObs=SplitRawMean,
+      Lump=posterior.mean.l,
+      Split=posterior.mean.s ,
+      PrLump=pProbLump,
+      PrSplit=pProbSplit,
+      Who=posterior.mean.w, 
+      CV=rValues$CVoptimalEstimate,
+      BayesLogit=rValues$bivariateNormResults$postmean.p[1]
+    )
+    round(result, digits=2)
+})
 output$estimateTable = 
   renderTable({
-    Lump=sum(rValues$DLdata['R', ])/sum(rValues$DLdata) 
-    Split=rValues$DLdata['R','D']/sum(rValues$DLdata[ ,'D']) 
-    cat('Lump=', Lump, '\n')
-    cat('Split=', Split, '\n')
-    postProb = posteriorProb(rValues$WhoPriorOdds, rValues$DLdata)
-    cat('postProb=', postProb, '\n')
-    WhoProbSplit = Split*postProb + Lump*(1-postProb)
-    cat('WhoProbSplit=', WhoProbSplit, '\n')
-    options(digits=2) 
-    result = data.frame(
-      Lump=Lump 
-      ,Split=Split 
-      ,Who=WhoProbSplit 
-      ,CV=rValues$CVoptimalEstimate
-      ,BayesLogit=rValues$bivariateNormResults$postmean.p[1]
-    )
-    options(digits=7)
-    result
-  })
+    ## TODO: use the conditional posterior means instead.
+    ##  i.e. add in the pseudocounts.
+    tableOfEstimates()
+})
 tableOutput('estimateTable')
 ```
 
