@@ -317,7 +317,12 @@ source('dataTableComponent.R', local=TRUE)
 ```{r panelOfBifurcation}
 output$fisherResult = renderText({
     Pvalue = fisher.test(rValues$DLdata)$p.value
-    paste0('Fisher exact test result:',
+    paste0(
+        '   P = ', signif(digits=3, Pvalue), '\n')
+})
+output$fisherResultOriginal = renderText({
+    Pvalue = fisher.test(DLdataOriginal)$p.value
+    paste0(
         '   P = ', signif(digits=3, Pvalue), '\n')
 })
 
@@ -520,16 +525,9 @@ QandAha()
 A time-honored but fading technique is to use a classical hypothesis test, to guide which of two analyses to present.
 Here the hypothesis is "X is independent of Y";  the response rate of D patients does not differ from L patients.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
 
-One test frequently performed to test independence in a 2x2 table like this one is the *Fisher exact test*.
+One test frequently performed to test independence in a 2x2 table like this one is the *Fisher exact test*. On the original data, the P value is `r textOutput('fisherResultOriginal', inline=TRUE)`. If you have changed the data, it is now `r textOutput('fisherResult', inline=TRUE)`.
 
-```{r fisher}
-# interactiveSection(
-  # codeToRun = "cat('P = ', fisher.test(DLdata)$p.value, '\n')",
-  # buttonLabel= "run fishertest")
-textOutput('fisherResult', inline=TRUE)
-```
-
-If the P-value is "significant" (which by tradition means "less than 5%"), the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!
+If the P-value is "significant" (which "by tradition" means "less than 5%"), the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!
 
 ```{r QA-fisher}
 QandAha()
