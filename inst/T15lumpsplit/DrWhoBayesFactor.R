@@ -21,19 +21,27 @@ mSplit = function(theData=rValues$DLdata)
       DirNormalizer(theData+1, log=TRUE) -
       DirNormalizer(rep(1, length(theData)), log=TRUE)
   )
-mLump = function(theData=rValues$DLdata) {
-  rs = rowSums(theData)[1]
-  cs = colSums(theData)[1]
+mLump = function(theData=rValues$DLdata, aR=1, aN=1, aD=1, aL=1) {
+  nRD=theData['R','D']
+  nND=theData['N','D']
+  nR=sum(theData['R', ])
+  nN=sum(theData['N', ])
+  nD=sum(theData[ , 'D'])
+  nL=sum(theData[ , 'L'])
+  #rs = rowSums(theData)[1]  # R, N
+  #cs = colSums(theData)[1]  # D, L
   n = sum(theData)
-  choose(sum(theData), rs[1])*
-      choose(sum(theData), cs[1])*
-      dhyper(theData[1,1],rs,n-rs,cs)*
-      BetaNorm(9,93)*BetaNorm(6,96)
+  choose(n, nR) *
+    choose(n, nD) *
+    dhyper(nRD, nR, nN, nD) *
+    BetaNorm(nR+aR, nN+aN)*BetaNorm(nD+aD, nL+aL) /
+    BetaNorm(aR, aN)*BetaNorm(aD, aL)
+    # BetaNorm(9,93)*BetaNorm(6,96)
 }
       #/Beta(1,1)/Beta(1,1) ##prior
 DrWhoBayesFactor = function(theData=rValues$DLdata) {
   BF = mSplit(theData)/mLump(theData)
-  cat("Bayes Factor", BF, '\n')
+  cat("DrWhoBayesFactor: Bayes Factor is", BF, '\n')
   BF
   #6/101/102/103
 }
@@ -43,5 +51,5 @@ posteriorOdds = function(priorOdds, theData)
 
 oddsToProb = function(odds) odds/(1+odds)
 
-posteriorProb = function(priorOdds, theData)
+posteriorProb = function(priorOdds=1, theData)
   oddsToProb(posteriorOdds(priorOdds, theData))
