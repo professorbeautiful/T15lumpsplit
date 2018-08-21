@@ -114,9 +114,12 @@ output$whoMixturePlot =
     lines(pSeq, prior.l,  col='red')
     lines(pSeq, prior.w,  col='darkgreen', lwd=2)
     everyTenth = (1:length(pSeq)) %% 10 == 0
-    points(pSeq[everyTenth], prior.s[everyTenth], pch='S', col='blue')
-    points(pSeq[everyTenth], prior.l[everyTenth], pch='L', col='red')
-    points(pSeq[everyTenth], prior.w[everyTenth], pch='W', col='darkgreen')
+    points(pSeq[everyTenth], 
+           prior.s[everyTenth], pch='S', col='blue')
+    points(pSeq[everyTenth], 
+           prior.l[everyTenth], pch='L', col='red')
+    points(pSeq[everyTenth], 
+           prior.w[everyTenth], pch='W', col='darkgreen')
     Sexpression = as.expression(
       bquote("S:  " * italic(
         p[R.D]) %~% italic(Be*ta)(2, 2) )  )
@@ -134,33 +137,41 @@ output$whoMixturePlot =
     text(0, 7, labels = Wexpression,
          col='darkgreen', cex=1.5, pos=4
     )
-
+#currentTableOfEstimates = tableOfEstimates()
     nRD=rValues$DLdata['R','D']
     nND=rValues$DLdata['N','D']
     posterior.s = dbeta(pSeq, 
                     1+nRD, 
                     1+nND)
+    posterior.mean.s = (1+nRD)/(2+nRD+nND)
     nR=sum(rValues$DLdata['R', ])
     nN=sum(rValues$DLdata['N', ])
+    posterior.mean.l = (2+nR)/(4+nN)
     posterior.l = dbeta(pSeq, 
                         2+nR, 2+nN)
-    postProb = posteriorProb(priorOdds = 1, theData = rValues$DLdata)
+    
     cat('mSplit is ', mSplit(rValues$DLdata), '\n')
     cat('mLump is ', mLump(rValues$DLdata), '\n')
     cat('DrWhoBayesFactor is ', DrWhoBayesFactor(rValues$DLdata), '\n')
-    cat('postProb is ', postProb, '\n')
-    posterior.w = (postProb) * posterior.s + (1-postProb) * posterior.l
-
+    pProbSplit = posteriorProb(theData=rValues$DLdata)
+    pProbLump = (1-pProbSplit)
+    posterior.w = pProbSplit * posterior.s + pProbLump * posterior.l
+    posterior.mean.w = 
+      pProbSplit * posterior.mean.s +
+      pProbLump * posterior.mean.l
     plot(pSeq, posterior.s, col='blue', type='l',
          xlab='probability', ylab='density',
          ylim=c(0,15),
-         main='Posteriors') 
+         main='Posterior densities and means') 
     lines(pSeq, posterior.l,  col='red')
     lines(pSeq, posterior.w,  col='darkgreen', lwd=2)
 
-    points(pSeq[everyTenth], posterior.s[everyTenth], pch='S', col='blue')
-    points(pSeq[everyTenth], posterior.l[everyTenth], pch='L', col='red')
-    points(pSeq[everyTenth], posterior.w[everyTenth], pch='W', col='darkgreen')
+    points(pSeq[everyTenth], posterior.s[everyTenth], 
+           pch='S', col='blue')
+    points(pSeq[everyTenth], posterior.l[everyTenth], 
+           pch='L', col='red')
+    points(pSeq[everyTenth], posterior.w[everyTenth], 
+           pch='W', col='darkgreen')
 
     Sexpression = as.expression(
       bquote("S:  " * italic(
@@ -179,6 +190,27 @@ output$whoMixturePlot =
     text(0, 7, labels = Wexpression,
          col='darkgreen', cex=1.5, pos=4
     )
+    text(0.2, 5, labels = 
+           paste0(round(digits=2, pProbSplit)),
+         col='darkgreen', cex=1.5, pos=4
+    )
+    text(0.35, 5, labels = "S",
+         col='blue', cex=1.5, pos=4)
+    text(0.45, 5, labels = "+",
+         col='darkgreen', cex=1.5, pos=4)
+    text(0.5, 5, labels = 
+           paste0(round(digits=2, pProbLump)),
+         col='darkgreen', cex=1.5, pos=4
+    )
+    text(0.65, 5, labels = "L",
+         col='red', cex=1.5, pos=4)
+    onTop = par('usr')[4]  ## ['y2']
+    cat('onTop: ', onTop, '\n')
+    text(0, onTop*1.05, col='black', xpd=NA, 
+         labels=expression(Means %=>% phantom('.')), cex=1, pos = 2, font=4)
+    text(posterior.mean.l, onTop*1.00, col='red', xpd=NA, labels="L", cex=1, pos = 3, font=4)
+    text(posterior.mean.s, onTop*1.00, col='blue', xpd=NA, labels="S", cex=1, pos = 3, font=4)
+    text(posterior.mean.w, onTop*1.00, col='darkgreen', xpd=NA, labels="W", cex=1, pos = 3, font=4)
   })
 plotOutput('whoMixturePlot')
 dataTableComponent(showhide='hide')
@@ -226,9 +258,9 @@ output$bayesAverage = renderText({
 ```
 which equals  `r textOutput('bayesAverage', inline=TRUE)` for the current data table.
 
-You can adjust the prior probability and observe how the posterior probability changes:
+You can adjust the prior probability and observe how the posterior probability changes.
+The Bayes factor in favor of  *Dr.Split* is correct is
 
-The posterior odds that *Dr.Lump* is correct is
-
-\[{\rm{Odds}(\phi = Lump|data) = \rm{Odds(}\phi  = Lump) \times {m_{Lump}}/{m_{Split}}}\].
-
+\[{\rm{Odds}(\phi = Split|data) = \rm{Odds(}\phi  = Split) \times {m_{Split}}/{m_{Lump}}}\].
+If Dr. Who puts equal prior probability on *Lump* and *Split*, the Bayes factor is the same as the posterior odds. Converting from odds to probability, with the current datathe posterior probability in favor of *Split* equals 
+`r output$postProb = shiny::renderText({round(digits=3, posteriorProb(theData=rValues$DLdata))}); textOutput('postProb')`.
