@@ -187,12 +187,12 @@ if(showPrior) {
     # print(confInterval_L)
     # lines(rep(Spoint[1], 2), confInterval_L, lwd=3, col='green')
     text(Spoint[1], Spoint[2]+0.04, xpd=NA, #adj = c(0,0.1),
-         labels = paste0("Split"),col='darkgreen' )
+         labels = paste0("Split"),col='blue' )
                          #signif(digits=3, Spoint[1])))
     addCircledLetter(
       pointLocation = c(Spoint[1], Spoint[2]),
       labelLocation = c(Spoint[1], letterVerticalPosition),
-      pch='S', col='darkgreen', cex=1.4)
+      pch='S', col='blue', cex=1.4)
   }
   if(showL) {
     Lpoint = rep(times=2,
@@ -202,12 +202,12 @@ if(showPrior) {
     print(confInterval)
     print(Lpoint)
     lines(confInterval, confInterval, lwd=3)
-    text(Lpoint, Lpoint+0.04, crt=45, srt=45, col='darkgreen',
+    text(Lpoint, Lpoint+0.04, crt=45, srt=45, col='red',
          labels = paste0("Lump")) #\nPr(R|D)=",signif(digits=3, Lpoint)))
     addCircledLetter(
       pointLocation = c(Lpoint[1], Lpoint[2]),
       labelLocation = c(Lpoint[1], letterVerticalPosition),
-      pch='L', bg='white', col = 'darkgreen', cex=1.4)
+      pch='L', bg='white', col = 'red', cex=1.4)
   }
   if(showW) {
     BayesFactor = DrWhoBayesFactor(DLdata)
