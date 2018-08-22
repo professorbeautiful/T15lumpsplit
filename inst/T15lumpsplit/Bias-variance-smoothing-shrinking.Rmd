@@ -474,6 +474,7 @@ If you *"split"*, you will estimate that the response rate (`Pr(R|D)`), utilizin
 In the following plot, we see the estimate and the confidence interval for `Pr(R|D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
 
 ```{r plotLumpSplitPoints}
+a(name='section-a_plotLumpSplitPoints')
 # I removed fig.height=300
 output$confInterval_Lump = renderText(
   {        paste("Lump:  ", rValues$estimates['confInterval_Lump'])
@@ -751,13 +752,9 @@ WhoPriorProbNumericInput()
 
 and reviewing revised results at these previous locations:
 
-* `r linkinLink('a_crossvalidationPlot', 'Cross-validation plot')`
-* `r linkinLink('a_whoMixturePlot', 'Posterior distribution for Dr. Who')`
-* `r linkinLink('a_viewPlot', 'Bivariate logit plot')`
-
-  (Press ESC key to return here.)
 
 ```{r}
+inclRmd('jumpBack.Rmd')
 QandAha('')
 ```
 
@@ -774,13 +771,9 @@ WhoPriorProbNumericInput()
 
 and reviewing revised results at these previous locations:
 
-* `r linkinLink('a_crossvalidationPlot', 'Cross-validation plot')`
-* `r linkinLink('a_whoMixturePlot', 'Posterior distribution for Dr. Who')`
-* `r linkinLink('a_viewPlot', 'Bivariate logit plot')`
-
-(Press ESC key to return here.)
   
 ```{r}
+inclRmd('jumpBack.Rmd')
 QandAha('')
 ```
 

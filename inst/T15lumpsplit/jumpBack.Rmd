@@ -1,0 +1,6 @@
+* `r linkinLink('a_plotLumpSplitPoints', 'Plot of lump & split points')`
+* `r linkinLink('a_crossvalidationPlot', 'Cross-validation plot')`
+* `r linkinLink('a_whoMixturePlot', 'Posterior distribution for Dr. Who')`
+* `r linkinLink('a_viewPlot', 'Bivariate logit plot')`
+
+(Press ESC key to return here.)
