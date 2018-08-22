@@ -99,7 +99,10 @@ conditionalPanelWithCheckbox(
 
 The posterior distribution for Dr. Who, which marginalizes over $\phi$ as we have seen, is a mixture, as graphed here.
 
+Viewing Dr. Who's posterior:
+
 ```{r}
+a(name='section-a_whoMixturePlot')
 output$whoMixturePlot = 
   renderPlot(expr =  {
     pSeq = seq(0,1, length=100)

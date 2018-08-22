@@ -733,6 +733,7 @@ WhoPriorProbNumericInput()
 and reviewing revised results at these previous locations:
 
 * `r linkinLink('a_crossvalidationPlot', 'Cross-validation plot')`
+* `r linkinLink('a_whoMixturePlot', 'Posterior distribution for Dr. Who')`
 * `r linkinLink('a_viewPlot', 'Bivariate logit plot')`
 
   (Press ESC key to return here.)
@@ -755,6 +756,7 @@ WhoPriorProbNumericInput()
 and reviewing revised results at these previous locations:
 
 * `r linkinLink('a_crossvalidationPlot', 'Cross-validation plot')`
+* `r linkinLink('a_whoMixturePlot', 'Posterior distribution for Dr. Who')`
 * `r linkinLink('a_viewPlot', 'Bivariate logit plot')`
 
 (Press ESC key to return here.)
