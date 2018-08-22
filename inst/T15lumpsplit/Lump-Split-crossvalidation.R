@@ -59,12 +59,12 @@ output$crossvalidationPlot = renderPlot({
     axis(2, col='orange', col.axis='orange')
     mtext(text = 'penalty', side = 2, col='orange',line=2)
     optimalWeight = weights[which(penaltyVector==min(penaltyVector))]  [1]
-    cat('optimalWeight = ', optimalWeight, '\n')
+    #cat('optimalWeight = ', optimalWeight, '\n')
     proportionOverall = sum(theData[ 'R', ])/sum(theData)
     proportionThisGroup =  sum(theData[ 'R', 'D'])/sum(theData[ , 'D'])
     optimalEstimate = estimators[which(weights==optimalWeight)]
     rValues$CVoptimalEstimate = optimalEstimate
-    cat('optimal estimate for dark = ', optimalEstimate, '\n')
+    #cat('optimal estimate for dark = ', optimalEstimate, '\n')
     points(optimalWeight,
            totalPenalty(optimalWeight, penalty=penaltyFunction),
            col='orange', pch=17, cex=2)

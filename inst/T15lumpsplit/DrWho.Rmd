@@ -153,9 +153,9 @@ output$whoMixturePlot =
     posterior.l = dbeta(pSeq, 
                         2+nR, 2+nN)
     
-    cat('mSplit is ', mSplit(rValues$DLdata), '\n')
-    cat('mLump is ', mLump(rValues$DLdata), '\n')
-    cat('DrWhoBayesFactor is ', DrWhoBayesFactor(rValues$DLdata), '\n')
+    #cat('mSplit is ', mSplit(rValues$DLdata), '\n')
+    #cat('mLump is ', mLump(rValues$DLdata), '\n')
+    #cat('DrWhoBayesFactor is ', DrWhoBayesFactor(rValues$DLdata), '\n')
     pProbSplit = posteriorProb(theData=rValues$DLdata)
     pProbLump = (1-pProbSplit)
     posterior.w = pProbSplit * posterior.s + pProbLump * posterior.l
@@ -208,7 +208,7 @@ output$whoMixturePlot =
     text(0.65, 5, labels = "L",
          col='red', cex=1.5, pos=4)
     onTop = par('usr')[4]  ## ['y2']
-    cat('onTop: ', onTop, '\n')
+    #cat('onTop: ', onTop, '\n')
     text(0, onTop*1.05, col='black', xpd=NA, 
          labels=expression(Means %=>% phantom('.')), cex=1, pos = 2, font=4)
     text(posterior.mean.l, onTop*1.00, col='red', xpd=NA, labels="L", cex=1, pos = 3, font=4)

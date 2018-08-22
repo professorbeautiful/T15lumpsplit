@@ -41,7 +41,7 @@ mLump = function(theData=rValues$DLdata, aR=1, aN=1, aD=1, aL=1) {
       #/Beta(1,1)/Beta(1,1) ##prior
 DrWhoBayesFactor = function(theData=rValues$DLdata) {
   BF = mSplit(theData)/mLump(theData)
-  cat("DrWhoBayesFactor: Bayes Factor is", BF, '\n')
+  #cat("DrWhoBayesFactor: Bayes Factor is", BF, '\n')
   BF
   #6/101/102/103
 }

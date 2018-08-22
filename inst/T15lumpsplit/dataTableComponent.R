@@ -39,13 +39,15 @@ assign(myName,
              input[[firstCellIds[3]]], #RL
              input[[firstCellIds[4]]]), #NL
          handlerExpr = {
-           cat('START updateDLdataMyChoice: isLoopingSync=',
+           if(trackupdateDLdata)
+             cat('START updateDLdataMyChoice: isLoopingSync=',
                rValues$isLoopingSync, ' isResetting=', rValues$isResetting, "\n")
            if(rValues$isLoopingSync == FALSE
               & rValues$isResetting == FALSE) {
              try(silent = FALSE, {
                isolate({
-                 cat('updateDLdataMyChoice: changing MyChoice', '\n')
+                 if(trackupdateDLdata)
+                   cat('updateDLdataMyChoice: changing MyChoice', '\n')
                  rValues$DLdataMyChoice[1,1] =  as.numeric(input[[firstCellIds[1]]])
                  rValues$DLdataMyChoice[2,1] =  as.numeric(input[[firstCellIds[2]]])
                  rValues$DLdataMyChoice[1,2] =  as.numeric(input[[firstCellIds[3]]])
@@ -54,7 +56,8 @@ assign(myName,
                })
              }) ### end of try
            } ### end of if
-           cat('END updateDLdataMyChoice: isLoopingSync=',
+           if(trackupdateDLdata)
+             cat('END updateDLdataMyChoice: isLoopingSync=',
                rValues$isLoopingSync, ' isResetting=', rValues$isResetting, "\n")
          }
        )
@@ -73,7 +76,8 @@ assign(myName,
          eventExpr =
            rValues$DLdataMyChoice,
          handlerExpr = {
-           cat('copyDLdataMyChoice2DLdata', "\n")
+           if(trackupdateDLdata)
+             cat('copyDLdataMyChoice2DLdata', "\n")
              try(silent = FALSE, {
                isolate({
                  rValues$DLdata = rValues$DLdataMyChoice
