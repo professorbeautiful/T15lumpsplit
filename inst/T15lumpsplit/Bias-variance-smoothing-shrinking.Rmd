@@ -437,16 +437,16 @@ QandAha()
 
 ### Hypothetical medical study
 
-The Problem:  A new treatment is given to 100 patients.  
-Of them, only 8 respond.  But there is a subgroup of 5 in which 3 patients respond, yielding a response rate of 60%. for now we call them "D patients", and the others "L patients". Which subgroup a patient belongs to we will call the person's "feature" $X$, with possible values $D$ or $L$.
+The Problem:  A new treatment is given to `r sum(DLdataOriginal)` patients.  
+Of them, only `r sum(DLdataOriginal["R", ])` respond.  But there is a subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r sum(DLdataOriginal["R","D"])` patients respond, yielding a response rate of `r round(100*sum(DLdataOriginal["R","D"])/sum(DLdataOriginal[ , "D"]) )`%. For now we call them "$D$ patients", and the others "$L$ patients". Which subgroup a patient belongs to we will call the person's "feature" $X$, with possible values $D$ or $L$.
 The actual identity of $X$ will be explored later.
 
 The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
 
-Goal: decide whether to treat the "D patients" (or at least, whether to put resources into studying it further for "D patients").
+Goal: decide whether to treat the "$D$ patients" (or at least, whether to put resources into studying it further for "$D$ patients").
 ```{r}
   estimates = reactive({
-  list(
+  rValues$estimates = list(
     lump = sum(rValues$DLdata['R', ])/sum(rValues$DLdata[ , ]),
     split = (rValues$DLdata['R', 'D'])/sum(rValues$DLdata[ , 'D']),
     confInterval_Split = binom.test(x = rValues$DLdata['R', 'D'],
@@ -459,12 +459,14 @@ Goal: decide whether to treat the "D patients" (or at least, whether to put reso
 ```
 
 
-####Lump and Split estimates
+#### Lump and Split estimates
 
-Examine the data table below. (You can change the numbers in the table and observe the results. Be sure to reset them when done.)
+Examine the data table below. 
 
-If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for D patients is the same as `Pr(R)`, utilizing the whole set of patients, which is  
-`r reactive(round(100*estimates()$lump))`*%*. 
+(Throughout this example, you can change the numbers in the table and observe the results. 
+Be sure to press "reset" when done.)
+
+If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for D patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*estimates()$lump))`*%*. 
 
 If you *"split"*, you will estimate that the response rate (`Pr(R|D)`), utilizing the D patients only, is 
 `r reactive(round(100*estimates()$split))`*%*. 
@@ -473,6 +475,13 @@ In the following plot, we see the estimate and the confidence interval for `Pr(R
 
 ```{r plotLumpSplitPoints}
 # I removed fig.height=300
+output$confInterval_Lump = renderText(
+  {        paste("Lump:  ", rValues$estimates['confInterval_Lump'])
+  })
+output$confInterval_Split = renderText(
+  {        paste("Split:  ", rValues$estimates['confInterval_Split'])
+  })
+
 output$plotLumpSplitPoints = renderPlot(
   height = 300, {
   plotPlightPdarkPosterior(DLdata=rValues$DLdata,
@@ -486,7 +495,13 @@ fluidRow(
   column(6, 
          # span(style='color:red; text-align:center', 
          # "L = Lump, S = Split"),
-         plotOutput('plotLumpSplitPoints')),
+         plotOutput('plotLumpSplitPoints'),
+         h4("Confidence intervals:"),
+         tagAppendAttributes(style="color:red",
+                             textOutput('confInterval_Lump')),
+         tagAppendAttributes(style="color:blue",
+                             textOutput('confInterval_Split'))
+  ),
   column(6,
          br(),br(),br(),
          dataTableComponent())
