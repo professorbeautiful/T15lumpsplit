@@ -526,7 +526,6 @@ fluidRow(
 # div(br(),br(),br())
 ```
 
-
 Lumping gives an answer with low variance ($N$=100) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. So we get a precise answer to what might be the wrong question. The confidence interval follows the diagonal where $Pr(R|D)=Pr(R|L)$.
 
 Splitting gives an answer with high variance ($N$=5) but low bias-- because it is including only patients who ARE in the $D$ group:  it is directly asking the right question, but with little precision. The very wide horizontal confidence interval reflects this high variance.
