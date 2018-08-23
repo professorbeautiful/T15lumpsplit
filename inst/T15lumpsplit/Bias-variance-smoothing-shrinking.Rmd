@@ -104,7 +104,7 @@ rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
 
 ```{r plotPlightPdarkPosteriorReactive}
 plotPlightPdarkPosteriorReactive = reactive( {
-  cat("PLOTTING   ")
+  #cat("PLOTTING   ")
   tau <- input$tauInput
   phi <- input$phiInput
   mu0 <- input$mu0Input
@@ -128,7 +128,7 @@ plotPlightPdarkPosteriorReactive = reactive( {
 ```{r lumpReact}
 lumpReact = observe({
   if(length(input$lumpID) > 0) {
-    cat("lumpID\n")
+    #cat("lumpID\n")
     rValues$tau <- 1; rValues$phi <- 0.001   
     ### Lump:  no individual variation:   D is same as L.
     rValues$title_1 <- "Dr. Lump"
@@ -141,7 +141,7 @@ lumpReact = observe({
 ```{r splitReact}
 splitReact = observe({
   if(length(input$splitID) > 0) {
-    cat("splitID\n")
+    #cat("splitID\n")
     rValues$tau <<- 0; rValues$phi <<- 1   
     ### Split:  D unconnected to L.
     rValues$title_1 <<- "Dr. Split"
@@ -153,7 +153,7 @@ splitReact = observe({
 ```{r whoReact}
 whoReact = observe({
   if(length(input$whoID) > 0) {
-    cat("whoID\n")
+    #cat("whoID\n")
     ### Who:  discrete mixture of Lump and Split.
     rValues$title_1 <<- "Dr. Who: \ndiscrete mixture of Lump and Split."
     rValues$title_2 <<- HTML(paste0("Prior belief: <BR> Pr(Split)=",
@@ -165,7 +165,7 @@ whoReact = observe({
 ```{r mixedReact} 
 mixedReact = observe({
   if(length(input$mixedID) > 0) {
-    cat("mixedID\n")
+    #cat("mixedID\n")
     rValues$tau <<- 1/2; rValues$phi <<- 1/2 
     rValues$title_1 <<- HTML("Compromise: <br>lump some, split some")
     rValues$title_2 <<- HTML("Prior belief: <br> Pr(R|D) is somewhat related to Pr(R|L). ")
@@ -507,7 +507,7 @@ output$plotLumpSplitPoints = renderPlot(
                            showW = FALSE)
   })
 fluidRow(
-  column(6, 
+  column(4, 
          tags$strong(style='text-align:center', "Confidence intervals:"),
          tagAppendAttributes(style="color:red",
                              textOutput('confInterval_Lump')),
@@ -517,8 +517,8 @@ fluidRow(
          # "L = Lump, S = Split"),
          plotOutput('plotLumpSplitPoints')
   ),
-  column(6,
-         br(),br(),br(),
+  column(8,
+         #br(),br(),br(),
          dataTableComponent())
 )
 # div(br(),br(),br())

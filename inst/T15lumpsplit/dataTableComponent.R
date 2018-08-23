@@ -99,7 +99,8 @@ assign(myName,
          label=myName,
          eventExpr = rValues$DLdata,
          handlerExpr = {
-           cat('updateDLnumericInputs: setting isResetting to TRUE', "\n")
+           if(trackupdateDLdata)
+             cat('updateDLnumericInputs: setting isResetting to TRUE', "\n")
            rValues$isResetting = TRUE
            try(silent = FALSE, {
              isolate({  ### isolates should not be necessary in handlerExpr.
@@ -110,7 +111,8 @@ assign(myName,
                updateNumericInput(session, firstCellIds[4], value=rValues$DLdata['N','L'])
              })
            }) ### End of try()
-           cat('updateDLnumericInputs:isResetting is now ', rValues$isResetting, "\n")
+           if(trackupdateDLdata)
+             cat('updateDLnumericInputs:isResetting is now ', rValues$isResetting, "\n")
          }
        )
 )
@@ -158,9 +160,9 @@ dataTableComponent = function(showhide='show') {
       eventExpr = input[[myChoiceIdThisDTC]],
       #priority = 1,
       handlerExpr =  {
-        cat(myName, '\n')
+        #cat(myName, '\n')
         isolate({
-          cat(myName, '  isResetting=', rValues$isResetting, '\n')
+          #cat(myName, '  isResetting=', rValues$isResetting, '\n')
           rValues$DLdata = rValues$DLdataMyChoice
         })
       })

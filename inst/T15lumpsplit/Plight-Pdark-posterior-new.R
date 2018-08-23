@@ -199,8 +199,8 @@ if(showPrior) {
                  sum(DLdata[ 'R', ])/sum(DLdata) )
     confInterval = binom.test(x = sum(DLdata[ 'R', ]),
                               n = sum(DLdata))$conf.int
-    print(confInterval)
-    print(Lpoint)
+    #print(confInterval)
+    #print(Lpoint)
     lines(confInterval, confInterval, lwd=3)
     text(Lpoint, Lpoint+0.04, crt=45, srt=45, col='red',
          labels = paste0("Lump")) #\nPr(R|D)=",signif(digits=3, Lpoint)))
