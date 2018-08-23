@@ -508,6 +508,7 @@ output$plotLumpSplitPoints = renderPlot(
   })
 fluidRow(
   column(4, 
+         br(),
          span(style='text-align:center;font-weight: bold', 
               "Confidence intervals:"),
          tagAppendAttributes(style="color:red;text-align:center",
