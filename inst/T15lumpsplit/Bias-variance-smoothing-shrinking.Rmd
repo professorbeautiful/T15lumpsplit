@@ -593,10 +593,10 @@ source('Lump-Split-crossvalidation.R', local=TRUE, echo = FALSE)
 ```{r}
 a(name='section-a_crossvalidationPlot')
 fluidRow(
-  column(6, 
+  column(4, 
          plotOutput('crossvalidationPlot')),
-  column(6,
-         br(),br(),br(),
+  column(8,
+         br(),
          dataTableComponent())
 )
 ```
@@ -672,7 +672,7 @@ QandAha()
 a(name='section-a_viewPlot')
 div(
   fluidRow(
-    column(6, 
+    column(4, 
            tagAppendAttributes(
              div(
                uiOutput(outputId="title_1_ID"),
@@ -684,8 +684,8 @@ div(
                     font-weight:bold'),
            plotOutput(outputId = 'thePlot', height=260)
     ),
-    column(6,
-           br(),br(),br(),
+    column(8,
+           br(),
            dataTableComponent()
     )
   ),
