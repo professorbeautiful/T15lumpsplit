@@ -206,11 +206,18 @@ dataTableComponent = function(showhide='show') {
 
   #### Output of dataTableComponent ####
   output[[outputIdThisDTC]] = renderUI({
-
+    fluidRow(
+      column(6,
     panelOfData(panelIdThisDTC=panelIdThisDTC,
                 resetIdThisDTC=resetIdThisDTC,
                 myChoiceIdThisDTC=myChoiceIdThisDTC,
                 showhide=showhide)
+      ),
+    column(6, actionButton(inputId = resetIdThisDTC, label = "Reset data to original"),
+           actionButton(inputId = myChoiceIdThisDTC,
+                        label = "Reset data to my choice"),
+           inclRmd('jumpBack.Rmd'))
+    )
   })
   uiOutput(outputId = outputIdThisDTC)
 }
@@ -233,9 +240,6 @@ dataRowLabel = function(html, angle=360-40, color='green') {
 panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
                        showhide='show') {
       span(
-        actionButton(inputId = resetIdThisDTC, label = "Reset data to original"),
-        actionButton(inputId = myChoiceIdThisDTC,
-                     label = "Reset data to my choice"),
         conditionalPanelWithCheckbox(
           initialValue = (showhide=='show'),
           labelString = paste("Response by Predictor Table ", panelIdThisDTC),
