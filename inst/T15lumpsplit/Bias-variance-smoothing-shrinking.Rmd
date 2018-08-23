@@ -508,10 +508,11 @@ output$plotLumpSplitPoints = renderPlot(
   })
 fluidRow(
   column(4, 
-         tags$strong(style='text-align:center', "Confidence intervals:"),
-         tagAppendAttributes(style="color:red",
+         span(style='text-align:center;font-weight: bold', 
+              "Confidence intervals:"),
+         tagAppendAttributes(style="color:red;text-align:center",
                              textOutput('confInterval_Lump')),
-         tagAppendAttributes(style="color:blue",
+         tagAppendAttributes(style="color:blue;text-align:center",
                              textOutput('confInterval_Split')),
          # span(style='color:red; text-align:center', 
          # "L = Lump, S = Split"),
