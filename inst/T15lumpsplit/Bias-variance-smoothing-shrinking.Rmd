@@ -477,11 +477,25 @@ In the following plot, we see the estimate and the confidence interval for `Pr(R
 a(name='section-a_plotLumpSplitPoints')
 # I removed fig.height=300
 output$confInterval_Lump = renderText(
-  {        paste("Lump:  ", rValues$estimates['confInterval_Lump'])
+  {        paste("Lump:  (", 
+                 signif(digits=2,
+                        rValues$estimates[['confInterval_Lump']][1]),
+                 "-",
+                 signif(digits=2,
+                        rValues$estimates[['confInterval_Lump']][2]),
+                 ")"
+  )
   })
 output$confInterval_Split = renderText(
-  {        paste("Split:  ", rValues$estimates['confInterval_Split'])
-  })
+  {        paste("Split:  (", 
+                 signif(digits=2,
+                        rValues$estimates[['confInterval_Split']][1]),
+                 "-",
+                 signif(digits=2,
+                        rValues$estimates[['confInterval_Split']][2]),
+                   ")"
+  )
+  }) 
 
 output$plotLumpSplitPoints = renderPlot(
   height = 300, {
@@ -494,20 +508,20 @@ output$plotLumpSplitPoints = renderPlot(
   })
 fluidRow(
   column(6, 
-         # span(style='color:red; text-align:center', 
-         # "L = Lump, S = Split"),
-         plotOutput('plotLumpSplitPoints'),
-         h4("Confidence intervals:"),
+         tags$strong(style='text-align:center', "Confidence intervals:"),
          tagAppendAttributes(style="color:red",
                              textOutput('confInterval_Lump')),
          tagAppendAttributes(style="color:blue",
-                             textOutput('confInterval_Split'))
+                             textOutput('confInterval_Split')),
+         # span(style='color:red; text-align:center', 
+         # "L = Lump, S = Split"),
+         plotOutput('plotLumpSplitPoints')
   ),
   column(6,
          br(),br(),br(),
          dataTableComponent())
 )
-div(br(),br(),br())
+# div(br(),br(),br())
 ```
 
 
