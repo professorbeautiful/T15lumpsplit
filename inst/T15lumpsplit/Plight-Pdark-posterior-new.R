@@ -79,8 +79,8 @@ plotPlightPdarkPosterior = function(
                          +c(-1,1)*postvar.logit[d]
   )
   confints.p = antilogit(confints.logit)
-  cat('confints.p\n')
-  print(confints.p)
+  # cat('confints.p\n')
+  # print(confints.p)
 
   #### Prepare to plot contours ################
 
