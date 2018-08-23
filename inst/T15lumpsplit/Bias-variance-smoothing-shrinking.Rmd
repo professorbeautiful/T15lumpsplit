@@ -14,7 +14,7 @@ output:
     toc: yes
     toc_depth: 6
     toc_float:
-      collapsed: yes
+      collapsed: no
       smooth_scroll: no
 ---
 
