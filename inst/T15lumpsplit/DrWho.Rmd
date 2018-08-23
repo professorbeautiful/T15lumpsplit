@@ -176,39 +176,41 @@ output$whoMixturePlot =
     points(pSeq[everyTenth], posterior.w[everyTenth], 
            pch='W', col='darkgreen')
 
+    offset = 0.2
     Sexpression = as.expression(
       bquote("S:  " * italic(
         p[R.D]) %~% italic(Be*ta)(2+.(nRD), 2+.(nND))) ) 
-    text(0,11, labels = Sexpression,
-         col='blue', cex=1.5, pos=4
+    text(offset+0,11, labels = Sexpression,
+         col='blue', cex=1.5, pos=4, xpd=NA
     )
     Lexpression = as.expression(
       bquote( "L:  " * italic(
         p[R.D]==p[R]) %~% Be*ta(2+.(nR), 2+.(nN))) ) 
-    text(0, 9, labels = Lexpression,
-         col='red', cex=1.5, pos=4
+    text(offset+0, 9, labels = Lexpression,
+         col='red', cex=1.5, pos=4, xpd=NA
     )
     Wexpression = as.expression(
       bquote( "W:  " * italic("Dr. Who mixture" ) ) )
-    text(0, 7, labels = Wexpression,
-         col='darkgreen', cex=1.5, pos=4
+    text(offset+0, 7, labels = Wexpression,
+         col='darkgreen', cex=1.5, pos=4, xpd=NA
     )
-    text(0.2, 5, labels = 
+    text(offset+0.2, 5, labels = 
            paste0(round(digits=2, pProbSplit)),
-         col='darkgreen', cex=1.5, pos=4
+         col='darkgreen', cex=1.5, pos=4, xpd=NA
     )
-    text(0.35, 5, labels = "S",
-         col='blue', cex=1.5, pos=4)
-    text(0.45, 5, labels = "+",
-         col='darkgreen', cex=1.5, pos=4)
-    text(0.5, 5, labels = 
+    text(offset+0.35, 5, labels = "S",
+         col='blue', cex=1.5, pos=4, xpd=NA)
+    text(offset+0.45, 5, labels = "+",
+         col='darkgreen', cex=1.5, pos=4, xpd=NA)
+    text(offset+0.5, 5, labels = 
            paste0(round(digits=2, pProbLump)),
-         col='darkgreen', cex=1.5, pos=4
+         col='darkgreen', cex=1.5, pos=4, xpd=NA
     )
-    text(0.65, 5, labels = "L",
+    text(offset+0.65, 5, labels = "L",
          col='red', cex=1.5, pos=4)
     onTop = par('usr')[4]  ## ['y2']
     #cat('onTop: ', onTop, '\n')
+    ######  Mark the positions of the means.
     text(0, onTop*1.05, col='black', xpd=NA, 
          labels=expression(Means %=>% phantom('.')), cex=1, pos = 2, font=4)
     text(posterior.mean.l, onTop*1.00, col='red', xpd=NA, labels="L", cex=1, pos = 3, font=4)
