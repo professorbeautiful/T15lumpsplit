@@ -42,7 +42,7 @@ rerun = function()
       deployApp()
     },
     finally={
-      cat("rsconnect::showLogs(appDir = 'inst/" %&% app %&% "')\n")
+      cat("rsconnect::showLogs(appPath = 'inst/" %&% app %&% "')\n")
       setwd("../..")
     })
   }
@@ -50,6 +50,6 @@ rerun = function()
 
 .runDeployed = function(app="T15lumpsplit"){
   system(paste("open https://trials.shinyapps.io/", app) )
-  cat("rsconnect::showLogs(appDir = 'inst/", app, "')\n")
+  cat("rsconnect::showLogs(appPath = 'inst/", app, "')\n")
 }
 

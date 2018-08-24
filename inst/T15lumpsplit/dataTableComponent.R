@@ -242,47 +242,38 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
   span(
     conditionalPanelWithCheckbox(
       initialValue = (showhide=='show'),
-      labelString = paste("Response by Predictor Table "),
+      labelString = paste("Response by Predictor Table ", panelIdThisDTC),
+      #labelString = "Response by Predictor Table ",
+      ##    This breaks the JS!  conditionalPanelWithCheckbox needs to extract the unique ID.
       html = div(
         # checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
         # conditionalPanel(
         #   'input.toggleShowData',
-        splitLayout(style='color:green;',
-                    "",  ### Room for the row labels.
-                    HTML("Group <br>'<strong>D</strong>'"),
-                    HTML("Group <br>'<strong>L</strong>'"),
-                    cellWidths = c("30%",'35%','35%')),
+        splitLayout(style='color:green;', "",
+                    HTML("Group '<strong>D</strong>'"),
+                    HTML("Group '<strong>L</strong>'"),
+                    cellWidths = c("40%",'30%','30%')),
+        #fluidRow(
         splitLayout(cellWidths = c("30%",'35%','35%'),
-                    #style="color:green;",
-                    #                    tagAppendAttributes(
-                    # HTML("<font style='color:green;'>
-                    #          <br>Outcome<br><b>'R'</b>
-                    #          <font>"),
+                    #dataRowLabel( "<b>N</b><br>non-<br>responders")),
                     tagAppendAttributes(
                       style="color:green;",
-                      div(HTML("<br>Outcome<br><b>'R'</b><br>"))),
+                      div(HTML("<br>Outcome<br><b>'R'</b><br>"))) ,
                     numericInput(paste0('mRD', panelIdThisDTC),
                                  '#RD', DLdataOriginal['R', 'D'],
-                                 min=0),
+                                 min=0) ,
                     numericInput(paste0('mRL', panelIdThisDTC),
                                  '#RL', DLdataOriginal['R', 'L'],
                                  min=0)
         ),
         splitLayout(cellWidths = c("30%",'35%','35%'),
+                    #dataRowLabel( "<b>R</b>esponders")),
                     tagAppendAttributes(
                       style="color:green;",
-                      div(HTML("<br>Outcome<br><b>'N'</b><br>"))),
-                    # <font size='-1'>
-                    # responders
-                    # </font>"),
-
-                    # column(4, dataRowLabel( "<b>N</b><br>
-                    #                         <font size='-1'>
-                    #                         non-<br>responders
-                    #                         </font>")),
+                      div(HTML("<br>Outcome<br><b>'N'</b><br>"))) ,
                     numericInput(paste0('mND', panelIdThisDTC),
                                  '#ND', DLdataOriginal['N', 'D'],
-                                 min=0),
+                                 min=0) ,
                     numericInput(paste0('mNL', panelIdThisDTC),
                                  '#NL', DLdataOriginal['N', 'L'],
                                  min=0)
