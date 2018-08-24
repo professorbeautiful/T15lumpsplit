@@ -243,6 +243,8 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
         conditionalPanelWithCheckbox(
           initialValue = (showhide=='show'),
           labelString = paste("Response by Predictor Table ", panelIdThisDTC),
+          #labelString = "Response by Predictor Table ",
+          ##    This breaks the JS!  conditionalPanelWithCheckbox needs to extract the unique ID.
           html = div(
             # checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
             # conditionalPanel(
