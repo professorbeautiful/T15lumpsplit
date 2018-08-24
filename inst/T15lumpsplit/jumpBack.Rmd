@@ -1,4 +1,4 @@
-** Jump to other data plots **
+**Jump to other data plots**
 
 * `r linkinLink('a_plotLumpSplitPoints', 'Plot of lump & split points')`
 * `r linkinLink('a_crossvalidationPlot', 'Cross-validation plot')`
