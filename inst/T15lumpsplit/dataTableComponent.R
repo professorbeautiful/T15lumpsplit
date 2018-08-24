@@ -41,7 +41,7 @@ assign(myName,
          handlerExpr = {
            if(trackupdateDLdata)
              cat('START updateDLdataMyChoice: isLoopingSync=',
-               rValues$isLoopingSync, ' isResetting=', rValues$isResetting, "\n")
+                 rValues$isLoopingSync, ' isResetting=', rValues$isResetting, "\n")
            if(rValues$isLoopingSync == FALSE
               & rValues$isResetting == FALSE) {
              try(silent = FALSE, {
@@ -58,7 +58,7 @@ assign(myName,
            } ### end of if
            if(trackupdateDLdata)
              cat('END updateDLdataMyChoice: isLoopingSync=',
-               rValues$isLoopingSync, ' isResetting=', rValues$isResetting, "\n")
+                 rValues$isLoopingSync, ' isResetting=', rValues$isResetting, "\n")
          }
        )
 )
@@ -78,11 +78,11 @@ assign(myName,
          handlerExpr = {
            if(trackupdateDLdata)
              cat('copyDLdataMyChoice2DLdata', "\n")
-             try(silent = FALSE, {
-               isolate({
-                 rValues$DLdata = rValues$DLdataMyChoice
-               })
-             }) ### End of try()
+           try(silent = FALSE, {
+             isolate({
+               rValues$DLdata = rValues$DLdataMyChoice
+             })
+           }) ### End of try()
          }
        )
 )
@@ -135,37 +135,37 @@ dataTableComponent = function(showhide='show') {
     copy DLdataOriginal to rValues$DLdata.'
   myName = paste0('observeEvent_resetIdThisDTC_', thisDTCNumber)
   assign(myName,
-    pos=1,
-    observeEvent(label = myName,
-                 eventExpr = input[[resetIdThisDTC]],
-                 handlerExpr =  {
-                   #updateDLdataMyChoice$suspend()
-                   cat(myName, '\n')
-                   isolate({
-                     rValues$isResetting <<- TRUE
-                     cat(myName, ':   rValues$isResetting = TRUE\n')
-                     rValues$DLdata = DLdataOriginal
-                     # rValues$isResetting <<- FALSE #Not necessary?
-                   })
-                   #updateDLdataMyChoice$resume()
-                 })
+         pos=1,
+         observeEvent(label = myName,
+                      eventExpr = input[[resetIdThisDTC]],
+                      handlerExpr =  {
+                        #updateDLdataMyChoice$suspend()
+                        cat(myName, '\n')
+                        isolate({
+                          rValues$isResetting <<- TRUE
+                          cat(myName, ':   rValues$isResetting = TRUE\n')
+                          rValues$DLdata = DLdataOriginal
+                          # rValues$isResetting <<- FALSE #Not necessary?
+                        })
+                        #updateDLdataMyChoice$resume()
+                      })
   )
 
   #### myChoiceIdThisDTC --  restore MyChoice data ####
   myName =
     paste0('observeEvent_myChoiceIdThisDTC_', thisDTCNumber)
   assign(myName, pos=1,
-    observeEvent(
-      label = myName,
-      eventExpr = input[[myChoiceIdThisDTC]],
-      #priority = 1,
-      handlerExpr =  {
-        #cat(myName, '\n')
-        isolate({
-          #cat(myName, '  isResetting=', rValues$isResetting, '\n')
-          rValues$DLdata = rValues$DLdataMyChoice
-        })
-      })
+         observeEvent(
+           label = myName,
+           eventExpr = input[[myChoiceIdThisDTC]],
+           #priority = 1,
+           handlerExpr =  {
+             #cat(myName, '\n')
+             isolate({
+               #cat(myName, '  isResetting=', rValues$isResetting, '\n')
+               rValues$DLdata = rValues$DLdataMyChoice
+             })
+           })
   )
 
   #### synchronizeOtherDataTables ####
@@ -176,28 +176,28 @@ dataTableComponent = function(showhide='show') {
     myName = paste0(
       'observeEvent_synchronizeOtherDataTables_ThisDTC_', thisDTCNumber)
     assign(myName,
-      pos=1,
-      observeEvent(label = myName,
-                   eventExpr = input[[thisCellId]],
-                   #priority = 3,
-                   handlerExpr =  {
-                     ### NOTE; there could be more DTC's, so don't use thisDTCNum for loop.
-                     #cat('Creating ', label, '\n')
-                     rValues$isLoopingSync = TRUE
-                     for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
-                       if(anyDTCnum != thisDTCNumber) {
-                         # suspenderExpression = parse(text=
-                         #                               paste0())
-                         otherCellId = paste0(cell, 'idPanelDTC', anyDTCnum)
-                         rValues$isResetting = TRUE
-                         updateNumericInput(session, inputId = otherCellId,
-                                            value=input[[thisCellId]])
-                         rValues$isResetting = FALSE
-                         #updateDLnumericInputs(data = rValues$DLdataMyChoice, isResetting=TRUE)
-                       }
-                     }
-                     rValues$isLoopingSync = FALSE
-                   })
+           pos=1,
+           observeEvent(label = myName,
+                        eventExpr = input[[thisCellId]],
+                        #priority = 3,
+                        handlerExpr =  {
+                          ### NOTE; there could be more DTC's, so don't use thisDTCNum for loop.
+                          #cat('Creating ', label, '\n')
+                          rValues$isLoopingSync = TRUE
+                          for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
+                            if(anyDTCnum != thisDTCNumber) {
+                              # suspenderExpression = parse(text=
+                              #                               paste0())
+                              otherCellId = paste0(cell, 'idPanelDTC', anyDTCnum)
+                              rValues$isResetting = TRUE
+                              updateNumericInput(session, inputId = otherCellId,
+                                                 value=input[[thisCellId]])
+                              rValues$isResetting = FALSE
+                              #updateDLnumericInputs(data = rValues$DLdataMyChoice, isResetting=TRUE)
+                            }
+                          }
+                          rValues$isLoopingSync = FALSE
+                        })
     )
   }
   for(cell in paste0('m', c('RD', 'ND', 'RL', 'NL')))
@@ -208,15 +208,15 @@ dataTableComponent = function(showhide='show') {
   output[[outputIdThisDTC]] = renderUI({
     fluidRow(
       column(6,
-    panelOfData(panelIdThisDTC=panelIdThisDTC,
-                resetIdThisDTC=resetIdThisDTC,
-                myChoiceIdThisDTC=myChoiceIdThisDTC,
-                showhide=showhide)
+             panelOfData(panelIdThisDTC=panelIdThisDTC,
+                         resetIdThisDTC=resetIdThisDTC,
+                         myChoiceIdThisDTC=myChoiceIdThisDTC,
+                         showhide=showhide)
       ),
-    column(6, actionButton(inputId = resetIdThisDTC, label = "Reset data to original"),
-           actionButton(inputId = myChoiceIdThisDTC,
-                        label = "Reset data to my choice"),
-           inclRmd('jumpBack.Rmd'))
+      column(6, actionButton(inputId = resetIdThisDTC, label = "Reset data to original"),
+             actionButton(inputId = myChoiceIdThisDTC,
+                          label = "Reset data to my choice"),
+             inclRmd('jumpBack.Rmd'))
     )
   })
   uiOutput(outputId = outputIdThisDTC)
@@ -239,40 +239,58 @@ dataRowLabel = function(html, angle=360-40, color='green') {
 ### Do not call panelOfData() directly. Use dataTableComponent().
 panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
                        showhide='show') {
-      span(
-        conditionalPanelWithCheckbox(
-          initialValue = (showhide=='show'),
-          labelString = paste("Response by Predictor Table ", panelIdThisDTC),
-          html = div(
-            # checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
-            # conditionalPanel(
-            #   'input.toggleShowData',
-            splitLayout(style='color:green;', "",
-                        HTML("Group '<strong>D</strong>'"),
-                        HTML("Group '<strong>L</strong>'"),
-                        cellWidths = c("40%",'30%','30%')),
-            fluidRow(
-              column(4, dataRowLabel( "<b>R</b>esponders")),
-              column(4, numericInput(paste0('mRD', panelIdThisDTC),
-                                     '#RD', DLdataOriginal['R', 'D']),
-                    min=0),
-              column(4, numericInput(paste0('mRL', panelIdThisDTC),
-                                     '#RL', DLdataOriginal['R', 'L']),
-                     min=0)
-            ),
-            fluidRow(
-              column(4, dataRowLabel( "<b>N</b>onResponders")),
-              column(4, numericInput(paste0('mND', panelIdThisDTC),
-                                     '#ND', DLdataOriginal['N', 'D']),
-                     min=0),
-              column(4, numericInput(paste0('mNL', panelIdThisDTC),
-                                     '#NL', DLdataOriginal['N', 'L']),
-                     min=0)
-            ),
-            br(),
-            uiOutput(outputId = panelIdThisDTC)
-          )
+  span(
+    conditionalPanelWithCheckbox(
+      initialValue = (showhide=='show'),
+      labelString = paste("Response by Predictor Table "),
+      html = div(
+        # checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
+        # conditionalPanel(
+        #   'input.toggleShowData',
+        splitLayout(style='color:green;',
+                    "",  ### Room for the row labels.
+                    HTML("Group <br>'<strong>D</strong>'"),
+                    HTML("Group <br>'<strong>L</strong>'"),
+                    cellWidths = c("30%",'35%','35%')),
+        splitLayout(cellWidths = c("30%",'35%','35%'),
+                    #style="color:green;",
+                    #                    tagAppendAttributes(
+                    # HTML("<font style='color:green;'>
+                    #          <br>Outcome<br><b>'R'</b>
+                    #          <font>"),
+                    tagAppendAttributes(
+                      style="color:green;",
+                      div(HTML("<br>Outcome<br><b>'R'</b><br>"))),
+                    numericInput(paste0('mRD', panelIdThisDTC),
+                                 '#RD', DLdataOriginal['R', 'D'],
+                                 min=0),
+                    numericInput(paste0('mRL', panelIdThisDTC),
+                                 '#RL', DLdataOriginal['R', 'L'],
+                                 min=0)
+        ),
+        splitLayout(cellWidths = c("30%",'35%','35%'),
+                    tagAppendAttributes(
+                      style="color:green;",
+                      div(HTML("<br>Outcome<br><b>'N'</b><br>"))),
+                    # <font size='-1'>
+                    # responders
+                    # </font>"),
+
+                    # column(4, dataRowLabel( "<b>N</b><br>
+                    #                         <font size='-1'>
+                    #                         non-<br>responders
+                    #                         </font>")),
+                    numericInput(paste0('mND', panelIdThisDTC),
+                                 '#ND', DLdataOriginal['N', 'D'],
+                                 min=0),
+                    numericInput(paste0('mNL', panelIdThisDTC),
+                                 '#NL', DLdataOriginal['N', 'L'],
+                                 min=0)
+        ),
+        br(),
+        uiOutput(outputId = panelIdThisDTC)
       )
+    )
   )
 }
 
