@@ -4,16 +4,23 @@ linkout = function(fileName) {
   # theFile = system.file(
   # package="T15lumpsplit",
   # 'T15lumpsplit/', fileName)
+  cat("linkout: object-style: ", fileName, '\n')
   conditionalPanelWithCheckbox(
     labelString,
     filename,
-    html=tagList(  tags$iframe(
-      style="height:600px; width:100%;
-                        padding:0px;
-      margin:0px;
-      border: 0px
-      ",
-      src=theFile)
+    html=tagList(
+      # https://stackoverflow.com/questions/1244788/embed-vs-object
+      tags$object(
+        data=theFile,
+        type="application/pdf"
+      )
+      # tags$iframe(
+      # style="height:600px; width:100%;
+      #                   padding:0px;
+      # margin:0px;
+      # border: 0px
+      # ",
+      # src=theFile)
     ),
     initialValue=FALSE
   )
