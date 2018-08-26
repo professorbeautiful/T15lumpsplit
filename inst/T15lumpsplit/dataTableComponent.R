@@ -208,14 +208,18 @@ dataTableComponent = function(showhide='show') {
   output[[outputIdThisDTC]] = renderUI({
     fluidRow(
       column(6,
+             br(),
              panelOfData(panelIdThisDTC=panelIdThisDTC,
                          resetIdThisDTC=resetIdThisDTC,
                          myChoiceIdThisDTC=myChoiceIdThisDTC,
                          showhide=showhide)
       ),
-      column(6, actionButton(inputId = resetIdThisDTC, label = "Reset data to original"),
+      column(6, br(), br(),
+             actionButton(inputId = resetIdThisDTC, label = "Reset data to original"),
              actionButton(inputId = myChoiceIdThisDTC,
                           label = "Reset data to my choice"),
+             br(),
+             #getwd(),
              inclRmd('jumpBack.Rmd'))
     )
   })
