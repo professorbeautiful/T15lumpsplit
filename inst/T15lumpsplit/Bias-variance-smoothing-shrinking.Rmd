@@ -337,7 +337,7 @@ output$fisherResultOriginal = renderText({
 ```{r UI_begins}
 require(shinyBS)
 ```
-*Date: "`r date()`"     Author: "Roger Day, University of Pittsburgh"*
+*Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')     Author: Roger Day, University of Pittsburgh*
 
 # OVERVIEW of this Module
 
