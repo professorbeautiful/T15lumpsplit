@@ -1,3 +1,6 @@
+# Alternative solution:
+# ```{r child = 'DrWho.Rmd'}
+# ```
 require("magrittr")
 inclRmd <- function(path, wd, openMe=FALSE) {
   if(!missing(wd)) {
@@ -8,8 +11,14 @@ inclRmd <- function(path, wd, openMe=FALSE) {
     writeLines(capture.output(x), con=outputpath)
     return(x)
   }
+  if(!file.exists(path)) {
+    path2 = paste0('T15lumpsplit/', path)
+    path3 = paste0('inst/T15lumpsplit/', path)
+    if(file.exists(path2)) path = path2
+    else if(file.exists(path3)) path = path3
+  }
   if(!file.exists(path))
-    return(paste("inclRmd: file ", path, " not found"))
+      return(paste("inclRmd: file ", path, " not found in ", getwd()))
   knitrOutput = paste(readLines(path, warn = FALSE), collapse = '\n') %>%
     knitr::knit2html(quiet=TRUE,
                      text = ., fragment.only = TRUE, options = ""
