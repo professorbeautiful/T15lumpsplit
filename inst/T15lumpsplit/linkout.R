@@ -81,6 +81,11 @@ linkinLink = function(anchorName, linktext) {
     Shiny.onInputChange('currentLocationId',
     currentLocationId);"
     )
+  ## https://stackoverflow.com/questions/39273043/shiny-modules-not-working-with-renderui
+  ## function(a,b,c){c=addDefaultInputOpts(c),p.setInput(a,b,c)}
+  # linkinLink972
+  #  Aha.  Escape is doing double-duty, with popups.
+
   labelString = HTML(
     paste0('<font color=blue style="text-decoration: underline">',
            linktext,
