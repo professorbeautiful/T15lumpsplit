@@ -40,6 +40,7 @@ require(knitr);require(rmarkdown);
 includeCSS('TOC.css')    
 ### includeCSS doesn't work here. Instead it's in the YAML.
 includeCSS('lumpsplit.css')
+includeScript('www/jquery-3.3.1.min.js')
 ```
 
 ```{r setup numbering, warning=FALSE}
