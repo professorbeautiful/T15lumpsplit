@@ -653,14 +653,20 @@ output$postmean.p = renderText(
 Finally, Pr(R|D) marginalized over Pr(R|L) has posterior mean =  `r  (textOutput('postmean.p', inline=TRUE))` .
 
 ```{r linkoutbivariate}
-observeEvent(eventExpr = {input$bivnorm},
-             { 
-                 linkout(
-                   './lump,split-bivariate-normal-derivation.pdf') 
-             }
-)
+conditionalPanelWithCheckboxPDF(
+  labelString='Derivation of the bivariate normal posterior distribution', 
+  filename='./lump,split-bivariate-normal-derivation.pdf', 
+  cbStringId = 'bivnormPDF')
+
+# observeEvent(eventExpr = {input$bivnorm},
+#              { 
+#                  linkout(
+#                    './lump,split-bivariate-normal-derivation.pdf') 
+#              }
+# )
 ```
-The link to bivariate normal details is 
+
+WILL DELETE THIS: The link to bivariate normal details is 
 `r actionLink('bivnorm', label=HTML('<font color=blue>here.</font>'))`
 
 ```{r QA-joint-posterior}
