@@ -18,9 +18,15 @@ conditionalPanelWithCheckboxPDF = function(labelString, filename, cbStringId) {
                   )),
                   value=FALSE),
     conditionalPanel(condition = paste0('input.', cbStringId),
+                     #https://stackoverflow.com/questions/37871590/rendering-pdf-in-in-chrome-as-iframe
+                     #pdfobject.js
+                     #PDFObject.embed("test.pdf", "#'here'");
                      tags$iframe(
-                       style="height:600px; width:100%; frameBorder:0; border:none",
-                       src=filename)
+                       #type="application/pdf",
+                       style="transform: scale(1.0); height:600px; width:100%; frameBorder:0; border:none",
+                       src= paste0(filename) #transform: scale(0.75)
+                       #data=paste0(filename, '?#zoom=100%') #data=
+                     )
     )
   )
 }
