@@ -1,6 +1,6 @@
 #### NOTE: you will have to rebuild the package to make a local file visible ####
 
-linkout = function(fileName) {
+linkout = function(fileName, labelString) {
   # theFile = system.file(
   # package="T15lumpsplit",
   # 'T15lumpsplit/', fileName)
