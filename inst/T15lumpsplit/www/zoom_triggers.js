@@ -1,3 +1,5 @@
+// NOT USED!
+
 //jQuery(document).ready(function($)
 //    {
         // Set initial zoom level
