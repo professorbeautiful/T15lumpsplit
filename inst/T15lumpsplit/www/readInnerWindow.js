@@ -1,11 +1,20 @@
+//Used by zoomAdvice.Rmd
+
 //tags$head(tags$script('
-$(document).on("shiny:connected", 
-function(e) {
+
+// https://shiny.rstudio.com/articles/js-events.html
+
+copyDims = function(e) {
     Shiny.onInputChange("innerHeight", window.innerHeight);
     Shiny.onInputChange("innerWidth", window.innerWidth);
+    alert('copyDims');
+};
+
+$(document).on('shiny:sessioninitialized', function(event) {
+  alert('shiny:sessioninitialized');
 });
-$(window).resize(function(e) {
-     Shiny.onInputChange("innerHeight", window.innerHeight);
-     Shiny.onInputChange("innerWidth", window.innerWidth);
-});
+
+$(document).on("shiny:sessioninitialized", copyDims);
+$(window).resize(copyDims);
+
 //                      '))
