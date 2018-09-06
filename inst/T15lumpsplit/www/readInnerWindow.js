@@ -7,7 +7,7 @@
 copyDims = function(e) {
     Shiny.onInputChange("innerHeight", window.innerHeight);
     Shiny.onInputChange("innerWidth", window.innerWidth);
-    alert('copyDims');
+    //alert('copyDims');
 };
 
 $(document).on('shiny:sessioninitialized', function(event) {
