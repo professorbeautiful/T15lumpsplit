@@ -249,6 +249,10 @@ zoomRange <<- c(1200, 1400)
 inclRmd('www/zoomAdvice.Rmd')
 ```
 
+```{r browserAdvice}
+inclRmd('www/browserAdvice.Rmd')
+```
+
 <a name='section-debugging'> </a>
 
 ```{r withDebuggingPanel}
@@ -259,14 +263,18 @@ fluidRow(
 ```
 
 ```{r}
-includeScript('navigateToId.js')   ### ESCAPE key to return.
 includeScript('www/KeyToToggleDebugging.js')
+includeScript('navigateToId.js')   ### ESCAPE key to return.  
+###The Chrome problem is NOT:
+# the order of these includeScripts.
+# due to navigateY. That works in JS console.
+
 includeCSS('TOC.css')    
 ### includeCSS doesn't work early on.
 ### It worksin the YAML.
 includeCSS('lumpsplit.css')
 includeScript('www/jquery-3.3.1.min.js')
-includeScript('www/isSafari.js')
+#includeScript('www/isSafari.js')
 
 ```
 
@@ -369,6 +377,7 @@ output$fisherResultOriginal = renderText({
 require(shinyBS)
 ```
 *Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')`     Author: Roger Day, University of Pittsburgh*
+
 
 # OVERVIEW of this Module
 
@@ -945,6 +954,9 @@ interactiveSection(codeToRun = "saveComments()")
 #source('navTOCid.R', local=T)
 ```
 
+```{r}
+includeScript('www/isSafari.js')
+```
 
 
 
