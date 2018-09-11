@@ -194,6 +194,34 @@ output$thePlot = renderPlot(height=250,
                             })
 ```
 
+
+
+```{r}
+invisible(
+  tags$head(tags$script(
+    "$(document).on('shiny:sessioninitialized',
+    function(event) {
+    alert('shiny:sessioninitialized  2');
+    Shiny.onInputChange('sessioninitialized2', 2)
+});"
+  )) 
+)
+```
+
+
+```{r}
+invisible(
+  tags$head(tags$script(
+    "$(document).on('shiny:connected', 
+  function(event) {
+    alert('shiny:connected  2');
+    Shiny.onInputChange('shinyconnected2', 2)
+  });"
+  )) 
+)
+```
+
+
 ```{r makeDebuggingPanelOutput}
 observeEvent(input$ctrlDpressed, {}) # just to flush the ctrl-D press.
 
