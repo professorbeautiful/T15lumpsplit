@@ -1,14 +1,14 @@
 ```{r}
-output$browserAdvice = renderText({
+output$browserAdvice = renderUI({
   text = ""
-  if(! input$isSafari )
-    text =  "Please use Safari as your browser for full features."
+  if(! (input$isSafari | input$isFirefox) )
+    text =  HTML("Please use Safari or Firefox as your browser for better PDF displays. <br>(Or if using Chrome install a PDF plugin.)")
   text
 })
 
 div(
   tagAppendAttributes(
-    textOutput('browserAdvice'),
+    uiOutput('browserAdvice'),
     style=paste(
       'display: flex; justify-content: flex-center;',
       'color:red; background: lightgrey;
