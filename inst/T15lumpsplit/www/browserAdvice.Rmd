@@ -1,0 +1,17 @@
+```{r}
+output$browserAdvice = renderText({
+  text = ""
+  if(! input$isSafari )
+    text =  "Please use Safari as your browser for full features."
+  text
+})
+
+div(
+  tagAppendAttributes(
+    textOutput('browserAdvice'),
+    style=paste(
+      'display: flex; justify-content: flex-center;',
+      'color:red; background: lightgrey;
+      font-weight:bold; font-size:larger'))
+)
+```
