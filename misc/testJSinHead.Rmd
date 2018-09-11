@@ -1,0 +1,97 @@
+---
+title: "testJSinHead"
+author: "Roger Day"
+date: "9/4/2018"
+runtime: shiny
+output: html_document
+---
+
+DISCOVERY:
+This doc knits when in misc, 
+rmarkdown::run('misc/testJSinHead.Rmd')
+JS in a ```{js} section works!
+The alert window does appear.
+Also works in inst and inst/T15lumpsplit.
+
+---But does not work in project home.
+("Error:$ operator is invalid for atomic vectors")
+
+tags$head does not work in Rmarkdown shiny.
+
+textOutput('sessionconnectedID')   NO VALUE
+
+textOutput('safariID')  WORKS
+
+```{js}
+
+  $(document).on('shiny:connected', function(event) {
+  alert('shiny:connected  2');
+  Shiny.onInputChange('shinyconnected2', 2);
+});
+```
+
+```{js}
+var isSafari = navigator.vendor &&
+  navigator.vendor.indexOf('Apple') > -1 &&
+  navigator.userAgent &&
+  navigator.userAgent.indexOf('CriOS') == -1 &&
+  navigator.userAgent.indexOf('FxiOS') == -1;
+
+Shiny.onInputChange("isSafari", isSafari);
+
+if( ! isSafari)
+ alert("Please use Safari as your browser for full features.");
+
+```
+
+
+
+
+```{r echo=FALSE}
+library(shiny)
+require(shinyBS)
+require(devtools)
+# Define UI for application that draws a histogram
+
+rValues = reactiveValues(temp=1)
+
+output$sessionconnectedID = renderText({
+  paste('sessionconnectedID/', input$shinyconnected2, '/')
+})
+
+output$safariID = renderText({
+  paste('isSafari/', input$isSafari, '/')
+})
+
+output$distPlot <- renderPlot({
+  # generate bins based on input$bins from ui.R
+  x    <- faithful[, 2]
+  bins <- seq(min(x), max(x), length.out = input$bins + 1)
+  
+  # draw the histogram with the specified number of bins
+  hist(x, breaks = bins, col = 'darkgray', border = 'white')
+})
+
+```
+
+ALL DONE
+
+```{r echo=FALSE}
+fluidPage(
+  
+# Application title
+   titlePanel("Old Faithful Geyser Data"),
+
+   # Sidebar with a slider input for number of bins
+   sidebarLayout(
+      sidebarPanel(
+                  textOutput('sessionconnectedID')
+      ),
+
+      # Show a plot of the generated distribution
+      mainPanel(
+         textOutput('safariID')
+      )
+   )
+)
+```
