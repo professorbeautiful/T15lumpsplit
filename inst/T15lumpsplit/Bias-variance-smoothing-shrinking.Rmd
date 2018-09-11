@@ -274,7 +274,6 @@ includeCSS('TOC.css')
 ### It worksin the YAML.
 includeCSS('lumpsplit.css')
 includeScript('www/jquery-3.3.1.min.js')
-#includeScript('www/isSafari.js')
 
 ```
 
@@ -955,7 +954,7 @@ interactiveSection(codeToRun = "saveComments()")
 ```
 
 ```{r}
-includeScript('www/isSafari.js')
+includeScript('www/browserDetect.js')
 ```
 
 
