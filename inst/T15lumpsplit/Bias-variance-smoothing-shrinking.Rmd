@@ -263,7 +263,7 @@ fluidRow(
 ```
 
 ```{r}
-includeScript('www/KeyToToggleDebugging.js')
+includeScript('www/KeyHandler.js')
 includeScript('navigateToId.js')   ### ESCAPE key to return.  
 ###The Chrome problem is NOT:
 # the order of these includeScripts.
