@@ -16,12 +16,13 @@ output$zoomAdvice = renderText({
 
 div(
   #div(style='display:block; margin-left:auto; margin-right:0;',
-  shiny::includeScript('www/zoom_triggers.js'),
+  # shiny::includeScript('www/zoom_triggers.js'),
   shiny::includeScript('www/readInnerWindow.js'),
   tagAppendAttributes(
     textOutput('zoomAdvice'),
     style=paste(
-      'display: flex; justify-content: flex-end;',
-      'color:red; background: lightgrey; font-weight:bold'))
+      'display: flex; justify-content: flex-center;',
+      'color:red; background: lightgrey;
+      font-weight:bold; font-size:larger'))
 )
 ```
