@@ -3,9 +3,11 @@
 #   input =
 #     'inst/T15lumpsplit/Bias-variance-smoothing-shrinking.Rmd')
 # browseURL('BVout.html')
-
-.rerun = function()
-  rmarkdown::run("inst/T15lumpsplit/Bias-variance-smoothing-shrinking.Rmd",
-               shiny_args = list(launch.browser = TRUE))
+.rerun = function(file = "inst/T15lumpsplit/Bias-variance-smoothing-shrinking.Rmd")
+  rmarkdown::run(
+    file = file,
+    default_file = gsub(".*/", "", file),
+    shiny_args = list(launch.browser = TRUE)
+  )
 
 
