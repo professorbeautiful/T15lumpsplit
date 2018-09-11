@@ -10,21 +10,16 @@ var isSafari = navigator.vendor &&
   navigator.userAgent &&
   navigator.userAgent.indexOf('CriOS') == -1 &&
   navigator.userAgent.indexOf('FxiOS') == -1;
-
+if(isSafari === "") isSafari = false;
 Shiny.onInputChange("isSafari", isSafari);
 
 var isFirefox =
   navigator.userAgent &&
-  navigator.userAgent.indexOf('Mozilaa') > -1 ;
-
-Shiny.onInputChange("isSafari", isSafari);
-var isSafari = navigator.vendor &&
-  navigator.vendor.indexOf('Apple') > -1 &&
-  navigator.userAgent &&
-  navigator.userAgent.indexOf('CriOS') == -1 &&
-  navigator.userAgent.indexOf('FxiOS') == -1;
-
-Shiny.onInputChange("isSafari", isSafari);
+  navigator.userAgent.indexOf('Mozilla') > -1 ;
+if(isFirefox === "") isFirefox = false;
+// Actually, Safari also has navigator.userAgent
+// equal to Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15.
+// So wrong, but it works ok for us.
 Shiny.onInputChange("isFirefox", isFirefox);
 
 /*
