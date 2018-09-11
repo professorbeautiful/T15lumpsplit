@@ -9,7 +9,6 @@ resource_files:
 runtime: shiny
 output:
   html_document:
-    css: lumpsplit.css
     number_sections: yes
     toc: yes
     toc_depth: 6
