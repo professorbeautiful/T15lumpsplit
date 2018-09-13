@@ -930,13 +930,13 @@ makeDLdataDF = function(DLdata, qStar=1) {
   names(extraFeatures) = 
     paste0('X', 1+(1:NextraFeatures))
   DLdataDF = cbind(DLdataDF, extraFeatures)
-  allFisherPs = 
+  allFisherPs <<- 
     sapply(DLdataDF[-1], function(feature) 
       fisher.test(feature,
                   DLdataDF$outcome)$p.value
     )
   options.saved = options(warn=-1)
-  allChisqPs = 
+  allChisqPs <<- 
     sapply(DLdataDF[-1], function(feature) 
       chisq.test(feature,
                  DLdataDF$outcome)$p.value
@@ -975,8 +975,10 @@ observeEvent(
     makeDLdataDFResult = makeDLdataDF(
       DLdata = rValues$DLdata, qStar=rValues$qStar)
     rValues$DLdataDF = makeDLdataDFResult$DLdataDF
-    allFisherPs <<- rValues$allFisherPs = makeDLdataDFResult$allFisherPs
-    allChisqPs <<-rValues$allChisqPs = makeDLdataDFResult$allChisqPs
+    rValues$allFisherPs = makeDLdataDFResult$allFisherPs
+    rValues$allChisqPs = makeDLdataDFResult$allChisqPs
+    allFisherPs <<- rValues$allFisherPs
+    allChisqPs <<- rValues$allChisqPs
     rValues$BHtable = makeDLdataDFResult$BHtable
   })
 
@@ -987,7 +989,6 @@ Now that we have a data set, let's do Fisher exact tests and chisquare tests to 
 ```{r}
 output$pvaluesPlots = renderPlot({
   hist(rValues$allFisherPs)
-  hist(allFisherPs)
   #head(sort(allFisherPs))
   hist(rValues$allChisqPs)
   #head(sort(allChisqPs))
