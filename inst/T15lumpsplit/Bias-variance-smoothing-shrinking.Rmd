@@ -975,8 +975,8 @@ observeEvent(
     makeDLdataDFResult = makeDLdataDF(
       DLdata = rValues$DLdata, qStar=rValues$qStar)
     rValues$DLdataDF = makeDLdataDFResult$DLdataDF
-    rValues$allFisherPs = makeDLdataDFResult$allFisherPs
-    rValues$allChisqPs = makeDLdataDFResult$allChisqPs
+    allFisherPs <<- rValues$allFisherPs = makeDLdataDFResult$allFisherPs
+    allChisqPs <<-rValues$allChisqPs = makeDLdataDFResult$allChisqPs
     rValues$BHtable = makeDLdataDFResult$BHtable
   })
 
