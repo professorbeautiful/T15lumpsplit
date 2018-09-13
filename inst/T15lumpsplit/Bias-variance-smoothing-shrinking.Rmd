@@ -472,7 +472,7 @@ Better lumping together with better splitting can cure cancer patients.
 We will explore a simple lumping and splitting conundrum as a jumping off point for introducing a collection of important statistical ideas that connect to each other.
 
 ```{r QA-intro-lump-split}
-QandAha()
+QandAha(context='QA-intro-lump-split')
 ```
 
 ### Hypothetical medical study
@@ -585,7 +585,7 @@ TextQuestion('Why focus on this parameter?')
 
 
 ```{r QA-parametrization}
-QandAha()
+QandAha(context='QA-parametrization')
 ```
 
 ### Approaches
@@ -605,7 +605,7 @@ One test frequently performed to test independence in a 2x2 table like this one 
 If the P-value is "significant" (which "by tradition" means "less than 5%"), the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!
 
 ```{r QA-fisher}
-QandAha()
+QandAha('QA-fisher')
 ```
 
 #### <a name='section-Bayes_mixture'> Approach: Dr. Who's Bayes mixture of "Lump" and "Split"</a>
@@ -617,7 +617,7 @@ Dr. Who doesn't know *who* to believe, but is prepared to let the data make the 
 ```
 
 ```{r QA-DrWho}
-QandAha()
+QandAha('QA-DrWho')
 ```
 
 ####  Approach: Optimizing the mixture with cross-validation
@@ -643,14 +643,14 @@ fluidRow(
 
 ```{r TQ and QA for crossvalidation}
 TextQuestion("What advantage does the cross-validation approach here have, relative to the approaches of Drs. Split, Lump and Who?")
-QandAha()
+QandAha('QA for crossvalidation')
 ```
 
 #### <a name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
 
 Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R|D) and Pr(R|L). This allows data on the two probabilities to be shared between them, smoothly instead of a crude mixture of the two extreme views of   "Dr. Lump" and "Dr. Split".
 ```{r QA-smooth-joint-prior}
-QandAha()
+QandAha('QA-smooth-joint-prior')
 ```
 Once we have this joint prior distribution, we compute the joint posterior.
 
@@ -710,7 +710,7 @@ WILL DELETE THIS: The link to bivariate normal details is
 
 ```{r QA-joint-posterior}
 TextQuestion("Your reactions to the derivation?")
-QandAha()
+QandAha('QA-joint-posterior')
 ```
 
 
@@ -792,8 +792,8 @@ tableOutput('estimateTable')
 
 As you change Dr. Who's prior probability or the data values, observe the changes in this summary table.
 
-```{r}
-QandAha()
+```{r QA-Who-prior-probability}
+QandAha('QA-Who-prior-probability')
 ```
 
 
@@ -814,9 +814,9 @@ WhoPriorProbNumericInput()
 and reviewing revised results at these previous locations:
 
 
-```{r}
+```{r QA-Strong-prior-belief-X-unimportant}
 inclRmd('jumpBack.Rmd')
-QandAha('')
+QandAha('QA-Strong-prior-belief-X-unimportant')
 ```
 
 
@@ -833,9 +833,9 @@ WhoPriorProbNumericInput()
 and reviewing revised results at these previous locations:
 
   
-```{r}
+```{r QA-Strong-prior-belief-X-important}
 inclRmd('jumpBack.Rmd')
-QandAha('')
+QandAha('QA-Strong-prior-belief-X-important')
 ```
 
 
@@ -1008,8 +1008,8 @@ As before, you have the opportunity to play around with changing the data, or re
 
 `r dataTableComponent('hide')`
 
-```{r}
-QandAha()
+```{r QA-multiple-comparisons-corrections}
+QandAha('QA-multiple-comparisons-corrections')
 ```
 
 ### The Benjamini-Hochberg method
@@ -1053,8 +1053,8 @@ TextQuestion("Raising qStar from 1.0, how does the collection of 'significant' f
 
 This is a good time to record your thoughts!
 
-```{r}
-QandAha()
+```{r QA-Benjamini-Hochberg}
+QandAha('QA-Benjamini-Hochberg')
 ```
 
 ### An Empirical Bayes approach to multiple comparisons
@@ -1115,39 +1115,73 @@ conditionalPanelWithCheckboxPDF(
 ```
 
 
-```{r QA-emp-Bayes}
-QandAha()
+```{r QA-empirical-Bayes}
+QandAha('QA-empirical-Bayes')
 ```
 ### Two alleles of one gene out of a hundred thousand tested; nothing known
 
 **One key point**: none of these methods utilizes *prior belief* about the *plausibility* of any or all of these features. To utilize prior belief across ALL the features, one has to develop a *joint* prior distribution across all hypotheses. This is difficult, but there has been progress.
 
 ```{r QA-big-joint-priors}
-QandAha()
+QandAha(context='QA-big-joint-priors')
 ```
 
 ###  Save your Comments and Answers
 ```{r assembleComments}
-assembleComments <<- function() {
+assembleQAComments <<- function() {
   lastQANumber = nextNumber(sequenceType = "QA") - 1
-  answers = sapply(1:lastQANumber, function(num) {
+  QAanswers = sapply(1:lastQANumber, function(num) {
     outputIdThisQA = paste0('QA', num)
     textareaIdThisQA = paste0('id', outputIdThisQA)
     return(input[[textareaIdThisQA]])
   })
-  unlist(answers[-which(sapply(answers, is.null))])
+  names(QAanswers) = QA_contexts
+  QAanswers
+  print(QAanswers)
+  #unlist(answers[-which(sapply(answers, is.null))])
+}
+assembleTQAnswers <<- function() {
+  lastTQNumber = nextNumber(sequenceType = "TQ") - 1
+  TQanswers = lapply(1:lastTQNumber, function(num) {
+    outputIdThisTQ = paste0('TQ', num)
+    textareaIdThisTQ = paste0('id', outputIdThisTQ)
+    return(input[[textareaIdThisTQ]])
+  })
+  names(TQanswers) = TQ_contexts
+  TQanswers
+  #unlist(answers[-which(sapply(answers, is.null))])
 }
 saveComments <<- function() {
-  answers = assembleComments()
-  writeLines(answers, file(paste0('answers.',
+  comments = assembleQAComments()  ### QA
+  #answers = assembleTQAnswers()   ## TQ
+  commentText = capture.output(comments)
+  commentTextFile = file(paste0('comments.',
                                  Sys.info()["user"],
                                  '.txt'))
-  )
+  commentHTML = capture.output(pre(commentText))
+  print(commentHTML)
+  commentHTMLFile = file(paste0('comments.',
+                                 Sys.info()["user"],
+                                 '.html'))
+  writeLines(commentText, commentTextFile)
+  writeLines(commentHTML, commentHTMLFile)
+  close(commentTextFile)
+  close(commentHTMLFile)
 }
 
-interactiveSection(codeToRun = "saveComments()")
 ```
 
+To gather all your responses and present them in a new tab, click the following button:
+
+```{r}
+actionButton("saveComments", 'save your QA comments')
+observeEvent(input$saveComments, {
+  saveComments()
+  commentFile = paste0('answers.',
+                                 Sys.info()["user"],
+                                 '.txt') 
+})
+```
 
 # Other topics to be developed:
 ##	The famous ECMO data set.
