@@ -1168,8 +1168,6 @@ assembleQAComments = reactive( {
   })
   names(QAanswers) = QA_contexts
   QAanswers
-  print(QAanswers)
-  #unlist(answers[-which(sapply(answers, is.null))])
 })
 assembleTQAnswers = reactive({
   lastTQNumber = length(TQ_contexts)
@@ -1180,7 +1178,6 @@ assembleTQAnswers = reactive({
   })
   names(TQanswers) = TQ_contexts
   TQanswers
-  #unlist(answers[-which(sapply(answers, is.null))])
 })
 saveComments = reactive({
   comments = assembleQAComments()  ### QA
@@ -1191,7 +1188,6 @@ saveComments = reactive({
   commentHTML <<- #capture.output(
     pre(paste(commentText, collapse='\n')) 
     #)
-  print(commentHTML)
   commentHTMLFile <<- file(paste0('comments.',
                                  Sys.info()["user"],
                                  '.html'))
