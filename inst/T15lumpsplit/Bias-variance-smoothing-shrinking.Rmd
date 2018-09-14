@@ -1179,24 +1179,26 @@ assembleTQAnswers = reactive({
   names(TQanswers) = TQ_contexts
   TQanswers
 })
+answersTextFileName <<- paste0('answers.',
+                                Sys.info()["user"],
+                                '.txt')
+answersTextFile = file(answersTextFileName)
 saveComments = reactive({
   comments = assembleQAComments()  ### QA
-  commentText <<- capture.output(comments)
-  commentTextFile <<- file(paste0('comments.',
-                                 Sys.info()["user"],
-                                 '.txt'))
-  writeLines(commentText, commentTextFile)
-  close(commentTextFile)
-  commentHTML <<- 
-    pre(paste(commentText, collapse='\n')) 
-  return(commentHTML)
+  commentsText <<- capture.output(comments)
+  writeLines(commentsText, commentsTextFile)
+  close(commentsTextFile)
+  commentsHTML <<- 
+    pre(paste(commentsText, collapse='\n')) 
+  return(commentsHTML)
 })
+commentsTextFileName <<- paste0('comments.',
+                                Sys.info()["user"],
+                                '.txt')
+commentsTextFile = file(commentsTextFileName)
 saveAnswers = reactive({
   answers = assembleTQAnswers()   ## TQ
   answersText <<- capture.output(answers)
-  answersTextFile <<- file(paste0('answers.',
-                                 Sys.info()["user"],
-                                 '.txt'))
   writeLines(answersText, answersTextFile)
   close(answersTextFile)
   answersHTML <<- 
@@ -1219,11 +1221,11 @@ output$saveCommentsPanel = renderUI({
     br(),
     h3('Saved in 2 files, to share & discuss with a mentor.'),
     h4(paste0(
-      'Your Question and Ahas (in ', commentTextFile, ')')),
+      'Your Question and Ahas (saved in ', commentsTextFileName, ')')),
     wellPanel(saveComments()),
     h4('Your Text Question Answers'),
         h4(paste0(
-      'Your answers:  (in ', answersTextFile, ')')),
+      'Your answers:  (saved in ', answersTextFileName, ')')),
 
     wellPanel(saveAnswers())
 
