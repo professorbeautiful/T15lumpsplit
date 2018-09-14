@@ -1180,7 +1180,6 @@ assembleTQAnswers = reactive({
 })
 saveComments = reactive({
   comments = assembleQAComments()  ### QA
-  answers = assembleTQAnswers()   ## TQ
   commentText <<- capture.output(comments)
   commentTextFile <<- file(paste0('comments.',
                                  Sys.info()["user"],
@@ -1193,31 +1192,27 @@ saveComments = reactive({
                                  Sys.info()["user"],
                                  '.html'))
   writeLines(commentText, commentTextFile)
-  #writeLines(commentHTML, commentHTMLFile)
   close(commentTextFile)
   close(commentHTMLFile)
   #browseURL(commentTextFile)
   return(commentHTML)
 })
-
+saveAnswers = reactive({
+  answers = assembleTQAnswers()   ## TQ
+  answersText <<- capture.output(answers)
+  answersHTML <<- #capture.output(
+    pre(paste(answersText, collapse='\n')) 
+   return(answersHTML)
+})
 ```
 
 To gather all your responses and present them in a new tab, click the following button:
 
 ```{r}
-#commentHTML <<- ''
-#actionButton("saveComments", 'save your QA and TQ comments')
 conditionalPanelWithCheckbox(
-  labelString = 'See your comments here',
+  labelString = 'See your answers and comments here',
   #filename = NULL, 
-  html = uiOutput('saveCommentsPanel')
-    # div(h3(
-    # 'Your QA comments and TQ answers are here.',
-    # br(),
-    # h3('Copy & paste to save or message a mentor.'),
-    # h4('QA comments'),
-    # wellPanel(saveComments())
-   ,
+  html = uiOutput('saveCommentsPanel'),
   initialValue = FALSE)
 
 output$saveCommentsPanel = renderUI({
@@ -1225,14 +1220,13 @@ output$saveCommentsPanel = renderUI({
     'Your QA comments and TQ answers are here.',
     br(),
     h3('Copy & paste to save or message a mentor.'),
-    h4('QA comments'),
-    wellPanel(saveComments())
+    h4('Your comments: Questions and Ahas'),
+    wellPanel(saveComments()),
+    h4('Your Text Question Answers'),
+    wellPanel(saveAnswers())
+
   ) )
 })
-# conditionalPanel('input.saveComments',
-#   uiOutput('saveCommentsPanel')
-# )
-
 
 ```
 
