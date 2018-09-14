@@ -1156,7 +1156,7 @@ QandAha(context='QA-big-joint-priors')
 ###  Save your Comments and Answers
 ```{r assembleComments}
 assembleQAComments = reactive( {
-  lastQANumber = nextNumber(sequenceType = "QA") - 1
+  lastQANumber = length(QA_contexts)
   QAanswers = sapply(1:lastQANumber, function(num) {
     outputIdThisQA = paste0('QA', num)
     textareaIdThisQA = paste0('id', outputIdThisQA)
@@ -1168,7 +1168,7 @@ assembleQAComments = reactive( {
   #unlist(answers[-which(sapply(answers, is.null))])
 })
 assembleTQAnswers = reactive({
-  lastTQNumber = nextNumber(sequenceType = "TQ") - 1
+  lastTQNumber = length(TQ_contexts)
   TQanswers = lapply(1:lastTQNumber, function(num) {
     outputIdThisTQ = paste0('TQ', num)
     textareaIdThisTQ = paste0('id', outputIdThisTQ)
