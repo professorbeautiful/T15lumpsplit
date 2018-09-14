@@ -13,7 +13,8 @@ $(document).on("keyup", function (event) {
     if(x==68 && event.ctrlKey) { // control d
       ctrlDpressed = ! ctrlDpressed;  // toggle
       Shiny.onInputChange("ctrlDpressed", ctrlDpressed);
-
+      if(ctrlDpressed === true)
+        navigateToY(0);
       //navigateToId(currentLocationId);
       //alert('control d ' + e.ctrlKey + ' ' + event.ctrlKey);
       // The alert works.
