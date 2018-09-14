@@ -1210,18 +1210,21 @@ To gather all your responses and present them in a new tab, click the following 
 ```{r}
 conditionalPanelWithCheckbox(
   labelString = 'See your answers and comments here',
-  #filename = NULL, 
   html = uiOutput('saveCommentsPanel'),
   initialValue = FALSE)
 
 output$saveCommentsPanel = renderUI({
   div(h3(
-    'Your QA comments and TQ answers are here.',
+    'Your "Questions&Ahas" comments and "TextQuestion" answers are here.',
     br(),
-    h3('Copy & paste to save or message a mentor.'),
-    h4('Your comments: Questions and Ahas'),
+    h3('Saved in 2 files, to share & discuss with a mentor.'),
+    h4(paste0(
+      'Your Question and Ahas (in ', commentTextFile, ')')),
     wellPanel(saveComments()),
     h4('Your Text Question Answers'),
+        h4(paste0(
+      'Your answers:  (in ', answersTextFile, ')')),
+
     wellPanel(saveAnswers())
 
   ) )
