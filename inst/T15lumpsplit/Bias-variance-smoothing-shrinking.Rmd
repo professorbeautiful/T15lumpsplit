@@ -1185,24 +1185,23 @@ saveComments = reactive({
   commentTextFile <<- file(paste0('comments.',
                                  Sys.info()["user"],
                                  '.txt'))
-  commentHTML <<- #capture.output(
-    pre(paste(commentText, collapse='\n')) 
-    #)
-  commentHTMLFile <<- file(paste0('comments.',
-                                 Sys.info()["user"],
-                                 '.html'))
   writeLines(commentText, commentTextFile)
   close(commentTextFile)
-  close(commentHTMLFile)
-  #browseURL(commentTextFile)
+  commentHTML <<- 
+    pre(paste(commentText, collapse='\n')) 
   return(commentHTML)
 })
 saveAnswers = reactive({
   answers = assembleTQAnswers()   ## TQ
   answersText <<- capture.output(answers)
-  answersHTML <<- #capture.output(
+  answersTextFile <<- file(paste0('answers.',
+                                 Sys.info()["user"],
+                                 '.txt'))
+  writeLines(answersText, answersTextFile)
+  close(answersTextFile)
+  answersHTML <<- 
     pre(paste(answersText, collapse='\n')) 
-   return(answersHTML)
+  return(answersHTML)
 })
 ```
 
