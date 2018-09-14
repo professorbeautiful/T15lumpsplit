@@ -220,7 +220,7 @@ output$whoMixturePlot =
 plotOutput('whoMixturePlot')
 dataTableComponent(showhide='hide')
 TextQuestion("Experiment with changing #RL in the range 2 to 9. What happens?  And... why? ")
-QandAha()
+QandAha('whoMixturePlot')
 ```
 
 ##### The Bayes Factor: posterior odds (and probability) of the "null hypothesis"

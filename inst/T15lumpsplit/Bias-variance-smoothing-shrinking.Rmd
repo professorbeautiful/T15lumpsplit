@@ -485,10 +485,34 @@ The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
 
 Goal: decide whether to treat the "$D$ patients" (or at least, whether to put resources into studying it further for "$D$ patients").
 ```{r}
+output$confInterval_Lump = renderText(
+  {
+    paste("Lump:  (", 
+          signif(digits=2,
+              rValues$estimates[['confInterval_Lump']][1]),
+          "-",
+          signif(digits=2,
+              rValues$estimates[['confInterval_Lump']][2]),
+          ")"
+    )
+  })
+output$confInterval_Split = renderText(
+  {
+    paste("Split:  (", 
+          signif(digits=2,
+                 rValues$estimates[['confInterval_Split']][1]),
+          "-",
+          signif(digits=2,
+                 rValues$estimates[['confInterval_Split']][2]),
+          ")"
+    )
+  }) 
   estimates = reactive({
   rValues$estimates = list(
-    lump = sum(rValues$DLdata['R', ])/sum(rValues$DLdata[ , ]),
-    split = (rValues$DLdata['R', 'D'])/sum(rValues$DLdata[ , 'D']),
+    lump = sum(rValues$DLdata['R', ])/
+      sum(rValues$DLdata[ , ]),
+    split = (rValues$DLdata['R', 'D'])/
+      sum(rValues$DLdata[ , 'D']),
     confInterval_Split = binom.test(x = rValues$DLdata['R', 'D'],
                                 n = sum(rValues$DLdata[ , 'D']) )$conf.int,
     confInterval_Lump = binom.test(x = sum(rValues$DLdata['R', ]),
@@ -517,26 +541,29 @@ In the following plot, we see the estimate and the confidence interval for `Pr(R
 a(name='section-a_plotLumpSplitPoints')
 # I removed fig.height=300
 output$confInterval_Lump = renderText(
-  {        paste("Lump:  (", 
-                 signif(digits=2,
-                        rValues$estimates[['confInterval_Lump']][1]),
-                 "-",
-                 signif(digits=2,
-                        rValues$estimates[['confInterval_Lump']][2]),
-                 ")"
-  )
+  {
+    try(silent = TRUE,
+        paste("Lump:  (", 
+          signif(digits=2,
+              rValues$estimates[['confInterval_Lump']][1]),
+          "-",
+          signif(digits=2,
+              rValues$estimates[['confInterval_Lump']][2]),
+          ")"
+    ) )
   })
 output$confInterval_Split = renderText(
-  {        paste("Split:  (", 
-                 signif(digits=2,
-                        rValues$estimates[['confInterval_Split']][1]),
-                 "-",
-                 signif(digits=2,
-                        rValues$estimates[['confInterval_Split']][2]),
-                   ")"
-  )
+  {
+    try(silent = TRUE,
+        paste("Split:  (", 
+          signif(digits=2,
+                 rValues$estimates[['confInterval_Split']][1]),
+          "-",
+          signif(digits=2,
+                 rValues$estimates[['confInterval_Split']][2]),
+          ")"
+    ) )
   }) 
-
 output$plotLumpSplitPoints = renderPlot(
   height = 300, {
   plotPlightPdarkPosterior(DLdata=rValues$DLdata,
@@ -1128,7 +1155,7 @@ QandAha(context='QA-big-joint-priors')
 
 ###  Save your Comments and Answers
 ```{r assembleComments}
-assembleQAComments <<- function() {
+assembleQAComments = reactive( {
   lastQANumber = nextNumber(sequenceType = "QA") - 1
   QAanswers = sapply(1:lastQANumber, function(num) {
     outputIdThisQA = paste0('QA', num)
@@ -1139,8 +1166,8 @@ assembleQAComments <<- function() {
   QAanswers
   print(QAanswers)
   #unlist(answers[-which(sapply(answers, is.null))])
-}
-assembleTQAnswers <<- function() {
+})
+assembleTQAnswers = reactive({
   lastTQNumber = nextNumber(sequenceType = "TQ") - 1
   TQanswers = lapply(1:lastTQNumber, function(num) {
     outputIdThisTQ = paste0('TQ', num)
@@ -1150,38 +1177,65 @@ assembleTQAnswers <<- function() {
   names(TQanswers) = TQ_contexts
   TQanswers
   #unlist(answers[-which(sapply(answers, is.null))])
-}
-saveComments <<- function() {
+})
+saveComments = reactive({
   comments = assembleQAComments()  ### QA
-  #answers = assembleTQAnswers()   ## TQ
-  commentText = capture.output(comments)
-  commentTextFile = file(paste0('comments.',
+  answers = assembleTQAnswers()   ## TQ
+  commentText <<- capture.output(comments)
+  commentTextFile <<- file(paste0('comments.',
                                  Sys.info()["user"],
                                  '.txt'))
-  commentHTML = capture.output(pre(commentText))
+  commentHTML <<- #capture.output(
+    pre(paste(commentText, collapse='\n')) 
+    #)
   print(commentHTML)
-  commentHTMLFile = file(paste0('comments.',
+  commentHTMLFile <<- file(paste0('comments.',
                                  Sys.info()["user"],
                                  '.html'))
   writeLines(commentText, commentTextFile)
-  writeLines(commentHTML, commentHTMLFile)
+  #writeLines(commentHTML, commentHTMLFile)
   close(commentTextFile)
   close(commentHTMLFile)
-}
+  #browseURL(commentTextFile)
+  return(commentHTML)
+})
 
 ```
 
 To gather all your responses and present them in a new tab, click the following button:
 
 ```{r}
-actionButton("saveComments", 'save your QA comments')
-observeEvent(input$saveComments, {
-  saveComments()
-  commentFile = paste0('answers.',
-                                 Sys.info()["user"],
-                                 '.txt') 
+#commentHTML <<- ''
+#actionButton("saveComments", 'save your QA and TQ comments')
+conditionalPanelWithCheckbox(
+  labelString = 'See your comments here',
+  #filename = NULL, 
+  html = uiOutput('saveCommentsPanel')
+    # div(h3(
+    # 'Your QA comments and TQ answers are here.',
+    # br(),
+    # h3('Copy & paste to save or message a mentor.'),
+    # h4('QA comments'),
+    # wellPanel(saveComments())
+   ,
+  initialValue = FALSE)
+
+output$saveCommentsPanel = renderUI({
+  div(h3(
+    'Your QA comments and TQ answers are here.',
+    br(),
+    h3('Copy & paste to save or message a mentor.'),
+    h4('QA comments'),
+    wellPanel(saveComments())
+  ) )
 })
+# conditionalPanel('input.saveComments',
+#   uiOutput('saveCommentsPanel')
+# )
+
+
 ```
+
 
 # Other topics to be developed:
 ##	The famous ECMO data set.
