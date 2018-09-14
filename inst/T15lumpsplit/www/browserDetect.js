@@ -13,6 +13,9 @@ var isSafari = navigator.vendor &&
 if(isSafari === "") isSafari = false;
 Shiny.onInputChange("isSafari", isSafari);
 
+var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+Shiny.onInputChange("isChrome", isChrome);
+
 var isFirefox =
   navigator.userAgent &&
   navigator.userAgent.indexOf('Mozilla') > -1 ;
@@ -20,9 +23,10 @@ if(isFirefox === "") isFirefox = false;
 // Actually, Safari also has navigator.userAgent
 // equal to Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15.
 // So wrong, but it works ok for us.
+// Ahh, but Chrome thinks it is Firefox!
 Shiny.onInputChange("isFirefox", isFirefox);
 
-/*
-if( ! isSafari)
+/*   This alert doesn't happen, but shiny produces the output*/
+if( isChrome)
  alert("Please use Safari as your browser for full features.");
-*/
+/* */
