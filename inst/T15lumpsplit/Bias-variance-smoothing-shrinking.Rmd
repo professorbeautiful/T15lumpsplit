@@ -948,13 +948,25 @@ makeDLdataDF = function(DLdata, qStar=1) {
                  times=c(DLdata))
     )
   NextraFeatures = 99
-  extraFeaturesProbs = rbeta(NextraFeatures, 10, 10)
-  #  Fairly tight around 1/2, to make similar # 0's and 1's.
-  extraFeatures = as.data.frame(
-    lapply(extraFeaturesProbs,
-           rbinom, n=sum(DLdata),size=1)
-  )
-  names(extraFeatures) = 
+  extraFeaturesProbs_R = rbeta(NextraFeatures, 10, 10)
+  extraFeaturesOdds_R =
+    extraFeaturesProbs_R/(1-extraFeaturesProbs_R)
+  #extraFeaturesProbs1 = rbeta(NextraFeatures, 10, 10)
+  tauTrue = 1
+  oddsratios = exp(rnorm(NextraFeatures, 0, sqrt(tauTrue)))
+  extraFeaturesOdds_N = extraFeaturesOdds_R * oddsratios
+  extraFeaturesProbs_N =
+    extraFeaturesOdds_N/(1+extraFeaturesOdds_N)
+  #plot(extraFeaturesProbs_N, extraFeaturesProbs_R)
+  extraFeatures_N = sapply(extraFeaturesProbs_N,
+           rbinom, n=sum(DLdataDF$outcome=='N'),size=1)
+  extraFeatures_R = sapply(extraFeaturesProbs_R,
+           rbinom, n=sum(DLdataDF$outcome=='R'),size=1)
+  extraFeatures = 
+    matrix(NA, ncol=NextraFeatures, nrow=nrow(DLdataDF))
+  extraFeatures[DLdataDF$outcome=='N', ] = extraFeatures_N
+  extraFeatures[DLdataDF$outcome=='R', ] = extraFeatures_R
+  colnames(extraFeatures) = 
     paste0('X', 1+(1:NextraFeatures))
   DLdataDF = cbind(DLdataDF, extraFeatures)
   allFisherPs <<- 
@@ -969,7 +981,6 @@ makeDLdataDF = function(DLdata, qStar=1) {
                  DLdataDF$outcome)$p.value
     ) 
   options(options.saved)
-  print(str(allChisqPs))
   BHtable = makeBHtable(allChisqPs, qStar=qStar)
   return(invisible(
     list(DLdataDF=DLdataDF, allFisherPs=allFisherPs,
@@ -979,12 +990,9 @@ makeDLdataDF = function(DLdata, qStar=1) {
 makeBHtable = function(pValues, qStar=1, columns=8) {
   somePvalues  = 
     signif(digits=3, sort(pValues)[1:columns])
-  print(somePvalues)
-  print(qStar * (1:columns)/100)
   BHtable = data.frame(
     Pvalue = somePvalues,
     cutoff = qStar * (1:columns)/100)
-  cat('DONE\n')
   BHtable[[ 'P<cutoff' ]] = c('no','yes')[
     1 + (BHtable$cutoff > BHtable$Pvalue) ]
   BHtable = t(BHtable)
@@ -1070,10 +1078,10 @@ output$BHtable = renderTable({
 tableOutput('BHtable')
 ```
 
-Using the original data, and the FDR upper bound (qStar) equal to one,
+
 
 ```{r}
-TextQuestion("which features are 'significant'? How many 'false discoveries' are there?")
+TextQuestion("Using the original data, and the FDR upper bound (qStar) equal to one, which features are 'significant'? How many 'false discoveries' are there?")
 ```
 
 
@@ -1093,6 +1101,7 @@ QandAha('QA-Benjamini-Hochberg')
 Another approach is through *empirical Bayes*, a method that presumes that the associations of the features with the outcome are drawn from a distribution. This allows a kind of sharing of information reminiscent of the sharing of information between the X=D and X=L patients, but sharing across features instead of across subgroups defined by one feature. 
 
 The following link develops the empirical Bayes idea in the context of medical decision-making. When done reading this, close the panel, record your Questions and Aha's, and continue to see the application of EB for our example.
+
 ```{r}
 conditionalPanelWithCheckboxPDF(
   labelString="An Introduction to Hierarchical Bayes and Empirical Bayes", 
@@ -1104,16 +1113,59 @@ We can apply EB to a collection of estimates. In this instance, let's collect th
 `r DLdataOriginal['R','D']` / `r DLdataOriginal['N','D']` * `r DLdataOriginal['R','L']` / `r DLdataOriginal['N','L']`), which is 
 `r oddRatioOriginal = DLdataOriginal['R','D'] / DLdataOriginal['N','D'] * DLdataOriginal['R','L'] / DLdataOriginal['N','L'] ` ).
 
-Using the delta method mentioned above, the "logit ratios" (logarithms of the odds ratios, i.e. the differences in logits) have variances roughly equal to the sums of reciprocals of the counts. From this we can construct confidence intervals for the logits, then pull them back to confidence intervals for the odds ratios.
+This can be compared to all 100 odds ratios for the features:
 
-To apply the EB idea, we "shrink" all the logit ratios towards the common mean, using a model in which the true logit ratios are all drawn from a common parent distribution, assumed to be normal (Gaussian). Then a standard Bayesian calculation gives us the posterior means (and variances) for each logit ratio. So for example, for our original X=D or L feature, the confidence interval is given by
+```{r}
+output$oddsratioplot = renderPlot({
+  outcome = rValues$DLdataDF$outcome
+  oddsratio = function(col, sprinkle=1) {
+    theTable = table(col, outcome)
+    theTable = sprinkle + theTable
+    return(theTable[1,1]/theTable[2,1]
+           /theTable[1,2]*theTable[2,2])
+  }
+  oddsratios = sapply(rValues$DLdataDF[-(1)], oddsratio)
+  rValues$logoddsratios = 
+    logoddsratios = log(oddsratios)
+  plot(density(logoddsratios))
+  logoddsratiovariance = function(col, sprinkle=0.1) {
+    theTable = table(col, outcome)
+    theTable = sprinkle + theTable
+    sum(1/theTable)
+  }
+  rValues$logoddsratiovariances =
+    logoddsratiovariances =
+    sapply(rValues$DLdataDF[-(1)],
+                                 logoddsratiovariance)
+  points(logoddsratios, col='red', type='h',
+       logoddsratiovariances * par('usr')[4]/
+        max(logoddsratiovariances) *0.3)
+  points(logoddsratios[1], 0, pch="X", col='green')
+})
+plotOutput('oddsratioplot')
+```
+Using the delta method mentioned above,  have variances roughly equal to the sums of reciprocals of the counts. From this we can construct confidence intervals for the logits, then pull them back to confidence intervals for the odds ratios. So for example, for our original X=D or L feature, the confidence interval is given by
 `exp ( log(oddRatioOriginal) + c(-1,1)*sqrt(sum(1/DLdataOriginal))*qnorm(0.975))`.
 
-But we would have to know the true mean and variance of the parent distribution. The "empirical" part of empirical Bayes is to use the data to estimate the mean and variance of the parent. As you can see in the document in the panel just above, the "empirical" step needs the marginal distribution of the observed logit ratios.
+To apply the EB idea, we use the data for all the features, to "shrink" all the logit ratios ${X_i}$ towards the common mean, estimated as ${\hat\mu}$. This solution uses a model in which the true logit ratios are all drawn from a common parent distribution, assumed to be normal (Gaussian). Then a standard Bayesian calculation gives us the posterior means (and variances) for each logit ratio. In particular, letting ${\mu_i}$ be the logit ratio for feature $i$, with variance ${\sigma_i}$ (which we estimate from the delta method to get ${\hat\sigma_i}$), the posterior mean is 
 
-${X_i}|\tau \sim N(\mu,\tau  + {\sigma _i})$
+  $E({\mu _i}|{X_i}) = {X_i}(1 - {w_i}) + \hat \mu {w_i}$,
+ 
+ where the weights $w_i$ vary with the feature:
+ 
+  $w_i = \frac{{\hat\sigma_i}}{{\hat\sigma_i}+\hat{A}}$ .
+  
+$\hat{A}$ is the estimated prior variance for all the true ${\mu_i}$.
+ 
+This is yet another example of bias-variance trade-off. By accepting some bias in including data from other features, the variance of the estimate decreases, enough to make the net result more accurate.
+ 
+But we would have to know the true mean and variance of the parent distribution. 
 
-where we will get the variances ${\sigma _i}$ from the delta method. The unknown $\mu$ and $\tau$ are called the "hyperparameters". We estimate them however we want, but using maximum likelihood estimation we get
+The "empirical" part of empirical Bayes is to use the data to estimate the mean and variance of the parent distribution generating the $\mu_i$. As you can see in the document in the panel just above, the "empirical" step needs the marginal distribution of the observed logit ratios.
+
+  ${X_i}|\tau \sim N(\mu,\tau  + {\sigma _i})$
+
+where we will get the variances ${\sigma _i}$ from the delta method. The unknown $\mu$ and $\tau$ are called the "hyperparameters". We can estimate them however we prefer, but using maximum posterior estimation we get
 
 $\hat \mu  = \sum {\left( {{X_i}{w_i}} \right)} /\sum {\left( {{w_i}} \right)}$
 
@@ -1129,14 +1181,69 @@ conditionalPanelWithCheckboxPDF(
   cbStringId='Lagrange_multipliers')
 ```
 
-Continuing the "empirical" part of EB, one estimate of $\tau$ is to take the total sums of squares and subtract the portion purely due to the individual data noise of the features. When the individual variances vary greatly, the 
+Continuing the "empirical" part of EB, one estimate of $\tau$ is to take the total sums of squares and subtract the portion purely due to the individual data noise of the features. When the individual variances vary greatly, the estimate is a little more complicated. One way is via maximum likelihood. 
 
+```{r empBayeslogitRatios}
+output$empBayeslogitRatios = renderPlot({
+  logitRatios = rValues$logoddsratios
+  logitVars = rValues$logoddsratiovariances
+  print(summary(logitRatios))
+  print(summary(logitVars))
+  loglikFun=function(mu,tau) {
+    sum(log(dnorm(logitRatios, mu, sqrt(tau+logitVars))) )
+  }
+  mu = mean(logitRatios)
+  tau = 0   #(var(logitRatios) - mean(logitVars))
+  for( irep in 1:13) { # we ain't buildin' no cathedral here.
+    mu = optimize(f = loglikFun, tau = tau,
+                  interval = c(-4,4), maximum=TRUE
+    )$maximum
+    tau = optimize(f = loglikFun, mu = mu,
+                   interval = c(0, 1), maximum=TRUE
+    )$maximum
+  }
+  cat('mu-hat: ', mu, '  tau-hat: ', tau, '\n')
+  weights = tau / (rValues$logoddsratiovariances+ tau)
+  rValues$posteriorMeans = 
+    logitRatios * (1-weights) + mu * weights
+  plot(range(logitRatios)*1.05, 0:1, col='white',
+       xlab= '', ylab='', axes=F,
+       cex=2)
+  axis(1, cex=2)
+#  axis(2, at = 0:1, labels = c("raw", "EB shrunk"), lwd = 0)
+  # text(x = range(logitRatios)*1.05, y=c(0,0), 
+  #      labels = c("raw", "raw"), xpd=NA, cex=2)
+  # text(x = range(logitRatios)*1.05, y=c(1,1), 
+  #      labels = c("EB\nshrunk", "EB\nshrunk"), xpd=NA, cex=2)
+  axis(3, cex=2)
+ # title(
+  mtext(text = 'log of odds ratios: "split" (raw) estimates', 
+        side = 1, line = 3, cex=2, xpd=NA)
+  mtext(text = 'log of odds ratios: "shrunken" estimates with empirical Bayes', 
+        side = 3, line = 2.5, cex=2, xpd=NA)
+  for(iobs in 2:length(logitRatios))
+    lines(c(logitRatios[iobs], rValues$posteriorMeans[iobs]),
+          0:1)
+  lines(c(logitRatios[1], rValues$posteriorMeans[1]),
+        0:1, col='green', lwd=3)
+  points(logitRatios[1], 0, 
+         pch="X", col='darkgreen', cex=2)
+  points(rValues$posteriorMeans[1], 1,
+         pch="X", col='darkgreen', cex=2)
+  lines(c(logitRatios[iobs], rValues$posteriorMeans[iobs]),
+        0:1)
+})
+
+plotOutput('empBayeslogitRatios')
+```
 
 
 
 ###  The Qvalue approach for multiple testing
 
 We can also apply EB to a collection of P values. One popular alternative to the Bonferroni and Sidak adjustments with an empirical Bayes flavor is the "Qvalue" method. 
+
+This method assumes that the distribution of the observed P values is a mixture of a uniform distribution for the true null hypotheses and a distribution concentrated near zero for the true alternative hypotheses. The false discovery rate (FDR) and posterior probability of each null hypothesis come directly from Bayes Theorem. However, the mixture proportion, which is the prior probability of each null hypothesis, is unknown. The empirical Bayes idea directs us to estimate it. Here are the details.
 
 ```{r}
 conditionalPanelWithCheckboxPDF(
@@ -1145,7 +1252,7 @@ conditionalPanelWithCheckboxPDF(
   cbStringId='Storey_Tibshirani')
 ```
 
-
+To apply this method for our data, we can use the 
 ```{r QA-empirical-Bayes}
 QandAha('QA-empirical-Bayes')
 ```
