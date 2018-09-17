@@ -1206,7 +1206,7 @@ output$empBayeslogitRatios = renderPlot({
   weights = tau / (rValues$logoddsratiovariances+ tau)
   rValues$posteriorMeans = 
     logitRatios * (1-weights) + mu * weights
-  plot(range(logitRatios)*1.05, 0:1, col='white',
+  plot(c(-4, 3), 0:1, col='white',
        xlab= '', ylab='', axes=F,
        cex=2)
   axis(1, cex=2)
@@ -1217,7 +1217,7 @@ output$empBayeslogitRatios = renderPlot({
   #      labels = c("EB\nshrunk", "EB\nshrunk"), xpd=NA, cex=2)
   axis(3, cex=2)
  # title(
-  mtext(text = 'log of odds ratios: "split" (raw) estimates', 
+  mtext(text = 'log of odds ratios: raw estimates ("Dr. Split" style', 
         side = 1, line = 3, cex=2, xpd=NA)
   mtext(text = 'log of odds ratios: "shrunken" estimates with empirical Bayes', 
         side = 3, line = 2.5, cex=2, xpd=NA)
@@ -1227,23 +1227,51 @@ output$empBayeslogitRatios = renderPlot({
   lines(c(logitRatios[1], rValues$posteriorMeans[1]),
         0:1, col='green', lwd=3)
   points(logitRatios[1], 0, 
-         pch="X", col='darkgreen', cex=2)
+         pch="X", col='green', cex=3)
   points(rValues$posteriorMeans[1], 1,
-         pch="X", col='darkgreen', cex=2)
+         pch="X", col='green', cex=3)
   lines(c(logitRatios[iobs], rValues$posteriorMeans[iobs]),
         0:1)
+  posteriorVariance_DL =  weights[1] * logitVars[1]
+  posteriorStDev_DL = sqrt(posteriorVariance_DL)
+  alpha = 0.1
+  lines(logitRatios[1]+c(-1,1)*qnorm(alpha)*
+          sqrt(logitVars[1]), 
+        c(0,0), col='green', lwd=3)
+  lines(rValues$posteriorMeans[1]+c(-1,1)*qnorm(alpha)*
+          posteriorStDev_DL, 
+        c(1,1), col='green', lwd=3)
 })
 
 plotOutput('empBayeslogitRatios')
 ```
 
+The green horizontal lines are the 80% confidence intervals, before (below) and after (above) applying the empirical Bayes shrinking towards the mean of all the logit ratios. We see that the one above is narrower. So shrinking (which shares info among the features) makes the estimate for the log odds ratio more precise, compared to the "Dr. Split" perspective that directs us to allow only the original "D/L" feature to inform the odds ratio for that feature.
+
+
+
+```{r}
+TextQuestion(
+'Is this approach really an improvement here? Is this  sharing information among the features justified? What factors might make you more, or less, inclined to take this approach? ')
+QandAha()
+```
+This is fine as far as it goes, but our result for the odds ratio does not directly address the original question of interest:  "What is the true response rate for `D` people?" 
+So here is a challenge question:
+
+```{r}
+TextQuestion('
+How could we convert this estimate of the odds ratio for the X_DL feature into an estimate for Pr(Response | X_DL = D)? 
+')
+```
+
+```
 
 
 ###  The Qvalue approach for multiple testing
 
-We can also apply EB to a collection of P values. One popular alternative to the Bonferroni and Sidak adjustments with an empirical Bayes flavor is the "Qvalue" method. 
+We can also apply EB in quite a different way, to judge a collection of P values. One popular alternative to the Bonferroni and Sidak adjustments with an empirical Bayes flavor is the "Qvalue" method. 
 
-This method assumes that the distribution of the observed P values is a mixture of a uniform distribution for the true null hypotheses and a distribution concentrated near zero for the true alternative hypotheses. The false discovery rate (FDR) and posterior probability of each null hypothesis come directly from Bayes Theorem. However, the mixture proportion, which is the prior probability of each null hypothesis, is unknown. The empirical Bayes idea directs us to estimate it. Here are the details.
+This method assumes that the distribution of the observed P values is a mixture of a uniform distribution for the true null hypotheses and a distribution concentrated near zero for the true alternative hypotheses. The false discovery rate (FDR) and posterior probability of each null hypothesis come directly from Bayes Theorem. However, the mixture proportion, which is the prior probability of each null hypothesis, is unknown. The empirical Bayes idea directs us to estimate it. Here are some details.
 
 ```{r}
 conditionalPanelWithCheckboxPDF(
@@ -1252,11 +1280,46 @@ conditionalPanelWithCheckboxPDF(
   cbStringId='Storey_Tibshirani')
 ```
 
-To apply this method for our data, we can use the 
+Here we apply the qValue method to the chisquare P values from our dataset with 100 features:
+
+```{r}
+output$qvaluePlot = renderPlot({
+  qout = rValues$qValueObject =
+    qvalue::qvalue(rValues$allChisqPs)
+  rValues$P_Q_for_X_DL = 
+    c(qout$pvalues[1], qout$qvalues[1])
+  plot(qout$pvalues, qout$qvalues, 
+       xlim=c(0,0.004), ylim = c(0, 0.04))
+  points(qout$pvalues[1], qout$qvalues[1], 
+         col='green')
+  points(qout$pvalues[1], qout$qvalues[1], 
+         pch='X', col='green')
+  text(qout$pvalues[1], qout$qvalues[1], adj=-0.2,
+         labels = expression('\U2B05 X_DL'), col='green')
+# ⬅︎
+# LEFTWARDS BLACK ARROW
+# Unicode: U+2B05 U+FE0E, UTF-8: E2 AC 85 EF B8 8E
+  abline(a=0, b=100, col='darkred')
+  text(0.0005, 0.03, 'Bonferroni', srt=80, col='darkred')
+  abline(a=0, b=1, col='blue')
+  text(0.0025, 0.004, 'diagonal', srt=6, col='blue')
+  #plot(qvalue::qvalue(rValues$allChisqPs) )
+})
+plotOutput('qvaluePlot')
+```
+
+From this we see that the Q-value for our original D/L feature is `r output$qv = renderText({rValues$P_Q_for_X_DL[2]}); textOutput('qv')`.
+
+
+
+We use the package `qvalue` for this calculation, which can be obtained from https://www.bioconductor.org/packages/release/bioc/html/qvalue.html. 
+
 ```{r QA-empirical-Bayes}
 QandAha('QA-empirical-Bayes')
 ```
 ### Two alleles of one gene out of a hundred thousand tested; nothing known
+
+We won't illustrate this with data here, but think about this situation and how to approach it.
 
 **One key point**: none of these methods utilizes *prior belief* about the *plausibility* of any or all of these features. To utilize prior belief across ALL the features, one has to develop a *joint* prior distribution across all hypotheses. This is difficult, but there has been progress.
 
