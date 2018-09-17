@@ -478,8 +478,8 @@ QandAha(context='QA-intro-lump-split')
 ### Hypothetical medical study
 
 The Problem:  A new treatment is given to `r sum(DLdataOriginal)` patients.  
-Of them, only `r sum(DLdataOriginal["R", ])` respond.  But there is a subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r sum(DLdataOriginal["R","D"])` patients respond, yielding a response rate of `r round(100*sum(DLdataOriginal["R","D"])/sum(DLdataOriginal[ , "D"]) )`%. For now we call them "$D$ patients", and the others "$L$ patients". Which subgroup a patient belongs to we will call the person's "feature" $X$, with possible values $D$ or $L$.
-The actual identity of $X$ will be explored later.
+Of them, only `r sum(DLdataOriginal["R", ])` respond.  But there is a subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r sum(DLdataOriginal["R","D"])` patients respond, yielding a response rate of `r round(100*sum(DLdataOriginal["R","D"])/sum(DLdataOriginal[ , "D"]) )`%. For now we call them "$D$ patients", and the others "$L$ patients". Which subgroup a patient belongs to we will call the person's "feature" $X_DL$, with possible values $D$ or $L$.
+Possibilities for the actual identity of $X_DL$ will be explored later.
 
 The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
 
@@ -530,7 +530,7 @@ Examine the data table below.
 (Throughout this example, you can change the numbers in the table and observe the results. 
 Be sure to press "reset" when done.)
 
-If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for D patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*estimates()$lump))`*%*. 
+If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*estimates()$lump))`*%*. 
 
 If you *"split"*, you will estimate that the response rate (`Pr(R|D)`), utilizing the D patients only, is 
 `r reactive(round(100*estimates()$split))`*%*. 
@@ -617,7 +617,7 @@ QandAha(context='QA-parametrization')
 
 ### Approaches
 
-* [Classical test: is X independent of the outcome Y?](#ClassicalTest)
+* [Classical test: is X_DL independent of the outcome Y?](#ClassicalTest)
 * [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
 * [Bayes joint prior, logit scale](#Bayes_joint_prior).  
 * Approaches used in the famous ECMO data set. (ToDo)
@@ -625,7 +625,7 @@ QandAha(context='QA-parametrization')
 #### <a name='section-ClassicalTest'> Classical estimation bifurcating on a hypothesis test</a>
 
 A time-honored but fading technique is to use a classical hypothesis test, to guide which of two analyses to present.
-Here the hypothesis is "X is independent of Y";  the response rate of D patients does not differ from L patients.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
+Here the hypothesis is "X_DL is independent of Y";  the response rate of D patients does not differ from L patients.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
 
 One test frequently performed to test independence in a 2x2 table like this one is the *Fisher exact test*. On the original data, the P value is `r textOutput('fisherResultOriginal', inline=TRUE)`. If you have changed the data, it is now `r textOutput('fisherResult', inline=TRUE)`.
 
@@ -830,9 +830,9 @@ So, when should we lump? When should we split? Should we aim to compromise, and 
 
 In this section we explore different scenarios of external information, to see how they affect the estimation of ${Pr(R|D}$.
 
-###	Strong prior belief that feature $X$ is *un*important
+###	Strong prior belief that feature $X_DL$ is *un*important
 
-What if D and L represent dark hair color and light hair color? "Dr. Who" may be highly skeptical that this $X$ really affects response, and express this by choosing a prior odds that favors Dr. Lump  over Dr. Split. Experiment by choosing such a value for prior odds here: 
+What if D and L represent dark hair color and light hair color? "Dr. Who" may be highly skeptical that this $X_DL$ really affects response, and express this by choosing a prior odds that favors Dr. Lump  over Dr. Split. Experiment by choosing such a value for prior odds here: 
 
 ```{r }
 WhoPriorProbNumericInput()
@@ -841,15 +841,15 @@ WhoPriorProbNumericInput()
 and reviewing revised results at these previous locations:
 
 
-```{r QA-Strong-prior-belief-X-unimportant}
+```{r QA-Strong-prior-belief-X_DL-unimportant}
 inclRmd('jumpBack.Rmd')
-QandAha('QA-Strong-prior-belief-X-unimportant')
+QandAha('QA-Strong-prior-belief-X_DL-unimportant')
 ```
 
 
-###	Strong prior belief that the feature $X$ is important
+###	Strong prior belief that the feature $X_DL$ is important
 
-What if D and L represent two alleles of a gene believed to affect this drug's pharmacodynamics? Or perhaps, $X = D = dark hair$, $X = L = light hair$, but hair color is strongly tied to ethnicity in this sample … which is strongly tied to a key genetic variant.
+What if D and L represent two alleles of a gene believed to affect this drug's pharmacodynamics? Or perhaps, $X_DL = D = dark hair$, $X_DL = L = light hair$, but hair color is strongly tied to ethnicity in this sample … which is strongly tied to a key genetic variant.
 
 "Dr. Who" can express this by choosing a prior odds that favors Dr. Split over Dr. Lump. Experiment by choosing such a value here: 
 
@@ -860,15 +860,15 @@ WhoPriorProbNumericInput()
 and reviewing revised results at these previous locations:
 
   
-```{r QA-Strong-prior-belief-X-important}
+```{r QA-Strong-prior-belief-X_DL-important}
 inclRmd('jumpBack.Rmd')
-QandAha('QA-Strong-prior-belief-X-important')
+QandAha('QA-Strong-prior-belief-X_DL-important')
 ```
 
 
 ###	Multiple features, with some prior belief
 
-Suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. Our feature $X$ happens to be one of them; otherwise unselected.
+Suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. Our feature $X_DL$ happens to be one of them; otherwise unselected.
 
 ```{r}
 TextQuestion(' How would you modify the "classical" approach that chooses Lump or Split based on a hypothesis test?')
@@ -881,7 +881,7 @@ TextQuestion(' How would you account for this knowledge in one of the two Bayesi
 
 ###	Best feature of 100, with some prior belief
 
-As before, suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. But this time, our feature $X$ is selected to be the best of the one hundred features.
+As before, suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. But this time, our feature $X_DL$ is selected to be the best of the one hundred features.
 
 This situation entails dealing with *"multiple comparisons"*. Pure chance can make a feature seem strongly associated with the response outcome when in reality it is not associated. When the best-appearing relationship is selected out of a large number, we can be fooled into thinking the strength of evidence is stronger than it really is.
 
@@ -1023,7 +1023,7 @@ observeEvent(
 
 ```
 
-Now that we have a data set, let's do Fisher exact tests and chisquare tests to all the features. The red "X" is of course our original data feature, with X = D or L.
+Now that we have a data set, let's do Fisher exact tests and chisquare tests to all the features. The red "X" is of course our original data feature, with X_DL = D or L.
 
 ```{r}
 output$pvaluesPlots = renderPlot({
@@ -1039,7 +1039,7 @@ plotOutput('pvaluesPlots')
 
 ```
 
-Applying the *"Bonferroni correction"* to the Fisher P value for our feature `X` means multiplying the P value `r signif(digits=4, allFisherPs_original[1])` by 100, to get P=`r signif(digits=4, 100* allFisherPs_original[1])`. So the evidence that the `D` people really are different is minimal at best. (To say it carefully, if a 'cutoff' for defining 'statistically significant' happened to be chosen at `r signif(digits=4, 100* allFisherPs_original[1])`, then our result for `X` would be just on the edge of 'significance'. That's not a compelling cutoff!) 
+Applying the *"Bonferroni correction"* to the Fisher P value for our feature `X_DL` means multiplying the P value `r signif(digits=4, allFisherPs_original[1])` by 100, to get P=`r signif(digits=4, 100* allFisherPs_original[1])`. So the evidence that the `D` people really are different is minimal at best. (To say it carefully, if a 'cutoff' for defining 'statistically significant' happened to be chosen at `r signif(digits=4, 100* allFisherPs_original[1])`, then our result for `X_DL` would be just on the edge of 'significance'. That's not a compelling cutoff!) 
 
 In the classical statistics spirit, we would now go with Dr. Lump instead of Dr. Split. (Choosing instead the chisquare test, the Bonferroni correction gives us P=`r signif(digits=4, 100* allChisqPs_original[1])`).
 
@@ -1098,7 +1098,7 @@ QandAha('QA-Benjamini-Hochberg')
 
 ### An Empirical Bayes approach to multiple comparisons
 
-Another approach is through *empirical Bayes*, a method that presumes that the associations of the features with the outcome are drawn from a distribution. This allows a kind of sharing of information reminiscent of the sharing of information between the X=D and X=L patients, but sharing across features instead of across subgroups defined by one feature. 
+Another approach is through *empirical Bayes*, a method that presumes that the associations of the features with the outcome are drawn from a distribution. This allows a kind of sharing of information reminiscent of the sharing of information between the X_DL=D and X_DL=L patients, but sharing across features instead of across subgroups defined by one feature. 
 
 The following link develops the empirical Bayes idea in the context of medical decision-making. When done reading this, close the panel, record your Questions and Aha's, and continue to see the application of EB for our example.
 
@@ -1109,7 +1109,7 @@ conditionalPanelWithCheckboxPDF(
   cbStringId='EmpiricalBayes')
 ```
 
-We can apply EB to a collection of estimates. In this instance, let's collect the estimates of association between the outcome and all 100 features. These estimates are the odds ratios. For the original feature `X`, the odds ratio is
+We can apply EB to a collection of estimates. In this instance, let's collect the estimates of association between the outcome and all 100 features. These estimates are the odds ratios. For the original feature `X_DL`, the odds ratio is
 `r DLdataOriginal['R','D']` / `r DLdataOriginal['N','D']` * `r DLdataOriginal['R','L']` / `r DLdataOriginal['N','L']`), which is 
 `r oddRatioOriginal = DLdataOriginal['R','D'] / DLdataOriginal['N','D'] * DLdataOriginal['R','L'] / DLdataOriginal['N','L'] ` ).
 
@@ -1144,7 +1144,7 @@ output$oddsratioplot = renderPlot({
 })
 plotOutput('oddsratioplot')
 ```
-Using the delta method mentioned above,  have variances roughly equal to the sums of reciprocals of the counts. From this we can construct confidence intervals for the logits, then pull them back to confidence intervals for the odds ratios. So for example, for our original X=D or L feature, the confidence interval is given by
+Using the delta method mentioned above,  have variances roughly equal to the sums of reciprocals of the counts. From this we can construct confidence intervals for the logits, then pull them back to confidence intervals for the odds ratios. So for example, for our original X_DL=D or L feature, the confidence interval is given by
 `exp ( log(oddRatioOriginal) + c(-1,1)*sqrt(sum(1/DLdataOriginal))*qnorm(0.975))`.
 
 To apply the EB idea, we use the data for all the features, to "shrink" all the logit ratios ${X_i}$ towards the common mean, estimated as ${\hat\mu}$. This solution uses a model in which the true logit ratios are all drawn from a common parent distribution, assumed to be normal (Gaussian). Then a standard Bayesian calculation gives us the posterior means (and variances) for each logit ratio. In particular, letting ${\mu_i}$ be the logit ratio for feature $i$, with variance ${\sigma_i}$ (which we estimate from the delta method to get ${\hat\sigma_i}$), the posterior mean is 
