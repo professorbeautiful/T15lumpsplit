@@ -1264,8 +1264,6 @@ How could we convert this estimate of the odds ratio for the X_DL feature into a
 ')
 ```
 
-```
-
 
 ###  The Qvalue approach for multiple testing
 
