@@ -39,11 +39,12 @@ conditionalPanelWithCheckbox = function(
   initialValue=FALSE,
   border = FALSE  ### include a border matching conditionalPanelWithCheckboxPDF
 ) {
-  labelStringNoSpaces = gsub("[ .'?!]", "_", labelString)
+  labelStringNoSpaces = gsub("[- .&?!]", "_", labelString)
   labelStringId = paste0(labelStringNoSpaces, 'Id')
   cbStringId = paste0('cb', labelStringId)
   if(!missing(filename))
-    html = c(tagList(inclRmd(filename)), html)
+    html = (tagList(inclRmd(filename), html) )
+  #else html = tagList(html)
   if(border)
     html = tags$iframe(style="height:600px; width:100%; border:5",
                                             html)
