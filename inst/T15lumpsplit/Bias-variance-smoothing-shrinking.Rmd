@@ -917,14 +917,6 @@ conditionalPanelWithCheckboxPDF(
 
 Let's put those worries aside for now.
 
-```{r}
-conditionalPanelWithCheckbox(
-  labelString = 'Topics in development', filename = 'topics.Rmd',
-  html=HTML('<b>EXTRA (newline) <br>HTML</b>'), #OK  
-  initialValue=FALSE)
-```
-
-
 Let's generate 99 extra features and examine how the methods behave when applied when the extra features are added to the D/L feature of our little data set. You can use either the original data or the data as you may have modified it.
 
 ```{r}
