@@ -1313,7 +1313,8 @@ output$qvaluePlot = renderPlot({
 plotOutput('qvaluePlot')
 ```
 
-From this we see that the Q-value for our original D/L feature is `r output$qv = renderText({rValues$P_Q_for_X_DL[2]}); textOutput('qv')`.
+From this we see that the Q-value for our original D/L feature is `r reactive({rValues$P_Q_for_X_DL[2]})`.
+
 
 
 
@@ -1423,17 +1424,22 @@ div(
 )
 ```
 
-# Other topics to be developed:
-##	The famous ECMO data set.
-##	Curse of dimensionality,
-##	Multiple testing and estimation with high-dimensional priors,
-
-
-```{r include navTOCid}
-#source('navTOCid.R', local=T)
+```{r initialContentReader}
+dlFolder = paste0(Sys.getenv('HOME'), 'Downloads')
+commentFile = paste0(dlFolder,
+                     '_comments_T15lumpsplit.txt')
+# if(file.exists(commentFile)) {
+#   commentsOnDisk = 
+#     lastQANumber = length(QA_contexts)
+#   QAComments = sapply(1:lastQANumber, function(num) {
+#     outputIdThisQA = paste0('QA', num)
+#     textareaIdThisQA = paste0('id', outputIdThisQA)
+#     return(input[[textareaIdThisQA]])
+#   })
+# }
+  
 ```
 
 ```{r}
 includeScript('www/browserDetect.js')
 ```
-
