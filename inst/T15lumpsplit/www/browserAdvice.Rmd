@@ -4,6 +4,7 @@ output$browserAdvice = renderUI({
   text = ""
   cat('input$isSafari ', input$isSafari, '\n')
   cat('input$isFirefox ', input$isFirefox, '\n')
+  cat('input$isChrome ', input$isChrome, '\n')
   
   #if(! (input$isSafari | input$isFirefox) )
   #if(! (input$isSafari ) )
