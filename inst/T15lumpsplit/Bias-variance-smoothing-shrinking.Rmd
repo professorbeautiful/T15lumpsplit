@@ -385,7 +385,9 @@ require(shinyBS)
 h3("NOTE: this is a work in progress!")
 conditionalPanelWithCheckbox(
   labelString = 'Overview', 
-  filename = 'Overview.Rmd', html = '',
+  filename = 'Overview.Rmd', 
+  #html = HTML('<b>EXTRA HTML</b>'),
+  # works with or without filename.
   initialValue = TRUE)
 ```
 The general scope of the bias-variance axis in many settings is here:
@@ -1328,6 +1330,97 @@ We won't illustrate this with data here, but think about this situation and how 
 
 ```{r QA-big-joint-priors}
 QandAha(context='QA-big-joint-priors')
+```
+
+###  Save your Comments and Answers
+```{r assembleComments}
+
+### TODO:  On startup, load the existing file into the answer boxes.
+assembleQAComments = reactive( {
+  lastQANumber = length(QA_contexts)
+  QAComments = sapply(1:lastQANumber, function(num) {
+    outputIdThisQA = paste0('QA', num)
+    textareaIdThisQA = paste0('id', outputIdThisQA)
+    return(input[[textareaIdThisQA]])
+  })
+  names(QAComments) = QA_contexts
+  QAComments
+})
+
+assembleTQAnswers = reactive({
+  lastTQNumber = length(TQ_contexts)
+  TQanswers = lapply(1:lastTQNumber, function(num) {
+    outputIdThisTQ = paste0('TQ', num)
+    textareaIdThisTQ = paste0('id', outputIdThisTQ)
+    return(input[[textareaIdThisTQ]])
+  })
+  names(TQanswers) = TQ_contexts
+  TQanswers
+})
+
+assembledContentsToHTML = function(contents) {
+  # result = sapply(contents, function(content){
+  #   return(paste(content, '<br>'))
+  # })
+  result = paste(contents, collapse="<BR>")
+  print(str(result))
+  return(HTML(result))
+}
+
+output$commentsToText = renderUI({
+  comments = assembleQAComments()  ### QA
+  commentsText <<- capture.output(comments)
+  #writeLines(commentsText, commentsTextFile)
+  assembledContentsToHTML(commentsText)
+})
+output$answersToText = renderUI({
+  answers = assembleTQAnswers()   ## TQ
+  answersText <<- capture.output(answers)
+  #writeLines(answersText, answersTextFile)
+  assembledContentsToHTML(answersText) 
+})
+```
+
+```{r downloadHandlers}
+output$downloadAnswers <- downloadHandler(
+  filename = "_answers_T15lumpsplit.txt",
+  content = function(file) {
+    answers = assembleTQAnswers()   ## TQ
+    answersText <<- capture.output(answers)
+    writeLines(answersText, file)
+  }
+  #, outputArgs=list()
+)
+output$downloadQandA <- downloadHandler(
+  filename = "_comments_T15lumpsplit.txt",
+  content = function(file) {
+    comments = assembleQAComments()  ### QA
+    commentsText <<- capture.output(comments)
+    writeLines(commentsText, file)
+  }
+)
+```
+
+```{r assemble comments and answers}
+
+div(
+  tags$b('View and download your "Questions&Ahas" comments and "TextQuestion" answers here.'),
+  downloadButton(outputId="downloadQandA", 
+                 "Download your Q&A comments"),
+  conditionalPanelWithCheckbox(
+    labelString = 'View your comments', 
+    html=uiOutput('commentsToText'),
+    initialValue = FALSE  ),
+  downloadButton(outputId="downloadAnswers", 
+                 "Download your answers"),
+  conditionalPanelWithCheckbox(
+    labelString = 'View your answers', 
+    #filename='www/empty.Rmd',
+    html=uiOutput('answersToText'),
+    initialValue = FALSE  ),
+  tags$b(
+    'Save these 2 files, to share & discuss with a mentor.')
+)
 ```
 
 # Other topics to be developed:
