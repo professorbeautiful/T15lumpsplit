@@ -832,7 +832,7 @@ QandAha('QA-Who-prior-probability')
 
 ##	The role of external information, explored by introducing different identities for "D" and "L".
 
-So, when should we lump? When should we split? Should we aim to compromise, and if so, how should we strike the balance?  <a node='Lumping_versus_ splitting_in_science'> Lumping and splitting in science </a>
+So, when should we lump? When should we split? Should we aim to compromise, and if so, how should we strike the balance?  
 
 In this section we explore different scenarios of external information, to see how they affect the estimation of ${Pr(R|D}$.
 
