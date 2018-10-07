@@ -254,6 +254,10 @@ inclRmd('www/zoomAdvice.Rmd')
 inclRmd('www/browserAdvice.Rmd')
 ```
 
+```{r contentsAdvice}
+inclRmd('www/contentsAdvice.Rmd')
+```
+
 <a name='section-debugging'> </a>
 
 ```{r withDebuggingPanel}
@@ -1425,19 +1429,8 @@ div(
 ```
 
 ```{r initialContentReader}
-dlFolder = paste0(Sys.getenv('HOME'), 'Downloads')
-commentFile = paste0(dlFolder,
-                     '_comments_T15lumpsplit.txt')
-# if(file.exists(commentFile)) {
-#   commentsOnDisk = 
-#     lastQANumber = length(QA_contexts)
-#   QAComments = sapply(1:lastQANumber, function(num) {
-#     outputIdThisQA = paste0('QA', num)
-#     textareaIdThisQA = paste0('id', outputIdThisQA)
-#     return(input[[textareaIdThisQA]])
-#   })
-# }
-  
+# Nope. see contentsAdvice
+# dlFolder = paste0(Sys.getenv('HOME'), 'Downloads')
 ```
 
 ```{r}

@@ -1,0 +1,98 @@
+```{r}
+output$contentsAdviceOutput = renderUI({
+  text =  HTML("If you have saved your 'comments' and 'answers' from a previous session, you can reload your saved content from your Downloads folder. Click here to find them. (Only empty strings will be replaced.)")
+  contentFileInput = function(
+    label=c('comments','answers')) {
+    #https://stackoverflow.com/questions/49506469/shiny-customise-fileinput?rq=1
+    thisfileInput =
+      fileInput(inputId = paste0(label,"FileInput"), 
+              label = NULL,
+              buttonLabel=paste0("Find _", label,
+                             "_T15lumpsplit.txt"),
+              accept = c(
+                "text/csv",
+                "text/comma-separated-values,text/plain")
+      )
+    thisfileInput$children[[2]]$children[[2]] = NULL
+    thisfileInput
+  }
+  div(
+    tagAppendAttributes(
+      span(text),
+      style=paste(
+        'display: flex; justify-content: flex-center;',
+        'color:red; background: lightgrey;',
+        'font-weight:bold; font-size:larger')),
+    tagAppendAttributes(
+      style=paste(
+        'background: lightgrey;',
+        'font-weight:bold; font-size:larger'),
+      fluidRow(
+        column(2, ""),
+        column(4, contentFileInput('comments')),
+        column(4, contentFileInput('answers'))
+      )
+    )
+  )
+})
+
+div(
+  
+    uiOutput('contentsAdviceOutput')
+    
+)
+```
+
+```{r}
+uiOutput('contentsAdvice')
+```
+
+```{r}
+for(content in c('comments', 'answers'))
+observeEvent(input[[paste0(content, 'FileInput')]], {
+  inFile <- input[[paste0(content, 'FileInput')]]
+  if (is.null(inFile))
+    return(NULL)
+  contentEntries = read.delim(
+    inFile$datapath, 
+    header = FALSE,
+    stringsAsFactors = FALSE)$V1
+  contentMatrix = matrix(contentEntries,
+                          ncol=2, byrow=TRUE)
+  rValues[[paste0(content, 'Entries')]] = contentEntries
+  rValues[[paste0(content, 'Matrix')]] = contentMatrix
+  retrievedcontent = contentMatrix[ , 2]
+  names(retrievedcontent) = contentMatrix[ , 1]
+  if(content == 'comments'){
+    the_contexts = QA_contexts
+    the_prefix = 'idQA'
+  }
+  if(content == 'answers'){
+    the_contexts = TQ_contexts
+    the_prefix = 'idTQ'
+  }
+  for(contextNumber in seq(along=the_contexts) ) {
+    contextID = paste0(the_prefix, contextNumber)
+    context = the_contexts[[contextNumber]]
+    cat("input ", contextID, "\n")
+    print(paste(contextID, context, "===",
+                input[[contextID]]))
+    cat("retrievedcontent\n")
+    content = gsub('^ *', '',
+                   retrievedcontent[contextNumber])
+    print(paste(contextID, context, "===",
+                content))
+    content = as.vector(content)
+    if(content != "") {
+      print(
+        paste(contextID, context, "===", content
+        ))
+      updateTextAreaInput(session = session,
+                          inputId = contextID,
+                          value = content)
+    }
+  }
+})
+```
+
+
