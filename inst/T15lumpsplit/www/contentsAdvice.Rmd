@@ -80,9 +80,12 @@ observeEvent(input[[paste0(content, 'FileInput')]], {
     cat("retrievedcontent\n")
     content = gsub('^ *', '',
                    retrievedcontent[contextNumber])
+    content = gsub('[1] *', '', fixed = TRUE,
+                   retrievedcontent[contextNumber])
     print(paste(contextID, context, "===",
                 content))
     content = as.vector(content)
+    content = strsplit('\n', content)[[1]]
     if(content != "") {
       print(
         paste(contextID, context, "===", content
