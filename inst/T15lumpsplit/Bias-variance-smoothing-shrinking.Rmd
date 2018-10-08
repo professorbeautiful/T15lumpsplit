@@ -680,7 +680,7 @@ fluidRow(
 
 ```{r TQ and QA for crossvalidation}
 TextQuestion("What advantage does the cross-validation approach here have, relative to the approaches of Drs. Split, Lump and Who?")
-QandAha('QA for crossvalidation')
+QandAha('QA-for crossvalidation')
 ```
 
 #### <a name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a>
@@ -1263,7 +1263,7 @@ The green horizontal lines are the 80% confidence intervals, before (below) and 
 ```{r}
 TextQuestion(
 'Is this approach really an improvement here? Is this  sharing information among the features justified? What factors might make you more, or less, inclined to take this approach? ')
-QandAha()
+QandAha('QA-empBayeslogitRatios')
 ```
 This is fine as far as it goes, but our result for the odds ratio does not directly address the original question of interest:  "What is the true response rate for `D` people?" 
 So here is a challenge question:
