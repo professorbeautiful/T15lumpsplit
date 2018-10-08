@@ -390,8 +390,6 @@ h3("NOTE: this is a work in progress!")
 conditionalPanelWithCheckbox(
   labelString = 'Overview', 
   filename = 'Overview.Rmd', 
-  #html = HTML('<b>EXTRA HTML</b>'),
-  # works with or without filename.
   initialValue = TRUE)
 ```
 The general scope of the bias-variance axis in many settings is here:
@@ -414,7 +412,6 @@ The list of topics developed or in development is here:
 
 conditionalPanelWithCheckbox(
   labelString = 'Topics in development', filename = 'topics.Rmd',
-  html=HTML('<b>EXTRA (newline) <br>HTML</b>'), #OK  
   initialValue=FALSE)
 ```
 
