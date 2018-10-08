@@ -5,9 +5,9 @@ output$zoomAdvice = renderText({
     zoomRange <<- c(1200, 1400)  # 1600, 1800 in DUE.
   if(!is.null(input$innerWidth)) {
     if(input$innerWidth > zoomRange[2])
-      text = "For best viewing, zoom in. (Cmd+)"
+      text = "ADVICE: For best viewing, zoom in. (Cmd+)"
     else if(input$innerWidth < zoomRange[1])
-      text = "For best viewing, zoom out. (Cmd-)"
+      text = "ADVICE: For best viewing, zoom out. (Cmd-)"
     if(text != "")
       text = paste0(text, ' (', input$innerWidth, ')')
   }
