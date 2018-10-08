@@ -4,7 +4,7 @@ var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return
 
 var oprAddons = (typeof opr === 'object')? opr.addons : false;
 */
-alert('browserDetect.js');
+//alert('browserDetect.js');
 
 var isSafari = navigator.vendor &&
   navigator.vendor.indexOf('Apple') > -1 &&
@@ -34,6 +34,6 @@ if(isFirefox === "") isFirefox = false;
 Shiny.onInputChange("isFirefox", isFirefox);
 
 /*   This alert doesn't happen, but shiny produces the output*/
-if( isChrome)
+/* if( isChrome)
  alert("Please use Safari as your browser for full features.");
 /* */
