@@ -1,15 +1,22 @@
 // WE MUST PUT ALL THE KEY HANDLING IN ONE PLACE
 
 var ctrlDpressed = false;
+var ctrlShiftSpressed = false;
 var keyVar = 0;
 var eventSaved = null;
+
 
 $(document).on("keyup", function (event) {
     eventSaved = event;
     x = event.which || event.keyCode;
     keyVar = x;
     eventSaved = event;
-    //alert('Deb ' + keyVar);
+    if(x==(68+15) && event.ctrlKey && event.shiftKey) { // control shift s
+            ctrlShiftSpressed = ! ctrlShiftSpressed;
+            Shiny.onInputChange("ctrlShiftSpressed", ctrlShiftSpressed);
+            document.getElementById('downloadQandA').click();
+            document.getElementById('downloadAnswers').click();
+    }
     if(x==68 && event.ctrlKey) { // control d
       ctrlDpressed = ! ctrlDpressed;  // toggle
       Shiny.onInputChange("ctrlDpressed", ctrlDpressed);
@@ -25,9 +32,9 @@ $(document).on("keyup", function (event) {
     Shiny.onInputChange("Latestkeypressede", event.code);
     if(x==27) { // escape key
       //navigateToId(currentLocationId);
-    Key_pressed_for_navigateToY = true;
-    Shiny.onInputChange("KeypressedfornavigateToY",
-      Key_pressed_for_navigateToY);
-    navigateToY(savedYposition);
+      Key_pressed_for_navigateToY = true;
+      Shiny.onInputChange("KeypressedfornavigateToY",
+        Key_pressed_for_navigateToY);
+      navigateToY(savedYposition);
   }
 });
