@@ -1,7 +1,7 @@
 Package: T15lumpsplit
 Type: Package
 Title: T15lumpsplit tutorial on bias, variance, smoothing and shrinking. 
-Version: 0.5.02
+Version: 0.5.03
 Date: 2018-10-09
 Author: Roger Day
 Maintainer: Roger Day<day01@pitt.edu>
