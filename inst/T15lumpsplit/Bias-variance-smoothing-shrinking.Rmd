@@ -655,7 +655,7 @@ QandAha('QA-fisher')
 Dr. Who doesn't know *who* to believe, but is prepared to let the data make the right compromise.
 
 
-```{r DrWho.Rmd child = 'DrWho.Rmd'}
+```{r child = 'DrWho.Rmd'}
 #### DrWho.Rmd ####
 ```
 
