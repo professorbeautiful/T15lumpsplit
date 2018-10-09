@@ -1099,7 +1099,7 @@ tableOutput('BHtable')
 
 
 
-```{r which features are 'significant'}
+```{r which features are significant}
 TextQuestion("Using the original data, and the FDR upper bound (qStar) equal to one, which features are 'significant'? How many 'false discoveries' are there?")
 ```
 
