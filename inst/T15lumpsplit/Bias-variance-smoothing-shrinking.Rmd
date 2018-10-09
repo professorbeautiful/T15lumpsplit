@@ -197,7 +197,8 @@ output$thePlot = renderPlot(height=250,
 
 
 
-```{r}
+```{r sessioninitialized}
+#### This doesn't work in Rmarkdown.
 invisible(
   tags$head(tags$script(
     "$(document).on('shiny:sessioninitialized',
@@ -210,7 +211,8 @@ invisible(
 ```
 
 
-```{r}
+```{r shiny:connected}
+### this doesn't work either.
 invisible(
   tags$head(tags$script(
     "$(document).on('shiny:connected', 
@@ -236,7 +238,7 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(
 #source('navTOCid.R', local=T)
 ```
 
-```{r, results='asis'}
+```{r fat arrow, results='asis'}
 #cat("\U2B07")
 # This shows you can get a fat arrow... but not in a plot.
 ```
@@ -267,7 +269,7 @@ fluidRow(
 )
 ```
 
-```{r}
+```{r JS and CSS includes}
 includeScript('www/KeyHandler.js')
 includeScript('navigateToId.js')   ### ESCAPE key to return.  
 ###The Chrome problem is NOT:
@@ -395,7 +397,7 @@ conditionalPanelWithCheckbox(
 
 For a refresher on the concepts of bias, variance, mean squared error in estimation, open this panel.
 
-```{r}
+```{r bias-variance-meansquarederror-MSE.pdf}
 conditionalPanelWithCheckboxPDF(labelString='Concepts: bias, variance, and mean squared error in estimation',
      filename="bias-variance-meansquarederror-MSE.pdf",
      cbStringId='cbStringIdBiasVariance')
@@ -464,11 +466,6 @@ source('initializations.R', local=TRUE)
 ```
 
 
-
-```{r hide=TRUE}
-require('shiny')
-```
-
 ### ["Lumping" versus "splitting" in science.](#Lumping_versus_ splitting_in_science) 
 
 In science, advances often proceed by "splitting": things that seem initially the same are classified as different. The classification may be tentativedistinction, until it proves to be useful. 
@@ -500,7 +497,7 @@ Possibilities for the actual identity of $X_{DL}$ will be explored later.
 The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
 
 Goal: decide whether to treat the "$D$ patients" (or at least, whether to put resources into studying it further for "$D$ patients").
-```{r}
+```{r Lump Split Estimates}
 output$confInterval_Lump = renderText(
   {
     paste("Lump:  (", 
@@ -617,12 +614,12 @@ Splitting gives an answer with high variance ($N$=5) but low bias-- because it i
 
 To proceed to deeper approaches, we need some notation.
 
+<!-- #### parametrize.Rmd #### -->
 ```{r child = 'Rmd-text-snippets/parametrize.Rmd'}
+#### parametrize.Rmd #### 
 ```
 
-```{r}
-#includeHTML('Rmd-text-snippets/parametrize.html')
-#inclRmd('Rmd-text-snippets/parametrize.Rmd')
+```{r Why focus on this parameter}
 TextQuestion('Why focus on this parameter?')
 ```
 
@@ -656,7 +653,8 @@ QandAha('QA-fisher')
 Dr. Who doesn't know *who* to believe, but is prepared to let the data make the right compromise.
 
 
-```{r child = 'DrWho.Rmd'}
+```{r DrWho.Rmd child = 'DrWho.Rmd'}
+#### DrWho.Rmd ####
 ```
 
 ```{r QA-DrWho}
@@ -669,7 +667,7 @@ Cross-validation is a technique in which the performance of a model can be check
 
 For this example dataset, we perform leave-one-out cross-validation as follows:
 
-```{r}
+```{r Lump-Split-crossvalidation.R}
 source('Lump-Split-crossvalidation.R', local=TRUE, echo = FALSE)
 ```
 
@@ -698,7 +696,7 @@ QandAha('QA-smooth-joint-prior')
 Once we have this joint prior distribution, we compute the joint posterior.
 
 To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits ("logit" means "log(odds)").
-```{r}
+```{r Details about the logit}
 conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rmd')
 ```
 
@@ -794,7 +792,7 @@ div(
 
 Assembling the results of the approaches to estimating Pr(R|D):
 
-```{r}
+```{r tableOfEstimates}
 tableOfEstimates = reactive({
   nRD=rValues$DLdata['R','D']
   nND=rValues$DLdata['N','D']
@@ -850,7 +848,7 @@ In this section we explore different scenarios of external information, to see h
 
 What if D and L represent dark hair color and light hair color? "Dr. Who" may be highly skeptical that this $X_{DL}$ really affects response, and express this by choosing a prior odds that favors Dr. Lump  over Dr. Split. Experiment by choosing such a value for prior odds here: 
 
-```{r }
+```{r WhoPriorProbNumericInput1}
 WhoPriorProbNumericInput()
 ```
 
@@ -869,7 +867,7 @@ What if D and L represent two alleles of a gene believed to affect this drug's p
 
 "Dr. Who" can express this by choosing a prior odds that favors Dr. Split over Dr. Lump. Experiment by choosing such a value here: 
 
-```{r}
+```{r WhoPriorProbNumericInput2}
 WhoPriorProbNumericInput()
 ```
 
@@ -886,12 +884,12 @@ QandAha('QA-Strong-prior-belief-X_DL-important')
 
 Suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. Our feature $X_{DL}$ happens to be one of them; otherwise unselected.
 
-```{r}
+```{r modify the "classical" approach}
 TextQuestion(' How would you modify the "classical" approach that chooses Lump or Split based on a hypothesis test?')
 ```
 
 
-```{r}
+```{r Bayesian account for this knowledge }
 TextQuestion(' How would you account for this knowledge in one of the two Bayesian approaches?')
 ```
 
@@ -902,7 +900,7 @@ As before, suppose that we have features for a hundred genes which were *previou
 This situation entails dealing with *"multiple comparisons"*. Pure chance can make a feature seem strongly associated with the response outcome when in reality it is not associated. When the best-appearing relationship is selected out of a large number, we can be fooled into thinking the strength of evidence is stronger than it really is.
 
 *"The more questions you ask, the more wrong answers you are likely to get."*
-```{r}
+```{r Intro to multiple comparisons}
 conditionalPanelWithCheckboxPDF(
   labelString="Intro to multiple comparisons", 
   filename='Multiple comparisons- introduction.pdf',
@@ -911,7 +909,7 @@ conditionalPanelWithCheckboxPDF(
 
 
 One way to handle multiple comparisons is through a classical frequentist multiple testing adjustment. This evaluates the chance of getting a P-value as low as (or lower than) the minimum of the P-values for the features. The best-known of these methods are the Bonferroni, Sidak, and permutation /randomization tests. Here are some details on these approaches: 
-```{r}
+```{r Multiple comparisons- classic methods}
 conditionalPanelWithCheckboxPDF(
   labelString="Multiple comparisons- classic methods", 
   filename='Multiple comparisons- classic methods.pdf',
@@ -920,7 +918,7 @@ conditionalPanelWithCheckboxPDF(
 
 and here are some examples that highlight some strange and unsettling aspects of the classical methods:
 
-```{r}
+```{r Multiple comparisons- disturbing examples}
 conditionalPanelWithCheckboxPDF(
   labelString="Multiple comparisons- disturbing examples", 
   filename='Multiple comparisons- disturbing examples.pdf',
@@ -931,7 +929,7 @@ Let's put those worries aside for now.
 
 Let's generate 99 extra features and examine how the methods behave when applied when the extra features are added to the D/L feature of our little data set. You can use either the original data or the data as you may have modified it.
 
-```{r}
+```{r makeDLdataDF  }
 # makeDLdataDFYesNoYes = function(DLdata, qStar=1){
 #   #  OK, mission accomplished.
 #   isYesNoYes = FALSE
@@ -1003,6 +1001,9 @@ makeDLdataDF = function(DLdata, qStar=1) {
          allChisqPs=allChisqPs, BHtable=BHtable))
   ) 
 }
+```
+
+```{r}
 makeBHtable = function(pValues, qStar=1, columns=8) {
   somePvalues  = 
     signif(digits=3, sort(pValues)[1:columns])
@@ -1021,7 +1022,7 @@ allChisqPs_original = DLdataDF_originalResult$allChisqPs
 BHtable_original = DLdataDF_originalResult$BHtable
 ```
 
-```{r}
+```{r regenerateFeatures button}
 actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
 observeEvent(
   list(input$regenerateFeatures, 
@@ -1041,7 +1042,7 @@ observeEvent(
 
 Now that we have a data set, let's do Fisher exact tests and chisquare tests to all the features. The red "X" is of course our original data feature, with $X_{DL}$ = D or L.
 
-```{r}
+```{r pvaluesPlots}
 output$pvaluesPlots = renderPlot({
   hist(rValues$allFisherPs)
   #head(sort(allFisherPs))
@@ -1071,7 +1072,7 @@ QandAha('QA-multiple-comparisons-corrections')
 
 Another classical approach, the Benjamini-Hochberg method, is widely used in high-throughput biological assays. It is also classical frequentist method. It has a technical advantage in that the stated "false discovery rate" is accurate. However, it also has peculiar and disturbing behavior:
 
-```{r}
+```{r Benjamini-Hochberg method}
 conditionalPanelWithCheckboxPDF(
   labelString="The Benjamini-Hochberg method", 
   filename='Benjamini-Hochberg.pdf',
@@ -1080,7 +1081,7 @@ conditionalPanelWithCheckboxPDF(
 
 When applied to our augmented data set with 100 potential predictors, this is what we get, depending on qStar, the upper bound for the false discovery rate (FDR):
 
-```{r}
+```{r output for BHtable}
 numericInput('qStarID', 'qStar', 
              value = 1, min=0,  step=0.1)
 observeEvent(input$qstarID, {rValues$qStar = input$qStarID})
@@ -1096,13 +1097,13 @@ tableOutput('BHtable')
 
 
 
-```{r}
+```{r which features are 'significant'}
 TextQuestion("Using the original data, and the FDR upper bound (qStar) equal to one, which features are 'significant'? How many 'false discoveries' are there?")
 ```
 
 
 
-```{r}
+```{r Raising qStar}
 TextQuestion("Raising qStar from 1.0, how does the collection of 'significant' features change?")
 ```
 
@@ -1118,7 +1119,7 @@ Another approach is through *empirical Bayes*, a method that presumes that the a
 
 The following link develops the empirical Bayes idea in the context of medical decision-making. When done reading this, close the panel, record your Questions and Aha's, and continue to see the application of EB for our example.
 
-```{r}
+```{r Introduction to Hierarchical Bayes and Empirical Bayes}
 conditionalPanelWithCheckboxPDF(
   labelString="An Introduction to Hierarchical Bayes and Empirical Bayes", 
   filename='www/Intro_to_Hierarchical_Bayes_and_Empirical_Bayes.pdf',
@@ -1131,7 +1132,7 @@ We can apply EB to a collection of estimates. In this instance, let's collect th
 
 This can be compared to all 100 odds ratios for the features:
 
-```{r}
+```{r oddsratioplot}
 output$oddsratioplot = renderPlot({
   outcome = rValues$DLdataDF$outcome
   oddsratio = function(col, sprinkle=1) {
@@ -1190,7 +1191,7 @@ These are the optimal weights for smallest variance of $\hat \mu$.
 
 As an *optional topic*, you may read the following on Lagrange multiplier method for optimization. Example (A) covers this case.
 
-```{r}
+```{r Lagrange multipliers}
 conditionalPanelWithCheckboxPDF(
   labelString="Lagrange multipliers", 
   filename='www/Lagrange multipliers with examples.pdf',
@@ -1266,7 +1267,7 @@ The green horizontal lines are the 80% confidence intervals, before (below) and 
 
 
 
-```{r}
+```{r sharing information among the features justified}
 TextQuestion(
 'Is this approach really an improvement here? Is this  sharing information among the features justified? What factors might make you more, or less, inclined to take this approach? ')
 QandAha('QA-empBayeslogitRatios')
@@ -1274,7 +1275,7 @@ QandAha('QA-empBayeslogitRatios')
 This is fine as far as it goes, but our result for the odds ratio does not directly address the original question of interest:  "What is the true response rate for `D` people?" 
 So here is a challenge question:
 
-```{r}
+```{r convert this estimate of the odds ratio}
 TextQuestion('
 How could we convert this estimate of the odds ratio for the X_DL feature into an estimate for Pr(Response | X_DL = D)? 
 ')
@@ -1287,7 +1288,7 @@ We can also apply EB in quite a different way, to judge a collection of P values
 
 This method assumes that the distribution of the observed P values is a mixture of a uniform distribution for the true null hypotheses and a distribution concentrated near zero for the true alternative hypotheses. The false discovery rate (FDR) and posterior probability of each null hypothesis come directly from Bayes Theorem. However, the mixture proportion, which is the prior probability of each null hypothesis, is unknown. The empirical Bayes idea directs us to estimate it. Here are some details.
 
-```{r}
+```{r Storey-Tibshirani Qvalue method}
 conditionalPanelWithCheckboxPDF(
   labelString="The Storey-Tibshirani Qvalue method", 
   filename='Storey-Tibshirani.pdf',
@@ -1297,7 +1298,7 @@ conditionalPanelWithCheckboxPDF(
 
 Here we apply the qValue method to the chisquare P values from our dataset with 100 features:
 
-```{r}
+```{r qvaluePlot}
 output$qvaluePlot = renderPlot({
   qout = rValues$qValueObject =
     qvalue::qvalue(rValues$allChisqPs)
@@ -1325,14 +1326,14 @@ plotOutput('qvaluePlot')
 
 From this we see that the Q-value for our original D/L feature is `r reactive({rValues$P_Q_for_X_DL[2]})`.
 
-
-
-
 We use the package `qvalue` for this calculation, which can be obtained from https://www.bioconductor.org/packages/release/bioc/html/qvalue.html. 
 
 ```{r QA-empirical-Bayes}
 QandAha('QA-empirical-Bayes')
 ```
+
+
+
 ### Two alleles of one gene out of a hundred thousand tested; nothing known
 
 We won't illustrate this with data here, but think about this situation and how to approach it.
@@ -1456,6 +1457,6 @@ div(
 # dlFolder = paste0(Sys.getenv('HOME'), 'Downloads')
 ```
 
-```{r}
+```{r browserDetect.js}
 includeScript('www/browserDetect.js')
 ```
