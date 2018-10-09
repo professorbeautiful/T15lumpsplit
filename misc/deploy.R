@@ -22,11 +22,12 @@ rerun = function()
 
 ### NOTE:  do not include "inst" in the argument.
 
-.installFromGithub = function(package='T15lumpsplit', ...)
+.installFromGithub = function(package='T15lumpsplit', ...) {
+  options(repos = c(BiocInstaller::biocinstallRepos() ) )
   devtools::install_github(
     paste0("professorbeautiful/", package),
     build_vignettes=TRUE, ...)
-
+}
 
 .deploy = function(app='T15lumpsplit', reInstall=TRUE){
   ## TODO: first check that the html files are created committed and pushed.
