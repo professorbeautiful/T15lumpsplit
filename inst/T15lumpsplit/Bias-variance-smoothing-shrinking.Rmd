@@ -395,7 +395,9 @@ conditionalPanelWithCheckbox(
   initialValue = TRUE)
 ```
 
-For a refresher on the concepts of bias, variance, mean squared error in estimation, open this panel.
+What is bias? What is variance? How are they related to lumping and shrinking?
+
+For a refresher on the concepts of bias, variance, and mean squared error in estimation, open this panel.
 
 ```{r bias-variance-meansquarederror-MSE.pdf}
 conditionalPanelWithCheckboxPDF(labelString='Concepts: bias, variance, and mean squared error in estimation',
