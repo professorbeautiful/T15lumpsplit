@@ -618,7 +618,6 @@ To proceed to deeper approaches, we need some notation.
 
 <!-- #### parametrize.Rmd #### -->
 ```{r child = 'Rmd-text-snippets/parametrize.Rmd'}
-#### parametrize.Rmd #### 
 ```
 
 ```{r Why focus on this parameter}
@@ -656,7 +655,6 @@ Dr. Who doesn't know *who* to believe, but is prepared to let the data make the 
 
 
 ```{r child = 'DrWho.Rmd'}
-#### DrWho.Rmd ####
 ```
 
 ```{r QA-DrWho}
