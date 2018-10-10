@@ -192,7 +192,7 @@ dataTableComponent = function(showhide='show') {
                                 anyDTCnum, '@suspend()') )
                             print(suspenderExpression)
                             eval(suspenderExpression)
-                            #}
+                          # }
                           }
                           for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
                             otherCellId = paste0(cell, 'idPanelDTC', anyDTCnum)
@@ -218,8 +218,8 @@ dataTableComponent = function(showhide='show') {
                                 anyDTCnum, '@resume()') )
                             print(resumerExpression)
                             eval(resumerExpression)
-                            #}
-                          }
+                          # }
+                        }
                         }
            )
     )
