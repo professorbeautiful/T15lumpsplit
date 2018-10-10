@@ -31,7 +31,8 @@ observeEventForFileInput = function(contentType = 'comments')
       print(paste(contextID, 'retrieved: ',
                   retrievedcontext, "===>", retrievedcontent, '/'))
       retrievedcontent = as.vector(retrievedcontent)
-      retrievedcontent = strsplit(split='\n', retrievedcontent)[[1]]
+      retrievedcontent =
+        gsub('\\n', '\n', fixed=TRUE, retrievedcontent)
       if( ! identical(retrievedcontent, "")) {
         cat(" Placing ", retrievedcontent, ' into ',
             retrievedcontext,  '\n')
