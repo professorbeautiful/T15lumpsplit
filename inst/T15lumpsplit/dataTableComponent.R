@@ -182,86 +182,99 @@ dataTableComponent = function(showhide='show') {
                         #priority = 3,
                         handlerExpr =  {
                           ### NOTE; there could be more DTC's, so don't use thisDTCNum for loop.
-                          #cat('Creating ', label, '\n')
+                          cat('.label', ': Suspending all ',
+                              'observeEvent_synchronizeOtherDataTables_ThisDTC_', '\n')
                           rValues$isLoopingSync = TRUE
                           for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
                             #if(anyDTCnum != thisDTCNumber) {
+                            syncName = paste0(
+                              'observeEvent_synchronizeOtherDataTables_ThisDTC_',
+                              anyDTCnum)
                             suspenderExpression =
-                              parse(text=paste0(
-                                'observeEvent_synchronizeOtherDataTables_ThisDTC_',
-                                anyDTCnum, '@suspend()') )
-                            print(suspenderExpression)
-                            eval(suspenderExpression)
-                          # }
+                              parse(text=paste0(syncName, '$suspend()') )
+                            # print(suspenderExpression)
+                            # print(find(syncName))
+                            # print(eval(suspenderExpression))
+                            #Causes this observer to stop scheduling flushes
+                            #(re-executions) in\n response to invalidations. If
+                            #the observer was invalidated prior to this\n call
+                            #but it has not re-executed yet (because it waits
+                            #until onFlush is\n called) then that re-execution
+                            #will still occur, because the flush is\n already
+                            #scheduled." .suspended <<- TRUE
                           }
+                          cat(substitute(myName), ': Updating all ',
+                              'observeEvent_synchronizeOtherDataTables_ThisDTC_', '\n')
+                          rValues$isResetting = TRUE
+                          if(trackupdateDLdata)
+                            cat('trackupdateDLdata: thisCellId:', thisCellId,
+                                ' thisDTCNumber:', thisDTCNumber,
+                                ' value:', input[[thisCellId]], '\n')
                           for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
                             otherCellId = paste0(cell, 'idPanelDTC', anyDTCnum)
-                            if(trackupdateDLdata)
-                              cat('trackupdateDLdata: thisCellId:', thisCellId,
-                                  ' thisDTCNumber:', thisDTCNumber, ' otherCellId:', otherCellId,
-                                  ' anyDTCnum:', anyDTCnum,
-                                  ' value:', input[[thisCellId]], '\n')
-                            rValues$isResetting = TRUE
                             updateNumericInput(session, inputId = otherCellId,
                                                value=input[[thisCellId]])
 
-                            rValues$isResetting = FALSE
                             #updateDLnumericInputs(data = rValues$DLdataMyChoice, isResetting=TRUE)
                           }
+                          rValues$isResetting = FALSE
 
                           rValues$isLoopingSync = FALSE
-                          for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
-                            #if(anyDTCnum != thisDTCNumber) {
-                            resumerExpression =
-                              parse(text=paste0(
-                                'observeEvent_synchronizeOtherDataTables_ThisDTC_',
-                                anyDTCnum, '@resume()') )
-                            print(resumerExpression)
-                            eval(resumerExpression)
+                          #cat(label, ': Resuming all ',
+                          #    'observeEvent_synchronizeOtherDataTables_ThisDTC_', '\n')
+
+                          # for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
+                          #   #if(anyDTCnum != thisDTCNumber) {
+                          #   resumerExpression =
+                          #     parse(text=paste0(
+                          #       'observeEvent_synchronizeOtherDataTables_ThisDTC_',
+                          #       anyDTCnum, '$resume()') )
+                          #   print(resumerExpression)
+                          #   eval(resumerExpression)
+                          #   # }
                           # }
-                        }
                         }
            )
     )
-    for(cell in paste0('m', c('RD', 'ND', 'RL', 'NL')))
-      createSyncActor(cell, syncIdThisDTC=syncIdThisDTC)
-
-
-    #### Output of dataTableComponent ####
-    output[[outputIdThisDTC]] = renderUI({
-      fluidRow(
-        column(6,
-               br(),
-               panelOfData(panelIdThisDTC=panelIdThisDTC,
-                           resetIdThisDTC=resetIdThisDTC,
-                           myChoiceIdThisDTC=myChoiceIdThisDTC,
-                           showhide=showhide)
-        ),
-        column(6, br(), br(),
-               actionButton(inputId = resetIdThisDTC, label = "Reset data to original"),
-               actionButton(inputId = myChoiceIdThisDTC,
-                            label = "Reset data to my choice"),
-               br(),
-               #getwd(),
-               inclRmd('jumpBack.Rmd'))
-      )
-    })
-    uiOutput(outputId = outputIdThisDTC)
   }
-  includeCSS('rotate-text.css')
-  dataRowLabel = function(html, angle=360-40, color='green') {
-    ### rotating works wiht div and p but not with span
-    HTML(paste("<div style='
+  for(cell in paste0('m', c('RD', 'ND', 'RL', 'NL')))
+    createSyncActor(cell, syncIdThisDTC=syncIdThisDTC)
+
+
+  #### Output of dataTableComponent ####
+  output[[outputIdThisDTC]] = renderUI({
+    fluidRow(
+      column(6,
+             br(),
+             panelOfData(panelIdThisDTC=panelIdThisDTC,
+                         resetIdThisDTC=resetIdThisDTC,
+                         myChoiceIdThisDTC=myChoiceIdThisDTC,
+                         showhide=showhide)
+      ),
+      column(6, br(), br(),
+             actionButton(inputId = resetIdThisDTC, label = "Reset data to original"),
+             actionButton(inputId = myChoiceIdThisDTC,
+                          label = "Reset data to my choice"),
+             br(),
+             #getwd(),
+             inclRmd('jumpBack.Rmd'))
+    )
+  })
+  uiOutput(outputId = outputIdThisDTC)
+}
+includeCSS('rotate-text.css')
+dataRowLabel = function(html, angle=360-40, color='green') {
+  ### rotating works wiht div and p but not with span
+  HTML(paste("<div style='
                color:", color, ";",
-               "height:80px; width:120px;
+             "height:80px; width:120px;
                vertical-align:bottom; horizontal-align:right;",
-               paste0(collapse=" ",
-                      "-", c("webkit","ms","moz","o"),
-                      "-transform:rotate(", angle, "deg);"),
-               "'>",
-               html, "</div>"
-    ))
-  }
+             paste0(collapse=" ",
+                    "-", c("webkit","ms","moz","o"),
+                    "-transform:rotate(", angle, "deg);"),
+             "'>",
+             html, "</div>"
+  ))
 }
 ### Do not call panelOfData() directly. Use dataTableComponent().
 panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
