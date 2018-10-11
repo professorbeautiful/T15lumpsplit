@@ -1,0 +1,15 @@
+Good example of multitasking, and controlling processes.
+   req()
+  shinyjs enable and disable,
+  polling with invalidateLater()
+  makeReactiveBinding()
+https://gist.github.com/jcheng5/9504798d93e5c50109f8bbaec5abe372#file-create_forked_task-r-L33-L38
+
+
+https://shiny.rstudio.com/articles/debugging.html
+
+https://rmarkdown.rstudio.com/developer_custom_formats.html
+
+LICENSING:
+https://github.com/ropensci/unconf17/issues/32
+https://github.com/ropensci/onboarding/blob/master/packaging_guide.md

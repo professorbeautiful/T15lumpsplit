@@ -1,0 +1,36 @@
+
+ To deploy:
+ The most recent installation of the package must be with .installFromGithub().
+ Also view https://community.rstudio.com/t/failing-to-deploy-shinyapp-depending-on-bioconductor-packages/6970
+
+Child chunks may not have chunk names or content, not even a comment.
+Installing from github you get a warning.
+But then deploying bombs with a mysterious message, can't fine the temp file path.
+
+```{r}
+options(repos = c(BiocInstaller::biocinstallRepos() ) )
+                  #, "https://cran.rstudio.com/") )
+
+rsconnect::appDependencies(appDir = 'inst/T15lumpsplit/')
+.install...
+rsconnect::showLogs(appPath = 'inst/T15lumpsplit')
+
+```
+
+Works fine at shinyapps.io, but an error in browserAdvice.
+See log file at https://www.shinyapps.io/admin/#/application/398397/logs 
+Warning: Error in if: argument is of length zero
+2018-10-06T03:40:49.594543+00:00 shinyapps[398397]:   106: renderUI [<text>#9]
+2018-10-06T03:40:49.594544+00:00 shinyapps[398397]:   105: func
+2018-10-06T03:40:49.594546+00:00 shinyapps[398397]:    92: origRenderFunc
+2018-10-06T03:40:49.594546+00:00 shinyapps[398397]:    91: output$browserAdvice
+
+
+```{r include navTOCid}
+#source('navTOCid.R', local=T)
+```
+
+```{r}
+includeScript('www/browserDetect.js')
+```
+
