@@ -65,6 +65,12 @@ source('includeHTMLtrimmed.R', local=T)
 source('observeEvent-for-fileInput.R', local=TRUE)
 ```
 
+```{r onStop}
+# onStop(function() {
+#   cat("Doing application cleanup\n")
+# })
+```
+
 
 ```{r initial values, echo=FALSE}
 
