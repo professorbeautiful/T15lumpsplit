@@ -2,8 +2,11 @@ TODO
 
 Move ADVICE clauses up to load appear early, or else put in a progress bar.
 
+Why does shift-ctrl-S only do the 2nd of the simulated clicks?
+Do automated download with onStop.
+(the clicks don't happen at all in the JS box or JS console, only on shift-ctrl-S.)
+
 # Other topics to be developed:
-See also topics.Rmd
 
 The famous ECMO data set.
 Curse of dimensionality,
@@ -12,4 +15,19 @@ Expanding the MVN calculation to 100 features.
 
 Interactions
 
-
+See also topics.Rmd
+* Shrinking and smoothing with statistical learning
+ + Empirical Bayes ideas
+ + Ridge regression
+ + Lasso regression
+ + "Degrees of freedom"
+ + Duality in the fitting problem using a Lagrange multiplier viewpoint
+* More on the 2x2 table
+ + Illustration of Empirical Bayes for "positive predictive value"
+ + Lessons from the famous ECMO data set.
+* High-dimensional predictor spaces
+ +	2 alleles of one gene out of a hundred thousand tested; nothing known
+ +  Student-specified model
+ +  False discovery rate methods
+ +	Curse of dimensionality
+ +	Multiple testing and estimation with high-dimensional priors
