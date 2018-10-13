@@ -15,7 +15,9 @@ $(document).on("keyup", function (event) {
             ctrlShiftSpressed = ! ctrlShiftSpressed;
             Shiny.onInputChange("ctrlShiftSpressed", ctrlShiftSpressed);
             document.getElementById('downloadQandA').click();
-            document.getElementById('downloadAnswers').click();
+            window.setTimeout(function() {
+              document.getElementById('downloadAnswers').click();
+            }, 1000);
     }
     if(x==68 && event.ctrlKey) { // control d
       ctrlDpressed = ! ctrlDpressed;  // toggle
