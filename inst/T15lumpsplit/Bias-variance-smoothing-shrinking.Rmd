@@ -66,10 +66,16 @@ source('observeEvent-for-fileInput.R', local=TRUE)
 ```
 
 ```{r onStop}
-# onStop(function() {
-#   cat("Doing application cleanup\n")
-# })
+#onStop(function() {
+   #cat("Doing application cleanup\n")
+#})
 ```
+
+```{r}
+#alert('GETTINGSTARTED')  // This works!
+includeScript('www/onbeforeunload.js')
+```
+
 
 
 ```{r initial values, echo=FALSE}
