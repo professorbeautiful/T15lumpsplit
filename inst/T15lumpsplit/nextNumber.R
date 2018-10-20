@@ -4,27 +4,27 @@
 #   x <- get('x', envir=envNextNumber) + 1
 #   assign('x', x, envir = envNextNumber)
 # } else {
-#cat("envirname = ", envirname, '\n')getSequenceEnvironment = function(sequenceType=""){
+#cat("counterName = ", counterName, '\n')getCounter = function(sequenceType=""){
 
 
-getSequenceEnvironment = function(sequenceType=""){
-  envirname = paste0('envNextNumber', sequenceType)
-  if(!exists(envirname, where = 1) ) {
-    assign(envirname, new.env(), pos=1, immediate=TRUE)
-    assign('x', 0, envir=get(envirname, pos=1), immediate=TRUE)
-    #cat("Assigning initial counter 0 to ", envirname, '\n')
+getCounter = function(sequenceType=""){
+  counterName = paste0('counter_', sequenceType)
+  if(!exists(counterName, envir = envNumberSequences) ) {
+    assign(counterName, 0, envir = envNumberSequences, immediate=TRUE)
   }
-  #print(paste('  object ', envirname, ' is at', find(envirname)))
-  return(get(envirname, pos=1))
+  print(paste('  object ', counterName, ' equals ',
+              envNumberSequences[[counterName]]))
+  return(envNumberSequences[[counterName]])
 }
 
 getSequenceLength = function(sequenceType=""){
-    get('x', envir=getSequenceEnvironment(sequenceType))
+  counterName = paste0('counter_', sequenceType)
+  get(counterName, envir=envNumberSequences)
 }
 
 nextNumber = function(sequenceType=""){
-  x <- getSequenceLength(sequenceType) + 1
-  assign('x', x, envir = getSequenceEnvironment(sequenceType))
-  # }
+  counterName = paste0('counter_', sequenceType)
+  x <- getCounter(sequenceType) + 1
+  assign(counterName, x, envir = envNumberSequences)
   return(x)
 }

@@ -39,13 +39,10 @@ require(knitr);require(rmarkdown);
 ```
 
 ```{r setup numbering, warning=FALSE}
-try(rm(envNextNumber, pos=1), silent = TRUE)
-try(rm(envNextNumberTOC, pos=1), silent = TRUE)
-try(rm(envNextNumberQA, pos=1), silent = TRUE)
-try(rm(envNextNumberTextQuestion, pos=1), silent = TRUE)
-try(rm(envNextNumberDTC, pos=1), silent = TRUE)  ## data table
-try(rm(envNextNumberTQ, pos=1), silent = TRUE)  ## data table
-try(rm(envNextNumberWhoPriorProbNumericInput, pos=1), silent = TRUE)  ## data table
+if(exists(x = 'envNumberSequences')) {
+  rm(list=ls(envir = envNumberSequences), envir = envNumberSequences)
+} else
+  envNumberSequences = new.env()
 ### Note that the .GlobalEnv seen here is different from your R session... and it persists across Rmd runs!
 
 source('nextNumber.R', local=TRUE)
