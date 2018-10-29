@@ -755,8 +755,6 @@ conditionalPanelWithCheckboxPDF(
 # )
 ```
 
-WILL DELETE THIS: The link to bivariate normal details is 
-`r actionLink('bivnorm', label=HTML('<font color=blue>here.</font>'))`
 
 ```{r QA-joint-posterior}
 TextQuestion("Your reactions to the derivation?")
