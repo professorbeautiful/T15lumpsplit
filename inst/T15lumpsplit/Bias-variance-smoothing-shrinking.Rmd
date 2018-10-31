@@ -638,7 +638,7 @@ TextQuestion('Why focus on this parameter?')
 QandAha(context='QA-parametrization')
 ```
 
-### Approaches
+### Approaches to estimating Pr(R|D)
 
 * [Classical test: is $X_{DL}$ independent of the outcome Y?](#ClassicalTest)
 * [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
@@ -1441,13 +1441,13 @@ output$downloadQandA <- downloadHandler(
 
 div(
   tags$b('View and download your "Questions&Ahas" comments and "TextQuestion" answers here.'),
-  downloadButton(outputId="downloadQandA", 
+      downloadButton(outputId="downloadQandA", 
                  "Download your Q&A comments"),
   conditionalPanelWithCheckbox(
     labelString = 'View your comments', 
     html=tableOutput('commentsToText'),
     initialValue = FALSE  ),
-  downloadButton(outputId="downloadAnswers", 
+    downloadButton(outputId="downloadAnswers", 
                  "Download your answers"),
   conditionalPanelWithCheckbox(
     labelString = 'View your answers', 
