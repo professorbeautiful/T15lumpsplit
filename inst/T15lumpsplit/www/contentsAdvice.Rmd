@@ -3,7 +3,7 @@ output$contentsAdviceOutput = renderUI({
   text =  HTML(
     "ADVICE: You can save your 'comments' and 'answers' any time, with Control-Shift-S. <br>(View your current contributions at the bottom.) 
     <br> To resume later in a new session, you can reload your saved content from your Downloads folder. 
-    <br>Click here to locate them. (Only empty strings will be replaced.)")
+    <br>Click here to locate them. (Only blank comments&answers will be filled.)")
   contentFileInput = function(
     label=c('comments','answers')) {
     #https://stackoverflow.com/questions/49506469/shiny-customise-fileinput?rq=1
