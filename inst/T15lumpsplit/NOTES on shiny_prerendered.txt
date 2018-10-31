@@ -4,10 +4,3 @@ Doesn't work for me.
 
 Quitting from lines 184-196 (Bias-variance-smoothing-shrinking.Rmd)
 Error in output$title_1_ID = renderUI({ : object 'output' not found
-In addition: Warning messages:
-1: In rm(envNextNumber, pos = 1) : object 'envNextNumber' not found
-2: In rm(envNextNumberTOC, pos = 1) : object 'envNextNumberTOC' not found
-3: In rm(envNextNumberTextQuestion, pos = 1) :
-  object 'envNextNumberTextQuestion' not found
-4: In rm(envNextNumberWhoPriorProbNumericInput, pos = 1) :
-  object 'envNextNumberWhoPriorProbNumericInput' not found
