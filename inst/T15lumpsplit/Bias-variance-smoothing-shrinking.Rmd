@@ -1441,17 +1441,19 @@ output$downloadQandA <- downloadHandler(
 
 div(
   tags$b('View and download your "Questions&Ahas" comments and "TextQuestion" answers here.'),
+  div(type='hidden', # hidden not working)
       downloadButton(outputId="downloadQandA", 
-                 "Download your Q&A comments"),
+                     "Download your Q&A comments") ),
   conditionalPanelWithCheckbox(
     labelString = 'View your comments', 
     html=tableOutput('commentsToText'),
     initialValue = FALSE  ),
+  div(
+    type='hidden',
     downloadButton(outputId="downloadAnswers", 
-                 "Download your answers"),
+                   "Download your answers") ),
   conditionalPanelWithCheckbox(
     labelString = 'View your answers', 
-    #filename='www/empty.Rmd',
     html=tableOutput('answersToText'),
     initialValue = FALSE  ),
   tags$b(
