@@ -20,7 +20,7 @@ output:
 
 ```{r setup, include=FALSE}
 
-trackupdateDLdata = TRUE 
+trackupdateDLdata = FALSE 
 ## change this in the shinydebugger if troubleshooting graph oscillations
 
 knitr::opts_chunk$set(echo = FALSE)

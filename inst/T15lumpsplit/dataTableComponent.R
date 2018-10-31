@@ -140,10 +140,12 @@ dataTableComponent = function(showhide='show') {
                       eventExpr = input[[resetIdThisDTC]],
                       handlerExpr =  {
                         #updateDLdataMyChoice$suspend()
-                        cat(myName, '\n')
+                        if(trackupdateDLdata)
+                          cat(myName, '\n')
                         isolate({
                           rValues$isResetting <<- TRUE
-                          cat(myName, ':   rValues$isResetting = TRUE\n')
+                          if(trackupdateDLdata)
+                            cat(myName, ':   rValues$isResetting = TRUE\n')
                           rValues$DLdata = DLdataOriginal
                           # rValues$isResetting <<- FALSE #Not necessary?
                         })
@@ -182,7 +184,8 @@ dataTableComponent = function(showhide='show') {
                         #priority = 3,
                         handlerExpr =  {
                           ### NOTE; there could be more DTC's, so don't use thisDTCNum for loop.
-                          cat('.label', ': Suspending all ',
+                          if(trackupdateDLdata)
+                            cat('.label', ': Suspending all ',
                               'observeEvent_synchronizeOtherDataTables_ThisDTC_', '\n')
                           rValues$isLoopingSync = TRUE
                           for( anyDTCnum in 1:(getSequenceLength(sequenceType = "DTC"))) {
@@ -203,7 +206,8 @@ dataTableComponent = function(showhide='show') {
                             #will still occur, because the flush is\n already
                             #scheduled." .suspended <<- TRUE
                           }
-                          cat(substitute(myName), ': Updating all ',
+                          if(trackupdateDLdata)
+                            cat(substitute(myName), ': Updating all ',
                               'observeEvent_synchronizeOtherDataTables_ThisDTC_', '\n')
                           rValues$isResetting = TRUE
                           if(trackupdateDLdata)
