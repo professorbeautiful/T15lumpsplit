@@ -12,8 +12,8 @@ getCounter = function(sequenceType=""){
   if(!exists(counterName, envir = envNumberSequences) ) {
     assign(counterName, 0, envir = envNumberSequences, immediate=TRUE)
   }
-  print(paste('  object ', counterName, ' equals ',
-              envNumberSequences[[counterName]]))
+  #print(paste('  object ', counterName, ' equals ',
+  #            envNumberSequences[[counterName]]))
   return(envNumberSequences[[counterName]])
 }
 
