@@ -3,6 +3,8 @@ TODO
 Move ADVICE clauses up to load appear early, or else put in a progress bar.
 
 Why does shift-ctrl-S only do the 2nd of the simulated clicks?
+OK, problem is solved.
+
 Do automated download with onStop.
 (the clicks don't happen at all in the JS box or JS console, only on shift-ctrl-S.)
 
