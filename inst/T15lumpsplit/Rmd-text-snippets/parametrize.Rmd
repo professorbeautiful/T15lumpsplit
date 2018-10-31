@@ -1,8 +1,8 @@
-*Setup*:  The data from the table are the four numbers \[{\bf{n}} = ({n_{RD}},{n_{RL}},{n_{ND}},{n_{NL}})\].
+*Setup*:  The data from the table are the four numbers \[{\bf{n}} = ({n_{RD}},{n_{RL}},{n_{ND}},{n_{NL}}).\]
 For example ${n_{RD}}$  is shorthand for the number of patients for which the outcome $Y=R$ and the feature $X=D$.
 
 Parametrize the cell count probabilities as  
-\[{\bf{p}} = ({p_{RD}},{p_{RL}},{p_{ND}},{p_{NL}})\].
+\[{\bf{p}} = ({p_{RD}},{p_{RL}},{p_{ND}},{p_{NL}}).\]
 
 For example ${p_{RD}}$  is shorthand for the probability that the outcome $Y=R$ and the feature $X=D$. These four probabilities add to 1.
 
