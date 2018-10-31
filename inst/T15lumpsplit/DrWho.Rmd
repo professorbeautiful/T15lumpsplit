@@ -47,13 +47,14 @@ TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing
 ```
 
 ##### Marginal probability for each hypothesis Split and Lump
-
-If *Split* is correct, then the (marginal) probability of getting the data we observed is 
-`r output$mSplit = renderText({
+```{r}
+output$mSplit = renderText({
   signif(digits=3, mSplit(rValues$DLdata)); 
   })
-  textOutput('mSplit', inline=TRUE)
-`.
+```
+
+If *Split* is correct, then the (marginal) probability of getting the data we observed is 
+**`r   textOutput('mSplit', inline=TRUE)`**.
 
 For the technical details, take a look here:
 ```{r}
@@ -65,12 +66,14 @@ conditionalPanelWithCheckbox(
 )
 ```
 
-If *Lump* is correct, then the (marginal) probability of getting the data we observed is:
-`r output$mLump = renderText({
+```{r}
+output$mLump = renderText({
   signif(digits=3, mLump(rValues$DLdata)); 
   })
-  textOutput('mLump', inline=TRUE)
-`.
+```
+
+If *Lump* is correct, then the (marginal) probability of getting the data we observed is:
+**`r   textOutput('mLump', inline=TRUE)`**.
 
 For the technical details, take a look here:
 ```{r}
