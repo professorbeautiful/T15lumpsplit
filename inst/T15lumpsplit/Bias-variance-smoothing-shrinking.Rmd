@@ -1033,7 +1033,8 @@ BHtable_original = DLdataDF_originalResult$BHtable
 actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
 observeEvent(
   list(input$regenerateFeatures, 
-       rValues$DLdata, rValues$qStar),
+       rValues$qStar),  
+  ### Do NOT recompute extra features when rValues$DLdata changes.
   {
     makeDLdataDFResult = makeDLdataDF(
       DLdata = rValues$DLdata, qStar=rValues$qStar)
