@@ -1311,27 +1311,62 @@ output$qvaluePlot = renderPlot({
     qvalue::qvalue(rValues$allChisqPs)
   rValues$P_Q_for_X_DL = 
     c(qout$pvalues[1], qout$qvalues[1])
-  plot(qout$pvalues, qout$qvalues, 
-       xlim=c(0,0.004), ylim = c(0, 0.04))
-  points(qout$pvalues[1], qout$qvalues[1], 
+  qout.orig  =
+    qvalue::qvalue(c(allChisqPs_original[1], rValues$allChisqPs[-1]) )
+  rValues$P_Q_for_X_DL_original = 
+    c(qout.orig$pvalues[1], qout.orig$qvalues[1])
+  qout.mod  =
+    qvalue::qvalue(rValues$allChisqPs )
+  rValues$P_Q_for_X_DL_modified = 
+    c(qout.mod$pvalues[1], qout.mod$qvalues[1])
+  
+  plot(qout.mod$pvalues, qout.mod$qvalues, 
+       xlim=c(0, 1.1 * max(rValues$P_Q_for_X_DL_modified,
+                     sort(qout.mod$pvalues)[1:8][8]) ), 
+       ylim=c(0, 1.1 * max(rValues$P_Q_for_X_DL_modified,
+                     sort(qout.mod$qvalues)[1:8][8]) ), 
+       cex=2,
+       xlab="P value", ylab='Q value')
+  ## interpolate for the original? No, easy version. 
+  ## allChisqPs_original[1]
+  ## 
+  
+  points(qout.orig$pvalues[1], qout.orig$qvalues[1], 
          col='green')
-  points(qout$pvalues[1], qout$qvalues[1], 
-         pch='X', col='green')
-  text(qout$pvalues[1], qout$qvalues[1], adj=-0.2,
-       labels = expression('\U2B05 X_DL'), col='green')
+  points(qout.orig$pvalues[1], qout.orig$qvalues[1], 
+         pch='.', cex=20, col='green')
+  text(qout.orig$pvalues[1], qout.orig$qvalues[1], adj=-0.1,
+       family = "Arial Unicode MS",
+       labels = expression( phantom(0) %<-% 
+         X[DL] ~~ '(original data)'), col='green', cex=2)
+  if(qout.mod$pvalues[1] != allChisqPs_original[1]){
+    points(qout.mod$pvalues[1], qout.mod$qvalues[1], 
+           col='blue')
+    points(qout.mod$pvalues[1], qout.mod$qvalues[1], 
+           pch='.', cex=20, col='blue')
+    text(qout.mod$pvalues[1], qout.mod$qvalues[1], adj=-0.1,
+         #family = "Arial Unicode MS",
+         #labels = expression('\U2B05 X_DL (modified data)'), col='blue')
+         labels = expression( phantom(0) %<-% X[DL] ~~ '(modified data)'), 
+         col='blue', cex=2)
+  }
   # ⬅︎
   # LEFTWARDS BLACK ARROW
   # Unicode: U+2B05 U+FE0E, UTF-8: E2 AC 85 EF B8 8E
   abline(a=0, b=100, col='darkred')
-  text(0.0005, 0.03, 'Bonferroni', srt=80, col='darkred')
+  text(0.0002, 0.03, 'Bonferroni', cex=2, srt=75, col='darkred')
   abline(a=0, b=1, col='blue')
-  text(0.0025, 0.004, 'diagonal', srt=6, col='blue')
+  text(0.0025, 0.004, 'diagonal', cex=2, srt=4, col='blue')
   #plot(qvalue::qvalue(rValues$allChisqPs) )
 })
 plotOutput('qvaluePlot')
 ```
 
 From this we see that the Q-value for our original D/L feature is `r reactive({rValues$P_Q_for_X_DL[2]})`. 
+
+As before, modify the data here to see how the Q-value changes.
+`r dataTableComponent('hide')`
+
 
 We use the package `qvalue` for this calculation, which can be obtained from https://www.bioconductor.org/packages/release/bioc/html/qvalue.html. 
 
