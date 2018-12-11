@@ -1331,7 +1331,7 @@ output$qvaluePlot = renderPlot({
 plotOutput('qvaluePlot')
 ```
 
-From this we see that the Q-value for our original D/L feature is `r reactive({rValues$P_Q_for_X_DL[2]})`.
+From this we see that the Q-value for our original D/L feature is `r reactive({rValues$P_Q_for_X_DL[2]})`. 
 
 We use the package `qvalue` for this calculation, which can be obtained from https://www.bioconductor.org/packages/release/bioc/html/qvalue.html. 
 
@@ -1441,15 +1441,16 @@ output$downloadQandA <- downloadHandler(
 
 div(
   tags$b('View and download your "Questions&Ahas" comments and "TextQuestion" answers here.'),
-  div(type='hidden', # hidden not working)
-      downloadButton(outputId="downloadQandA", 
+  div(
+    #`data-display-if` = 'false',
+    downloadButton(outputId="downloadQandA", 
                      "Download your Q&A comments") ),
   conditionalPanelWithCheckbox(
     labelString = 'View your comments', 
     html=tableOutput('commentsToText'),
     initialValue = FALSE  ),
   div(
-    type='hidden',
+    #`data-display-if` = 'false',
     downloadButton(outputId="downloadAnswers", 
                    "Download your answers") ),
   conditionalPanelWithCheckbox(
