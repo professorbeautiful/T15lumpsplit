@@ -53,6 +53,11 @@ source('WhoPriorProbNumericInput.R', local=TRUE)
 source('conditionalPanelWithCheckbox.R', local=TRUE)
 ```
 
+```{r colors}
+adviceForeground = 'darkred'
+adviceBackground = 'snow'
+## https://www.w3schools.com/cssref/css_colors.asp
+```
 
 ```{r includeFunctions}
 source('inclRmd.R', local=T)

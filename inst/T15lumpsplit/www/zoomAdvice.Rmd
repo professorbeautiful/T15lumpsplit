@@ -22,7 +22,7 @@ div(
     textOutput('zoomAdvice'),
     style=paste(
       'display: flex; justify-content: flex-center;',
-      'color:red; background: lightgrey;
+      'color:', adviceForeground, '; background: ', adviceForeground, ';
       font-weight:bold; font-size:larger'))
 )
 ```

@@ -26,12 +26,12 @@ output$contentsAdviceOutput = renderUI({
       span(text),
       style=paste(
         'display: flex; justify-content: flex-center;',
-        'color:red; background: lightgrey;',
-        'font-weight:bold; font-size:larger')),
+      'color:', adviceForeground, '; background: ', adviceBackground, ';
+        font-weight:bold; font-size:larger')),
     tagAppendAttributes(
       style=paste(
-        'background: lightgrey;',
-        'font-weight:bold; font-size:larger'),
+      'color:', adviceForeground, '; background: ', adviceBackground, ';
+        font-weight:bold; font-size:larger'),
       fluidRow(
         column(2, ""),
         column(4, contentFileInput('comments')),

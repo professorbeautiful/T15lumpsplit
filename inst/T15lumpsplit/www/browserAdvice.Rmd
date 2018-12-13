@@ -21,7 +21,7 @@ div(
     uiOutput('browserAdvice'),
     style=paste(
       'display: flex; justify-content: flex-center;',
-      'color:red; background: lightgrey;
+      'color:', adviceForeground, '; background: ', adviceBackground, ';
       font-weight:bold; font-size:larger'))
 )
 ```
