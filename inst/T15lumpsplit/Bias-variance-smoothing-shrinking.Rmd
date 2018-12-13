@@ -1432,7 +1432,7 @@ output$qvaluePlot = renderPlot({
 plotOutput('qvaluePlot')
 ```
 
-For our original D/L feature, with P value `r allChisqPs_original[1]` (compare with `r reactive({rValues$P_Q_for_X_DL_original[1]})`), the Q-value is `r reactive({rValues$P_Q_for_X_DL_original[2]})`. 
+For our original D/L feature, with P value  `r reactive({rValues$P_Q_for_X_DL_original[1]})`, the Q-value is `r reactive({rValues$P_Q_for_X_DL_original[2]})`. 
 
 As before, modify the data here to see how the Q-value changes. 
 `r dataTableComponent('hide')`
