@@ -941,28 +941,29 @@ Let's put those worries aside for now.
 
 Let's generate 99 extra features and examine how the methods behave when applied when the extra features are added to the D/L feature of our little data set. You can use either the original data or the data as you may have modified it.
 
-```{r makeDLdataDF  }
-# makeDLdataDFYesNoYes = function(DLdata, qStar=1){
-#   #  OK, mission accomplished.
-#   isYesNoYes = FALSE
-#   seedInt = 44
-#   #assign('.Random.seed', readRDS('savedSeed.rda') )
-#   print(.Random.seed[626])
-#   while(! isYesNoYes) {
-#     #savedSeed = .Random.seed
-#     seedInt = seedInt + 1
-#     set.seed(seedInt)
-#     DLdataDFResult = makeDLdataDF(DLdata = DLdata)
-#     BHtable = DLdataDFResult$BHtable
-#     isYesNoYes = identical(
-#       as.vector(BHtable['P<cutoff', 1:3]),
-#                              c('yes', 'no', 'yes') )
-#     cat(0+isYesNoYes, seedInt, '\n')
-#   }
-#   print(BHtable[ , 1:4])
-#   saveRDS(seedInt, 'seedInt.rda')
-#   return(seedInt)
-# }
+```{r makeDLdataDFYesNoYes  }
+#  OK, mission accomplished, example found. We need never run this again.
+makeDLdataDFYesNoYes = function(DLdata, qStar=1){
+  isYesNoYes = FALSE
+  seedInt = 44
+  #assign('.Random.seed', readRDS('savedSeed.rda') )
+  print(.Random.seed[626])
+  while(! isYesNoYes) {
+    #savedSeed = .Random.seed
+    seedInt = seedInt + 1
+    set.seed(seedInt)
+    DLdataDFResult = makeDLdataDF(DLdata = DLdata)
+    BHtable = DLdataDFResult$BHtable
+    isYesNoYes = identical(
+      as.vector(BHtable['P<cutoff', 1:3]),
+                             c('yes', 'no', 'yes') )
+    cat(0+isYesNoYes, seedInt, '\n')
+  }
+  print(BHtable[ , 1:4])
+  saveRDS(seedInt, 'seedInt.rda')
+  return(seedInt)
+}
+```
 
 makeDLdataDF = function(DLdata, qStar=1) {
   set.seed(readRDS('seedInt.rda'))
