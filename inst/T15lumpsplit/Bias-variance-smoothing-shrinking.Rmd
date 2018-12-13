@@ -965,7 +965,9 @@ makeDLdataDFYesNoYes = function(DLdata, qStar=1){
 }
 ```
 
-makeDLdataDF = function(DLdata, qStar=1) {
+```{r makeDLdataDF  }
+## Make DLdata into a data frame.
+makeDLdataDF = function(DLdata=DLdataOriginal) {
   set.seed(readRDS('seedInt.rda'))
   DLdataDF = 
     data.frame(
@@ -974,8 +976,14 @@ makeDLdataDF = function(DLdata, qStar=1) {
       X_DL = rep(c("D","D", "L","L"),
                  times=c(DLdata))
     )
-  NextraFeatures = 99
-  extraFeaturesProbs_R = rbeta(NextraFeatures, 10, 10)
+  return(DLdataDF)
+}
+## Combine DL feature with extra features. 
+makeDLdataWithFeatures = function(DLdata=DLdataOriginal,
+                                  ## Make extra features.
+                                  NextraFeatures = 99, beta1=10, beta2=10){
+  DLdataDF = makeDLdataDF(DLdata)
+  extraFeaturesProbs_R = rbeta(NextraFeatures, beta1, beta2)
   extraFeaturesOdds_R =
     extraFeaturesProbs_R/(1-extraFeaturesProbs_R)
   #extraFeaturesProbs1 = rbeta(NextraFeatures, 10, 10)
@@ -995,66 +1003,76 @@ makeDLdataDF = function(DLdata, qStar=1) {
   extraFeatures[DLdataDF$outcome=='R', ] = extraFeatures_R
   colnames(extraFeatures) = 
     paste0('X', 1+(1:NextraFeatures))
-  DLdataDF = cbind(DLdataDF, extraFeatures)
+## Combine DL feature with extra features. 
+  return(cbind(DLdataDF, extraFeatures ) )
+}
+## generateAllPvalues.
+generateAllPvalues = function(DLdataWithFeatures = makeDLdataWithFeatures()) {
   allFisherPs <<- 
-    sapply(DLdataDF[-1], function(feature) 
+    sapply(DLdataWithFeatures[-1], function(feature) 
       fisher.test(feature,
-                  DLdataDF$outcome)$p.value
+                  DLdataWithFeatures$outcome)$p.value
     )
   options.saved = options(warn=-1)
   allChisqPs <<- 
-    sapply(DLdataDF[-1], function(feature) 
-      chisq.test(feature,
-                 DLdataDF$outcome)$p.value
+    sapply(DLdataWithFeatures[-1], ## removing the outcome column 
+           function(feature) {
+             result = chisq.test(feature,
+                        DLdataWithFeatures$outcome)
+             if(max(result$expected) < 5)
+               result = chisq.test(feature,
+                        DLdataWithFeatures$outcome, simulate.p.value = TRUE)
+             result$p.value
+           }
     ) 
   options(options.saved)
-  BHtable = makeBHtable(allChisqPs, qStar=qStar)
   return(invisible(
-    list(DLdataDF=DLdataDF, allFisherPs=allFisherPs,
-         allChisqPs=allChisqPs, BHtable=BHtable))
+    list(allFisherPs=allFisherPs,
+         allChisqPs=allChisqPs))
   ) 
 }
 ```
 
 ```{r}
-makeBHtable = function(pValues, qStar=1, columns=8) {
-  somePvalues  = 
-    signif(digits=3, sort(pValues)[1:columns])
-  BHtable = data.frame(
-    Pvalue = somePvalues,
-    cutoff = qStar * (1:columns)/100)
-  BHtable[[ 'P<cutoff' ]] = c('no','yes')[
-    1 + (BHtable$cutoff > BHtable$Pvalue) ]
-  BHtable = t(BHtable)
-  rownames(BHtable) = c('Pvalue', 'cutoff', 'P<cutoff')
-  return(BHtable)
-}
-DLdataDF_originalResult = makeDLdataDF(DLdataOriginal)
-allFisherPs_original = DLdataDF_originalResult$allFisherPs
-allChisqPs_original = DLdataDF_originalResult$allChisqPs
-BHtable_original = DLdataDF_originalResult$BHtable
+
+DLdataDFwithFeatures_original = makeDLdataWithFeatures(DLdataOriginal)
+#print(summary(DLdataDFwithFeatures_original))
+allPvalues = generateAllPvalues()
+allFisherPs_original = allPvalues$allFisherPs
+#print(summary(allFisherPs_original))
+allChisqPs_original = allPvalues$allChisqPs
+#print(summary(allChisqPs_original))
+# BHtable_original = DLdataDF_originalResult$BHtable
 ```
 
 ```{r regenerateFeatures button}
 actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
-observeEvent(
-  list(input$regenerateFeatures, 
-       rValues$qStar),  
-  ### Do NOT recompute extra features when rValues$DLdata changes.
-  {
-    makeDLdataDFResult = makeDLdataDF(
-      DLdata = rValues$DLdata, qStar=rValues$qStar)
-    rValues$DLdataDF = makeDLdataDFResult$DLdataDF
-    rValues$allFisherPs = makeDLdataDFResult$allFisherPs
-    rValues$allChisqPs = makeDLdataDFResult$allChisqPs
-    allFisherPs <<- rValues$allFisherPs
-    allChisqPs <<- rValues$allChisqPs
-    rValues$BHtable = makeDLdataDFResult$BHtable
-  })
+### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified DLdata.
+observeEvent(list(input$regenerateFeatures, rValues$DLdata), {
+    rValues$DLdataDFwithFeatures = 
+       makeDLdataWithFeatures(rValues$DLdata)
+})
+```
+```{r Pvalues all features}
+observeEvent(rValues$DLdataDFwithFeatures, {
+             Pvalues = generateAllPvalues(
+               DLdataWithFeatures = rValues$DLdataDFwithFeatures
+             )
+             rValues$allChisqPs = Pvalues$allChisqPs
+             rValues$allFisherPs = Pvalues$allFisherPs
+})
+
+# DLdata = rValues$DLdata, qStar=rValues$qStar)
+#     rValues$DLdataDF = makeDLdataDFResult$DLdataDF
+#     rValues$allFisherPs = makeDLdataDFResult$allFisherPs
+#     rValues$allChisqPs = makeDLdataDFResult$allChisqPs
+#     allFisherPs <<- rValues$allFisherPs
+#     allChisqPs <<- rValues$allChisqPs
+#   })
 
 ```
 
-Now that we have a data set, let's do Fisher exact tests and chisquare tests to all the features. The red "X" is of course our original data feature, with $X_{DL}$ = D or L.
+Now that we have a data set with lots of features, let's do Fisher exact tests and chisquare tests to all the features. The red "X" is of course our original data feature, with $X_{DL}$ = D or L.
 
 ```{r pvaluesPlots}
 output$pvaluesPlots = renderPlot({
@@ -1064,7 +1082,7 @@ output$pvaluesPlots = renderPlot({
   #head(sort(allChisqPs))
   plot(rValues$allChisqPs, rValues$allFisherPs, log='xy')
   points(rValues$allChisqPs[1], rValues$allFisherPs[1],
-         pch='X', col='red')
+         pch='X', col='red', cex=2)
 } )
 plotOutput('pvaluesPlots')
 
@@ -1086,6 +1104,7 @@ QandAha('QA-multiple-comparisons-corrections')
 
 Another classical approach, the Benjamini-Hochberg method, is widely used in high-throughput biological assays. It is also classical frequentist method. It has a technical advantage in that the stated "false discovery rate" is accurate. However, it also has peculiar and disturbing behavior:
 
+
 ```{r Benjamini-Hochberg method}
 conditionalPanelWithCheckboxPDF(
   labelString="The Benjamini-Hochberg method", 
@@ -1095,18 +1114,41 @@ conditionalPanelWithCheckboxPDF(
 
 When applied to our augmented data set with 100 potential predictors, this is what we get, depending on qStar, the upper bound for the false discovery rate (FDR):
 
+```{r makeBHtable}
+makeBHtable = function(pValues, qStar=1, columns=8) {
+  somePvalues  = 
+    signif(digits=3, sort(pValues)[1:columns])
+  BHtable = data.frame(
+    Pvalue = somePvalues,
+    cutoff = qStar * (1:columns)/100)
+  BHtable[[ 'P<cutoff' ]] = c('no','yes')[
+    1 + (BHtable$cutoff > BHtable$Pvalue) ]
+  BHtable = t(BHtable)
+  rownames(BHtable) = c('Pvalue', 'cutoff', 'P<cutoff')
+  return(BHtable)
+}
+```
+
 ```{r output for BHtable}
-numericInput('qStarID', 'qStar', 
-             value = 1, min=0,  step=0.1)
-observeEvent(input$qstarID, {rValues$qStar = input$qStarID})
+# numericInput('qStarID', 'qStar', 
+#              value = 1, min=0,  step=0.1)
+# observeEvent(input$qstarID, {
+#   rValues$qStar = input$qStarID
+# })
+# 
+# observeEvent(
+#   list(rValues$allChisqPs, 
+#        rValues$qStar),  
+#   {
+#     rValues$BHtable = makeBHtable(rValues$allChisqPs, qStar=1)#rValues$qStar)
+#   }
+# )
+# output$BHtable = renderTable(
+#   digits=3,  expr=rValues$BHtable
+# )
+# 
+# tableOutput('BHtable')
 
-output$BHtable = renderTable({
-  qStar = rValues$qStar
-  options.saved = options(digits=3)
-  rValues$BHtable
-})
-
-tableOutput('BHtable')
 ```
 
 
@@ -1148,17 +1190,18 @@ This can be compared to all 100 odds ratios for the features:
 
 ```{r oddsratioplot}
 output$oddsratioplot = renderPlot({
-  outcome = rValues$DLdataDF$outcome
+  outcome = rValues$DLdataDFwithFeatures$outcome
   oddsratio = function(col, sprinkle=1) {
     theTable = table(col, outcome)
     theTable = sprinkle + theTable
     return(theTable[1,1]/theTable[2,1]
            /theTable[1,2]*theTable[2,2])
   }
-  oddsratios = sapply(rValues$DLdataDF[-(1)], oddsratio)
+  oddsratios = sapply(rValues$DLdataDFwithFeatures[-(1)], oddsratio)
   rValues$logoddsratios = 
     logoddsratios = log(oddsratios)
-  plot(density(logoddsratios))
+  plot(density(logoddsratios), xlab='log(oddsratios)',
+       main='density smooth of log(oddsratios)')
   logoddsratiovariance = function(col, sprinkle=0.1) {
     theTable = table(col, outcome)
     theTable = sprinkle + theTable
@@ -1166,27 +1209,40 @@ output$oddsratioplot = renderPlot({
   }
   rValues$logoddsratiovariances =
     logoddsratiovariances =
-    sapply(rValues$DLdataDF[-(1)],
+    sapply(rValues$DLdataDFwithFeatures[-(1)],
                                  logoddsratiovariance)
   points(logoddsratios, col='red', type='h',
        logoddsratiovariances * par('usr')[4]/
         max(logoddsratiovariances) *0.3)
-  points(logoddsratios[1], 0, pch="X", col='green')
+  points(logoddsratios[1], col='green', type='h',
+       logoddsratiovariances[1] * par('usr')[4]/
+        max(logoddsratiovariances) *0.3,
+       lwd=2)
+  text(logoddsratios[1], 0.2, cex=2,
+       expression( "" %<-% "DL data"), srt=90, col='green')
 })
 plotOutput('oddsratioplot')
 ```
-Using the delta method mentioned above,  have variances roughly equal to the sums of reciprocals of the counts. From this we can construct confidence intervals for the logits, then pull them back to confidence intervals for the odds ratios. So for example, for our original $X_{DL}$=D or L feature, the confidence interval is given by
-`exp ( log(oddRatioOriginal) + c(-1,1)*sqrt(sum(1/DLdataOriginal))*qnorm(0.975))`.
+Using the delta method mentioned above, 
+have variances roughly equal to the sums of reciprocals of the counts. 
+From this we can construct confidence intervals for the logits, then pull them back to confidence intervals for the odds ratios. 
+So for example, for our original${X_{DL}}$ 
+= `D` or `L` feature, the confidence interval is given by the R expression
 
-To apply the EB idea, we use the data for all the features, to "shrink" all the logit ratios ${X_i}$ towards the common mean, estimated as ${\hat\mu}$. This solution uses a model in which the true logit ratios are all drawn from a common parent distribution, assumed to be normal (Gaussian). Then a standard Bayesian calculation gives us the posterior means (and variances) for each logit ratio. In particular, letting ${\mu_i}$ be the logit ratio for feature $i$, with variance ${\sigma_i}$ (which we estimate from the delta method to get ${\hat\sigma_i}$), the posterior mean is 
+`exp ( log(oddRatioOriginal) + c(-1,1)*sqrt(sum(1/DLdataOriginal))*qnorm(0.975))`,
 
-  $E({\mu _i}|{X_i}) = {X_i}(1 - {w_i}) + \hat \mu {w_i}$,
+which for a 95% confidence level is 
+`r {ci=signif(digits=3, exp ( log(oddRatioOriginal) + c(-1,1)*sqrt(sum(1/DLdataOriginal))*qnorm(0.975))); paste(ci, collapse=' to ')}`.
+
+To apply the EB idea, we use the data for all the features, to "shrink" all the logit ratios ${X_i}$ towards the common mean, estimated as ${\hat{~\mu}}$. This solution uses a model in which the true logit ratios are all drawn from a common parent distribution, assumed to be normal (Gaussian). Then a standard Bayesian calculation gives us the posterior means (and variances) for each logit ratio. In particular, letting ${\mu_i}$ be the logit ratio for feature $i$, with variance ${\sigma_i}$ (which we estimate from the delta method to get ${\hat{~\sigma_i}}$), the posterior mean is 
+
+  $E({\mu _i}|{X_i}) = {X_i}(1 - {w_i}) + \hat{~\mu} {w_i}$,
  
  where the weights $w_i$ vary with the feature:
  
-  $w_i = \frac{{\hat\sigma_i}}{{\hat\sigma_i}+\hat{A}}$ .
+  $w_i = \frac{\hat{~\sigma_i}}{{\hat{~\sigma_i}}+\hat{~A}}$ .
   
-$\hat{A}$ is the estimated prior variance for all the true ${\mu_i}$.
+$\hat{~A}$ is the estimated prior variance for all the true ${\mu_i}$.
  
 This is yet another example of bias-variance trade-off. By accepting some bias in including data from other features, the variance of the estimate decreases, enough to make the net result more accurate.
  
@@ -1198,10 +1254,10 @@ The "empirical" part of empirical Bayes is to use the data to estimate the mean 
 
 where we will get the variances ${\sigma _i}$ from the delta method. The unknown $\mu$ and $\tau$ are called the "hyperparameters". We can estimate them however we prefer, but using maximum posterior estimation we get
 
-$\hat \mu  = \sum {\left( {{X_i}{w_i}} \right)} /\sum {\left( {{w_i}} \right)}$
+$\hat{~\mu}  = \sum {\left( {{X_i}{w_i}} \right)} /\sum {\left( {{w_i}} \right)}$
 
 where the weights are ${w_i} = 1/{\sigma _i}$. 
-These are the optimal weights for smallest variance of $\hat \mu$. 
+These are the optimal weights for smallest variance of $\hat{~\mu}$. 
 
 As an *optional topic*, you may read the following on Lagrange multiplier method for optimization. Example (A) covers this case.
 
@@ -1326,12 +1382,13 @@ output$qvaluePlot = renderPlot({
     qvalue::qvalue(rValues$allChisqPs )
   rValues$P_Q_for_X_DL_modified = 
     c(qout.mod$pvalues[1], qout.mod$qvalues[1])
-  
+  xlim = c(0, 0.004) #c(0, 1.1 * max(rValues$P_Q_for_X_DL_modified,
+        #             sort(qout.mod$pvalues)[1:8][8]) )
+  ylim = c(0, 0.04) #c(0, 1.1 * max(rValues$P_Q_for_X_DL_modified,
+          #           sort(qout.mod$qvalues)[1:8][8]) )
   plot(qout.mod$pvalues, qout.mod$qvalues, 
-       xlim=c(0, 1.1 * max(rValues$P_Q_for_X_DL_modified,
-                     sort(qout.mod$pvalues)[1:8][8]) ), 
-       ylim=c(0, 1.1 * max(rValues$P_Q_for_X_DL_modified,
-                     sort(qout.mod$qvalues)[1:8][8]) ), 
+       xlim=xlim, 
+       ylim=ylim, 
        cex=2,
        xlab="P value", ylab='Q value')
   ## interpolate for the original? No, easy version. 
@@ -1360,20 +1417,32 @@ output$qvaluePlot = renderPlot({
   # ⬅︎
   # LEFTWARDS BLACK ARROW
   # Unicode: U+2B05 U+FE0E, UTF-8: E2 AC 85 EF B8 8E
-  abline(a=0, b=100, col='darkred')
-  text(0.0002, 0.03, 'Bonferroni', cex=2, srt=75, col='darkred')
+  nFeatures = 100
+  abline(a=0, b=nFeatures, col='darkred')
+  aspect = diff(par("usr")[2:1])/diff(par("usr")[4:3])
+  bonfTilt = atan(nFeatures * aspect)* 180/pi
+  diagTilt = atan( aspect )* 180/pi
+  text(0.00025, 0.00025 * nFeatures, 'Bonferroni', cex=2, pos=3, # 3 = above
+       srt=bonfTilt, col='darkred')
   abline(a=0, b=1, col='blue')
-  text(0.0025, 0.004, 'diagonal', cex=2, srt=4, col='blue')
+  text(0.003, 0.003, 'diagonal', cex=2, pos=3, # 3 = above
+       srt=diagTilt, col='blue')
   #plot(qvalue::qvalue(rValues$allChisqPs) )
 })
 plotOutput('qvaluePlot')
 ```
 
-From this we see that the Q-value for our original D/L feature is `r reactive({rValues$P_Q_for_X_DL[2]})`. 
+For our original D/L feature, with P value `r allChisqPs_original[1]` (compare with `r reactive({rValues$P_Q_for_X_DL_original[1]})`), the Q-value is `r reactive({rValues$P_Q_for_X_DL_original[2]})`. 
 
-As before, modify the data here to see how the Q-value changes.
+As before, modify the data here to see how the Q-value changes. 
 `r dataTableComponent('hide')`
+```{r TQ-qvalues-changing-DL-data}
+TextQuestion('When you change the data set, what changes do you see, & why?')
+```
 
+```{r Q-qvalues-changing-extra-features}
+TextQuestion('When you regenerate the extra features, what changes do you see, & why?')
+```
 
 We use the package `qvalue` for this calculation, which can be obtained from https://www.bioconductor.org/packages/release/bioc/html/qvalue.html. 
 
