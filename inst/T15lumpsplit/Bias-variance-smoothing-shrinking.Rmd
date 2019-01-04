@@ -409,7 +409,7 @@ conditionalPanelWithCheckbox(
   initialValue = TRUE)
 ```
 
-What is bias? What is variance? How are they related to lumping and shrinking?
+What is bias? What is variance? How are they related to lumping, splitting, smoothing and shrinking?
 
 For a refresher on the concepts of bias, variance, and mean squared error in estimation, open this panel.
 
