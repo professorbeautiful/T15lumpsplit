@@ -10,13 +10,13 @@ Briefly Bayes Theorem without a nuisance parameter is (eliminating the usual $\P
 
 \[\begin{array}{l}
 \quad [\theta |X] = \frac{{[X,\theta ]}}{X} = \frac{{[X,\theta ]}}{{\int\limits_\theta  {} [X,\theta ]}} = \frac{{[X|\theta ][\theta ]}}{{\int\limits_\theta  {} [X,\theta ]}}\\
-\end{array}\]
+\end{array}.\]
 
 And Bayes Theorem with a nuisance parameter is:
 
 \[\begin{array}{l}
 \quad [\theta |X] = \sum\limits_\phi  {} [\theta ,\phi |X] = \frac{{\sum\limits_\phi  {} [X,\theta ,\phi ]}}{{\sum\limits_{\phi ,\theta } {} [X,\theta ,\phi ]}}
-\end{array}\]
+\end{array}.\]
 
 Here the nuisance parameter $\phi$ is: whose opinion is right, $Split$ or $Lump$?
 
@@ -35,8 +35,8 @@ To apply the Bayes theorem principles:
 * All that's left is $\bf{p}$, what we care about.
 
 Then,  Dr. Who’s posterior distribution for ${\bf{p}}$ is:
- \[\pi _{Who}^*({p_{R.D}}) = \pi _{Who}^*(\phi  = Split)\pi _{Split}^*({p_{R.D}}) + \pi _{Who}^*(\phi  = Lump)\pi _{Lump}^*({p_{R.D}})\]
- 
+ \[\pi _{Who}^*({p_{R.D}}) = \pi _{Who}^*(\phi  = Split)\pi _{Split}^*({p_{R.D}}) + \pi _{Who}^*(\phi  = Lump)\pi _{Lump}^*({p_{R.D}}),\]
+
 where
  \[\pi _{Who}^*(\phi  = Split) = \frac{{\pi (Split){m_{Split}}}}{{\pi (Split){m_{Split}} + \pi (Lump){m_{Lump}}}},\]
 and the $m$ values are the respective marginal distributions of the data  $({n_{RD}},{n_{RL}},{n_{ND}},{n_{NL}})$ if you knew $\phi$ but not the parameters  --  conditional $\phi$ and marginal over ${p_{R.D}}$.  
@@ -46,7 +46,8 @@ TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing
 ")
 ```
 
-##### Marginal probability for each hypothesis Split and Lump
+#### Marginal probability for each hypothesis Split and Lump <!-- #title -->
+
 ```{r}
 output$mSplit = renderText({
   signif(digits=3, mSplit(rValues$DLdata)); 
@@ -226,7 +227,7 @@ TextQuestion("Experiment with changing #RL in the range 2 to 9. What happens?  A
 QandAha('QA-whoMixturePlot')
 ```
 
-##### The Bayes Factor: posterior odds (and probability) of the "null hypothesis"
+#### The Bayes Factor: posterior odds (and probability) of the "null hypothesis" <!-- #title -->
 
 The  Bayes Factor is the ratio of these marginal probabilities of the data,
 and also the ratio of posterior odds to prior odds:
@@ -247,12 +248,12 @@ If *Dr.Split* and *Dr.Lump* have equal prior probability (prior odds = 1),
 then the posterior odds is the Bayes factor,
 and  the posterior probability that *Dr.Lump* is correct is
 
-\[{\rm{Pr(}}\phi  = Lump|data) = {m_{Lump}}/({m_{Split}} + {m_{Lump}})\]
+\[{\rm{Pr(}}\phi  = Lump|data) = {m_{Lump}}/({m_{Split}} + {m_{Lump}}).\]
 
 More generally, 
 
 \[
-\Pr (R|D,Who) = \Pr (Lump|data) \times \Pr (R|D,Lump) + \Pr (Split|data) \times \Pr (R|D,Split)\]
+\Pr (R|D,Who) = \Pr (Lump|data) \times \Pr (R|D,Lump) + \Pr (Split|data) \times \Pr (R|D,Split),  \]
 
 ```{r}
 output$bayesAverage = renderText({
@@ -269,6 +270,5 @@ which equals  `r textOutput('bayesAverage', inline=TRUE)` for the current data t
 You can adjust the prior probability and observe how the posterior probability changes.
 The Bayes factor in favor of  *Dr.Split* is correct is
 
-\[{\rm{Odds}(\phi = Split|data) = \rm{Odds(}\phi  = Split) \times {m_{Split}}/{m_{Lump}}}\].
-If Dr. Who puts equal prior probability on *Lump* and *Split*, the Bayes factor is the same as the posterior odds. Converting from odds to probability, with the current datathe posterior probability in favor of *Split* equals 
-`r output$postProb = shiny::renderText({round(digits=3, posteriorProb(theData=rValues$DLdata))}); textOutput('postProb')`.
+\[{\rm{Odds}(\phi = Split|data) = \rm{Odds(}\phi  = Split) \times {m_{Split}}/{m_{Lump}}}.\]
+If Dr. Who puts equal prior probability on *Lump* and *Split*, the Bayes factor is the same as the posterior odds. Converting from odds to probability, with the current datathe posterior probability in favor of *Split* equals `r output$postProb = shiny::renderText({round(digits=3, posteriorProb(theData=rValues$DLdata))}); textOutput('postProb', inline=TRUE)`.
