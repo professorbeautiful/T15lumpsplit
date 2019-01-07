@@ -442,12 +442,6 @@ conditionalPanelWithCheckbox(
   initialValue=FALSE)
 ```
 
-# The Lump versus Split Dilemma <a name="section-LSnotebookBegin"> <!-- #title -->
-
-```{r submoduleTitle}
-hr()
-hr()
-```
 
 
 ```{r listings}
@@ -462,8 +456,8 @@ source('initializations.R', local=TRUE)
 
 
 
-# "Lumping" versus "splitting" in science.<!-- #title -->
-<!-- # ["Lumping" versus "splitting" in science.](#Lumping_versus_ splitting_in_science)  -->
+# "Lumping" versus "splitting" in science. <!-- #title -->
+
 
 In science, advances often proceed by "splitting": things that seem initially the same are classified as different. The classification may be tentativedistinction, until it proves to be useful. 
 Other advances proceed by "lumping":  identifying things that seem different but have a deep connection.
