@@ -272,7 +272,10 @@ inclRmd('www/browserAdvice.Rmd')
 
 ```{r contentsAdvice}
 inclRmd('www/contentsAdvice.Rmd')
+h3("NOTE: this is a work in progress!")
+
 ```
+
 
 <a name='section-debugging'> </a>
 
@@ -402,14 +405,11 @@ require(shinyBS)
 # OVERVIEW of this Module
 
 ```{r Overview}
-h3("NOTE: this is a work in progress!")
 conditionalPanelWithCheckbox(
   labelString = 'Overview', 
   filename = 'Overview.Rmd', 
   initialValue = TRUE)
 ```
-
-What is bias? What is variance? How are they related to lumping, splitting, smoothing and shrinking?
 
 For a refresher on the concepts of bias, variance, and mean squared error in estimation, open this panel.
 
@@ -445,31 +445,10 @@ conditionalPanelWithCheckbox(
 ## The Lump versus Split Dilemma <a name="section-LSnotebookBegin"> 
 
 ```{r submoduleTitle}
-##  <a name="LSnotebookBegin"> link The Lump versus Split Dilemma </a>
 hr()
-#h2(style="text-align: center;", ' h2 The Lump versus Split Dilemma')
 hr()
 ```
 
-
-```{r include notebook}
-#div(
-#  list(fluidRow(column(width = 8, 
-         # wellPanel(id = "leftScrollPanel",
-                   # style = "overflow-y:scroll; max-height: 600px"
-         # ,
-#         inclRmd('Submodule-LumpSplit.Rmd')
- #        ),
-  # column(width = 4, 
-  #       wellPanel(id = "leftScrollPanel",
-  #                  style = "overflow-y:scroll; max-height: 600px"
-  #        , 
-         #panelOfData,
-         #dataTableComponent(),
-         #panelOfBifurcation,
-         
-#)
-```
 
 ```{r listings}
 source('initializations.R', local=TRUE)
@@ -850,7 +829,7 @@ QandAha('QA-Who-prior-probability')
 ```
 
 
-##	The role of external information, explored by introducing different identities for "D" and "L".
+## The role of external information, explored by introducing different identities for "D" and "L".
 
 So, when should we lump? When should we split? Should we aim to compromise, and if so, how should we strike the balance?  
 
