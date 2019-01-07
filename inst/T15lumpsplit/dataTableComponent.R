@@ -281,12 +281,15 @@ dataRowLabel = function(html, angle=360-40, color='green') {
   ))
 }
 ### Do not call panelOfData() directly. Use dataTableComponent().
+
 panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
                        showhide='show') {
   span(
     conditionalPanelWithCheckbox(
       initialValue = (showhide=='show'),
-      labelString = paste("Response by Predictor Table ", panelIdThisDTC),
+      labelString = HTML(paste("Response by Predictor (",
+                          gsub("idPanelDTC","",panelIdThisDTC),
+                          ")")),
       #labelString = "Response by Predictor Table ",
       ##    This breaks the JS!  conditionalPanelWithCheckbox needs to extract the unique ID.
       html = div(
