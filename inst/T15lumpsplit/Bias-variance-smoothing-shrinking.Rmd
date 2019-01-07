@@ -585,7 +585,7 @@ fluidRow(
   column(4, 
          br(),
          span(style='text-align:center;font-weight: bold', 
-              "Confidence intervals:"),
+              "Confidence intervals for Pr(R|D):"),
          tagAppendAttributes(style="color:red;text-align:center",
                              textOutput('confInterval_Lump')),
          tagAppendAttributes(style="color:blue;text-align:center",
