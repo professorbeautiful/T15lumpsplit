@@ -403,23 +403,10 @@ require(shinyBS)
 *Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')`     Author: Roger Day, University of Pittsburgh*
 
 
-# OVERVIEW of this Module
+# OVERVIEW of this Module  <!-- #title -->
 
-## Tips on using this Module
 
-```{r Overview-usage}
-conditionalPanelWithCheckbox(
-  labelString = 'ADVICE on saving and retrieving your answers questions and comments', 
-  filename = 'www/contentsAdvice.Rmd', 
-  initialValue = FALSE)
-
-conditionalPanelWithCheckbox(
-  labelString = 'ADVICE on editing data', 
-  filename = 'www/dataEditingAdvice.Rmd', 
-  initialValue = FALSE)
-```
-
-## Contents of this Module
+## Contents of this Module  <!-- #title -->
 
 ```{r Overview-topic}
 conditionalPanelWithCheckbox(
@@ -459,6 +446,22 @@ conditionalPanelWithCheckbox(
   initialValue=FALSE)
 ```
 
+## Tips on using this Module  <!-- #title -->
+
+
+```{r Overview-editing}
+conditionalPanelWithCheckbox(
+  labelString = 'ADVICE on editing data', 
+  filename = 'dataEditingAdvice.Rmd', 
+  initialValue = FALSE)
+```
+
+```{r Overview-saving-retrieving}
+conditionalPanelWithCheckbox(
+  labelString = 'ADVICE on saving and retrieving your answers questions and comments', 
+  filename = 'contentsAdvice.Rmd', 
+  initialValue = FALSE)
+```
 
 
 ```{r listings}
