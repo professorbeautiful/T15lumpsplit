@@ -39,7 +39,7 @@ conditionalPanelWithCheckbox = function(
   initialValue=FALSE,
   border = FALSE  ### include a border matching conditionalPanelWithCheckboxPDF
 ) {
-  labelStringNoSpaces = gsub("[- .&'?!]", "_", labelString)
+  labelStringNoSpaces = gsub("[- .&():'?!]", "_", labelString)
   labelStringId = paste0(labelStringNoSpaces, 'Id')
   cbStringId = paste0('cb', labelStringId)
   if(!missing(filename))
