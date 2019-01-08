@@ -75,7 +75,7 @@ source('observeEvent-for-fileInput.R', local=TRUE)
 
 ```{r}
 #alert('GETTINGSTARTED')  // This works!
-includeScript('www/onbeforeunload.js')
+includeScript('www/onbeforeunload.js')   ### Not doing anything now?
 ```
 
 
@@ -271,11 +271,12 @@ inclRmd('www/browserAdvice.Rmd')
 ```
 
 ```{r contentsAdvice}
-inclRmd('www/contentsAdvice.Rmd')
-h3("NOTE: this is a work in progress!")
-
+# inclRmd('www/contentsAdvice.Rmd')
 ```
 
+```{r in-progress}
+h3("NOTE: this is a work in progress!")
+```
 
 <a name='section-debugging'> </a>
 
@@ -404,9 +405,25 @@ require(shinyBS)
 
 # OVERVIEW of this Module
 
-```{r Overview}
+## Tips on using this Module
+
+```{r Overview-usage}
 conditionalPanelWithCheckbox(
-  labelString = 'Overview', 
+  labelString = 'ADVICE on saving and retrieving your answers questions and comments', 
+  filename = 'www/contentsAdvice.Rmd', 
+  initialValue = FALSE)
+
+conditionalPanelWithCheckbox(
+  labelString = 'ADVICE on editing data', 
+  filename = 'www/dataEditingAdvice.Rmd', 
+  initialValue = FALSE)
+```
+
+## Contents of this Module
+
+```{r Overview-topic}
+conditionalPanelWithCheckbox(
+  labelString = 'Overview of the topic', 
   filename = 'Overview.Rmd', 
   initialValue = TRUE)
 ```
@@ -535,7 +552,7 @@ output$confInterval_Split = renderText(
 
 Examine the data table below. 
 
-(Throughout this example, you can change the numbers in the table and observe the results. 
+(Throughout this module, you can change the numbers in the table and observe the results. 
 Be sure to press "reset" when done.)
 
 If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*estimates()$lump))`*%*. 
