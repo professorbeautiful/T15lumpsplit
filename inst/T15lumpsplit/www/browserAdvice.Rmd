@@ -8,11 +8,14 @@ output$browserAdvice = renderUI({
   
   #if(! (input$isSafari | input$isFirefox) )
   #if(! (input$isSafari ) )
-  if((input$isChrome ) )
-    text =  HTML("ADVICE: Please use Safari or Firefox as your browser for better PDF displays. <br>(Or if using Chrome install a PDF plugin.)  IE has not been tested.")
-  # Ahh, but Chrome thinks it is Firefox!
-
+  if( input$isChrome ) 
+    text =  HTML("ADVICE: It appears you are using Chrome. If the panels with PDF are not displaying properly, please install a Chrome extension called 'PDF viewer', and re-load this module.")
+  
+  if( input$isFirefox ) 
+    text =  HTML("ADVICE: It appears you are using Firefox. If the panels with PDF are not displaying properly, please install a Firefox add-on called 'Google PDF viewer', and re-load this module.")
+  
   cat('browserAdvice is ', text, '\n')
+  
   text
 })
 
