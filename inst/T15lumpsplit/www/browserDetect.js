@@ -26,10 +26,12 @@ var isFirefox =
   navigator.vendor === "";
 
 if(isFirefox === "") isFirefox = false;
+Shiny.onInputChange("isFirefox", isFirefox);
+
 // Actually, Safari also has navigator.userAgent
 // equal to Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15.
 // So wrong, but it works ok for us.
-// Ahh, but Chrome thinks it is Firefox!
+
 // But there navigator.vendor distinguishes.
 Shiny.onInputChange("isFirefox", isFirefox);
 
