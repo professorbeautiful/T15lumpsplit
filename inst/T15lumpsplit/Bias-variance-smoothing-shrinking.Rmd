@@ -565,8 +565,14 @@ If you *"split"*, you will estimate that the response rate (`Pr(R|D)`), utilizin
 
 In the following plot, we see the estimate and the confidence interval for `Pr(R|D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
 
-```{r plotLumpSplitPoints}
-a(name='section-a_plotLumpSplitPoints')
+```{r initialize-jumpList}
+jumpList = list()
+```
+
+```{r analysis-plotLumpSplitPoints}
+jumpList = c(jumpList, plotLumpSplitPoints='Plot of lump & split points')
+analysisNumber = length(jumpList)
+a(name=paste0('section-a_', names(jumpList)[[analysisNumber]]) )
 # I removed fig.height=300
 output$confInterval_Lump = renderText(
   {
@@ -685,7 +691,9 @@ source('Lump-Split-crossvalidation.R', local=TRUE, echo = FALSE)
 ```
 
 ```{r}
-a(name='section-a_crossvalidationPlot')
+jumpList = c(jumpList, crossvalidationPlot='Cross-validation plot')
+analysisNumber = length(jumpList)
+a(name=paste0('section-a_', names(jumpList)[[analysisNumber]]) )
 fluidRow(
   column(4, 
          plotOutput('crossvalidationPlot')),
@@ -767,7 +775,10 @@ QandAha('QA-joint-posterior')
 
 
 ```{r BayesLogitPlot}
-a(name='section-a_viewPlot')
+jumpList = c(jumpList, viewPlot='Bivariate logit plot')
+analysisNumber = length(jumpList)
+a(name=paste0('section-a_', names(jumpList)[[analysisNumber]]) )
+#a(name='section-a_viewPlot')
 div(
   fluidRow(
     column(4, 
