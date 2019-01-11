@@ -100,9 +100,10 @@ TOCnum =  0
 ```{r servercode}
 source("Plight-Pdark-posterior-new.R", local=TRUE)
 source("DrWhoBayesFactor.R")
+DLdata = list()
 rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
                          title_1='title 1',
-                         DLdata = DLdataOriginal,
+                         DLdataLastUsed = DLdataOriginal,
                          DLdataMyChoice = DLdataOriginal,
                          isResetting = FALSE,
                          isLoopingSync = FALSE,
@@ -120,8 +121,10 @@ plotPlightPdarkPosteriorReactive = reactive( {
   phi <- input$phiInput
   mu0 <- input$mu0Input
   #cat("tau=", tau, " phi=", phi, " mu0=", mu0, "\n")
+  aNforBivariate = which(jumpList == 'Bivariate logit plot')
+  cat('plotPlightPdarkPosteriorReactive:  aNforBivariate=', aNforBivariate, '\n')
   rValues$bivariateNormResults <<-
-    plotPlightPdarkPosterior(DLdata=rValues$DLdata,
+    plotPlightPdarkPosterior(DLdata=rValues$DLdata[[aNforBivariate]],
                            tau=tau, phi=phi, mu0=logit(mu0), 
                            fudgeFactor = input$fudgeFactor,
                            showConfIntBinormal = TRUE
@@ -359,6 +362,7 @@ ContoursPanelLegend = list(
 ```
 
 ```{r responseRates}
+#### NOT USED apparently
 output$responseRates = renderUI({
   splitLayout(HTML("Response <br>rates:"),
                 HTML(paste(
@@ -377,13 +381,9 @@ output$responseRates = renderUI({
 })
 ```
 
-```{r data table}
-source('dataTableComponent.R', local=TRUE)
-```
-
 ```{r panelOfBifurcation}
 output$fisherResult = renderText({
-    Pvalue = fisher.test(rValues$DLdata)$p.value
+    Pvalue = fisher.test(rValues$DLdata[[1]])$p.value
     paste0(
         '   P = ', signif(digits=3, Pvalue), '\n')
 })
@@ -513,38 +513,40 @@ Goal: decide whether to treat the "$D$ patients" (or at least, whether to put re
 
 
 ```{r Lump Split Estimates}
-output$confInterval_Lump = renderText(
-  {
-    paste("Lump:  (", 
-          signif(digits=2,
-              rValues$estimates[['confInterval_Lump']][1]),
-          "-",
-          signif(digits=2,
-              rValues$estimates[['confInterval_Lump']][2]),
-          ")"
-    )
-  })
-output$confInterval_Split = renderText(
-  {
-    paste("Split:  (", 
-          signif(digits=2,
-                 rValues$estimates[['confInterval_Split']][1]),
-          "-",
-          signif(digits=2,
-                 rValues$estimates[['confInterval_Split']][2]),
-          ")"
-    )
-  }) 
-  estimates = reactive({
+output$confInterval_Lump = renderText({
+  paste("Lump:  (", 
+        signif(digits=2,
+               rValues$estimates[['confInterval_Lump']][1]),
+        "-",
+        signif(digits=2,
+               rValues$estimates[['confInterval_Lump']][2]),
+        ")"
+  )
+})
+output$confInterval_Split = renderText({
+  paste("Split:  (", 
+        signif(digits=2,
+               rValues$estimates[['confInterval_Split']][1]),
+        "-",
+        signif(digits=2,
+               rValues$estimates[['confInterval_Split']][2]),
+        ")"
+  )
+}) 
+
+estimates = reactive({
+  analysisName = 'plotLumpSplitPoints'
+  source('analysisReactiveSetup.R', local=TRUE)
+  
   rValues$estimates = list(
-    lump = sum(rValues$DLdata['R', ])/
-      sum(rValues$DLdata[ , ]),
-    split = (rValues$DLdata['R', 'D'])/
-      sum(rValues$DLdata[ , 'D']),
-    confInterval_Split = binom.test(x = rValues$DLdata['R', 'D'],
-                                n = sum(rValues$DLdata[ , 'D']) )$conf.int,
-    confInterval_Lump = binom.test(x = sum(rValues$DLdata['R', ]),
-                                n = sum(rValues$DLdata[ , ]) )$conf.int
+    lump = sum(thisData['R', ])/
+      sum(thisData[ , ]),
+    split = (thisData['R', 'D'])/
+      sum(thisData[ , 'D']),
+    confInterval_Split = binom.test(x = thisData['R', 'D'],
+                                    n = sum(thisData[ , 'D']) )$conf.int,
+    confInterval_Lump = binom.test(x = sum(thisData['R', ]),
+                                   n = sum(thisData[ , ]) )$conf.int
   )
 })
   
@@ -571,8 +573,8 @@ jumpList = list()
 
 ```{r analysis-plotLumpSplitPoints}
 jumpList = c(jumpList, plotLumpSplitPoints='Plot of lump & split points')
-analysisNumber = length(jumpList)
-a(name=paste0('section-a_', names(jumpList)[[analysisNumber]]) )
+source('analysisInitialSetup.R', local=TRUE)
+
 # I removed fig.height=300
 output$confInterval_Lump = renderText(
   {
@@ -598,15 +600,17 @@ output$confInterval_Split = renderText(
           ")"
     ) )
   }) 
+
 output$plotLumpSplitPoints = renderPlot(
   height = 300, {
-  plotPlightPdarkPosterior(DLdata=rValues$DLdata,
+  plotPlightPdarkPosterior(DLdata=rValues$DLdata[[analysisNumber]],
                            showPrior = FALSE, 
                            showPosterior=FALSE, showLikelihood=FALSE,
                            showS = TRUE,
                            showL = TRUE,
                            showW = FALSE)
   })
+
 fluidRow(
   column(4, 
          br(),
@@ -622,14 +626,27 @@ fluidRow(
   ),
   column(8,
          #br(),br(),br(),
-         dataTableComponent())
+         dataTableComponent(showhide='show', analysisName=analysisName))
 )
 # div(br(),br(),br())
 ```
 
-Lumping gives an answer with low variance ($N$=100) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. So we get a precise answer to what might be the wrong question. The confidence interval follows the diagonal where $Pr(R|D)=Pr(R|L)$.
+Lumping gives an answer with low variance ($N$=100; the sample size is fairly high) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. So we get a precise answer to what might be the wrong question. The confidence interval follows the diagonal of the plot on the left above, where $Pr(R|D)=Pr(R|L)$.
 
 Splitting gives an answer with high variance ($N$=5) but low bias-- because it is including only patients who ARE in the $D$ group:  it is directly asking the right question, but with little precision. The very wide horizontal confidence interval reflects this high variance.
+
+### <a name='section-ClassicalTest'> Classical estimation bifurcating on a hypothesis test</a> <!-- #title -->
+
+A time-honored but fading technique is to use a classical hypothesis test, to guide which of two analyses "Lump" or "Split", to present.
+Here the hypothesis to be tested is "$X_{DL}$ is independent of Y";  the response rate of D patients does not differ from L patients.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
+
+One test frequently performed to test independence in a 2x2 table like this one is the *Fisher exact test*. On the original data, the P value is `r textOutput('fisherResultOriginal', inline=TRUE)`. If you have changed the data in the table above, it is now `r textOutput('fisherResult', inline=TRUE)`.
+
+If the P-value is "significant" (which "by tradition" means "less than 5%"), the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!
+
+```{r QA-fisher}
+QandAha('QA-fisher')
+```
 
 ## Parametrizations of the probabilities: notation <!-- #title -->
 
@@ -655,18 +672,6 @@ QandAha(context='QA-parametrization')
 * [Bayes joint prior, logit scale](#Bayes_joint_prior).  
 * Approaches used in the famous ECMO data set. (ToDo)
 
-### <a name='section-ClassicalTest'> Classical estimation bifurcating on a hypothesis test</a> <!-- #title -->
-
-A time-honored but fading technique is to use a classical hypothesis test, to guide which of two analyses to present.
-Here the hypothesis is "$X_{DL}$ is independent of Y";  the response rate of D patients does not differ from L patients.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
-
-One test frequently performed to test independence in a 2x2 table like this one is the *Fisher exact test*. On the original data, the P value is `r textOutput('fisherResultOriginal', inline=TRUE)`. If you have changed the data, it is now `r textOutput('fisherResult', inline=TRUE)`.
-
-If the P-value is "significant" (which "by tradition" means "less than 5%"), the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!
-
-```{r QA-fisher}
-QandAha('QA-fisher')
-```
 
 ### <a name='section-Bayes_mixture'> Approach: Dr. Who's Bayes mixture of "Lump" and "Split"</a> <!-- #title -->
 
@@ -687,19 +692,17 @@ Cross-validation is a technique in which the performance of a model can be check
 For this example dataset, we perform leave-one-out cross-validation as follows:
 
 ```{r Lump-Split-crossvalidation.R}
-source('Lump-Split-crossvalidation.R', local=TRUE, echo = FALSE)
-```
-
-```{r}
 jumpList = c(jumpList, crossvalidationPlot='Cross-validation plot')
-analysisNumber = length(jumpList)
-a(name=paste0('section-a_', names(jumpList)[[analysisNumber]]) )
+source('analysisInitialSetup.R', local=TRUE)
+
+source('Lump-Split-crossvalidation.R', local=TRUE, echo = FALSE)
+
 fluidRow(
   column(4, 
          plotOutput('crossvalidationPlot')),
   column(8,
          br(),
-         dataTableComponent())
+         dataTableComponent(analysisName='crossvalidationPlot'))
 )
 ```
 
@@ -776,9 +779,8 @@ QandAha('QA-joint-posterior')
 
 ```{r BayesLogitPlot}
 jumpList = c(jumpList, viewPlot='Bivariate logit plot')
-analysisNumber = length(jumpList)
-a(name=paste0('section-a_', names(jumpList)[[analysisNumber]]) )
-#a(name='section-a_viewPlot')
+source('addAnalysis.R', local=TRUE)
+
 div(
   fluidRow(
     column(4, 
@@ -816,14 +818,17 @@ Assembling the results of the approaches to estimating Pr(R|D):
 
 ```{r tableOfEstimates}
 tableOfEstimates = reactive({
-  nRD=rValues$DLdata['R','D']
-  nND=rValues$DLdata['N','D']
+  ###  Use the last-data for everything.
+  for(aN in 1:analysisNumber)
+    rValues$DLdata[[analysisNumber]] = rValues$DLdataLastUsed
+  nRD=rValues$DLdataLastUsed['R','D']
+  nND=rValues$DLdataLastUsed['N','D']
   posterior.mean.s = (1+nRD)/(2+nRD+nND)
-  nR=sum(rValues$DLdata['R', ])
-  nN=sum(rValues$DLdata['N', ])
+  nR=sum(rValues$DLdataLastUsed['R', ])
+  nN=sum(rValues$DLdataLastUsed['N', ])
   posterior.mean.l = (2+nR)/(4+nN)
   
-  pProbSplit = posteriorProb(theData=rValues$DLdata)
+  pProbSplit = posteriorProb(theData=rValues$DLdataLastUsed)
   pProbLump = (1-pProbSplit)
   posterior.mean.w = 
     pProbSplit * posterior.mean.s +
@@ -953,7 +958,7 @@ Let's generate 99 extra features and examine how the methods behave when applied
 
 ```{r makeDLdataDFYesNoYes  }
 #  OK, mission accomplished, example found. We need never run this again.
-makeDLdataDFYesNoYes = function(DLdata, qStar=1){
+makeDLdataDFYesNoYes = function(DLdata=DLdataOriginal, qStar=1){
   isYesNoYes = FALSE
   seedInt = 44
   #assign('.Random.seed', readRDS('savedSeed.rda') )
@@ -979,6 +984,7 @@ makeDLdataDFYesNoYes = function(DLdata, qStar=1){
 ## Make DLdata into a data frame.
 makeDLdataDF = function(DLdata=DLdataOriginal) {
   set.seed(readRDS('seedInt.rda'))
+  print(DLdata)
   DLdataDF = 
     data.frame(
       outcome = rep(c("R","N", "R","N"),
@@ -1060,7 +1066,7 @@ actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
 ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified DLdata.
 observeEvent(list(input$regenerateFeatures, rValues$DLdata), {
     rValues$DLdataDFwithFeatures = 
-       makeDLdataWithFeatures(rValues$DLdata)
+       makeDLdataWithFeatures(rValues$DLdataLastUsed)
 })
 ```
 ```{r Pvalues all features}
@@ -1104,7 +1110,7 @@ In the classical statistics spirit, we would now go with Dr. Lump instead of Dr.
 
 As before, you have the opportunity to play around with changing the data, or reverting to the original data set.
 
-`r dataTableComponent('hide')`
+`r dataTableComponent(showhide='hide')`
 
 ```{r QA-multiple-comparisons-corrections}
 QandAha('QA-multiple-comparisons-corrections')
