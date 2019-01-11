@@ -13,3 +13,6 @@ source("DrWhoBayesFactor.R")
 #source('navTOCid.R', local=T)
 source('dataTableComponent.R', local=TRUE)
 #source('navTOCid.R', local=T)
+source("Plight-Pdark-posterior-new.R", local=TRUE)
+source("DrWhoBayesFactor.R")
+
