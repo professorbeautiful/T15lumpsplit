@@ -107,11 +107,12 @@ Viewing Dr. Who's posterior:
 
 ```{r}
 jumpList = c(jumpList, whoMixturePlot='Posterior distribution for Dr. Who')
-analysisNumber = length(jumpList)
-a(name=paste0('section-a_', names(jumpList)[[analysisNumber]] ) )
-###  a(name='section-a_whoMixturePlot')
+source('analysisInitialSetup.R', local=TRUE)
+
 output$whoMixturePlot = 
   renderPlot(expr =  {
+    analysisName = 'whoMixturePlot'
+    source('analysisReactiveSetup.R', local=TRUE)
     pSeq = seq(0,1, length=100)
     par(mfrow=c(1,2))
     prior.s = dbeta(pSeq, 1, 1)
@@ -225,7 +226,7 @@ output$whoMixturePlot =
     text(posterior.mean.w, onTop*1.00, col='darkgreen', xpd=NA, labels="W", cex=1, pos = 3, font=4)
   })
 plotOutput('whoMixturePlot')
-dataTableComponent(showhide='hide')
+dataTableComponent(showhide='hide', analysisName='whoMixturePlot')
 TextQuestion("Experiment with changing #RL in the range 2 to 9. What happens?  And... why? ")
 QandAha('QA-whoMixturePlot')
 ```

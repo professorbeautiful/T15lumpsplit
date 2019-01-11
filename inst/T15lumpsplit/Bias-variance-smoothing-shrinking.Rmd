@@ -779,7 +779,7 @@ QandAha('QA-joint-posterior')
 
 ```{r BayesLogitPlot}
 jumpList = c(jumpList, viewPlot='Bivariate logit plot')
-source('addAnalysis.R', local=TRUE)
+source('analysisInitialSetup.R', local=TRUE)
 
 div(
   fluidRow(
@@ -797,7 +797,7 @@ div(
     ),
     column(8,
            br(),
-           dataTableComponent()
+           dataTableComponent(analysisName='viewPlot')
     )
   ),
   fluidRow(

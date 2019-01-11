@@ -2,6 +2,9 @@
 ####    Illustrating cross-validation with the Dark-Light dataset
 
 output$crossvalidationPlot = renderPlot({
+  analysisName = 'crossvalidationPlot'
+  source('analysisReactiveSetup.R', local=TRUE)
+
     theData=rValues$DLdata
     proportionOverall = sum(theData['R', ])/sum(theData)
     proportionThisGroup =  sum(theData['R', 'D'])/sum(theData[ , 'D' ])
