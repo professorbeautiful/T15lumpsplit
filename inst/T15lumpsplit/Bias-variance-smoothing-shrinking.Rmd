@@ -608,7 +608,7 @@ div(
     ),
     column(8,
            br(),
-           dataTableComponent(analysisName='viewPlot')
+           dataTableComponent(analysisName='bivariateContourPlot')
     )
   ),
   fluidRow(
