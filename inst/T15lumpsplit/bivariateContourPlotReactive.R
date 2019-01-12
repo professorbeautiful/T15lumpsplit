@@ -1,8 +1,63 @@
 ### bivariateContourPlotReactive
 
+###{r panelOfInputs}
+panelOfInputs =
+  wellPanel(
+    #checkboxInput(inputId= 'togglePanelOfInputs', label =
+    strong(em(
+      "Prior Distribution Inputs")),
+    #value = TRUE),
+    #conditionalPanel(
+    #  "input.togglePanelOfInputs",
+    fluidRow(
+      column(3, actionButton("lumpID", label = "Lump")),
+      column(3, actionButton("splitID", label = "Split")),
+      column(3, actionButton("mixedID", label = "Mixed")),
+      column(3, numericInput(inputId = 'fudgeFactor',
+                             label = 'continuity fudge factor',
+                             value=0.001))
+    ),
+    fluidRow(
+      column(4,
+             numericInput("phiInput",
+                          "prior variance | group (phi)",
+                          value=0, min = 0.00, step=0.1)),
+      column(4,
+             numericInput("tauInput",
+                          "shared additional variance (tau)",
+                          value=1, min = 0.00, step=0.1)
+      ),
+      column(4,
+             numericInput("mu0Input", "shared prior mean (mu)",
+                          value=0.5, min = 0.001, step=0.1, max=0.999))
+    )
+  )
+###
+
+
+###{r show-hide-contours}
+ContoursPanelLegend = list(
+  div(style="color:orange",
+      checkboxInput("checkPrior",
+                    "Orange = prior distribution",
+                    TRUE)),
+  div(style="color:blue",
+      checkboxInput("checkPosterior",
+                    "Blue = posterior distribution",
+                    TRUE)),
+  "Shaded: 50% highest posterior region",
+  #  "X:   observed data", br(),
+  div(style='color:red',
+      "L:  Dr.Lump's MP estimate", br(),
+      "S:  Dr.Split's MP estimate", br(),
+      "W:  Dr.Who's MP estimate"
+  )
+)
+###
+
 ###{r plotPlightPdarkPosteriorReactive}
 plotPlightPdarkPosteriorReactive = reactive( {
-  analysisName = 'bivariateContourPlotReactive'
+  analysisName = 'bivariateContourPlot'
   source('analysisReactiveSetup.R', local=TRUE)
 
   tau <- input$tauInput
