@@ -5,21 +5,20 @@ output$crossvalidationPlot = renderPlot({
   analysisName = 'crossvalidationPlot'
   source('analysisReactiveSetup.R', local=TRUE)
 
-    theData=rValues$DLdata
-    proportionOverall = sum(theData['R', ])/sum(theData)
-    proportionThisGroup =  sum(theData['R', 'D'])/sum(theData[ , 'D' ])
+    proportionOverall = sum(thisData['R', ])/sum(thisData)
+    proportionThisGroup =  sum(thisData['R', 'D'])/sum(thisData[ , 'D' ])
 
     leaveOneOut <<- function(
       weight=1/2, outcome, feature,
       penaltyFunction = function(outcome, prediction)
         switch(outcome, R=(1-prediction)^2, N=prediction^2)) {
-      smallerDataSet = theData
+      smallerDataSet = thisData
       smallerDataSet[outcome=outcome, feature=feature] =
         smallerDataSet[outcome=outcome, feature=feature] - 1
       proportionOverallSmaller = sum(smallerDataSet['R', ])/sum(smallerDataSet)
       proportionThisGroupSmaller =  sum(smallerDataSet['R', feature])/sum(smallerDataSet[ , feature ])
       prediction = weight*proportionThisGroupSmaller + (1-weight)*proportionOverallSmaller
-      penalty = penaltyFunction(outcome, prediction) * theData[outcome, feature]
+      penalty = penaltyFunction(outcome, prediction) * thisData[outcome, feature]
       return(penalty)
     }
 
@@ -63,8 +62,8 @@ output$crossvalidationPlot = renderPlot({
     mtext(text = 'penalty', side = 2, col='orange',line=2)
     optimalWeight = weights[which(penaltyVector==min(penaltyVector))]  [1]
     #cat('optimalWeight = ', optimalWeight, '\n')
-    proportionOverall = sum(theData[ 'R', ])/sum(theData)
-    proportionThisGroup =  sum(theData[ 'R', 'D'])/sum(theData[ , 'D'])
+    proportionOverall = sum(thisData[ 'R', ])/sum(thisData)
+    proportionThisGroup =  sum(thisData[ 'R', 'D'])/sum(thisData[ , 'D'])
     optimalEstimate = estimators[which(weights==optimalWeight)]
     rValues$CVoptimalEstimate = optimalEstimate
     #cat('optimal estimate for dark = ', optimalEstimate, '\n')
