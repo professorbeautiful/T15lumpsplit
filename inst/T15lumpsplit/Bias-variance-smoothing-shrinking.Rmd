@@ -429,11 +429,9 @@ Splitting gives an answer with high variance ($N$=5) but low bias-- because it i
 
 
 ```{r panelOfBifurcation}
-jumpList = c(jumpList, panelOfBifurcation = 'Testing Lump vs Split')
-source('analysisInitialSetup.R', local=TRUE)
 
 output$fisherResult = renderText({
-  analysisName = 'panelOfBifurcation'
+  analysisName = 'plotLumpSplitPoints'
   source('analysisReactiveSetup.R', local=TRUE)
 
   Pvalue = fisher.test(thisData)$p.value
