@@ -111,7 +111,7 @@ Viewing Dr. Who's posterior:
 
 ```{r}
 jumpList = c(jumpList, whoMixturePlot='Posterior distribution for Dr. Who')
-source('analysisInitialSetup.R', local=TRUE)
+source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$whoMixturePlot = 
   renderPlot(expr =  {

@@ -9,4 +9,5 @@ cat(  analysisName, '\n')
 DLdata[[analysisNumber]] <- DLdataOriginal
 cat("Creating DLdata[[analysisNumber]] for analysisNumber = ",
     analysisNumber, '\n')
-a(name=paste0('section-a_', analysisName) )
+##  a(name=paste0('section-a_', analysisName) )
+## Does not work inside a source() call.
