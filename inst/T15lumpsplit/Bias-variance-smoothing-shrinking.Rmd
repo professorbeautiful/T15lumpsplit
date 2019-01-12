@@ -587,7 +587,7 @@ QandAha('QA-joint-posterior')
 
 
 ```{r BayesLogitPlot}
-jumpList = c(jumpList, viewPlot='Bivariate logit plot')
+jumpList = c(jumpList, bivariateContourPlot='Bivariate contour plot')
 source('analysisInitialSetup.R', local=TRUE)
 
 source('bivariateContourPlotReactive.R', local=TRUE)
