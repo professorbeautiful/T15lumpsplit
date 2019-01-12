@@ -305,9 +305,9 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
   span(
     conditionalPanelWithCheckbox(
       initialValue = (showhide=='show'),
-      labelString = HTML(paste("Response by Predictor (",
+      labelString = HTML(paste("Response by Predictor ____(",
                           gsub("idPanelDTC","",panelIdThisDTC),
-                          ")")),
+                          ")____")),
       #labelString = "Response by Predictor Table ",
       ##    This breaks the JS!  conditionalPanelWithCheckbox needs to extract the unique ID.
       html = div(
