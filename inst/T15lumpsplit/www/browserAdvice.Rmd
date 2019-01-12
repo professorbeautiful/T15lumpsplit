@@ -12,7 +12,10 @@ output$browserAdvice = renderUI({
     text =  HTML("ADVICE: It appears you are using Chrome. If the panels with PDF are not displaying properly, please install a Chrome extension called 'PDF viewer', and re-load this module. Or use Safari as your browser.")
   
   if( input$isFirefox ) 
-    text =  HTML("ADVICE: It appears you are using Firefox. If the panels with PDF are not displaying properly, please install a Firefox add-on called 'Google PDF viewer', and re-load this module. Or use Safari as your browser.")
+    text =  HTML("ADVICE: 
+It appears you are using Firefox. If the panels with PDF are not displaying properly, and/or many PDF downloads are happening, the easiest fix is to use Safari. <br>
+Alternatively, please install and enable a Firefox add-on called 'Google PDF viewer', and in Firefox Preferences -> Applications -> Content Type PDF, select 'Preview in Firefox'. Then re-load this page. <br>
+                 Also: if you see 'Math Processing Error', click the 'reload' sign while depressing Shift.")
   
   cat('browserAdvice is ', text, '\n')
   
