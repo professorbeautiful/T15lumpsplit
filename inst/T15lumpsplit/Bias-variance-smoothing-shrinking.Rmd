@@ -907,6 +907,9 @@ Now that we have a data set with lots of features, let's do Fisher exact tests a
 ```{r pvaluesPlots}
 jumpList = c(jumpList, pvaluesPlots='P-value plots')
 source('analysisInitialSetup.R', local=TRUE)
+print(paste0('anchor for ', analysisName) )
+a(name=paste0('section-a_', analysisName) )
+
 ```
 
 
