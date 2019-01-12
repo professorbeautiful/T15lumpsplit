@@ -932,8 +932,7 @@ In the classical statistics spirit, we would now go with Dr. Lump instead of Dr.
 As before, you have the opportunity to play around with changing the data, or reverting to the original data set.
 
 ```{r}
-jumpList= c(jumpList, Bonferroni='Bonferroni adjustment')
-dataTableComponent(showhide='hide', analysisName='Bonferroni')
+dataTableComponent(showhide='hide', analysisName='pvaluesPlots')
 
 ```
 
