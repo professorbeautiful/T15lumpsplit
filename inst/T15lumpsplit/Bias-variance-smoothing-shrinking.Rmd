@@ -308,6 +308,10 @@ We will explore a simple lumping and splitting conundrum as a jumping off point 
 QandAha(context='QA-intro-lump-split')
 ```
 
+```{r initialize-jumpList}
+jumpList = list()
+```
+
 # Hypothetical medical study <!-- #title -->
 
 ## Description of the challenge <!-- #title -->
