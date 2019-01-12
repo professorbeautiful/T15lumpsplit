@@ -269,6 +269,8 @@ More generally,
 
 ```{r}
 output$bayesAverage = renderText({
+  analysisName = 'whoMixturePlot'
+  source('analysisReactiveSetup.R', local=TRUE)
   paste0('Pr(Lump) *  mLump + Pr(Split) * mSplit',
          '= ',
          signif(digits=3,
