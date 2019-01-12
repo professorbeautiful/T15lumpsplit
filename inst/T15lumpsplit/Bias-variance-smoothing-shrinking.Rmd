@@ -431,20 +431,10 @@ Splitting gives an answer with high variance ($N$=5) but low bias-- because it i
 ```{r panelOfBifurcation}
 jumpList = c(jumpList, panelOfBifurcation = 'Testing Lump vs Split')
 source('analysisInitialSetup.R', local=TRUE)
-# cat('working directory (initial): ', getwd(), '\n')
-# cat(
-#   file.exists('analysisInitialSetup.R'), #TRUE
-#   file.exists('analysisReactiveSetup.R')
-#   , '\n')
 
 output$fisherResult = renderText({
   analysisName = 'panelOfBifurcation'
   source('analysisReactiveSetup.R', local=TRUE)
-  # cat('working directory (reactive): ', getwd(), '\n')
-  # cat(
-  #   file.exists('analysisInitialSetup.R'), #TRUE
-  #   file.exists('analysisReactiveSetup.R')
-  #   , '\n')
 
   Pvalue = fisher.test(thisData)$p.value
   paste0(
