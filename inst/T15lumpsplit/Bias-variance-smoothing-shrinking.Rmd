@@ -325,27 +325,24 @@ The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
 Goal: decide whether to treat the "$D$ patients" (or at least, whether to put resources into studying it further for "$D$ patients").
 
 
-```{r Lump Split Estimates}
-output$confInterval_Lump = renderText({
-  paste("Lump:  (", 
-        signif(digits=2,
-               rValues$estimates[['confInterval_Lump']][1]),
-        "-",
-        signif(digits=2,
-               rValues$estimates[['confInterval_Lump']][2]),
-        ")"
-  )
-})
-output$confInterval_Split = renderText({
-  paste("Split:  (", 
-        signif(digits=2,
-               rValues$estimates[['confInterval_Split']][1]),
-        "-",
-        signif(digits=2,
-               rValues$estimates[['confInterval_Split']][2]),
-        ")"
-  )
-}) 
+
+## Simple "Lump"" and "Split" estimates of Pr(R|D) <!-- #title -->
+
+Examine the data table below. 
+
+(Throughout this module, you can change the numbers in the table and observe the results. 
+Be sure to press "reset" when done.)
+
+If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*estimates()$lump))`*%*. 
+
+If you *"split"*, you will estimate that the response rate (`Pr(R|D)`), utilizing the D patients only, is 
+`r reactive(round(100*estimates()$split))`*%*. 
+
+In the following plot, we see the estimate and the confidence interval for `Pr(R|D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
+
+```{r analysis-plotLumpSplitPoints}
+jumpList = c(jumpList, plotLumpSplitPoints='Plot of lump & split points')
+source('analysisInitialSetup.R', local=TRUE)
 
 estimates = reactive({
   analysisName = 'plotLumpSplitPoints'
@@ -363,34 +360,10 @@ estimates = reactive({
   )
 })
   
-```
-
-
-## Simple "Lump"" and "Split" estimates of Pr(R|D) <!-- #title -->
-
-Examine the data table below. 
-
-(Throughout this module, you can change the numbers in the table and observe the results. 
-Be sure to press "reset" when done.)
-
-If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*estimates()$lump))`*%*. 
-
-If you *"split"*, you will estimate that the response rate (`Pr(R|D)`), utilizing the D patients only, is 
-`r reactive(round(100*estimates()$split))`*%*. 
-
-In the following plot, we see the estimate and the confidence interval for `Pr(R|D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
-
-```{r initialize-jumpList}
-jumpList = list()
-```
-
-```{r analysis-plotLumpSplitPoints}
-jumpList = c(jumpList, plotLumpSplitPoints='Plot of lump & split points')
-source('analysisInitialSetup.R', local=TRUE)
-
-# I removed fig.height=300
 output$confInterval_Lump = renderText(
   {
+  analysisName = 'plotLumpSplitPoints'
+  source('analysisReactiveSetup.R', local=TRUE)
     try(silent = TRUE,
         paste("Lump:  (", 
           signif(digits=2,
@@ -403,20 +376,24 @@ output$confInterval_Lump = renderText(
   })
 output$confInterval_Split = renderText(
   {
-    try(silent = TRUE,
-        paste("Split:  (", 
-          signif(digits=2,
-                 rValues$estimates[['confInterval_Split']][1]),
-          "-",
-          signif(digits=2,
-                 rValues$estimates[['confInterval_Split']][2]),
+      analysisName = 'plotLumpSplitPoints'
+      source('analysisReactiveSetup.R', local=TRUE)
+      try(silent = TRUE,
+          paste("Split:  (", 
+                signif(digits=2,
+                       rValues$estimates[['confInterval_Split']][1]),
+                "-",
+                signif(digits=2,
+                       rValues$estimates[['confInterval_Split']][2]),
           ")"
     ) )
   }) 
 
 output$plotLumpSplitPoints = renderPlot(
   height = 300, {
-  plotPlightPdarkPosterior(DLdata=rValues$DLdata[[analysisNumber]],
+    analysisName = 'plotLumpSplitPoints'
+    source('analysisReactiveSetup.R', local=TRUE)
+    plotPlightPdarkPosterior(DLdata=rValues$DLdata[[analysisName]],
                            showPrior = FALSE, 
                            showPosterior=FALSE, showLikelihood=FALSE,
                            showS = TRUE,
@@ -450,8 +427,39 @@ Splitting gives an answer with high variance ($N$=5) but low bias-- because it i
 
 ### <a name='section-ClassicalTest'> Classical estimation bifurcating on a hypothesis test</a> <!-- #title -->
 
+
+```{r panelOfBifurcation}
+jumpList = c(jumpList, panelOfBifurcation = 'Testing Lump vs Split')
+source('analysisInitialSetup.R', local=TRUE)
+# cat('working directory (initial): ', getwd(), '\n')
+# cat(
+#   file.exists('analysisInitialSetup.R'), #TRUE
+#   file.exists('analysisReactiveSetup.R')
+#   , '\n')
+
+output$fisherResult = renderText({
+  analysisName = 'panelOfBifurcation'
+  source('analysisReactiveSetup.R', local=TRUE)
+  # cat('working directory (reactive): ', getwd(), '\n')
+  # cat(
+  #   file.exists('analysisInitialSetup.R'), #TRUE
+  #   file.exists('analysisReactiveSetup.R')
+  #   , '\n')
+
+  Pvalue = fisher.test(thisData)$p.value
+  paste0(
+    '   P = ', signif(digits=3, Pvalue), '\n')
+})
+output$fisherResultOriginal = renderText({
+  Pvalue = fisher.test(DLdataOriginal)$p.value
+  paste0(
+    '   P = ', signif(digits=3, Pvalue), '\n')
+})
+
+```
+
 A time-honored but fading technique is to use a classical hypothesis test, to guide which of two analyses "Lump" or "Split", to present.
-Here the hypothesis to be tested is "$X_{DL}$ is independent of Y";  the response rate of D patients does not differ from L patients.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
+Here the hypothesis to be tested is " $X_{DL}$ is independent of Y";  the response rate of D patients does not differ from L patients.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
 
 One test frequently performed to test independence in a 2x2 table like this one is the *Fisher exact test*. On the original data, the P value is `r textOutput('fisherResultOriginal', inline=TRUE)`. If you have changed the data in the table above, it is now `r textOutput('fisherResult', inline=TRUE)`.
 
@@ -879,7 +887,7 @@ allChisqPs_original = allPvalues$allChisqPs
 ```{r regenerateFeatures button}
 actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
 ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified DLdata.
-observeEvent(list(input$regenerateFeatures, rValues$DLdata), {
+observeEvent(list(input$regenerateFeatures), {
     rValues$DLdataDFwithFeatures = 
        makeDLdataWithFeatures(rValues$DLdataLastUsed)
 })
@@ -905,8 +913,14 @@ observeEvent(rValues$DLdataDFwithFeatures, {
 
 Now that we have a data set with lots of features, let's do Fisher exact tests and chisquare tests to all the features. The red "X" is of course our original data feature, with $X_{DL}$ = D or L.
 
+
 ```{r pvaluesPlots}
+jumpList = c(jumpList, pvaluesPlots='P-value plots')
+source('analysisInitialSetup.R', local=TRUE)
+
 output$pvaluesPlots = renderPlot({
+  analysisName = 'pvaluesPlots'
+  source('analysisReactiveSetup.R', local=TRUE)
   hist(rValues$allFisherPs)
   #head(sort(allFisherPs))
   hist(rValues$allChisqPs)
@@ -1025,7 +1039,13 @@ We can apply EB to a collection of estimates. In this instance, let's collect th
 This can be compared to all 100 odds ratios for the features:
 
 ```{r oddsratioplot}
+jumpList = c(jumpList, oddsratioplot='Odds ratio plot')
+  source('analysisInitialSetup.R', local=TRUE)
+
 output$oddsratioplot = renderPlot({
+  analysisName ='oddsratioplot'
+  source('analysisReactiveSetup.R', local=TRUE)
+
   outcome = rValues$DLdataDFwithFeatures$outcome
   oddsratio = function(col, sprinkle=1) {
     theTable = table(col, outcome)
@@ -1107,7 +1127,13 @@ conditionalPanelWithCheckboxPDF(
 Continuing the "empirical" part of EB, one estimate of $\tau$ is to take the total sums of squares and subtract the portion purely due to the individual data noise of the features. When the individual variances vary greatly, the estimate is a little more complicated. One way is via maximum likelihood. 
 
 ```{r empBayeslogitRatios}
+jumpList = c(jumpList, empBayeslogitRatios='Empirical Bayes logit ratios')
+  source('analysisInitialSetup.R', local=TRUE)
+
 output$empBayeslogitRatios = renderPlot({
+  analysisName = 'empBayeslogitRatios'
+  source('analysisReactiveSetup.R', local=TRUE)
+
   logitRatios = rValues$logoddsratios
   logitVars = rValues$logoddsratiovariances
   print(summary(logitRatios))
@@ -1205,10 +1231,11 @@ conditionalPanelWithCheckboxPDF(
 Here we apply the qValue method to the chisquare P values from our dataset with 100 features:
 
 ```{r qvaluePlot}
-jumpList = c(jumpList, qValue='qValue adjustment')
+jumpList = c(jumpList, qValue='Qvalue adjustment')
 source('analysisInitialSetup.R', local=TRUE)
 
 output$qvaluePlot = renderPlot({
+  analysisName = 'qValue'
   source('analysisReactiveSetup.R', local=TRUE)
   qout = rValues$qValueObject =
     qvalue::qvalue(rValues$allChisqPs)
