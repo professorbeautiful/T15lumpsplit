@@ -971,24 +971,26 @@ makeBHtable = function(pValues, qStar=1, columns=8) {
 ```
 
 ```{r output for BHtable}
-# numericInput('qStarID', 'qStar', 
-#              value = 1, min=0,  step=0.1)
-# observeEvent(input$qstarID, {
-#   rValues$qStar = input$qStarID
-# })
-# 
-# observeEvent(
-#   list(rValues$allChisqPs, 
-#        rValues$qStar),  
-#   {
-#     rValues$BHtable = makeBHtable(rValues$allChisqPs, qStar=1)#rValues$qStar)
-#   }
-# )
-# output$BHtable = renderTable(
-#   digits=3,  expr=rValues$BHtable
-# )
-# 
-# tableOutput('BHtable')
+jumpList = c(jumpList, BHtable='Benjamini-Hochberg analysis') source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+
+numericInput('qStarID', 'qStar',
+             value = 1, min=0,  step=0.1)
+observeEvent(input$qstarID, {
+  rValues$qStar = input$qStarID
+})
+
+observeEvent(
+  list(rValues$allChisqPs,
+       rValues$qStar),
+  {
+    rValues$BHtable = makeBHtable(rValues$allChisqPs, qStar=1)#rValues$qStar)
+  }
+)
+output$BHtable = renderTable(
+  digits=3,  expr=rValues$BHtable
+)
+
+tableOutput('BHtable')
 
 ```
 
