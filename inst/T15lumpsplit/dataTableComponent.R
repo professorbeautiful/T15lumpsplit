@@ -157,6 +157,7 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
                           ")____")),
       #labelString = "Response by Predictor Table ",
       ##    This breaks the JS!  conditionalPanelWithCheckbox needs to extract the unique ID.
+      ## But we added the removal of __ and beyond in conditionalPanelWithCheckbox, so OK.
       html = div(
         # checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
         # conditionalPanel(
@@ -164,7 +165,7 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
         splitLayout(style='color:green;', "",
                     HTML("Group '<strong>D</strong>'"),
                     HTML("Group '<strong>L</strong>'"),
-                    cellWidths = c("40%",'30%','30%')),
+                    cellWidths = c("34%",'34%','32%')),
         #fluidRow(
         splitLayout(cellWidths = c("30%",'35%','35%'),
                     #dataRowLabel( "<b>N</b><br>non-<br>responders")),
