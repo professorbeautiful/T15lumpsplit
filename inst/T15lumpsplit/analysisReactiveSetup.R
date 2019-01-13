@@ -7,8 +7,8 @@
 #  But this path will not work out of the installed package.
 #  Currently I'm linking it to ../..
 
-cat('analysisReactiveSetup.R: ')
-cat( analysisName, '  ', system('pwd', intern=TRUE), '\n')
+#cat('analysisReactiveSetup.R: ')
+#cat( analysisName, '  ', system('pwd', intern=TRUE), '\n')
 if(is.null(rValues$DLdata[[analysisNumber]]))
   rValues$DLdata[[analysisNumber]] = DLdataOriginal
 thisData = rValues$DLdata[[analysisNumber]]
