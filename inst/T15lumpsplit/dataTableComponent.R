@@ -157,7 +157,7 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
         splitLayout(style='color:green;', "",
                     HTML("Group '<strong>D</strong>'"),
                     HTML("Group '<strong>L</strong>'"),
-                    cellWidths = c("40%",'30%','30%')),
+                    cellWidths = c("34%",'36%','30%')),
         #fluidRow(
         splitLayout(cellWidths = c("30%",'35%','35%'),
                     #dataRowLabel( "<b>N</b><br>non-<br>responders")),
