@@ -4,6 +4,7 @@ cellNames = c('RD', 'ND', 'RL', 'NL')
 
 createDLdataChoiceObserver <- function(analysisName) {
   myName = paste0('updateDLdataMyChoice_', analysisName)
+  analysisNumber = match(analysisName, names(jumpList))
   theCellIds = paste0('m', cellNames, 'idPanelDTC', analysisNumber)
   assign(myName,
          pos=1,
