@@ -1,4 +1,4 @@
-source('jumpBackWithPanel.R')
+source('jumpBackWithPanel.R', local=TRUE)
 
 cellNames = c('RD', 'ND', 'RL', 'NL')
 
@@ -120,7 +120,10 @@ dataTableComponent = function(showhide='show', analysisName) {
                           label = "Reset data to my choice"),
              br(),
              #getwd(),
-             inclRmd('jumpBack.Rmd'))
+             jumpBackWithPanel(analysisNumber, thisDTCNumber)
+             ##  can't find nextNumber() from jumpBackWithPanel()... why?
+             #inclRmd('jumpBackWithPanel.Rmd')
+      )
     )
   })
   uiOutput(outputId = outputIdThisDTC)
