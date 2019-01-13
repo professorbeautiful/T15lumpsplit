@@ -79,7 +79,10 @@ linkinLink = function(anchorName, linktext) {
 
     "currentLocationId='", IdThisLinkin, "';
     Shiny.onInputChange('currentLocationId',
-    currentLocationId);"
+    currentLocationId);",
+
+    "Shiny.onInputChange('linktext', '",
+    linktext, "');"
     )
   ## https://stackoverflow.com/questions/39273043/shiny-modules-not-working-with-renderui
   ## function(a,b,c){c=addDefaultInputOpts(c),p.setInput(a,b,c)}
