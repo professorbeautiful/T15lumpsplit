@@ -41,6 +41,8 @@ conditionalPanelWithCheckbox = function(
 ) {
   labelStringNoSpaces = gsub("[- .&():'?!]", "_", labelString)
   labelStringId = paste0(labelStringNoSpaces, 'Id')
+  labelString = gsub('__.*', '', labelString)
+  ## Remove extra numbering required to make labelStringId unique.
   cbStringId = paste0('cb', labelStringId)
   if(!missing(filename))
     html = (tagList(inclRmd(filename), html) )
