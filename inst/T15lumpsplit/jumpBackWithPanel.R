@@ -1,7 +1,7 @@
 jumpBackWithPanel = function(analysisNumber, thisDTCNumber) {
   theJumpLinks =
     tag('ul',
-        tagList( lapply(1:(analysisNumber), function(aN)
+        tagList( lapply(1:length(jumpList), function(aN)
           tagList(
             linkinLink(paste0('a_', names(jumpList)[aN]),
                        jumpList[[aN]]),
