@@ -9,7 +9,6 @@ createDLdataChoiceObserver <- function(analysisName) {
   assign(myName,
          pos=1,
          observeEvent(
-           #priority = 2,
            label=myName,
            eventExpr = #c(input$mRD, input$mRL, input$mND, input$mNL)
              c(input[[theCellIds[1]]], # RD. Must by 1,2,3,4
@@ -61,26 +60,18 @@ dataTableComponent = function(showhide='show', analysisName) {
 
   #### resetIdThisDTC ####
   'When  Button reset is clicked,
-    copy DLdataOriginal to rValues$DLdata.'
+    copy DLdataOriginal to rValues$DLdataLastUsed.'
   myName = paste0('observeEvent_resetIdThisDTC_', thisDTCNumber)
   assign(myName,
          pos=1,
          observeEvent(label = myName,
                       eventExpr = input[[resetIdThisDTC]],
                       handlerExpr =  {
-                        #updateDLdataMyChoice$suspend()
-                        if(trackupdateDLdata)
-                          cat(myName, '\n')
                         isolate({
-                          rValues$isResetting <<- TRUE
-                          if(trackupdateDLdata)
-                            cat(myName, ':   rValues$isResetting = TRUE\n')
                           rValues$DLdata[[analysisName]] =
                             rValues$DLdataLastUsed =
                             DLdataOriginal
-                          # rValues$isResetting <<- FALSE #Not necessary?
                         })
-                        #updateDLdataMyChoice$resume()
                       })
   )
 
@@ -91,11 +82,8 @@ dataTableComponent = function(showhide='show', analysisName) {
          observeEvent(
            label = myName,
            eventExpr = input[[myChoiceIdThisDTC]],
-           #priority = 1,
            handlerExpr =  {
-             #cat(myName, '\n')
              isolate({
-               #cat(myName, '  isResetting=', rValues$isResetting, '\n')
                rValues$DLdata[[thisDTCNumber]] =
                  rValues$DLdataLastUsed =
                  rValues$DLdataMyChoice[[thisDTCNumber]]
@@ -119,9 +107,8 @@ dataTableComponent = function(showhide='show', analysisName) {
              actionButton(inputId = myChoiceIdThisDTC,
                           label = "Reset data to my choice"),
              br(),
-             #getwd(),
              jumpBackWithPanel(analysisNumber, thisDTCNumber)
-             ##  can't find nextNumber() from jumpBackWithPanel()... why?
+             ##  can't find nextNumber() from jumpBackWithPanel()... needed local=T
              #inclRmd('jumpBackWithPanel.Rmd')
       )
     )
@@ -152,19 +139,14 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
       labelString = HTML(paste("Response by Predictor ____(",
                           gsub("idPanelDTC","",panelIdThisDTC),
                           ")____")),
-      #labelString = "Response by Predictor Table ",
-      ##    This breaks the JS!  conditionalPanelWithCheckbox needs to extract the unique ID.
+      ##   conditionalPanelWithCheckbox needs to extract the unique ID.
+      ##    but it will strip __.* to look nice.
       html = div(
-        # checkboxInput('toggleShowData', 'Show/Hide the Data Panel', FALSE),
-        # conditionalPanel(
-        #   'input.toggleShowData',
         splitLayout(style='color:green;', "",
                     HTML("Group '<strong>D</strong>'"),
                     HTML("Group '<strong>L</strong>'"),
                     cellWidths = c("34%",'36%','30%')),
-        #fluidRow(
         splitLayout(cellWidths = c("30%",'35%','35%'),
-                    #dataRowLabel( "<b>N</b><br>non-<br>responders")),
                     tagAppendAttributes(
                       style="color:green;",
                       div(HTML("<br>Outcome<br><b>'R'</b><br>"))) ,
@@ -176,7 +158,6 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
                                  min=0)
         ),
         splitLayout(cellWidths = c("30%",'35%','35%'),
-                    #dataRowLabel( "<b>R</b>esponders")),
                     tagAppendAttributes(
                       style="color:green;",
                       div(HTML("<br>Outcome<br><b>'N'</b><br>"))) ,
