@@ -104,6 +104,7 @@ dataTableComponent = function(showhide='show', analysisName) {
 #
 
   #### Output of dataTableComponent ####
+  cat('dataTableComponent for ', analysisName, ' ', thisDTCNumber, '\n')
   output[[outputIdThisDTC]] = renderUI({
     fluidRow(
       column(6,
@@ -118,8 +119,14 @@ dataTableComponent = function(showhide='show', analysisName) {
              actionButton(inputId = myChoiceIdThisDTC,
                           label = "Reset data to my choice"),
              br(),
-             #getwd(),
-             inclRmd('jumpBack.Rmd'))
+             #jumpBackWithPanel(analysisNumber, thisDTCNumber)
+             # conditionalPanelWithCheckbox(labelString='i am a panel',
+             #                              html='and what a panel'),
+            #So, conditionalPanelWithCheckbox with html is fine.
+            # inclRmd('jumpBackWithPanel.Rmd')
+            inclRmd('jumpBack.Rmd')
+      )
+
     )
   })
   uiOutput(outputId = outputIdThisDTC)
