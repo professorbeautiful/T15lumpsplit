@@ -1,3 +1,9 @@
+observeEvent(input$linktext, {
+  # update the cells for the corresponding analysis
+  analysisName = names(jumpList)[match(input$linktext, jumpList)]
+  rValues$linkedAnalysisName = analysisName
+})
+
 jumpBackWithPanel = function(analysisNumber, thisDTCNumber) {
   theJumpLinks =
     tag('ul',
