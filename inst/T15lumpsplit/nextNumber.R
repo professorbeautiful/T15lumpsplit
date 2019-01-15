@@ -19,7 +19,7 @@ getCounter = function(sequenceType=""){
 
 getSequenceLength = function(sequenceType=""){
   counterName = paste0('counter_', sequenceType)
-  get(counterName, envir=envNumberSequences)
+  getCounter(sequenceType)
 }
 
 nextNumber = function(sequenceType=""){
