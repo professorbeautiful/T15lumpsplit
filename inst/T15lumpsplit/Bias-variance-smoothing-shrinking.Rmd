@@ -330,27 +330,16 @@ Goal: decide whether to treat the "$D$ patients" (or at least, whether to put re
 
 
 ## Simple "Lump"" and "Split" estimates of Pr(R|D) <!-- #title -->
-
-Examine the data table below. 
-
-(Throughout this module, you can change the numbers in the table and observe the results. 
-Be sure to press "reset" when done.)
-
-If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*estimates()$lump))`*%*. 
-
-If you *"split"*, you will estimate that the response rate (`Pr(R|D)`), utilizing the D patients only, is 
-`r reactive(round(100*estimates()$split))`*%*. 
-
-In the following plot, we see the estimate and the confidence interval for `Pr(R|D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
-
 ```{r analysis-plotLumpSplitPoints}
 jumpList = c(jumpList, plotLumpSplitPoints='Plot of lump & split points')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
-
-estimates = reactive({
-  analysisName = 'plotLumpSplitPoints'
+cat("After first analysisInitialSetup.R, getDTCnumber('plotLumpSplitPoints') =",
+    getDTCnumber('plotLumpSplitPoints'), '\n' )
+estimates = observeEvent(
+  rValues$DLdata[[getDTCnumber('plotLumpSplitPoints') ]],
+  {
   source('analysisReactiveSetup.R', local=TRUE)
-  
+  thisData = rValues$DLdata[[getDTCnumber('plotLumpSplitPoints') ]]
   rValues$estimates = list(
     lump = sum(thisData['R', ])/
       sum(thisData[ , ]),
@@ -404,7 +393,22 @@ output$plotLumpSplitPoints = renderPlot(
       showL = TRUE,
       showW = FALSE)
   })
+```
 
+Examine the data table below. 
+
+(Throughout this module, you can change the numbers in the table and observe the results. 
+Be sure to press "reset" when done.)
+
+If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*rValues$estimates$lump))`*%*. 
+
+If you *"split"*, you will estimate that the response rate (`Pr(R|D)`), utilizing the D patients only, is 
+`r reactive(round(100*rValues$estimates$split))`*%*. 
+
+In the following plot, we see the estimate and the confidence interval for `Pr(R|D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
+
+
+```{r plotLumpSplit-UI}
 fluidRow(
   column(4, 
          br(),
