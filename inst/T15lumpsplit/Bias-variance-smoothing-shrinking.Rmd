@@ -310,6 +310,9 @@ QandAha(context='QA-intro-lump-split')
 
 ```{r initialize-jumpList}
 jumpList = list()
+getDTCnumber = function(analysisName) {
+  mapAnalysisToDTCnumber[analysisName]
+}
 ```
 
 # Hypothetical medical study <!-- #title -->
