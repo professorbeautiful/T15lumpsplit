@@ -7,7 +7,17 @@
 analysisNumber <- length(jumpList)
 analysisName <- names(jumpList)[[analysisNumber]]
 #cat(  analysisName, '\n')
-DLdata[[analysisNumber]] <- DLdataOriginal
+
+if(!exists('mapAnalysisToDTCnumber'))
+  mapAnalysisToDTCnumber = numeric(0)
+mapAnalysisToDTCnumber[analysisName] = getSequenceLength("DTC") + 1
+
+getDTCnumber = function(analysisName)
+  mapAnalysisToDTCnumber[analysisName]
+
+### Keep the list of DLdata NOT reactive
+DLdata[[mapAnalysisToDTCnumber[analysisName]]] <- DLdataOriginal
+
 #cat("Creating DLdata[[analysisNumber]] for analysisNumber = ",
 #    analysisNumber, '\n')
 ##  a(name=paste0('section-a_', analysisName) )

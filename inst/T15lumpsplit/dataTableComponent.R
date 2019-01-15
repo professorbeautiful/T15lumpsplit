@@ -29,7 +29,7 @@ createDLdataChoiceObserver <- function(analysisName) {
                    rValues$DLdataMyChoice[2,1] =  as.numeric(input[[theCellIds[2]]])
                    rValues$DLdataMyChoice[1,2] =  as.numeric(input[[theCellIds[3]]])
                    rValues$DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[4]]])
-                   rValues$DLdata[[analysisName]] = rValues$DLdataMyChoice
+                   rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] = rValues$DLdataMyChoice
                    rValues$isResetting = FALSE
                  })
                }) ### end of try
@@ -55,7 +55,8 @@ dataTableComponent = function(showhide='show', analysisName) {
   syncIdThisDTC = paste0('syncIdDTC', thisDTCNumber)
   myChoiceIdThisDTC = paste0('idMyChoiceDTC', thisDTCNumber)
 
-  theCellIds = paste0('m', cellNames, 'idPanelDTC', thisDTCNumber)
+  theCellIds = paste0('m', cellNames, 'idPanelDTC',
+                      getDTCnumber(analysisNumber))
   names(theCellIds) = cellNames
 
   #### resetIdThisDTC ####
@@ -68,7 +69,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                       eventExpr = input[[resetIdThisDTC]],
                       handlerExpr =  {
                         isolate({
-                          rValues$DLdata[[analysisName]] =
+                          rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] =
                             rValues$DLdataLastUsed =
                             DLdataOriginal
                         })

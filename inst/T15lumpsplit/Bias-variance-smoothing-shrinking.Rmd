@@ -393,12 +393,13 @@ output$plotLumpSplitPoints = renderPlot(
   height = 300, {
     analysisName = 'plotLumpSplitPoints'
     source('analysisReactiveSetup.R', local=TRUE)
-    plotPlightPdarkPosterior(DLdata=rValues$DLdata[[analysisName]],
-                           showPrior = FALSE, 
-                           showPosterior=FALSE, showLikelihood=FALSE,
-                           showS = TRUE,
-                           showL = TRUE,
-                           showW = FALSE)
+    plotPlightPdarkPosterior(
+      DLdata=rValues$DLdata[[mapAnalysisToDTCnumber[analysisName]]],
+      showPrior = FALSE, 
+      showPosterior=FALSE, showLikelihood=FALSE,
+      showS = TRUE,
+      showL = TRUE,
+      showW = FALSE)
   })
 
 fluidRow(
@@ -631,7 +632,8 @@ Assembling the results of the approaches to estimating Pr(R|D):
 tableOfEstimates = reactive({
   ###  Use the last-data for everything.
   for(aN in 1:analysisNumber)
-    rValues$DLdata[[analysisNumber]] = rValues$DLdataLastUsed
+    rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] =
+      rValues$DLdataLastUsed
   nRD=rValues$DLdataLastUsed['R','D']
   nND=rValues$DLdataLastUsed['N','D']
   posterior.mean.s = (1+nRD)/(2+nRD+nND)

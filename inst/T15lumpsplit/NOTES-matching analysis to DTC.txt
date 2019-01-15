@@ -11,9 +11,12 @@ will find the DTC for analysisNumber !!
 Probably not what we want.
 Instead paste0('m', cellNames, 'idPanelDTC', getDTCnumber(analysisNumber) ).
 
-getDTCnumber = function() getSequenceLength(sequenceType = "DTC")
-mapAnalysisToDTCnumber = numeric(0)
-mapAnalysisToDTCnumber[analysisName] = getDTCnumber() + 1
+  getDTCnumber = function(analysisName) mapAnalysisToDTCnumber[analysisName]
+  mapAnalysisToDTCnumber = numeric(0)
+  mapAnalysisToDTCnumber[analysisName] = getSequenceLength("DTC") + 1
+
+Should DLdata be reactive? INdexed by DTC?
+Should DLdataMyChoice be reactive? INdexed by DTC?
 
 
 When a jumpLink is clicked,

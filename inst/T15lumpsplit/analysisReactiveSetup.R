@@ -9,7 +9,8 @@
 
 #cat('analysisReactiveSetup.R: ')
 #cat( analysisName, '  ', system('pwd', intern=TRUE), '\n')
-if(is.null(rValues$DLdata[[analysisNumber]]))
-  rValues$DLdata[[analysisNumber]] = DLdataOriginal
-thisData = rValues$DLdata[[analysisNumber]]
+
+if(is.null(rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] ) )
+  rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] = DLdataOriginal
+thisData = rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]]
 rValues$DLdataLastUsed = thisData
