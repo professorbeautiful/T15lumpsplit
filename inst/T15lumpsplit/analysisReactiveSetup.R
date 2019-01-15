@@ -6,11 +6,17 @@
 #        source('inst/T15lumpsplit/analysisReactiveSetup.R', local=TRUE)  # YES
 #  But this path will not work out of the installed package.
 #  Currently I'm linking it to ../..
-
 #cat('analysisReactiveSetup.R: ')
 #cat( analysisName, '  ', system('pwd', intern=TRUE), '\n')
 
-if(is.null(rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] ) )
-  rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] = DLdataOriginal
-thisData = rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]]
+thisDTCnum = mapAnalysisToDTCnumber[analysisName]
+
+if(is.null(rValues$DLdata[[ thisDTCnum ]] ) )
+  rValues$DLdata[[ thisDTCnum ]] = DLdataOriginal
+thisData = rValues$DLdata[[ thisDTCnum ]]
 rValues$DLdataLastUsed = thisData
+
+#cat('analysisReactiveSetup.R: ')
+#print(thisData)
+
+
