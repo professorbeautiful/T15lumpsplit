@@ -1,0 +1,57 @@
+NOTES-matching analysis to DTC.txt
+
+When a new analysis panel is made,
+there is a new analysisName and analysisNumber.
+It reads data using analysisReactiveSetup.R
+to set the data DLdata[[]].
+Then
+   createDLdataChoiceObserver <- function(analysisName) {...}
+will find the DTC for analysisNumber !!
+    paste0('m', cellNames, 'idPanelDTC', analysisNumber)
+Probably not what we want.
+Instead paste0('m', cellNames, 'idPanelDTC', getDTCnumber(analysisNumber) ).
+
+getDTCnumber = function() getSequenceLength(sequenceType = "DTC")
+mapAnalysisToDTCnumber = numeric(0)
+mapAnalysisToDTCnumber[analysisName] = getDTCnumber() + 1
+
+
+When a jumpLink is clicked,
+extract the new analysisNumber
+and fill the cells for getDTCnumber(analysisNumber) with
+rValues$DLdataLastUsed.
+When a resetIdThisDTC is clicked,
+copy DLdataOriginal to rValues$DLdataLastUsed
+and fill cells for
+   theCellIds = paste0('m', cellNames, 'idPanelDTC', thisDTCNumber)
+When a myChoiceIdThisDTC is clicked,
+copy rValues$DLdataMyChoice to rValues$DLdataLastUsed
+and fill cells for
+   theCellIds = paste0('m', cellNames, 'idPanelDTC', thisDTCNumber)
+When one of the theCellIds input changes,
+copy new value to rValues$DLdataMyChoice.
+Drive the analyses ONLY off of theCellIds for
+getDTCnumber(analysisNumber)
+
+
+
+=-=-=-= baloney below?
+  thisDTCNumber = nextNumber(sequenceType = "DTC")
+(not reactive).
+Then, copy DLdataOriginal to rValues$DLdata[[thisDTCNumber]].
+The computation will respond to
+ rValues$DLdata[[thisDTCNumber]].
+
+Give this analysis panel a label,
+to be used in the little navigation list.
+
+Then create the DTC using thisDTCNumber.
+
+We do NOT want all anlyses rerun, only the local one.
+(Otherwise, ALL the analyses are updated... slow!)
+Only when you click on a jump link should the local DTC and anlysis change.
+Therefore, each one runs on its OWN DTC data,
+rValues$DLdata[[thisDTCNumber]].
+
+Difficulty: the summary table.
+Must all refer to the same data...
