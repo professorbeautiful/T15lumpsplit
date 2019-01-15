@@ -16,7 +16,7 @@ if(is.null(rValues$DLdata[[ thisDTCnum ]] ) )
 thisData = rValues$DLdata[[ thisDTCnum ]]
 rValues$DLdataLastUsed = thisData
 
-cat('analysisReactiveSetup.R: ')
-print(thisData)
+#cat('analysisReactiveSetup.R: ')
+#print(thisData)
 
 
