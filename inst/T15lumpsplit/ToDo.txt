@@ -1,5 +1,7 @@
 TODO
 
+Video links to snippets of classes?
+
 Move ADVICE clauses up to load appear early, or else put in a progress bar.
 
 Why does shift-ctrl-S only do the 2nd of the simulated clicks?
