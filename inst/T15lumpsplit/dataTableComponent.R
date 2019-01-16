@@ -23,15 +23,23 @@ createDLdataChoiceObserver <- function(analysisName) {
                 & rValues$isResetting == FALSE) {
                try(silent = FALSE, {
                  isolate({
-                   if(trackupdateDLdata)
-                     cat('updateDLdataMyChoice: changing MyChoice', '\n')
+                     cat('updateDLdataMyChoice: changing MyChoice',
+                         'resettingData=', resettingData,'\n')
+                   if( is.null(rValues$DLdataMyChoice[[mapAnalysisToDTCnumber[analysisName] ]]))
+                     DLdataMyChoice = DLdataOriginal
+                   else
+                       DLdataMyChoice =
+                       rValues$DLdataMyChoice[[mapAnalysisToDTCnumber[analysisName] ]]
                    if( ! resettingData) {
-                     rValues$DLdataMyChoice[1,1] =  as.numeric(input[[theCellIds[[1]]]])
-                     rValues$DLdataMyChoice[2,1] =  as.numeric(input[[theCellIds[[2]]]])
-                     rValues$DLdataMyChoice[1,2] =  as.numeric(input[[theCellIds[[3]]]])
-                     rValues$DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[[4]]]])
-                     rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] = rValues$DLdataMyChoice
+                     DLdataMyChoice[1,1] =  as.numeric(input[[theCellIds[[1]] ]])
+                     DLdataMyChoice[2,1] =  as.numeric(input[[theCellIds[[2]] ]])
+                     DLdataMyChoice[1,2] =  as.numeric(input[[theCellIds[[3]] ]])
+                     DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[[4]] ]])
                    }
+                   rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] =
+                     rValues$DLdataMyChoice[[mapAnalysisToDTCnumber[analysisName] ]] =
+                     rValues$DLdataLastUsed =
+                     DLdataMyChoice
                  })
                }) ### end of try
              } ### end of if
