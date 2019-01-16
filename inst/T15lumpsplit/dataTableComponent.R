@@ -1,7 +1,10 @@
 source('jumpBackWithPanel.R', local=TRUE)
 
 cellNames = c('RD', 'ND', 'RL', 'NL')
+resettingData <<- FALSE
 
+#### If the user changes a number,
+#### then update rValues$DLdataMyChoice and rValues$DLdataLastUsed
 createDLdataChoiceObserver <- function(analysisName) {
   myName = paste0('updateDLdataMyChoice_', analysisName)
   analysisNumber = match(analysisName, names(jumpList))
@@ -68,9 +71,9 @@ dataTableComponent = function(showhide='show', analysisName) {
                       getDTCnumber(analysisNumber)) )
   names(theCellIds) = cellNames
 
-  #### resetIdThisDTC ####
-  'When  Button reset is clicked,
-    copy DLdataOriginal to rValues$DLdataLastUsed.'
+  #### resetIdThisDTC button ####
+  'When resetIdThisDTC Button  is clicked,
+    update numericInputs and copy DLdataOriginal to rValues$DLdataLastUsed.'
   myName = paste0('observeEvent_resetIdThisDTC_', thisDTCNumber)
   assign(myName,
          pos=1,
