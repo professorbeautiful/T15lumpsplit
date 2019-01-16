@@ -7,6 +7,7 @@ resettingData <<- FALSE
 #### then update rValues$DLdataMyChoice and rValues$DLdataLastUsed
 createDLdataChoiceObserver <- function(analysisName) {
   myName = paste0('updateDLdataMyChoice_', analysisName)
+  cat('Creating ', myName, '\n')
   analysisNumber = match(analysisName, names(jumpList))
   theCellIds = paste0('m', cellNames, 'idPanelDTC', analysisNumber)
   assign(myName,
@@ -19,9 +20,7 @@ createDLdataChoiceObserver <- function(analysisName) {
                input[[theCellIds[[3]] ]], #RL
                input[[theCellIds[[4]] ]]), #NL
            handlerExpr = {
-             if(trackupdateDLdata)
-               cat('START updateDLdataMyChoice: isLoopingSync=',
-                   rValues$isLoopingSync, ' isResetting=', rValues$isResetting, "\n")
+             cat('START: handler for ', myName, '\n')
              if(rValues$isLoopingSync == FALSE
                 & rValues$isResetting == FALSE) {
                try(silent = FALSE, {
@@ -43,6 +42,7 @@ createDLdataChoiceObserver <- function(analysisName) {
                      rValues$DLdataMyChoice[[mapAnalysisToDTCnumber[analysisName] ]] =
                      rValues$DLdataLastUsed =
                      DLdataMyChoice
+                   print(DLdataMyChoice)
                  })
                }) ### end of try
              } ### end of if
@@ -112,8 +112,7 @@ dataTableComponent = function(showhide='show', analysisName) {
   )
 
   #### myChoiceIdThisDTC button -- update numericInputs restoring MyChoice data ####
-  myName =
-    paste0('observeEvent_myChoiceIdThisDTC_', thisDTCNumber)
+  myName = paste0('observeEvent_myChoiceIdThisDTC_', thisDTCNumber)
   assign(myName, pos=1,
          observeEvent(
            label = myName,
@@ -128,8 +127,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                  updateNumericInput(
                    session,
                    theCellIds[[cellnum]],
-                   value = rValues$DLdataMyChoice[[ currentDTCnumber ]]
-                   [cellnum]
+                   value = rValues$DLdataMyChoice[[ currentDTCnumber ]] [cellnum]
                  )
                rValues$DLdata[[ currentDTCnumber ]] =
                  rValues$DLdataLastUsed =
