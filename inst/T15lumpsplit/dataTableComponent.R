@@ -14,10 +14,10 @@ createDLdataChoiceObserver <- function(analysisName) {
          observeEvent(
            label=myName,
            eventExpr = #c(input$mRD, input$mRL, input$mND, input$mNL)
-             c(input[[theCellIds[[1]]]], # RD. Must by 1,2,3,4
-               input[[theCellIds[[2]]]], #ND
-               input[[theCellIds[[3]]]], #RL
-               input[[theCellIds[[4]]]]), #NL
+             c(input[[theCellIds[[1]] ]], # RD. Must by 1,2,3,4
+               input[[theCellIds[[2]] ]], #ND
+               input[[theCellIds[[3]] ]], #RL
+               input[[theCellIds[[4]] ]]), #NL
            handlerExpr = {
              if(trackupdateDLdata)
                cat('START updateDLdataMyChoice: isLoopingSync=',
@@ -87,20 +87,31 @@ dataTableComponent = function(showhide='show', analysisName) {
                           ### PREVENT placing DLdataOriginal into
                           resettingData <<- TRUE
                           #eval(paste0('updateDLdataMyChoice_', analysisName)
+                          currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
+
+                          saved_DLdataMyChoice =
+                            rValues$DLdataMyChoice[[ currentDTCnumber ]]
                           for(cellnum in 1:4)
                             updateNumericInput(
                               session,
                               theCellIds[[cellnum]],
                               value = DLdataOriginal[cellnum])
-                          resettingData <<- FALSE
-                          #rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] =
-                          rValues$DLdataLastUsed =
+                          # flusher = onFlushed(function() {
+                          #   resettingData <<- FALSE
+                          #   cat("resettingData <<- FALSE")
+                          # })
+                          # flusher()
+                          rValues$DLdataMyChoice[[ currentDTCnumber ]] =
+                            saved_DLdataMyChoice
+                          rValues$DLdata[[ currentDTCnumber ]] =
+                            rValues$DLdataLastUsed =
                             DLdataOriginal
+
                         })
                       })
   )
 
-  #### myChoiceIdThisDTC --  restore MyChoice data ####
+  #### myChoiceIdThisDTC button -- update numericInputs restoring MyChoice data ####
   myName =
     paste0('observeEvent_myChoiceIdThisDTC_', thisDTCNumber)
   assign(myName, pos=1,
