@@ -11,12 +11,13 @@
 
 thisDTCnum = mapAnalysisToDTCnumber[analysisName]
 
+cat('analysisReactiveSetup.R: data for thisDTCnum=', thisDTCnum, 'are:\n')
+
 if(is.null(rValues$DLdata[[ thisDTCnum ]] ) )
   rValues$DLdata[[ thisDTCnum ]] = DLdataOriginal
 thisData = rValues$DLdata[[ thisDTCnum ]]
 rValues$DLdataLastUsed = thisData
 
-#cat('analysisReactiveSetup.R: ')
-#print(thisData)
+print(thisData)
 
 
