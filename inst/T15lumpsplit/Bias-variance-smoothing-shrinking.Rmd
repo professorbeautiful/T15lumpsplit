@@ -105,8 +105,9 @@ TOCnum =  0
 DLdata = list()
 rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
                          title_1='title 1',
+                         DLdata=list(),
+                         DLdataMyChoice=list(),
                          DLdataLastUsed = DLdataOriginal,
-                         DLdataMyChoice = DLdataOriginal,
                          isResetting = FALSE,
                          isLoopingSync = FALSE,
                          WhoPriorProbProb = 1/2,
