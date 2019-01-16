@@ -11,10 +11,10 @@ createDLdataChoiceObserver <- function(analysisName) {
          observeEvent(
            label=myName,
            eventExpr = #c(input$mRD, input$mRL, input$mND, input$mNL)
-             c(input[[theCellIds[1]]], # RD. Must by 1,2,3,4
-               input[[theCellIds[2]]], #ND
-               input[[theCellIds[3]]], #RL
-               input[[theCellIds[4]]]), #NL
+             c(input[[theCellIds[[1]]]], # RD. Must by 1,2,3,4
+               input[[theCellIds[[2]]]], #ND
+               input[[theCellIds[[3]]]], #RL
+               input[[theCellIds[[4]]]]), #NL
            handlerExpr = {
              if(trackupdateDLdata)
                cat('START updateDLdataMyChoice: isLoopingSync=',
@@ -25,12 +25,13 @@ createDLdataChoiceObserver <- function(analysisName) {
                  isolate({
                    if(trackupdateDLdata)
                      cat('updateDLdataMyChoice: changing MyChoice', '\n')
-                   rValues$DLdataMyChoice[1,1] =  as.numeric(input[[theCellIds[1]]])
-                   rValues$DLdataMyChoice[2,1] =  as.numeric(input[[theCellIds[2]]])
-                   rValues$DLdataMyChoice[1,2] =  as.numeric(input[[theCellIds[3]]])
-                   rValues$DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[4]]])
-                   rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] = rValues$DLdataMyChoice
-                   rValues$isResetting = FALSE
+                   if( ! resettingData) {
+                     rValues$DLdataMyChoice[1,1] =  as.numeric(input[[theCellIds[[1]]]])
+                     rValues$DLdataMyChoice[2,1] =  as.numeric(input[[theCellIds[[2]]]])
+                     rValues$DLdataMyChoice[1,2] =  as.numeric(input[[theCellIds[[3]]]])
+                     rValues$DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[[4]]]])
+                     rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] = rValues$DLdataMyChoice
+                   }
                  })
                }) ### end of try
              } ### end of if
@@ -55,8 +56,8 @@ dataTableComponent = function(showhide='show', analysisName) {
   syncIdThisDTC = paste0('syncIdDTC', thisDTCNumber)
   myChoiceIdThisDTC = paste0('idMyChoiceDTC', thisDTCNumber)
 
-  theCellIds = paste0('m', cellNames, 'idPanelDTC',
-                      getDTCnumber(analysisNumber))
+  theCellIds = as.list(paste0('m', cellNames, 'idPanelDTC',
+                      getDTCnumber(analysisNumber)) )
   names(theCellIds) = cellNames
 
   #### resetIdThisDTC ####
@@ -70,7 +71,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                       handlerExpr =  {
                         isolate({
                           rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] =
-                            rValues$DLdataLastUsed =
+                          rValues$DLdataLastUsed =
                             DLdataOriginal
                         })
                       })
@@ -104,9 +105,11 @@ dataTableComponent = function(showhide='show', analysisName) {
                          showhide=showhide)
       ),
       column(6, br(), br(),
-             actionButton(inputId = resetIdThisDTC, label = "Reset data to original"),
+             #disabled(
+               actionButton(inputId = resetIdThisDTC,
+                            label = "Reset data to original") ,
              actionButton(inputId = myChoiceIdThisDTC,
-                          label = "Reset data to my choice"),
+                            label = "Reset data to my choice"),
              br(),
              jumpBackWithPanel(analysisNumber, thisDTCNumber)
              ##  can't find nextNumber() from jumpBackWithPanel()... needed local=T
