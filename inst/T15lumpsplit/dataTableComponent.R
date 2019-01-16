@@ -131,7 +131,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                  )
                rValues$DLdata[[ currentDTCnumber ]] =
                  rValues$DLdataLastUsed =
-                 rValues$DLdataMyChoice
+                 rValues$DLdataMyChoice [[ currentDTCnumber ]]
              })
            })
   )
