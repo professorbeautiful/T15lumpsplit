@@ -12,7 +12,9 @@ if(!exists('mapAnalysisToDTCnumber'))
   mapAnalysisToDTCnumber = numeric(0)
 
 ### When the next DTC is displayed, this will be its number.
-mapAnalysisToDTCnumber[analysisName] = getSequenceLength("DTC") + 1
+mapAnalysisToDTCnumber[analysisName] =
+  currentDTCnumber =
+  getSequenceLength("DTC") + 1
 
 ### Keep the list of DLdata NOT reactive
 DLdata[[mapAnalysisToDTCnumber[analysisName]]] <- DLdataOriginal
