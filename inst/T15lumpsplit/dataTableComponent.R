@@ -123,12 +123,15 @@ dataTableComponent = function(showhide='show', analysisName) {
                cat('Pressed ', myChoiceIdThisDTC, '\n')
                #enable(resetIdThisDTC)
                #disable(myChoiceIdThisDTC)
+               currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
                for(cellnum in 1:4)
                  updateNumericInput(
                    session,
                    theCellIds[[cellnum]],
-                   value = rValues$DLdataMyChoice[cellnum])
-               #rValues$DLdata[[thisDTCNumber]] =
+                   value = rValues$DLdataMyChoice[[ currentDTCnumber ]]
+                   [cellnum]
+                 )
+               rValues$DLdata[[ currentDTCnumber ]] =
                  rValues$DLdataLastUsed =
                  rValues$DLdataMyChoice
              })
