@@ -809,7 +809,7 @@ makeDLdataDFYesNoYes = function(DLdata=DLdataOriginal, qStar=1){
 ## Make DLdata into a data frame.
 makeDLdataDF = function(DLdata=DLdataOriginal) {
   set.seed(readRDS('seedInt.rda'))
-  print(DLdata)
+  #print(DLdata)
   DLdataDF = 
     data.frame(
       outcome = rep(c("R","N", "R","N"),
