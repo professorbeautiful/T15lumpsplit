@@ -70,7 +70,19 @@ dataTableComponent = function(showhide='show', analysisName) {
                       eventExpr = input[[resetIdThisDTC]],
                       handlerExpr =  {
                         isolate({
-                          rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] =
+                          cat('Pressed ', resetIdThisDTC, '\n')
+                          #disable(resetIdThisDTC)
+                          #enable(myChoiceIdThisDTC)
+                          ### PREVENT placing DLdataOriginal into
+                          resettingData <<- TRUE
+                          #eval(paste0('updateDLdataMyChoice_', analysisName)
+                          for(cellnum in 1:4)
+                            updateNumericInput(
+                              session,
+                              theCellIds[[cellnum]],
+                              value = DLdataOriginal[cellnum])
+                          resettingData <<- FALSE
+                          #rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] =
                           rValues$DLdataLastUsed =
                             DLdataOriginal
                         })
@@ -86,13 +98,20 @@ dataTableComponent = function(showhide='show', analysisName) {
            eventExpr = input[[myChoiceIdThisDTC]],
            handlerExpr =  {
              isolate({
-               rValues$DLdata[[thisDTCNumber]] =
+               cat('Pressed ', myChoiceIdThisDTC, '\n')
+               #enable(resetIdThisDTC)
+               #disable(myChoiceIdThisDTC)
+               for(cellnum in 1:4)
+                 updateNumericInput(
+                   session,
+                   theCellIds[[cellnum]],
+                   value = rValues$DLdataMyChoice[cellnum])
+               #rValues$DLdata[[thisDTCNumber]] =
                  rValues$DLdataLastUsed =
-                 rValues$DLdataMyChoice[[thisDTCNumber]]
+                 rValues$DLdataMyChoice
              })
            })
   )
-
   #### Output of dataTableComponent ####
   cat('dataTableComponent for ', analysisName, ' ', thisDTCNumber, '\n')
   output[[outputIdThisDTC]] = renderUI({
