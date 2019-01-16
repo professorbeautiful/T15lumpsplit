@@ -27,19 +27,20 @@ createDLdataChoiceObserver <- function(analysisName) {
                  isolate({
                      cat('updateDLdataMyChoice: changing MyChoice',
                          'resettingData=', resettingData,'\n')
-                   if( is.null(rValues$DLdataMyChoice[[mapAnalysisToDTCnumber[analysisName] ]]))
+                   currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
+                   if( is.null(rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]]))
                      DLdataMyChoice = DLdataOriginal
                    else
-                       DLdataMyChoice =
-                       rValues$DLdataMyChoice[[mapAnalysisToDTCnumber[analysisName] ]]
+                     DLdataMyChoice =
+                     rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]]
                    if( ! resettingData) {
                      DLdataMyChoice[1,1] =  as.numeric(input[[theCellIds[[1]] ]])
                      DLdataMyChoice[2,1] =  as.numeric(input[[theCellIds[[2]] ]])
                      DLdataMyChoice[1,2] =  as.numeric(input[[theCellIds[[3]] ]])
                      DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[[4]] ]])
                    }
-                   rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] =
-                     rValues$DLdataMyChoice[[mapAnalysisToDTCnumber[analysisName] ]] =
+                   rValues[[paste0('DLdata', currentDTCnumber) ]] =
+                     rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]] =
                      rValues$DLdataLastUsed =
                      DLdataMyChoice
                    print(DLdataMyChoice)
@@ -90,7 +91,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                           currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
                           saved_DLdataMyChoice =
-                            rValues$DLdataMyChoice[[ currentDTCnumber ]]
+                            rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]]
                           for(cellnum in 1:4)
                             updateNumericInput(
                               session,
@@ -101,9 +102,9 @@ dataTableComponent = function(showhide='show', analysisName) {
                           #   cat("resettingData <<- FALSE")
                           # })
                           # flusher()
-                          rValues$DLdataMyChoice[[ currentDTCnumber ]] =
+                          rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]] =
                             saved_DLdataMyChoice
-                          rValues$DLdata[[ currentDTCnumber ]] =
+                          rValues[[paste0('DLdata', currentDTCnumber) ]] =
                             rValues$DLdataLastUsed =
                             DLdataOriginal
 
@@ -127,11 +128,11 @@ dataTableComponent = function(showhide='show', analysisName) {
                  updateNumericInput(
                    session,
                    theCellIds[[cellnum]],
-                   value = rValues$DLdataMyChoice[[ currentDTCnumber ]] [cellnum]
+                   value = rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]] [cellnum]
                  )
-               rValues$DLdata[[ currentDTCnumber ]] =
+               rValues[[paste0('DLdata', currentDTCnumber) ]] =
                  rValues$DLdataLastUsed =
-                 rValues$DLdataMyChoice [[ currentDTCnumber ]]
+                 rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]]
              })
            })
   )

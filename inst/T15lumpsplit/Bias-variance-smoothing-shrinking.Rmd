@@ -69,6 +69,7 @@ source('linkout.R', local=T)
 source('interactiveSection.R', local=T)
 source('includeHTMLtrimmed.R', local=T)
 source('observeEvent-for-fileInput.R', local=TRUE)
+source('getsetDLdata.R', local=TRUE)
 ```
 
 ```{r onStop}
@@ -340,11 +341,10 @@ jumpList = c(jumpList, plotLumpSplitPoints='Plot of lump & split points')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 cat("After first analysisInitialSetup.R, getDTCnumber('plotLumpSplitPoints') =",
     getDTCnumber('plotLumpSplitPoints'), '\n' )
-estimates = observeEvent(
-  rValues$DLdata[[getDTCnumber('plotLumpSplitPoints') ]],
+estimates = observeEvent( getDLdata('plotLumpSplitPoints'),
   {
   source('analysisReactiveSetup.R', local=TRUE)
-  thisData = rValues$DLdata[[getDTCnumber('plotLumpSplitPoints') ]]
+  thisData = getDLdata('plotLumpSplitPoints')
   rValues$estimates = list(
     lump = sum(thisData['R', ])/
       sum(thisData[ , ]),
@@ -391,7 +391,7 @@ output$plotLumpSplitPoints = renderPlot(
     analysisName = 'plotLumpSplitPoints'
     source('analysisReactiveSetup.R', local=TRUE)
     plotPlightPdarkPosterior(
-      DLdata=rValues$DLdata[[mapAnalysisToDTCnumber[analysisName]]],
+      DLdata=getDLdata('plotLumpSplitPoints'),
       showPrior = FALSE, 
       showPosterior=FALSE, showLikelihood=FALSE,
       showS = TRUE,
@@ -644,8 +644,7 @@ Assembling the results of the approaches to estimating Pr(R|D):
 tableOfEstimates = reactive({
   ###  Use the last-data for everything.
   for(aN in 1:analysisNumber)
-    rValues$DLdata[[mapAnalysisToDTCnumber[analysisName] ]] =
-      rValues$DLdataLastUsed
+    setDLdata(analysisName[aN], rValues$DLdataLastUsed)
   nRD=rValues$DLdataLastUsed['R','D']
   nND=rValues$DLdataLastUsed['N','D']
   posterior.mean.s = (1+nRD)/(2+nRD+nND)

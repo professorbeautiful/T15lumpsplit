@@ -9,15 +9,17 @@
 #cat('analysisReactiveSetup.R: ')
 #cat( analysisName, '  ', system('pwd', intern=TRUE), '\n')
 
-thisDTCnum = mapAnalysisToDTCnumber[analysisName]
+currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
-cat('analysisReactiveSetup.R: data for thisDTCnum=', thisDTCnum, 'are:\n')
+cat('analysisReactiveSetup.R:  currentDTCnumber=', currentDTCnumber, '\n')
 
-if(is.null(rValues$DLdata[[ thisDTCnum ]] ) )
-  rValues$DLdata[[ thisDTCnum ]] = DLdataOriginal
-thisData = rValues$DLdata[[ thisDTCnum ]]
+if(is.null(
+  rValues[[paste0('DLdata', currentDTCnumber) ]]
+  ) )
+  rValues[[paste0('DLdata', currentDTCnumber) ]] = DLdataOriginal
+thisData =   rValues[[paste0('DLdata', currentDTCnumber) ]]
 rValues$DLdataLastUsed = thisData
 
-print(thisData)
+#print(thisData)
 
 
