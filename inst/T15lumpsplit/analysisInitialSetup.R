@@ -17,7 +17,7 @@ mapAnalysisToDTCnumber[analysisName] =
   getSequenceLength("DTC") + 1
 
 ### Keep the list of DLdata NOT reactive
-DLdata[[mapAnalysisToDTCnumber[analysisName]]] <- DLdataOriginal
+# DLdata[[mapAnalysisToDTCnumber[analysisName]]] <- DLdataOriginal
 
 #cat("Creating DLdata[[analysisNumber]] for analysisNumber = ",
 #    analysisNumber, '\n')
