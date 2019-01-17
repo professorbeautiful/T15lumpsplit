@@ -28,22 +28,21 @@ createDLdataChoiceObserver <- function(analysisName) {
                      cat('updateDLdataMyChoice: changing MyChoice',
                          'resettingData=', resettingData,'\n')
                    currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
-                   if( is.null(rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]]))
+                   if( is.null(getDLdata(analysisName, myChoice=TRUE)))
                      DLdataMyChoice = DLdataOriginal
                    else
-                     DLdataMyChoice =
-                     rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]]
+                     DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
+                   #print(DLdataMyChoice)
                    if( ! resettingData) {
                      DLdataMyChoice[1,1] =  as.numeric(input[[theCellIds[[1]] ]])
                      DLdataMyChoice[2,1] =  as.numeric(input[[theCellIds[[2]] ]])
                      DLdataMyChoice[1,2] =  as.numeric(input[[theCellIds[[3]] ]])
                      DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[[4]] ]])
                    }
-                   rValues[[paste0('DLdata', currentDTCnumber) ]] =
-                     rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]] =
-                     rValues$DLdataLastUsed =
-                     DLdataMyChoice
-                   print(DLdataMyChoice)
+                   setDLdata(DLdataMyChoice, analysisName)
+                   setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
+                   rValues$DLdataLastUsed = DLdataMyChoice
+                   #print(DLdataMyChoice)
                  })
                }) ### end of try
              } ### end of if
@@ -82,7 +81,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                       eventExpr = input[[resetIdThisDTC]],
                       handlerExpr =  {
                         isolate({
-                          cat('Pressed ', resetIdThisDTC, '\n')
+                          cat('Handler:  Pressed ', resetIdThisDTC, '\n')
                           #disable(resetIdThisDTC)
                           #enable(myChoiceIdThisDTC)
                           ### PREVENT placing DLdataOriginal into
@@ -90,24 +89,19 @@ dataTableComponent = function(showhide='show', analysisName) {
                           #eval(paste0('updateDLdataMyChoice_', analysisName)
                           currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
-                          saved_DLdataMyChoice =
-                            rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]]
+                          saved_DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
+                          updater = get(paste0('updateDLdataMyChoice_', analysisName))
+                          updater$suspend()
                           for(cellnum in 1:4)
                             updateNumericInput(
                               session,
                               theCellIds[[cellnum]],
                               value = DLdataOriginal[cellnum])
-                          # flusher = onFlushed(function() {
-                          #   resettingData <<- FALSE
-                          #   cat("resettingData <<- FALSE")
-                          # })
-                          # flusher()
-                          rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]] =
-                            saved_DLdataMyChoice
-                          rValues[[paste0('DLdata', currentDTCnumber) ]] =
-                            rValues$DLdataLastUsed =
+                          setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
+                          updater$resume()
+                          setDLdata(DLdataOriginal, analysisName)
+                          rValues$DLdataLastUsed =
                             DLdataOriginal
-
                         })
                       })
   )
@@ -120,19 +114,19 @@ dataTableComponent = function(showhide='show', analysisName) {
            eventExpr = input[[myChoiceIdThisDTC]],
            handlerExpr =  {
              isolate({
-               cat('Pressed ', myChoiceIdThisDTC, '\n')
+               cat('Handler: Pressed ', myChoiceIdThisDTC, '\n')
                #enable(resetIdThisDTC)
                #disable(myChoiceIdThisDTC)
                currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
+               DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
                for(cellnum in 1:4)
                  updateNumericInput(
                    session,
                    theCellIds[[cellnum]],
-                   value = rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]] [cellnum]
+                   value = DLdataMyChoice [cellnum]
                  )
-               rValues[[paste0('DLdata', currentDTCnumber) ]] =
-                 rValues$DLdataLastUsed =
-                 rValues[[paste0('DLdataMyChoice', currentDTCnumber) ]]
+               setDLdata(DLdataMyChoice, analysisName)
+               rValues$DLdataLastUsed = DLdataMyChoice
              })
            })
   )
