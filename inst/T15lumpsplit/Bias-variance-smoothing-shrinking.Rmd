@@ -644,7 +644,7 @@ Assembling the results of the approaches to estimating Pr(R|D):
 tableOfEstimates = reactive({
   ###  Use the last-data for everything.
   for(aN in 1:analysisNumber)
-    setDLdata(analysisName[aN], rValues$DLdataLastUsed)
+    setDLdata(rValues$DLdataLastUsed, names(mapAnalysisToDTCnumber) [aN] )
   nRD=rValues$DLdataLastUsed['R','D']
   nND=rValues$DLdataLastUsed['N','D']
   posterior.mean.s = (1+nRD)/(2+nRD+nND)
