@@ -565,13 +565,15 @@ For this reason a "continuity fudge" is applied, if necessary.)
 ```{r}
 
 output$postmean.p = renderText(
-  paste0(
-    signif(digits=2, rValues$bivariateNormResults$postmean.p[1]),
-    ' (95% confidence interval: ', 
-    signif(digits=2, rValues$bivariateNormResults$confints.p[1 , 1]),
-    '-',
-    signif(digits=2, rValues$bivariateNormResults$confints.p[2 , 1]),
-    ')'
+  try(silent = TRUE, ## Looks ok despite initial error message
+      paste0(
+        signif(digits=2, rValues$bivariateNormResults$postmean.p[1]),
+        ' (95% confidence interval: ', 
+        signif(digits=2, rValues$bivariateNormResults$confints.p[1 , 1]),
+        '-',
+        signif(digits=2, rValues$bivariateNormResults$confints.p[2 , 1]),
+        ')'
+      )
   )
 )
 ```
