@@ -65,7 +65,7 @@ plotPlightPdarkPosteriorReactive = reactive( {
   mu0 <- input$mu0Input
   #cat("tau=", tau, " phi=", phi, " mu0=", mu0, "\n")
   aNforBivariate = which(jumpList == 'Bivariate logit plot')
-  cat('plotPlightPdarkPosteriorReactive:  aNforBivariate=', aNforBivariate, '\n')
+  #cat('plotPlightPdarkPosteriorReactive:  aNforBivariate=', aNforBivariate, '\n')
   rValues$bivariateNormResults <<-
     plotPlightPdarkPosterior(DLdata=rValues$DLdataLastUsed,
                              tau=tau, phi=phi, mu0=logit(mu0),
