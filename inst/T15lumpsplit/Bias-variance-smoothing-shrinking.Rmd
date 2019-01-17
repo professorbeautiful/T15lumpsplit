@@ -1144,8 +1144,8 @@ output$empBayeslogitRatios = renderPlot({
 
   logitRatios = rValues$logoddsratios
   logitVars = rValues$logoddsratiovariances
-  print(summary(logitRatios))
-  print(summary(logitVars))
+  #print(summary(logitRatios))
+  #print(summary(logitVars))
   loglikFun=function(mu,tau) {
     sum(log(dnorm(logitRatios, mu, sqrt(tau+logitVars))) )
   }
