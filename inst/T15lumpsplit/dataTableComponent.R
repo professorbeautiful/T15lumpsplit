@@ -74,20 +74,32 @@ dataTableComponent = function(showhide='show', analysisName) {
                           #disable(resetIdThisDTC)
                           #enable(myChoiceIdThisDTC)
                           ### PREVENT placing DLdataOriginal into
-                          resettingData <<- TRUE
                           #eval(paste0('updateDLdataMyChoice_', analysisName)
                           currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
                           saved_DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
+                          cat(paste(saved_DLdataMyChoice))
                           updater = get(paste0('updateDLdataMyChoice_', analysisName))
+                          counter= 0
+                          while(updater$.suspended == FALSE)
+                            {
                             updater$suspend()
+                            counter = counter + 1
+                            cat('  counter for suspending =', counter,'\n')
+                          }
                           for(cellnum in 1:4)
                             updateNumericInput(
                               session,
                               theCellIds[[cellnum]],
                               value = DLdataOriginal[cellnum])
                           setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
+                          counter= 0
+                          while(updater$.suspended == FALSE)
+                          {
                             updater$resume()
+                            counter = counter + 1
+                            cat('  counter for resuming =', counter,'\n')
+                          }
                           setDLdata(DLdataOriginal, analysisName)
                           rValues$DLdataLastUsed =
                             DLdataOriginal
