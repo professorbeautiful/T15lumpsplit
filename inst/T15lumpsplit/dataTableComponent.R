@@ -1,7 +1,6 @@
 source('jumpBackWithPanel.R', local=TRUE)
 
 cellNames = c('RD', 'ND', 'RL', 'NL')
-resettingData <<- FALSE
 
 #### If the user changes a number,
 #### then update rValues$DLdataMyChoice and rValues$DLdataLastUsed
@@ -21,34 +20,25 @@ createDLdataChoiceObserver <- function(analysisName) {
                input[[theCellIds[[4]] ]]), #NL
            handlerExpr = {
              cat('START: handler for ', myName, '\n')
-             if(rValues$isLoopingSync == FALSE
-                & rValues$isResetting == FALSE) {
-               try(silent = FALSE, {
-                 isolate({
-                     cat('updateDLdataMyChoice: changing MyChoice',
-                         'resettingData=', resettingData,'\n')
-                   currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
-                   if( is.null(getDLdata(analysisName, myChoice=TRUE)))
-                     DLdataMyChoice = DLdataOriginal
-                   else
-                     DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
-                   #print(DLdataMyChoice)
-                   if( ! resettingData) {
-                     DLdataMyChoice[1,1] =  as.numeric(input[[theCellIds[[1]] ]])
-                     DLdataMyChoice[2,1] =  as.numeric(input[[theCellIds[[2]] ]])
-                     DLdataMyChoice[1,2] =  as.numeric(input[[theCellIds[[3]] ]])
-                     DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[[4]] ]])
-                   }
-                   setDLdata(DLdataMyChoice, analysisName)
-                   setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
-                   rValues$DLdataLastUsed = DLdataMyChoice
-                   #print(DLdataMyChoice)
-                 })
-               }) ### end of try
-             } ### end of if
-             if(trackupdateDLdata)
-               cat('END updateDLdataMyChoice: isLoopingSync=',
-                   rValues$isLoopingSync, ' isResetting=', rValues$isResetting, "\n")
+             try(silent = FALSE, {
+               isolate({
+                 cat('updateDLdataMyChoice: changing MyChoice', '\n')
+                 currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
+                 if( is.null(getDLdata(analysisName, myChoice=TRUE)))
+                   DLdataMyChoice = DLdataOriginal
+                 else
+                   DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
+                 #print(DLdataMyChoice)
+                   DLdataMyChoice[1,1] =  as.numeric(input[[theCellIds[[1]] ]])
+                   DLdataMyChoice[2,1] =  as.numeric(input[[theCellIds[[2]] ]])
+                   DLdataMyChoice[1,2] =  as.numeric(input[[theCellIds[[3]] ]])
+                   DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[[4]] ]])
+                 setDLdata(DLdataMyChoice, analysisName)
+                 setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
+                 rValues$DLdataLastUsed = DLdataMyChoice
+                 #print(DLdataMyChoice)
+               })
+             }) ### end of try
            }
          )
   )
@@ -64,7 +54,6 @@ dataTableComponent = function(showhide='show', analysisName) {
   outputIdThisDTC = paste0('outputDTC', thisDTCNumber)
   panelIdThisDTC = paste0('idPanelDTC', thisDTCNumber)
   resetIdThisDTC = paste0('idResetDTC', thisDTCNumber)
-  syncIdThisDTC = paste0('syncIdDTC', thisDTCNumber)
   myChoiceIdThisDTC = paste0('idMyChoiceDTC', thisDTCNumber)
 
   theCellIds = as.list(paste0('m', cellNames, 'idPanelDTC',
@@ -91,14 +80,14 @@ dataTableComponent = function(showhide='show', analysisName) {
 
                           saved_DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
                           updater = get(paste0('updateDLdataMyChoice_', analysisName))
-                          updater$suspend()
+                            updater$suspend()
                           for(cellnum in 1:4)
                             updateNumericInput(
                               session,
                               theCellIds[[cellnum]],
                               value = DLdataOriginal[cellnum])
                           setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
-                          updater$resume()
+                            updater$resume()
                           setDLdata(DLdataOriginal, analysisName)
                           rValues$DLdataLastUsed =
                             DLdataOriginal
