@@ -78,7 +78,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                           currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
                           saved_DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
-                          cat(paste(saved_DLdataMyChoice))
+                          cat('saved_DLdataMyChoice:', paste(saved_DLdataMyChoice), '\n')
                           updater = get(paste0('updateDLdataMyChoice_', analysisName))
                           counter= 0
                           while(updater$.suspended == FALSE)
@@ -92,6 +92,9 @@ dataTableComponent = function(showhide='show', analysisName) {
                               session,
                               theCellIds[[cellnum]],
                               value = DLdataOriginal[cellnum])
+                          setDLdata(DLdataOriginal, analysisName)
+                          rValues$DLdataLastUsed = DLdataOriginal
+                          cat(' Restoring saved_DLdataMyChoice for ', analysisName, '\n')
                           setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
                           counter= 0
                           while(updater$.suspended == TRUE)
@@ -100,10 +103,8 @@ dataTableComponent = function(showhide='show', analysisName) {
                             counter = counter + 1
                             cat('  counter for resuming =', counter,'\n')
                           }
-                          setDLdata(DLdataOriginal, analysisName)
-                          rValues$DLdataLastUsed =
-                            DLdataOriginal
-                        })
+                          cat('2 restored DLdataMyChoice:', paste(getDLdata(myChoice=T, analysisName)), '\n')
+                        })  ### end of the isolate() call
                       })
   )
 
