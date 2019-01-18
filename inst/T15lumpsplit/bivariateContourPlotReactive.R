@@ -67,7 +67,7 @@ plotPlightPdarkPosteriorReactive = reactive( {
   aNforBivariate = which(jumpList == 'Bivariate logit plot')
   #cat('plotPlightPdarkPosteriorReactive:  aNforBivariate=', aNforBivariate, '\n')
   rValues$bivariateNormResults <<-
-    plotPlightPdarkPosterior(DLdata=rValues$DLdataLastUsed,
+    plotPlightPdarkPosterior(DLdata=getDLdata(analysisName),
                              tau=tau, phi=phi, mu0=logit(mu0),
                              fudgeFactor = input$fudgeFactor,
                              showConfIntBinormal = TRUE
