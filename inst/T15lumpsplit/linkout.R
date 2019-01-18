@@ -100,6 +100,19 @@ linkinLink = function(anchorName, linktext) {
                    labelString)
 }
 
+observeEvent(input$linktext, {
+  ### Copy DLdataLastUsed to theCellIds for the destination.
+  ### (Or the current myChoice data instead? Harder though.)
+  destAnalysisNumber = which(jumpList == input$linktext)
+  destDTCnum = getDTCnumber(destAnalysisNumber)
+  theCellIds = as.list(paste0('m', cellNames, 'idPanelDTC', destDTCnum) )
+  for(cellnum in 1:4)
+    updateNumericInput(
+      session,
+      theCellIds[[cellnum]],
+      value = DLdataLastUsed[cellnum])
+})
+
 #From session help:
 #url_protocol, url_hostname, url_port, url_pathname, url_search,
 #url_hash_initial and url_hash can be used to get the components of the URL that
