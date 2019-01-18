@@ -343,7 +343,7 @@ Goal: decide whether to treat the "$D$ patients" (or at least, whether to put re
 
 
 
-## Simple "Lump"" and "Split" estimates of Pr(R|D) <!-- #title -->
+## Simple "Lump" and "Split" estimates of Pr(R|D) <!-- #title -->
 ```{r analysis-plotLumpSplitPoints}
 jumpList = c(jumpList, plotLumpSplitPoints='Plot of lump & split points')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
