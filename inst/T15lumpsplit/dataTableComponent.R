@@ -56,7 +56,7 @@ createDLdataChoiceObserver <- function(analysisName) {
                    cat('saved_DLdataMyChoice: ', find('saved_DLdataMyChoice'), '\n')
                    rm('saved_DLdataMyChoice', pos=1)
                  }
-                 #rValues$DLdataLastUsed = DLdataMyChoice
+                 DLdataLastUsed <<- DLdataMyChoice
                  #print(DLdataMyChoice)
                })
              }) ### end of try
@@ -114,7 +114,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                               theCellIds[[cellnum]],
                               value = DLdataOriginal[cellnum])
                           setDLdata(DLdataOriginal, analysisName)
-                          #rValues$DLdataLastUsed = DLdataOriginal
+                          DLdataLastUsed <<- DLdataOriginal
                           cat(' Restoring saved_DLdataMyChoice for ', analysisName, '\n')
                           setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
                           cat(paste(getDLdata(analysisName, myChoice=TRUE) ), '\n')
@@ -155,7 +155,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                    value = DLdataMyChoice [cellnum]
                  )
                setDLdata(DLdataMyChoice, analysisName)
-               #rValues$DLdataLastUsed = DLdataMyChoice
+               DLdataLastUsed <<- DLdataMyChoice
              })
            })
   )

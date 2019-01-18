@@ -18,7 +18,7 @@ if(is.null(
   ) )
   rValues[[paste0('DLdata', currentDTCnumber) ]] = DLdataOriginal
 thisData =   rValues[[paste0('DLdata', currentDTCnumber) ]]
-#rValues$DLdataLastUsed = thisData
+DLdataLastUsed <<- thisData
 
 #print(thisData)
 
