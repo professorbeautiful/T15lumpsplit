@@ -25,4 +25,14 @@ h4,h5,h6{
   height: 100%;
   overflow:auto;
 }
+.disabled {
+  border: gray;
+  background: gray;
+  padding: 15px 32px;
+}
+.enabled {
+  border: black;
+  background: white;
+  padding: 15px 32px;
+}
 

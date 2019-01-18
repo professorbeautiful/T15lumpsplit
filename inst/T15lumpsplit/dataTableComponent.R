@@ -2,6 +2,17 @@ source('jumpBackWithPanel.R', local=TRUE)
 
 cellNames = c('RD', 'ND', 'RL', 'NL')
 
+disable = function(id) {
+  addClass(id, class='disabled')
+  removeClass(id, class='enabled')
+  shinyjs::disable(id)
+}
+enable = function(id) {
+  addClass(id, class='enabled')
+  removeClass(id, class='disabled')
+  shinyjs::enable(id)
+}
+
 #### If the user changes a number,
 #### then update rValues$DLdataMyChoice and rValues$DLdataLastUsed
 createDLdataChoiceObserver <- function(analysisName) {
@@ -107,6 +118,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                           cat(' Restoring saved_DLdataMyChoice for ', analysisName, '\n')
                           setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
                           cat(paste(getDLdata(analysisName, myChoice=TRUE) ), '\n')
+
                           counter= 0
                           onFlushed(function(once=TRUE)
                             while(updater$.suspended == TRUE)
@@ -159,7 +171,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                          showhide=showhide)
       ),
       column(6, br(), br(),
-             #disabled(
+             #disabled(  #Start disabled.
                actionButton(inputId = resetIdThisDTC,
                             label = "Reset data to original") ,
              actionButton(inputId = myChoiceIdThisDTC,
