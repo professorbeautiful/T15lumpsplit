@@ -651,13 +651,22 @@ div(
 Assembling the results of the approaches to estimating Pr(R|D):
 
 ```{r tableOfEstimates}
-tableOfEstimates = reactive({
+jumpList = c(jumpList, estimateTable='Table of estimates')
+source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+
+output$estimateTable = 
+  renderTable({
   ###  Use the last-data for everything.
   ### Data for the full table... hmm, how to keep this from reacting?
   ### For now just use DLdataOriginal
-  thisData = DLdataOriginal
-  for(aN in 1:analysisNumber)
-    setDLdata(value=thisData, names(mapAnalysisToDTCnumber) [aN] )
+  analysisName = 'Table of estimates'
+  source('analysisReactiveSetup.R', local=TRUE);
+  cat('Copying data to other analyses:')
+  for(aN in 1:analysisNumber) {
+    cat(' ', aN)
+    setDLdata(value=thisData, myChoice=TRUE, names(mapAnalysisToDTCnumber) [aN] )
+  }
+  cat('\n')
   nRD=thisData['R','D']
   nND=thisData['N','D']
   posterior.mean.s = (1+nRD)/(2+nRD+nND)
@@ -685,14 +694,14 @@ tableOfEstimates = reactive({
       #BayesLogit=rValues$bivariateNormResults$postmean.p[1]
     )
     round(result, digits=2)
-})
-output$estimateTable = 
-  renderTable({
     ## TODO: use the conditional posterior means instead.
     ##  i.e. add in the pseudocounts.
-    tableOfEstimates()
+#    tableOfEstimates()
 })
-tableOutput('estimateTable')
+
+div(tableOutput('estimateTable'),
+    dataTableComponent(analysisName = 'estimateTable')
+)
 ```
 
 As you change Dr. Who's prior probability or the data values, observe the changes in this summary table.
