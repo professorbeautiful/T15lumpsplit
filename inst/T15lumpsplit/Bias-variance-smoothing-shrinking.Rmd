@@ -645,16 +645,19 @@ Assembling the results of the approaches to estimating Pr(R|D):
 ```{r tableOfEstimates}
 tableOfEstimates = reactive({
   ###  Use the last-data for everything.
+  ### Data for the full table... hmm, how to keep this from reacting?
+  ### For now just use DLdataOriginal
+  thisData = DLdataOriginal
   for(aN in 1:analysisNumber)
-    setDLdata(rValues$DLdataLastUsed, names(mapAnalysisToDTCnumber) [aN] )
-  nRD=rValues$DLdataLastUsed['R','D']
-  nND=rValues$DLdataLastUsed['N','D']
+    setDLdata(value=thisData, names(mapAnalysisToDTCnumber) [aN] )
+  nRD=thisData['R','D']
+  nND=thisData['N','D']
   posterior.mean.s = (1+nRD)/(2+nRD+nND)
-  nR=sum(rValues$DLdataLastUsed['R', ])
-  nN=sum(rValues$DLdataLastUsed['N', ])
+  nR=sum(thisData['R', ])
+  nN=sum(thisData['N', ])
   posterior.mean.l = (2+nR)/(4+nN)
   
-  pProbSplit = posteriorProb(theData=rValues$DLdataLastUsed)
+  pProbSplit = posteriorProb(theData=thisData)
   pProbLump = (1-pProbSplit)
   posterior.mean.w = 
     pProbSplit * posterior.mean.s +
@@ -891,7 +894,7 @@ allChisqPs_original = allPvalues$allChisqPs
 actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
 ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified DLdata.
 observeEvent(list(input$regenerateFeatures), {
-    rValues$DLdataDFwithFeatures = 
+      rValues$DLdataDFwithFeatures = 
        makeDLdataWithFeatures(rValues$DLdataLastUsed)
 })
 ```
