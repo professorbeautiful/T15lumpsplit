@@ -17,6 +17,14 @@ output:
       smooth_scroll: no
 ---
 
+```{r, echo=FALSE}
+shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
+```
+```{r, context="server"}
+shinyjs::useShinyjs(html = TRUE)
+```
+<script src="shinyjs/inject.js"></script>
+
 
 ```{r setup, include=FALSE}
 
