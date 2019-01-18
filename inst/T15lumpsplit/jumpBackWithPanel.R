@@ -6,16 +6,16 @@ observeEvent(input$linktext, {
 
 jumpBackWithPanel = function(analysisNumber, thisDTCNumber) {
   theJumpLinks =
-    tag('ul',
+    #tag('ul',
         tagList( lapply(1:length(jumpList), function(aN)
           tagList(
             linkinLink(paste0('a_', names(jumpList)[aN]),
-                       jumpList[[aN]]),
+                      paste('▸ ', jumpList[[aN]]) ),
             br()
           )
         )
         )
-    ) ## OK it works!
+    #) ## OK it works!
   labelString = print(paste('Jump to other analyses', '___',
               #getSequenceLength(sequenceType="DTC"))
               thisDTCNumber) )
