@@ -894,8 +894,10 @@ allChisqPs_original = allPvalues$allChisqPs
 actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
 ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified DLdata.
 observeEvent(list(input$regenerateFeatures), {
+    isolate(
       rValues$DLdataDFwithFeatures = 
        makeDLdataWithFeatures(rValues$DLdataLastUsed)
+    )
 })
 ```
 ```{r Pvalues all features}
