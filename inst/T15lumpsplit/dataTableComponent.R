@@ -35,7 +35,7 @@ createDLdataChoiceObserver <- function(analysisName) {
                    DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[[4]] ]])
                  setDLdata(DLdataMyChoice, analysisName)
                  setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
-                 rValues$DLdataLastUsed = DLdataMyChoice
+                 #rValues$DLdataLastUsed = DLdataMyChoice
                  #print(DLdataMyChoice)
                })
              }) ### end of try
@@ -97,12 +97,12 @@ dataTableComponent = function(showhide='show', analysisName) {
                           cat(' Restoring saved_DLdataMyChoice for ', analysisName, '\n')
                           setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
                           counter= 0
-                          while(updater$.suspended == TRUE)
-                          {
-                            updater$resume()
-                            counter = counter + 1
-                            cat('  counter for resuming =', counter,'\n')
-                          }
+                            while(updater$.suspended == TRUE)
+                            {
+                              updater$resume()
+                              counter = counter + 1
+                              cat('  counter for resuming =', counter,'\n')
+                            }
                           cat('2 restored DLdataMyChoice:', paste(getDLdata(myChoice=T, analysisName)), '\n')
                         })  ### end of the isolate() call
                       })
@@ -128,7 +128,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                    value = DLdataMyChoice [cellnum]
                  )
                setDLdata(DLdataMyChoice, analysisName)
-               rValues$DLdataLastUsed = DLdataMyChoice
+               #rValues$DLdataLastUsed = DLdataMyChoice
              })
            })
   )

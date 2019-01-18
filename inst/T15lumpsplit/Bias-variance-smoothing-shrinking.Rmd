@@ -108,7 +108,7 @@ rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
                          title_1='title 1',
                          #DLdata=list(),
                          #DLdataMyChoice=list(),
-                         DLdataLastUsed = DLdataOriginal,
+                         #DLdataLastUsed = DLdataOriginal,
                          isResetting = FALSE,
                          isLoopingSync = FALSE,
                          WhoPriorProbProb = 1/2,
@@ -896,7 +896,7 @@ actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
 observeEvent(list(input$regenerateFeatures), {
     isolate( {
       rValues$DLdataDFwithFeatures = 
-       makeDLdataWithFeatures(rValues$DLdataLastUsed)
+       makeDLdataWithFeatures(DLdataOriginal) 
     })
 })
 ```
