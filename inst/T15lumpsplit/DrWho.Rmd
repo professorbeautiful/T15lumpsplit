@@ -285,4 +285,4 @@ You can adjust the prior probability and observe how the posterior probability c
 The Bayes factor in favor of  *Dr.Split* is correct is
 
 \[{\rm{Odds}(\phi = Split|data) = \rm{Odds(}\phi  = Split) \times {m_{Split}}/{m_{Lump}}}.\]
-If Dr. Who puts equal prior probability on *Lump* and *Split*, the Bayes factor is the same as the posterior odds. Converting from odds to probability, with the current datathe posterior probability in favor of *Split* equals `r output$postProb = shiny::renderText({round(digits=3, posteriorProb(theData=rValues$DLdataLastUsed))}); textOutput('postProb', inline=TRUE)`.
+If Dr. Who puts equal prior probability on *Lump* and *Split*, the Bayes factor is the same as the posterior odds. Converting from odds to probability, with the current datathe posterior probability in favor of *Split* equals `r output$postProb = shiny::renderText({round(digits=3, posteriorProb(theData=getDLdata('whoMixturePlot')))}); textOutput('postProb', inline=TRUE)`.
