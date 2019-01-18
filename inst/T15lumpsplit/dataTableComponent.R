@@ -94,7 +94,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                               value = DLdataOriginal[cellnum])
                           setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
                           counter= 0
-                          while(updater$.suspended == FALSE)
+                          while(updater$.suspended == TRUE)
                           {
                             updater$resume()
                             counter = counter + 1
