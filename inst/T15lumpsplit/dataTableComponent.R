@@ -24,17 +24,27 @@ createDLdataChoiceObserver <- function(analysisName) {
                isolate({
                  cat('updateDLdataMyChoice: changing MyChoice', '\n')
                  currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
-                 if( is.null(getDLdata(analysisName, myChoice=TRUE)))
-                   DLdataMyChoice = DLdataOriginal
-                 else
-                   DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
+
                  #print(DLdataMyChoice)
+                 if( ! exists('saved_DLdataMyChoice')) {
+                   cat('updateDLdataMyChoice: Responding to numericInputs\n')
+                   if( is.null(getDLdata(analysisName, myChoice=TRUE)))
+                     DLdataMyChoice = DLdataOriginal
+                   else
+                     DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
                    DLdataMyChoice[1,1] =  as.numeric(input[[theCellIds[[1]] ]])
                    DLdataMyChoice[2,1] =  as.numeric(input[[theCellIds[[2]] ]])
                    DLdataMyChoice[1,2] =  as.numeric(input[[theCellIds[[3]] ]])
                    DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[[4]] ]])
-                 setDLdata(DLdataMyChoice, analysisName)
-                 setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
+                   setDLdata(DLdataMyChoice, analysisName)
+                   setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
+                 }
+                 else {
+                   cat('updateDLdataMyChoice: Restoring saved_DLdataMyChoice\n')
+                   setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
+                   cat('saved_DLdataMyChoice: ', find('saved_DLdataMyChoice'), '\n')
+                   rm('saved_DLdataMyChoice', pos=1)
+                 }
                  #rValues$DLdataLastUsed = DLdataMyChoice
                  #print(DLdataMyChoice)
                })
@@ -77,7 +87,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                           #eval(paste0('updateDLdataMyChoice_', analysisName)
                           currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
-                          saved_DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
+                          saved_DLdataMyChoice <<- getDLdata(analysisName, myChoice=TRUE)
                           cat('saved_DLdataMyChoice:', paste(saved_DLdataMyChoice), '\n')
                           updater = get(paste0('updateDLdataMyChoice_', analysisName))
                           counter= 0
@@ -93,16 +103,21 @@ dataTableComponent = function(showhide='show', analysisName) {
                               theCellIds[[cellnum]],
                               value = DLdataOriginal[cellnum])
                           setDLdata(DLdataOriginal, analysisName)
-                          rValues$DLdataLastUsed = DLdataOriginal
+                          #rValues$DLdataLastUsed = DLdataOriginal
                           cat(' Restoring saved_DLdataMyChoice for ', analysisName, '\n')
                           setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
+                          cat(paste(getDLdata(analysisName, myChoice=TRUE) ), '\n')
                           counter= 0
+                          onFlushed(function(once=TRUE)
                             while(updater$.suspended == TRUE)
                             {
                               updater$resume()
                               counter = counter + 1
                               cat('  counter for resuming =', counter,'\n')
                             }
+                          )
+                          shiny:::flushReact()
+                          cat(paste(getDLdata(analysisName, myChoice=TRUE) ), '\n')
                           cat('2 restored DLdataMyChoice:', paste(getDLdata(myChoice=T, analysisName)), '\n')
                         })  ### end of the isolate() call
                       })
