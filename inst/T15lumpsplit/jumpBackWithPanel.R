@@ -10,7 +10,7 @@ jumpBackWithPanel = function(analysisNumber, thisDTCNumber) {
         tagList( lapply(1:length(jumpList), function(aN)
           tagList(
             linkinLink(paste0('a_', names(jumpList)[aN]),
-                      paste('▸ ', jumpList[[aN]]) ),
+                      paste0('▸ ', jumpList[[aN]]) ),
             br()
           )
         )

@@ -103,7 +103,7 @@ linkinLink = function(anchorName, linktext) {
 observeEvent(input$linktext, {
   ### Copy DLdataLastUsed to theCellIds for the destination.
   ### (Or the current myChoice data instead? Harder though.)
-  destAnalysisNumber = which(jumpList == input$linktext)
+  destAnalysisNumber = which(jumpList == gsub('▸ ', '', input$linktext) )
   destDTCnum = getDTCnumber(destAnalysisNumber)
   theCellIds = as.list(paste0('m', cellNames, 'idPanelDTC', destDTCnum) )
   for(cellnum in 1:4)
