@@ -661,11 +661,16 @@ output$estimateTable =
   ### For now just use DLdataOriginal
   analysisName = 'Table of estimates'
   source('analysisReactiveSetup.R', local=TRUE);
-  cat('Copying data to other analyses:')
-  for(aN in 1:analysisNumber) {
-    cat(' ', aN)
-    setDLdata(value=thisData, myChoice=TRUE, names(mapAnalysisToDTCnumber) [aN] )
-  }
+  isolate( {
+    cat(paste(thisData), '\n')
+    cat('Copying data to other analyses:\n')
+    for(aN in 1:analysisNumber) {
+      cat(names(mapAnalysisToDTCnumber) [aN])
+      setDLdata(value=thisData, myChoice=TRUE, names(mapAnalysisToDTCnumber) [aN] )
+      cat(paste(getDLdata(myChoice=TRUE, names(mapAnalysisToDTCnumber) [aN]) 
+      ), '\n' )
+    }
+  })
   cat('\n')
   nRD=thisData['R','D']
   nND=thisData['N','D']
