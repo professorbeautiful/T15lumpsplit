@@ -48,6 +48,11 @@ if(!require(shinyDebuggingPanel))
 require(magrittr);require(shinyBS)
 require(knitr);require(rmarkdown);
 #source('rstudio.markdownToHTML.R', local=TRUE)
+
+
+analysisReactiveSetup_options = paste0(c('inst/T15lumpsplit/', '',  'T15lumpsplit/'),'analysisReactiveSetup.R')
+whichExist = print(sapply(analysisReactiveSetup_options, file.exists))
+analysisReactiveSetup = print(analysisReactiveSetup_options[whichExist][1])
 ```
 
 ```{r setup numbering, warning=FALSE}
@@ -351,7 +356,7 @@ cat("After first analysisInitialSetup.R, getDTCnumber('plotLumpSplitPoints') =",
     getDTCnumber('plotLumpSplitPoints'), '\n' )
 estimates = observeEvent( getDLdata('plotLumpSplitPoints'),
   {
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
   thisData = getDLdata('plotLumpSplitPoints')
   rValues$estimates = list(
     lump = sum(thisData['R', ])/
@@ -368,7 +373,7 @@ estimates = observeEvent( getDLdata('plotLumpSplitPoints'),
 output$confInterval_Lump = renderText(
   {
   analysisName = 'plotLumpSplitPoints'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
     try(silent = TRUE,
         paste("Lump:  (", 
           signif(digits=2,
@@ -382,7 +387,7 @@ output$confInterval_Lump = renderText(
 output$confInterval_Split = renderText(
   {
       analysisName = 'plotLumpSplitPoints'
-      source('analysisReactiveSetup.R', local=TRUE)
+      source(analysisReactiveSetup, local=TRUE)
       try(silent = TRUE,
           paste("Split:  (", 
                 signif(digits=2,
@@ -397,7 +402,7 @@ output$confInterval_Split = renderText(
 output$plotLumpSplitPoints = renderPlot(
   height = 300, {
     analysisName = 'plotLumpSplitPoints'
-    source('analysisReactiveSetup.R', local=TRUE)
+    source(analysisReactiveSetup, local=TRUE)
     plotPlightPdarkPosterior(
       DLdata=getDLdata('plotLumpSplitPoints'),
       showPrior = FALSE, 
@@ -453,7 +458,7 @@ Splitting gives an answer with high variance ($N$=5) but low bias-- because it i
 
 output$fisherResult = renderText({
   analysisName = 'plotLumpSplitPoints'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
 
   Pvalue = fisher.test(thisData)$p.value
   paste0(
@@ -660,7 +665,7 @@ output$estimateTable =
   ### Data for the full table... hmm, how to keep this from reacting?
   ### For now just use DLdataOriginal
   analysisName = 'Table of estimates'
-  source('analysisReactiveSetup.R', local=TRUE);
+  source(analysisReactiveSetup, local=TRUE);
   isolate( {
     cat(paste(thisData), '\n')
     cat('Copying data to other analyses:\n')
@@ -954,7 +959,7 @@ source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analys
 ```{r pvaluesPlots-react}
 output$pvaluesPlots = renderPlot({
   analysisName = 'pvaluesPlots'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
   hist(rValues$allFisherPs)
   #head(sort(allFisherPs))
   hist(rValues$allChisqPs)
@@ -1081,7 +1086,7 @@ source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analys
 
 output$oddsratioplot = renderPlot({
   analysisName ='oddsratioplot'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
 
   outcome = rValues$DLdataDFwithFeatures$outcome
   oddsratio = function(col, sprinkle=1) {
@@ -1169,7 +1174,7 @@ source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analys
 
 output$empBayeslogitRatios = renderPlot({
   analysisName = 'empBayeslogitRatios'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
 
   logitRatios = rValues$logoddsratios
   logitVars = rValues$logoddsratiovariances
@@ -1273,7 +1278,7 @@ source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analys
 
 output$qvaluePlot = renderPlot({
   analysisName = 'qValue'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
   qout = rValues$qValueObject =
     qvalue::qvalue(rValues$allChisqPs)
   rValues$P_Q_for_X_DL = 
