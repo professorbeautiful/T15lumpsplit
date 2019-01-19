@@ -664,8 +664,10 @@ output$estimateTable =
   ###  Use the last-data for everything.
   ### Data for the full table... hmm, how to keep this from reacting?
   ### For now just use DLdataOriginal
-  analysisName = 'Table of estimates'
+  analysisName = 'estimateTable'
   source(analysisReactiveSetup, local=TRUE);
+  # analysisReactiveSetup.R: Table of estimates   currentDTCnumber= NA 
+
   isolate( {
     cat(paste(thisData), '\n')
     cat('Copying data to other analyses:\n')
