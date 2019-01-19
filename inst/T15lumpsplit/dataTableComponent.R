@@ -30,15 +30,15 @@ createDLdataChoiceObserver <- function(analysisName) {
                input[[theCellIds[[3]] ]], #RL
                input[[theCellIds[[4]] ]]), #NL
            handlerExpr = {
-             cat('START: handler for ', myName, '\n')
+             cat('START: handler for ', myName, '')
              try(silent = FALSE, {
                isolate({
-                 cat('updateDLdataMyChoice: changing MyChoice', '\n')
+                 #cat('updateDLdataMyChoice: changing MyChoice', '\n')
                  currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
                  #print(DLdataMyChoice)
                  if( ! exists('saved_DLdataMyChoice')) {
-                   cat('updateDLdataMyChoice: Responding to numericInputs\n')
+                   cat(': Responding to numericInputs\n')
                    if( is.null(getDLdata(analysisName, myChoice=TRUE)))
                      DLdataMyChoice = DLdataOriginal
                    else
@@ -51,9 +51,9 @@ createDLdataChoiceObserver <- function(analysisName) {
                    setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
                  }
                  else {
-                   cat('updateDLdataMyChoice: Restoring saved_DLdataMyChoice\n')
+                   cat(': Restoring saved_DLdataMyChoice\n')
                    setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
-                   cat('saved_DLdataMyChoice: ', find('saved_DLdataMyChoice'), '\n')
+                   #cat('saved_DLdataMyChoice: ', find('saved_DLdataMyChoice'), '\n')
                    rm('saved_DLdataMyChoice', pos=1)
                  }
                  DLdataLastUsed <<- DLdataMyChoice

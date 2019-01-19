@@ -11,7 +11,7 @@
 
 currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
-cat('analysisReactiveSetup.R:  currentDTCnumber=', currentDTCnumber, '\n')
+cat('analysisReactiveSetup.R:', analysisName, '  currentDTCnumber=', currentDTCnumber, '\n')
 
 if(is.null(
   rValues[[paste0('DLdata', currentDTCnumber) ]]
