@@ -18,7 +18,7 @@ output:
 ---
 
 ```{r, echo=FALSE}
-shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
+#shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
 ```{r, context="server"}
 shinyjs::useShinyjs(html = TRUE)
