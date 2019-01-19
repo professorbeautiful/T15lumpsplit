@@ -51,12 +51,14 @@ createDLdataChoiceObserver <- function(analysisName) {
                    setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
                  }
                  else {
-                   cat(': Restoring saved_DLdataMyChoice\n')
+                   saved_DLdataMyChoice_location = find('saved_DLdataMyChoice')
+                   cat(': Restoring saved_DLdataMyChoice from ',
+                       saved_DLdataMyChoice_location, '\n')
                    setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
                    #cat('saved_DLdataMyChoice: ', find('saved_DLdataMyChoice'), '\n')
-                   rm('saved_DLdataMyChoice', pos=1)
+                   rm('saved_DLdataMyChoice', pos='.GlobalEnv')
                  }
-                 DLdataLastUsed <<- DLdataMyChoice
+                 DLdataLastUsed <<- getDLdata(analysisName, myChoice=TRUE)
                  #print(DLdataMyChoice)
                })
              }) ### end of try
