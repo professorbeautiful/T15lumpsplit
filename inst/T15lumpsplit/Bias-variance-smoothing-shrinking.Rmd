@@ -700,7 +700,7 @@ output$estimateTable =
     '{Bayes Pr(Lump)}',
     '{Bayes Pr(Split)}'
 )
-  result = xtable::xtable(data.frame(
+  result = c( #xtable::xtable(data.frame(
       LumpRawMean,
       SplitRawMean,
       posterior.mean.l,
@@ -710,10 +710,10 @@ output$estimateTable =
       pProbSplit
       #CV=rValues$CVoptimalEstimate,
       #BayesLogit=rValues$bivariateNormResults$postmean.p[1]
-    ) )
-    xtable_result = round(result, digits=2) 
+    ) #)
+    #xtable_result = round(result, digits=2) 
     #names(result) = paste0('X', 1:7)  # niceColHeader
-    print(xtable_result)
+    #print(xtable_result)
     # withMathJaxresult <<- (withMathJax(result))
     # withMathJaxresult
     ## TODO: use the conditional posterior means instead.
