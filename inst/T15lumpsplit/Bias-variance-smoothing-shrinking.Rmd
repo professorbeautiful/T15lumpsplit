@@ -719,14 +719,16 @@ output$estimateTable =
     ## TODO: use the conditional posterior means instead.
     ##  i.e. add in the pseudocounts.
 #    tableOfEstimates()
-   withMathJax(paste0(' \\begin{array}{*{3}{c}}',
-paste(niceColHeader, collapse='&'),
-'\\\\',
-paste(round(result, digits=2) , collapse="&"),
-'\\end{array}') )
+  withMathJax(paste0(' \\begin{array}{*{3}{c}}',
+                     # {\\Huge} '\\\\setlength{\\tabcolsep}{12pt}',
+                     paste(niceColHeader, collapse='&'),
+                     '\\\\',
+                     paste(round(result, digits=2) , collapse="&"),
+                     '\\end{array}') )
+  
 })
 
-div(uiOutput('estimateTable'),
+div(style='fontsize:large;', uiOutput('estimateTable'),
     dataTableComponent(analysisName = 'estimateTable')
 )
 ```
