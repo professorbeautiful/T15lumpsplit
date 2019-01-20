@@ -657,7 +657,7 @@ jumpList = c(jumpList, estimateTable='Table of estimates')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$estimateTable = 
-  renderUI({
+  renderTable({
   ###  Use the last-data for everything.
   ### Data for the full table... hmm, how to keep this from reacting?
   ### For now just use DLdataOriginal
@@ -692,15 +692,16 @@ output$estimateTable =
   LumpRawMean=(nR)/(nN)
   SplitRawMean=(nRD)/(nRD+nND)
   niceColHeader = c( 
-    '{Raw (Lump)}',
-    '{Raw (Split)}',
-    '{Bayes Mean (Lump)}',
-    '{Bayes Mean (Split)}' ,
-    '{Bayes Mean (Who)}',  
-    '{Bayes Pr(Lump)}',
-    '{Bayes Pr(Split)}'
+    'Raw (Lump)',
+    'Raw (Split)',
+    'Bayes Mean (Lump)',
+    'Bayes Mean (Split)' ,
+    'Bayes Mean (Who)',  
+    'Bayes Pr(Lump)',
+    'Bayes Pr(Split)'
 )
-  result = c( #xtable::xtable(data.frame(
+  result = #c( #xtable::xtable(
+    data.frame(
       LumpRawMean,
       SplitRawMean,
       posterior.mean.l,
@@ -713,22 +714,24 @@ output$estimateTable =
     ) #)
     #xtable_result = round(result, digits=2) 
     #names(result) = paste0('X', 1:7)  # niceColHeader
+  names(result) = niceColHeader
+  return(result)
     #print(xtable_result)
     # withMathJaxresult <<- (withMathJax(result))
     # withMathJaxresult
     ## TODO: use the conditional posterior means instead.
     ##  i.e. add in the pseudocounts.
 #    tableOfEstimates()
-  withMathJax(paste0(' \\begin{array}{*{3}{c}}',
-                     # {\\Huge} '\\\\setlength{\\tabcolsep}{12pt}',
-                     paste(niceColHeader, collapse='&'),
-                     '\\\\',
-                     paste(round(result, digits=2) , collapse="&"),
-                     '\\end{array}') )
+  # withMathJax(paste0(' \\begin{array}{*{3}{c}}',
+  #                    # {\\Huge} '\\\\setlength{\\tabcolsep}{12pt}',
+  #                    paste(niceColHeader, collapse='&'),
+  #                    '\\\\',
+  #                    paste(round(result, digits=2) , collapse="&"),
+  #                    '\\end{array}') )
   
 })
 
-div(style='fontsize:large;', uiOutput('estimateTable'),
+div(style='fontsize:large;', tableOutput('estimateTable'),
     dataTableComponent(analysisName = 'estimateTable')
 )
 ```
