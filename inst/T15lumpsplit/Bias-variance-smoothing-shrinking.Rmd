@@ -34,6 +34,7 @@ options(knitr.duplicate.label = 'allow')
 require(T15lumpsplit)
 require(shiny)
 require(shinyjs)
+require(xtable)
 useShinyjs(rmd=TRUE)
 
 require(devtools)
@@ -656,7 +657,7 @@ jumpList = c(jumpList, estimateTable='Table of estimates')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$estimateTable = 
-  renderTable({
+  renderUI({
   ###  Use the last-data for everything.
   ### Data for the full table... hmm, how to keep this from reacting?
   ### For now just use DLdataOriginal
@@ -691,34 +692,41 @@ output$estimateTable =
   LumpRawMean=(nR)/(nN)
   SplitRawMean=(nRD)/(nRD+nND)
   niceColHeader = c( 
-    `Raw (Lump)`,
-    `Raw (Split)`,
-    `Bayes Mean (Lump)`,
-    `Bayes Mean (Split)` ,
-    `Bayes Mean (Who)`,  
-    `Bayes Pr(Lump)`,
-    `Bayes Pr(Split)`
+    '{Raw (Lump)}',
+    '{Raw (Split)}',
+    '{Bayes Mean (Lump)}',
+    '{Bayes Mean (Split)}' ,
+    '{Bayes Mean (Who)}',  
+    '{Bayes Pr(Lump)}',
+    '{Bayes Pr(Split)}'
 )
   result = xtable::xtable(data.frame(
-      `Raw (Lump)`=LumpRawMean,
-      `Raw (Split)`=SplitRawMean,
-      `Bayes Mean (Lump)`=posterior.mean.l,
-      `Bayes Mean (Split)`=posterior.mean.s ,
-      `Bayes Mean (Who)`=posterior.mean.w,  
-      `Bayes Pr(Lump)`=pProbLump,
-      `Bayes Pr(Split)`=pProbSplit
+      LumpRawMean,
+      SplitRawMean,
+      posterior.mean.l,
+      posterior.mean.s,
+      posterior.mean.w,  
+      pProbLump,
+      pProbSplit
       #CV=rValues$CVoptimalEstimate,
       #BayesLogit=rValues$bivariateNormResults$postmean.p[1]
     ) )
-    result = round(result, digits=2) 
-    names(result) = niceColHeader
-    print(result)
+    xtable_result = round(result, digits=2) 
+    #names(result) = paste0('X', 1:7)  # niceColHeader
+    print(xtable_result)
+    # withMathJaxresult <<- (withMathJax(result))
+    # withMathJaxresult
     ## TODO: use the conditional posterior means instead.
     ##  i.e. add in the pseudocounts.
 #    tableOfEstimates()
+   withMathJax(paste0(' \\begin{array}{*{3}{c}}',
+paste(niceColHeader, collapse='&'),
+'\\\\',
+paste(round(result, digits=2) , collapse="&"),
+'\\end{array}') )
 })
 
-div(tableOutput('estimateTable'),
+div(uiOutput('estimateTable'),
     dataTableComponent(analysisName = 'estimateTable')
 )
 ```
