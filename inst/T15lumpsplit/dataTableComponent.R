@@ -1,5 +1,7 @@
 source('jumpBackWithPanel.R', local=TRUE)
 
+printDTCProgress = FALSE
+
 cellNames = c('RD', 'ND', 'RL', 'NL')
 
 disable = function(id) {
@@ -17,7 +19,7 @@ enable = function(id) {
 #### then update rValues$DLdataMyChoice and rValues$DLdataLastUsed
 createDLdataChoiceObserver <- function(analysisName) {
   myName = paste0('updateDLdataMyChoice_', analysisName)
-  cat('Creating ', myName, '\n')
+  if(printDTCProgress ) cat('Creating ', myName, '\n')
   analysisNumber = match(analysisName, names(jumpList))
   theCellIds = paste0('m', cellNames, 'idPanelDTC', analysisNumber)
   assign(myName,
@@ -72,8 +74,8 @@ dataTableComponent = function(showhide='show', analysisName) {
   createDLdataChoiceObserver(analysisName)
   analysisNumber = which(analysisName == names(jumpList))
   thisDTCNumber = nextNumber(sequenceType = "DTC")
-  cat('Creating dataTableComponent thisDTCNumber = ', thisDTCNumber, '\n')
-  cat('DTCNumber=', thisDTCNumber, '   analysisNumber=', analysisNumber, '\n')
+  if(printDTCProgress ) cat('Creating dataTableComponent thisDTCNumber = ', thisDTCNumber, '\n')
+  if(printDTCProgress ) cat('DTCNumber=', thisDTCNumber, '   analysisNumber=', analysisNumber, '\n')
   outputIdThisDTC = paste0('outputDTC', thisDTCNumber)
   panelIdThisDTC = paste0('idPanelDTC', thisDTCNumber)
   resetIdThisDTC = paste0('idResetDTC', thisDTCNumber)
@@ -117,22 +119,7 @@ dataTableComponent = function(showhide='show', analysisName) {
                               value = DLdataOriginal[cellnum])
                           setDLdata(DLdataOriginal, analysisName)
                           DLdataLastUsed <<- DLdataOriginal
-                          cat(' Restoring saved_DLdataMyChoice for ', analysisName, '\n')
                           setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
-                          cat(paste(getDLdata(analysisName, myChoice=TRUE) ), '\n')
-
-                          counter= 0
-                          onFlushed(function(once=TRUE)
-                            while(updater$.suspended == TRUE)
-                            {
-                              updater$resume()
-                              counter = counter + 1
-                              cat('  counter for resuming =', counter,'\n')
-                            }
-                          )
-                          shiny:::flushReact()
-                          cat(paste(getDLdata(analysisName, myChoice=TRUE) ), '\n')
-                          cat('2 restored DLdataMyChoice:', paste(getDLdata(myChoice=T, analysisName)), '\n')
                         })  ### end of the isolate() call
                       })
   )
@@ -162,7 +149,8 @@ dataTableComponent = function(showhide='show', analysisName) {
            })
   )
   #### Output of dataTableComponent ####
-  cat('dataTableComponent for ', analysisName, ' ', thisDTCNumber, '\n')
+  if(printDTCProgress )
+      cat('dataTableComponent for ', analysisName, ' ', thisDTCNumber, '\n')
   output[[outputIdThisDTC]] = renderUI({
     fluidRow(
       column(6,
@@ -173,15 +161,13 @@ dataTableComponent = function(showhide='show', analysisName) {
                          showhide=showhide)
       ),
       column(6, br(), br(),
-             #disabled(  #Start disabled.
-               actionButton(inputId = resetIdThisDTC,
+             #disabled(  #Start disabled. Doesn't seem to work.
+             actionButton(inputId = resetIdThisDTC,
                             label = "Reset data to original") ,
              actionButton(inputId = myChoiceIdThisDTC,
                             label = "Reset data to my choice"),
              br(),
              jumpBackWithPanel(analysisNumber, thisDTCNumber)
-             ##  can't find nextNumber() from jumpBackWithPanel()... needed local=T
-             #inclRmd('jumpBackWithPanel.Rmd')
       )
     )
   })
