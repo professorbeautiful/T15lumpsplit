@@ -690,18 +690,29 @@ output$estimateTable =
 
   LumpRawMean=(nR)/(nN)
   SplitRawMean=(nRD)/(nRD+nND)
-    result = data.frame(
-      LumpObs=LumpRawMean,
-      SplitObs=SplitRawMean,
-      Lump=posterior.mean.l,
-      Split=posterior.mean.s ,
-      PrLump=pProbLump,
-      PrSplit=pProbSplit,
-      Who=posterior.mean.w #, 
+  niceColHeader = c( 
+    `Raw (Lump)`,
+    `Raw (Split)`,
+    `Bayes Mean (Lump)`,
+    `Bayes Mean (Split)` ,
+    `Bayes Mean (Who)`,  
+    `Bayes Pr(Lump)`,
+    `Bayes Pr(Split)`
+)
+  result = xtable::xtable(data.frame(
+      `Raw (Lump)`=LumpRawMean,
+      `Raw (Split)`=SplitRawMean,
+      `Bayes Mean (Lump)`=posterior.mean.l,
+      `Bayes Mean (Split)`=posterior.mean.s ,
+      `Bayes Mean (Who)`=posterior.mean.w,  
+      `Bayes Pr(Lump)`=pProbLump,
+      `Bayes Pr(Split)`=pProbSplit
       #CV=rValues$CVoptimalEstimate,
       #BayesLogit=rValues$bivariateNormResults$postmean.p[1]
-    )
-    round(result, digits=2)
+    ) )
+    result = round(result, digits=2) 
+    names(result) = niceColHeader
+    print(result)
     ## TODO: use the conditional posterior means instead.
     ##  i.e. add in the pseudocounts.
 #    tableOfEstimates()
@@ -712,7 +723,7 @@ div(tableOutput('estimateTable'),
 )
 ```
 
-As you change Dr. Who's prior probability or the data values, observe the changes in this summary table.
+As you change Dr. Who's prior probability or the data values, observe the changes in this summary table. Raw..Lump.	Raw..Split.	are the table proportions taken at face value  by Dr. Lump and Dr. Split. Bayes.Mean..Lump.	and Bayes.Mean..Split. and Bayes.Mean..Who. are Bayesian posterior means that we calculated above. Bayes.Pr.Lump. and	Bayes.Pr.Split. are Dr. Who's posterior probabilities that Dr. Lump or Dr. Split is correct.
 
 ```{r QA-Who-prior-probability}
 QandAha('QA-Who-prior-probability')
