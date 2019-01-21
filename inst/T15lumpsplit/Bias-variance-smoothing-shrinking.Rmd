@@ -698,7 +698,8 @@ output$estimateTable =
     'Bayes Mean (Split)' ,
     'Bayes Mean (Who)',  
     'Bayes Pr(Lump)',
-    'Bayes Pr(Split)'
+    'Bayes Pr(Split)',
+    'CV optimal'
 )
   result = 
     data.frame(
@@ -708,8 +709,8 @@ output$estimateTable =
       posterior.mean.s,
       posterior.mean.w,  
       pProbLump,
-      pProbSplit
-      #CV=rValues$CVoptimalEstimate
+      pProbSplit,
+      CV=rValues$CVoptimalEstimate
       #BayesLogit=rValues$bivariateNormResults$postmean.p[1]
     )
   names(result) = niceColHeader
