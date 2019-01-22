@@ -61,9 +61,9 @@ output$crossvalidationPlot = renderPlot({
     optimalEstimateRounded = round(optimalEstimate, digits = 2)
     CVoptimalEstimate <<- optimalEstimate
     summaryText = paste(
-      ' Opt est=', signif(optimalEstimate, digits=2),
+      'CV opt est=', signif(optimalEstimate, digits=2),
       ' (Lump ', signif(1-optimalWeight, digits=2), ', Split ', optimalWeightRounded, ')')
-
+    shinyjs::alert(summaryText)
     plot(x=weights,
          y=penaltyVector,
          xlab='weights',
