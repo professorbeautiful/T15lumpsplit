@@ -51,22 +51,29 @@ output$crossvalidationPlot = renderPlot({
     # A numerical vector of the form c(bottom, left, top, right)
     # which gives the margin size specified in inches.
     # Increasing the 4th entry allows room for a right-side label.
+
+
+    optimalWeight = weights[which(penaltyVector==min(penaltyVector))]  [1]
+    optimalWeightRounded = round(optimalWeight, digits = 2)
+    proportionOverall = sum(thisData[ 'R', ])/sum(thisData)
+    proportionThisGroup =  sum(thisData[ 'R', 'D'])/sum(thisData[ , 'D'])
+    optimalEstimate = estimators[which(weights==optimalWeight)] [1]
+    optimalEstimateRounded = round(optimalEstimate, digits = 2)
+    CVoptimalEstimate <<- optimalEstimate
+    summaryText = paste(
+      ' Opt est=', signif(optimalEstimate, digits=2),
+      ' (Lump ', signif(1-optimalWeight, digits=2), ', Split ', optimalWeightRounded, ')')
+
     plot(x=weights,
          y=penaltyVector,
          xlab='weights',
          ylab="",
-         #     ylim=c(0,max(penaltyVector)),
+         #     ylim=range(penaltyVector)),
          type='l', col='orange', axes=F)
     axis(1)
     axis(2, col='orange', col.axis='orange')
     mtext(text = 'penalty', side = 2, col='orange',line=2)
-    optimalWeight = weights[which(penaltyVector==min(penaltyVector))]  [1]
-    #cat('optimalWeight = ', optimalWeight, '\n')
-    proportionOverall = sum(thisData[ 'R', ])/sum(thisData)
-    proportionThisGroup =  sum(thisData[ 'R', 'D'])/sum(thisData[ , 'D'])
-    optimalEstimate = estimators[which(weights==optimalWeight)]
-    rValues$CVoptimalEstimate = optimalEstimate
-    #cat('optimal estimate for dark = ', optimalEstimate, '\n')
+
     points(optimalWeight,
            totalPenalty(optimalWeight, penalty=penaltyFunction),
            col='orange', pch=17, cex=2)
@@ -75,11 +82,11 @@ output$crossvalidationPlot = renderPlot({
          col='orange', pos=3,
          labels = round(digits=2, optimalWeight))
     abline(h=min(penaltyVector),col='orange')
-    title('cross-validation optimization',
+    title(paste('cross-validation optimization\n', summaryText),
           'lump <-------------------------------------------> split')
 
     #####  adding a right-hand-side vertical axis #####
-    par(new=T)
+    par(new=T)  ## Which of course means "new=F"!
     plot(weights, estimators, axes=F, type='l', lty=2,
          col='blue', ylab='', ylim=c(0.0, proportionThisGroup*1.05))
     axis(4, col='blue', col.axis='blue')
@@ -92,10 +99,11 @@ output$crossvalidationPlot = renderPlot({
     text(1, proportionThisGroup,
          as.character(round(digits=2, proportionThisGroup)),
          col='blue', adj=1)
-    text(optimalWeight,
-         estimators[which(weights==optimalWeight)],
-         round(digits=2, optimalEstimate),
+    text(x = optimalWeight,
+         y = estimators[which(weights==optimalWeight)],
+         labels = round(digits=2, optimalEstimate),
          col='blue', pos = 3)
+    mtext(summaryText, side = 1, line=5)
     par(savedPar)  # restore original plot settings
   }
 )
