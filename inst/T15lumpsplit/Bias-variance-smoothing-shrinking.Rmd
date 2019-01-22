@@ -20,8 +20,11 @@ output:
 ```{r, echo=FALSE}
 #shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
-```{r, context="server"}
-shinyjs::useShinyjs(html = TRUE)
+```{r, context="server", echo=FALSE}
+#shinyjs::useShinyjs(html = TRUE)
+require(shinyjs)
+useShinyjs(rmd=TRUE)
+
 ```
 <script src="shinyjs/inject.js"></script>
 
@@ -33,9 +36,7 @@ options(knitr.duplicate.label = 'allow')
 #options(error=browser)
 require(T15lumpsplit)
 require(shiny)
-require(shinyjs)
 require(xtable)
-useShinyjs(rmd=TRUE)
 
 require(devtools)
 if(!require(T15lumpsplit))
@@ -700,7 +701,7 @@ output$estimateTable =
     'Bayes Pr(Lump)',
     'Bayes Pr(Split)',
     'CV optimal'
-)
+  )
   result = 
     data.frame(
       LumpRawMean,
