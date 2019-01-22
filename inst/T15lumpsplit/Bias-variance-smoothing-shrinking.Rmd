@@ -527,7 +527,7 @@ For this example dataset, we perform leave-one-out cross-validation as follows:
 jumpList = c(jumpList, crossvalidationPlot='Cross-validation plot')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
-source('Lump-Split-crossvalidation.R', local=TRUE, echo = FALSE)
+source('Lump-Split-crossvalidation.R', local=TRUE)  # , echo = FALSE)
 
 fluidRow(
   column(4, 
