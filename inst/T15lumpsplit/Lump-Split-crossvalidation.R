@@ -82,7 +82,7 @@ output$crossvalidationPlot = renderPlot({
          col='orange', pos=3,
          labels = round(digits=2, optimalWeight))
     abline(h=min(penaltyVector),col='orange')
-    title(paste('cross-validation optimization\n', summaryText),
+    title(paste('cross-validation optimization'),
           'lump <-------------------------------------------> split')
 
     #####  adding a right-hand-side vertical axis #####
