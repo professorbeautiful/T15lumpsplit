@@ -702,6 +702,7 @@ output$estimateTable =
     'Bayes Pr(Split)',
     'CV optimal'
   )
+  cat('CVoptimalEstimate', CVoptimalEstimate, '  ', paste(DLdataLastUsed), '\n')
   result = 
     data.frame(
       LumpRawMean,
