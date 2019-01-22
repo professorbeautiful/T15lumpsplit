@@ -54,7 +54,7 @@ doCVanalysis <- reactive( {
   summaryText = paste(
     'CV opt est=', signif(optimalEstimate, digits=2),
     ' (Lump ', signif(1-optimalWeight, digits=2), ', Split ', optimalWeightRounded, ')')
-  shinyjs::alert(summaryText)
+  #shinyjs::alert(summaryText)
   penaltyAtOpt = totalPenalty(optimalWeight)
 
   # objects =   c('summaryText', 'optimalWeight', 'weights', 'penaltyVector',
