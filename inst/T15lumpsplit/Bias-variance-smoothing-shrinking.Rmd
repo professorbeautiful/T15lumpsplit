@@ -710,7 +710,7 @@ output$estimateTable =
       posterior.mean.w,  
       pProbLump,
       pProbSplit,
-      CV=rValues$CVoptimalEstimate
+      CV=CVoptimalEstimate
       #BayesLogit=rValues$bivariateNormResults$postmean.p[1]
     )
   names(result) = niceColHeader
