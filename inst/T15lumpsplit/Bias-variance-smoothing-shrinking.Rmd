@@ -657,7 +657,40 @@ Assembling the results of the approaches to estimating Pr(R|D):
 jumpList = c(jumpList, estimateTable='Table of estimates')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
-output$estimateTable = 
+output$BayesPostProbs = 
+  renderTable(rownames = TRUE, {
+    analysisName = 'estimateTable'
+    source(analysisReactiveSetup, local=TRUE);
+    pProbSplit = posteriorProb(theData=thisData)
+    pProbLump = (1-pProbSplit)
+    implicitWeight1_ForLogit = 
+      (rValues$bivariateNormResults$postmean.p[1] - LumpRawMean)/
+      (SplitRawMean - LumpRawMean)
+    implicitWeights_ForLogit = 
+      round(digits=2, c(implicitWeight1_ForLogit, 1-implicitWeight1_ForLogit) )
+    # niceColHeader = c( 
+    #   'Bayes Pr(Lump)',
+    #   'Bayes Pr(Split)',
+    #   'CV weight (Lump)',
+    #   'CV weight (Split)'
+    # )
+    setDLdata(value=thisData,
+              analysisName='crossvalidationPlot')
+    #rValues[[paste0('DLdata', currentDTCnumber) ]]
+    CVoptimalWeight = doCVanalysis()$optimalWeight
+    result = data.frame(
+      c(pProbLump, round(1-CVoptimalWeight, digits=2)),
+      c(pProbSplit, CVoptimalWeight),
+      implicitWeights_ForLogit
+    )
+    names(result) = c("Lump", "Split")
+    rownames(result) = c("Dr.Who's posterior probabilities", 
+                         "Cross-validation weights", 'Bivariate logit weights')
+    return( (result) )
+  })
+
+
+output$estimateTable1 = 
   renderTable({
   ###  Use the last-data for everything.
   ### Data for the full table... hmm, how to keep this from reacting?
@@ -694,14 +727,67 @@ output$estimateTable =
   SplitRawMean=(nRD)/(nRD+nND)
   
   niceColHeader = c( 
-    'Raw (Lump)',
-    'Raw (Split)',
     'Bayes Mean (Lump)',
     'Bayes Mean (Split)' ,
     'Bayes Mean (Who)',  
-    'Bayes Pr(Lump)',
-    'Bayes Pr(Split)',
     'CV optimal'
+  )
+  setDLdata(value=thisData,
+            analysisName='crossvalidationPlot')
+  #rValues[[paste0('DLdata', currentDTCnumber) ]]
+  CVoptimalEstimate = doCVanalysis()$CVoptimalEstimate
+  cat('CVoptimalEstimate', CVoptimalEstimate, '  ', paste(DLdataLastUsed), '\n')
+  result = 
+    data.frame(
+      posterior.mean.l,  
+      posterior.mean.s,  
+      posterior.mean.w,  
+      CV=CVoptimalEstimate
+    )
+  names(result) = niceColHeader
+  return(result)
+})
+
+output$estimateTable2 = 
+  renderTable({
+  ###  Use the last-data for everything.
+  ### Data for the full table... hmm, how to keep this from reacting?
+  ### For now just use DLdataOriginal
+  analysisName = 'estimateTable'
+  source(analysisReactiveSetup, local=TRUE);
+  # analysisReactiveSetup.R: Table of estimates   currentDTCnumber= NA 
+
+  isolate( {
+    cat(paste(thisData), '\n')
+    cat('Copying data to other analyses:\n')
+    for(aN in 1:analysisNumber) {
+      cat('  =>',  names(mapAnalysisToDTCnumber) [aN], ':  ')
+      setDLdata(value=thisData, myChoice=TRUE, names(mapAnalysisToDTCnumber) [aN] )
+      cat(paste(getDLdata(myChoice=TRUE, names(mapAnalysisToDTCnumber) [aN]) 
+      ), '\n' )
+    }
+  })
+  cat('\n')
+  nRD=thisData['R','D']
+  nND=thisData['N','D']
+  posterior.mean.s = (1+nRD)/(2+nRD+nND)
+  nR=sum(thisData['R', ])
+  nN=sum(thisData['N', ])
+  posterior.mean.l = (2+nR)/(4+nN)
+  
+  # pProbSplit = posteriorProb(theData=thisData)
+  # pProbLump = (1-pProbSplit)
+  # posterior.mean.w = 
+  #   pProbSplit * posterior.mean.s +
+  #   pProbLump * posterior.mean.l
+
+  LumpRawMean=(nR)/(nN)
+  SplitRawMean=(nRD)/(nRD+nND)
+  
+  niceColHeader = c( 
+    'Raw (Lump)',
+    'Raw (Split)',
+    'From logit'
   )
   setDLdata(value=thisData,
             analysisName='crossvalidationPlot')
@@ -712,19 +798,18 @@ output$estimateTable =
     data.frame(
       LumpRawMean,
       SplitRawMean,
-      posterior.mean.l,
-      posterior.mean.s,
-      posterior.mean.w,  
-      pProbLump,
-      pProbSplit,
-      CV=CVoptimalEstimate
-      #BayesLogit=rValues$bivariateNormResults$postmean.p[1]
+      BayesLogit=rValues$bivariateNormResults$postmean.p[1]
     )
   names(result) = niceColHeader
   return(result)
 })
 
-div(style='fontsize:large;', tableOutput('estimateTable'),
+div(style='fontsize:large;', 
+    div(h4("Posterior probabilities and weights"),
+        tableOutput('BayesPostProbs') ),
+    div(h4("Estimated Means of Pr(R | D)"),
+        fluidRow(column(8, tableOutput('estimateTable1') ),
+             column(4, tableOutput('estimateTable2') ) ) ),
     dataTableComponent(analysisName = 'estimateTable')
 )
 ```
