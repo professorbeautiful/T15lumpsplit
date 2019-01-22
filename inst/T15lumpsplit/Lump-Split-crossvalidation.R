@@ -1,71 +1,91 @@
 ####   Lump-Split-crossvalidation
 ####    Illustrating cross-validation with the Dark-Light dataset
 
+penaltyFunction = function(outcome, prediction)
+  switch(outcome, R=(1-prediction)^2, N=prediction^2)
+# LOSS: LEAST SQUARES
+# penaltyFunction = function(outcome, prediction)
+#                          switch(outcome, R=(1-prediction)^2, N=prediction^2))
+# LOSS: EXPONENTIAL
+# penaltyFunction =  function(outcome, prediction)
+#                          exp(-switch(outcome, R=1, N=-1)*prediction))
+# LOSS: LOG LIKELIHOOD X (-1)
+# penaltyFunction = function(outcome, prediction)
+#   -log(dbinom((outcome=='R'), size = 1, prob=prediction))
+
+doCVanalysis <- reactive( {
+  analysisName = 'crossvalidationPlot'
+  source('analysisReactiveSetup.R', local=TRUE)
+  cat("mychoice data", paste(getDLdata(myChoice=TRUE, analysisName) ), '\n')
+  cat("thisData", paste(thisData ), '\n')
+
+  proportionOverall = sum(thisData['R', ])/sum(thisData)
+  proportionThisGroup =  sum(thisData['R', 'D'])/sum(thisData[ , 'D' ])
+
+  leaveOneOut <<- function(weight=1/2, outcome, feature) {
+    smallerDataSet = thisData
+    smallerDataSet[outcome=outcome, feature=feature] =
+      smallerDataSet[outcome=outcome, feature=feature] - 1
+    proportionOverallSmaller = sum(smallerDataSet['R', ])/sum(smallerDataSet)
+    proportionThisGroupSmaller =  sum(smallerDataSet['R', feature])/sum(smallerDataSet[ , feature ])
+    prediction = weight*proportionThisGroupSmaller + (1-weight)*proportionOverallSmaller
+    penalty = penaltyFunction(outcome, prediction) * thisData[outcome, feature]
+    return(penalty)
+  }
+
+  totalPenalty <<- function(weight, ...)
+    leaveOneOut(weight=weight, feature='D', outcome='R', ...) +
+    leaveOneOut(weight=weight, feature='D', outcome='N', ...) +
+    leaveOneOut(weight=weight, feature='L', outcome='R', ...) +
+    leaveOneOut(weight=weight, feature='L', outcome='N', ...)
+
+  weights<-seq(0,1,length=100)
+  estimators = weights*proportionThisGroup+(1-weights)*proportionOverall
+
+  penaltyVector = sapply(weights, totalPenalty)
+
+  optimalWeight = weights[which(penaltyVector==min(penaltyVector))]  [1]
+  optimalWeightRounded = round(optimalWeight, digits = 2)
+  proportionOverall = sum(thisData[ 'R', ])/sum(thisData)
+  proportionThisGroup =  sum(thisData[ 'R', 'D'])/sum(thisData[ , 'D'])
+  optimalEstimate = estimators[which(weights==optimalWeight)] [1]
+  optimalEstimateRounded = round(optimalEstimate, digits = 2)
+  CVoptimalEstimate <<- optimalEstimate
+  summaryText = paste(
+    'CV opt est=', signif(optimalEstimate, digits=2),
+    ' (Lump ', signif(1-optimalWeight, digits=2), ', Split ', optimalWeightRounded, ')')
+  shinyjs::alert(summaryText)
+  penaltyAtOpt = totalPenalty(optimalWeight)
+
+  # objects =   c('summaryText', 'optimalWeight', 'weights', 'penaltyVector',
+  #               'penaltyAtOpt', 'CVoptimalEstimate')
+  # result = lapply(objects, get)
+  # names(result) = objects
+  result = list(summaryText=summaryText, optimalWeight=optimalWeight,
+                weights=weights, penaltyVector=penaltyVector,
+                estimators=estimators,
+                penaltyAtOpt=penaltyAtOpt, CVoptimalEstimate=CVoptimalEstimate,
+                proportionOverall=proportionOverall,
+                proportionThisGroup=proportionThisGroup)
+  return(result)
+} )
+
+
 output$crossvalidationPlot = renderPlot({
   analysisName = 'crossvalidationPlot'
   source('analysisReactiveSetup.R', local=TRUE)
+  result = doCVanalysis()
+  print(names(result))
+  for(ob in names(result))
+    assign(ob, result[[ob]])
+  #####  plot with two vertical axes #####
+  savedPar <- par(mai = c(1.2, .8, .2, .8))
+  # A numerical vector of the form c(bottom, left, top, right)
+  # which gives the margin size specified in inches.
+  # Increasing the 4th entry allows room for a right-side label.
 
-    proportionOverall = sum(thisData['R', ])/sum(thisData)
-    proportionThisGroup =  sum(thisData['R', 'D'])/sum(thisData[ , 'D' ])
-
-    leaveOneOut <<- function(
-      weight=1/2, outcome, feature,
-      penaltyFunction = function(outcome, prediction)
-        switch(outcome, R=(1-prediction)^2, N=prediction^2)) {
-      smallerDataSet = thisData
-      smallerDataSet[outcome=outcome, feature=feature] =
-        smallerDataSet[outcome=outcome, feature=feature] - 1
-      proportionOverallSmaller = sum(smallerDataSet['R', ])/sum(smallerDataSet)
-      proportionThisGroupSmaller =  sum(smallerDataSet['R', feature])/sum(smallerDataSet[ , feature ])
-      prediction = weight*proportionThisGroupSmaller + (1-weight)*proportionOverallSmaller
-      penalty = penaltyFunction(outcome, prediction) * thisData[outcome, feature]
-      return(penalty)
-    }
-
-    totalPenalty <<- function(weight, ...)
-      leaveOneOut(weight=weight, feature='D', outcome='R', ...) +
-      leaveOneOut(weight=weight, feature='D', outcome='N', ...) +
-      leaveOneOut(weight=weight, feature='L', outcome='R', ...) +
-      leaveOneOut(weight=weight, feature='L', outcome='N', ...)
-
-    # LOSS: LEAST SQUARES
-    penaltyFunction <<- function(outcome, prediction)
-      switch(outcome, R=(1-prediction)^2,
-             N=prediction^2)
-    # penaltyFunction = function(outcome, prediction)
-    #                          switch(outcome, R=(1-prediction)^2, N=prediction^2))
-    # LOSS: EXPONENTIAL
-    # penaltyFunction =  function(outcome, prediction)
-    #                          exp(-switch(outcome, R=1, N=-1)*prediction))
-    # LOSS: LOG LIKELIHOOD X (-1)
-    # penaltyFunction = function(outcome, prediction)
-    #   -log(dbinom((outcome=='R'), size = 1, prob=prediction))
-    weights<-seq(0,1,length=100)
-    estimators = weights*proportionThisGroup+(1-weights)*proportionOverall
-
-    penaltyVector = sapply(weights, totalPenalty,
-                           penalty= penaltyFunction)
-
-    #####  plot with two vertical axes #####
-    savedPar <- par(mai = c(1.2, .8, .2, .8))
-    # A numerical vector of the form c(bottom, left, top, right)
-    # which gives the margin size specified in inches.
-    # Increasing the 4th entry allows room for a right-side label.
-
-
-    optimalWeight = weights[which(penaltyVector==min(penaltyVector))]  [1]
-    optimalWeightRounded = round(optimalWeight, digits = 2)
-    proportionOverall = sum(thisData[ 'R', ])/sum(thisData)
-    proportionThisGroup =  sum(thisData[ 'R', 'D'])/sum(thisData[ , 'D'])
-    optimalEstimate = estimators[which(weights==optimalWeight)] [1]
-    optimalEstimateRounded = round(optimalEstimate, digits = 2)
-    CVoptimalEstimate <<- optimalEstimate
-    summaryText = paste(
-      'CV opt est=', signif(optimalEstimate, digits=2),
-      ' (Lump ', signif(1-optimalWeight, digits=2), ', Split ', optimalWeightRounded, ')')
-    shinyjs::alert(summaryText)
-    plot(x=weights,
-         y=penaltyVector,
+  plot(x=weights,
+       y=penaltyVector,
          xlab='weights',
          ylab="",
          #     ylim=range(penaltyVector)),
@@ -75,10 +95,10 @@ output$crossvalidationPlot = renderPlot({
     mtext(text = 'penalty', side = 2, col='orange',line=2)
 
     points(optimalWeight,
-           totalPenalty(optimalWeight, penalty=penaltyFunction),
+           penaltyAtOpt,
            col='orange', pch=17, cex=2)
     text(optimalWeight,
-         totalPenalty(optimalWeight, penalty=penaltyFunction),
+         penaltyAtOpt,
          col='orange', pos=3,
          labels = round(digits=2, optimalWeight))
     abline(h=min(penaltyVector),col='orange')
@@ -91,7 +111,7 @@ output$crossvalidationPlot = renderPlot({
          col='blue', ylab='', ylim=c(0.0, proportionThisGroup*1.05))
     axis(4, col='blue', col.axis='blue')
     mtext('estimate Pr(R|D)', side = 4, col='blue', line = 2)
-    points(optimalWeight, optimalEstimate,
+    points(optimalWeight, CVoptimalEstimate,
            col='blue', pch=17, cex=2)
     text(0, proportionOverall,
          as.character(round(digits=2, proportionOverall)),
@@ -101,7 +121,7 @@ output$crossvalidationPlot = renderPlot({
          col='blue', adj=1)
     text(x = optimalWeight,
          y = estimators[which(weights==optimalWeight)],
-         labels = round(digits=2, optimalEstimate),
+         labels = round(digits=2, CVoptimalEstimate),
          col='blue', pos = 3)
     mtext(summaryText, side = 1, line=5)
     par(savedPar)  # restore original plot settings
