@@ -692,6 +692,7 @@ output$estimateTable =
 
   LumpRawMean=(nR)/(nN)
   SplitRawMean=(nRD)/(nRD+nND)
+  
   niceColHeader = c( 
     'Raw (Lump)',
     'Raw (Split)',
@@ -702,6 +703,10 @@ output$estimateTable =
     'Bayes Pr(Split)',
     'CV optimal'
   )
+  setDLdata(value=thisData,
+            analysisName='crossvalidationPlot')
+  #rValues[[paste0('DLdata', currentDTCnumber) ]]
+  CVoptimalEstimate = doCVanalysis()$CVoptimalEstimate
   cat('CVoptimalEstimate', CVoptimalEstimate, '  ', paste(DLdataLastUsed), '\n')
   result = 
     data.frame(
