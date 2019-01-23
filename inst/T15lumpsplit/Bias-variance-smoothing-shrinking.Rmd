@@ -717,7 +717,7 @@ output$estimateTable =
       (bivariateNormResults$postmean.p[1] - LumpRawMean)/
       (SplitRawMean - LumpRawMean)
     implicitWeights_ForLogit = 
-      round(digits=2, c(implicitWeight1_ForLogit, 1-implicitWeight1_ForLogit) )
+      c(implicitWeight1_ForLogit, 1-implicitWeight1_ForLogit)
     
     niceColHeader = c(
       'Probability estimate Pr(R | D)', 'Weight (Lump)', 'Weight (Split)')
