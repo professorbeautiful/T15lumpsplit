@@ -17,6 +17,13 @@ output:
       smooth_scroll: no
 ---
 
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE)
+options(knitr.duplicate.label = 'allow')
+```
+
 ```{r, echo=FALSE}
 #shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
@@ -29,11 +36,6 @@ useShinyjs(rmd=TRUE)
 <script src="shinyjs/inject.js"></script>
 
 
-```{r setup, include=FALSE}
-
-knitr::opts_chunk$set(echo = FALSE)
-options(knitr.duplicate.label = 'allow')
-```
 
 ```{r}
 #options(error=browser)
