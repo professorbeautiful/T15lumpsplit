@@ -668,8 +668,10 @@ output$estimateTable =
       cat('Copying data to other analyses:\n')
       for(aN in 1:analysisNumber) {
         cat('  =>',  names(mapAnalysisToDTCnumber) [aN], ':  ')
-        setDLdata(value=thisData, myChoice=TRUE, names(mapAnalysisToDTCnumber) [aN] )
-        cat(paste(getDLdata(myChoice=TRUE, names(mapAnalysisToDTCnumber) [aN]) 
+        setDLdata(value=thisData, myChoice=TRUE,
+                  names(mapAnalysisToDTCnumber) [aN] )
+        cat(paste(getDLdata(myChoice=TRUE, 
+                            names(mapAnalysisToDTCnumber) [aN]) 
         ), '\n' )
       }
     })
@@ -698,11 +700,23 @@ output$estimateTable =
     CVoptimalEstimate = CVanalysisResult$CVoptimalEstimate
     CVoptimalWeight = CVanalysisResult$optimalWeight
 
-    ### Bivariate logit results.
+    ### Bivariate logit method results.
+    setDLdata(value=thisData, analysisName='bivariateContourPlot')
+    
+    bivariateNormResults = isolate({
+      calculatePlightPdarkPosterior(
+        thisData, 
+        tau=input$tauInput,
+        phi=input$phiInput,
+        mu0=input$mu0Input
+      )
+    })
+    cat("table of estimates: names(bivariateNormResults) ",
+        paste(names(bivariateNormResults)), '\n')
     implicitWeight1_ForLogit = 
-      (rValues$bivariateNormResults$postmean.p[1] - LumpRawMean)/
+      (bivariateNormResults$postmean.p[1] - LumpRawMean)/
       (SplitRawMean - LumpRawMean)
-    implicitWeights_ForLogitMethod = 
+    implicitWeights_ForLogit = 
       round(digits=2, c(implicitWeight1_ForLogit, 1-implicitWeight1_ForLogit) )
     
     niceColHeader = c(
