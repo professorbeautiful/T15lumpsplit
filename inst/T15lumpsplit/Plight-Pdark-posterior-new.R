@@ -17,7 +17,7 @@ calculatePlightPdarkPosterior = function(
   ### deltat method with protection from zero's.
   sig11 = sig12 = sig21 = matrix(c(tau+phi,tau,tau,tau+phi),nrow=2)
   sig22 = sig11 + diag(varhat.fudged)   ## marginal variance of the data?
-  logit.prior.mean = c(mu0, mu0)
+  logit.prior.mean = logit(c(mu0, mu0))
   ## always use fudged here:
   postmean.logit = logit.prior.mean +
     sig12%*%solve(sig22) %*% (logit.hat.fudged-logit.prior.mean)
@@ -38,7 +38,8 @@ calculatePlightPdarkPosterior = function(
        postvar.logit=postvar.logit,
        postvar.p=postvar.p,
        confints.p=confints.p,
-       sig11=sig11, logit.prior.mean=logit.prior.mean, mu0=mu0
+       sig11=sig11, logit.prior.mean=logit.prior.mean,
+       logitmu0=logit(mu0), mu0=mu0
     ))
 }
 
@@ -58,8 +59,10 @@ plotPlightPdarkPosterior = function(
   ColorForLikelihood="black") {
 
   ### unpack the calculations.
-  if(missing(bivariateNormResults))
-    stop('missing(bivariateNormResults)')
+  if(missing(bivariateNormResults)) {
+    cat('missing(bivariateNormResults)')
+    browser()
+  }
   for(ob in names(bivariateNormResults))
     assign(ob, bivariateNormResults[[ob]])
 
@@ -127,9 +130,9 @@ plotPlightPdarkPosterior = function(
         lines(contourlevel1[xorder,1], contourlevel1[xorder,2],col = ColorForPrior, lty=2)
       }
     }
-    symbols(add = TRUE, antilogit(mu0), antilogit(mu0),
+    symbols(add = TRUE, (mu0), (mu0),
            circles = 0.05, inches=F, bg='black') #ColorForPrior)
-    points(antilogit(mu0), antilogit(mu0), pch = "M",
+    points((mu0), (mu0), pch = "M",
            cex=1, col=ColorForPrior)
   }
   if(showPosterior) {

@@ -406,8 +406,21 @@ output$plotLumpSplitPoints = renderPlot(
   height = 300, {
     analysisName = 'plotLumpSplitPoints'
     source(analysisReactiveSetup, local=TRUE)
+    cat('plotLumpSplitPoints: ', paste(thisData), '\n')
+    cat('plotLumpSplitPoints: ', paste(getDLdata(analysisName)), '\n')
+    bivariateNormResults = rValues$bivariateNormResults <<-
+      calculatePlightPdarkPosterior(
+        DLdata=getDLdata(analysisName),
+        tau=ifelse(is.null(input$tau), 1, input$tau),
+        phi=ifelse(is.null(input$phi), 1, input$phi),
+        mu0=ifelse(is.null(input$mu0), 0.5, input$mu0),
+        fudgeFactor=ifelse(is.null(input$fudgeFactor), 1e-6, input$fudgeFactor)
+      ) 
+    cat('plotLumpSplitPoints: ', names(bivariateNormResults), '\n')
+
     plotPlightPdarkPosterior(
       DLdata=getDLdata('plotLumpSplitPoints'),
+      bivariateNormResults=bivariateNormResults,
       showPrior = FALSE, 
       showPosterior=FALSE, showLikelihood=FALSE,
       showS = TRUE,
