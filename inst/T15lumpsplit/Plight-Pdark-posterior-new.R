@@ -1,8 +1,51 @@
-plotPlightPdarkPosterior = function(
+calculatePlightPdarkPosterior = function(
   DLdata =
     matrix(c(3,2,5,90), nrow=2,
            dimnames = list( outcome=c("R","N"), feature=c("D","L"))),
   tau=1, phi=1, mu0=0.5,
+  fudgeFactor = 0.001,
+  addFudge = TRUE
+) {
+  #### bivariate normal contours ####
+  logit.hat = logit(apply(DLdata, 'feature', function(r)r[1]/sum(r)))
+  #varhat = apply(DLdata, 'feature', function(r)sum(1/r))
+  if(any(DLdata==0)) fudgeFactor = max(fudgeFactor, 0.001)
+  # if wanted, or if needed (if any zero cells).
+  DLdataFudged = DLdata + fudgeFactor
+  logit.hat.fudged = logit(apply(DLdataFudged, 'feature', function(r)r[1]/sum(r)))
+  varhat.fudged = apply(DLdataFudged, 'feature', function(r)sum(1/r))
+  ### deltat method with protection from zero's.
+  sig11 = sig12 = sig21 = matrix(c(tau+phi,tau,tau,tau+phi),nrow=2)
+  sig22 = sig11 + diag(varhat.fudged)   ## marginal variance of the data?
+  logit.prior.mean = c(mu0, mu0)
+  ## always use fudged here:
+  postmean.logit = logit.prior.mean +
+    sig12%*%solve(sig22) %*% (logit.hat.fudged-logit.prior.mean)
+  postmean.p = antilogit(postmean.logit)
+  postvar.logit = sig11 - sig12%*%solve(sig22)%*%sig21
+  Jac = function(p) p^(-1)+(1-p)^(-1)
+  postvar.p = sapply(1:2, function(d) postvar.logit[d]/Jac(postmean.p)^2)
+  confints.logit = sapply(1:2,
+                          function(d)postmean.logit[d]
+                          +c(-1,1)*postvar.logit[d]
+  )
+  confints.p = antilogit(confints.logit)
+  # cat('confints.p\n')
+  # print(confints.p)
+  return(
+    list(postmean.logit=postmean.logit,
+       postmean.p=postmean.p,
+       postvar.logit=postvar.logit,
+       postvar.p=postvar.p,
+       confints.p=confints.p,
+       sig11=sig11, logit.prior.mean=logit.prior.mean, mu0=mu0
+    ))
+}
+
+plotPlightPdarkPosterior = function(
+  DLdata,
+  tau=1, phi=1, mu0=0.5,
+  bivariateNormResults,
   showPrior = TRUE, showPosterior=TRUE, showLikelihood=TRUE,
   showConfIntBinormal = FALSE,
   showS = TRUE,
@@ -12,8 +55,14 @@ plotPlightPdarkPosterior = function(
   addFudge = TRUE,
   ColorForPrior="orange",
   ColorForPosterior="blue",
-  ColorForLikelihood="black"
-) {
+  ColorForLikelihood="black") {
+
+  ### unpack the calculations.
+  if(missing(bivariateNormResults))
+    stop('missing(bivariateNormResults)')
+  for(ob in names(bivariateNormResults))
+    assign(ob, bivariateNormResults[[ob]])
+
   par(pty='s')
   letterVerticalPosition = -0.21
   plot(0:1, 0:1, xlab = "Pr(R | D)", ylab = "Pr(R | L)", pch=" ",
@@ -55,35 +104,8 @@ plotPlightPdarkPosterior = function(
   #   #title('L = Lump, S = Split', col.main='orange')
   # }
 
-  #### bivariate normal contours ####
-  logit.hat = logit(apply(DLdata, 'feature', function(r)r[1]/sum(r)))
-  #varhat = apply(DLdata, 'feature', function(r)sum(1/r))
-  if(any(DLdata==0)) fudgeFactor = max(fudgeFactor, 0.001)
-    # if wanted, or if needed (if any zero cells).
-  DLdataFudged = DLdata + fudgeFactor
-  logit.hat.fudged = logit(apply(DLdataFudged, 'feature', function(r)r[1]/sum(r)))
-  varhat.fudged = apply(DLdataFudged, 'feature', function(r)sum(1/r))
-  ### deltat method with protection from zero's.
-  sig11 = sig12 = sig21 = matrix(c(tau+phi,tau,tau,tau+phi),nrow=2)
-  sig22 = sig11 + diag(varhat.fudged)   ## marginal variance of the data?
-  logit.prior.mean = c(mu0, mu0)
-  ## always use fudged here:
-  postmean.logit = logit.prior.mean +
-    sig12%*%solve(sig22) %*% (logit.hat.fudged-logit.prior.mean)
-  postmean.p = antilogit(postmean.logit)
-  postvar.logit = sig11 - sig12%*%solve(sig22)%*%sig21
-  Jac = function(p) p^(-1)+(1-p)^(-1)
-  postvar.p = sapply(1:2, function(d) postvar.logit[d]/Jac(postmean.p)^2)
-  confints.logit = sapply(1:2,
-                         function(d)postmean.logit[d]
-                         +c(-1,1)*postvar.logit[d]
-  )
-  confints.p = antilogit(confints.logit)
-  # cat('confints.p\n')
-  # print(confints.p)
 
   #### Prepare to plot contours ################
-
   svdSig11 = svd(sig11)
   sqrtSig11 = svdSig11$v %*% diag(sqrt(svdSig11$d)) %*% svdSig11$u
   svdPostvar.logit = svd(postvar.logit)
@@ -92,7 +114,7 @@ plotPlightPdarkPosterior = function(
   angles = seq(0,2*pi,length=100)
   qlevel = qchisq(p=0.99, df=2)
   circlepoints = cbind(cos(angles),sin(angles))
-if(showPrior) {
+  if(showPrior) {
     for (plevel in seq(.1,.9,.1)) {
       qlevel = qchisq(p=plevel, df=2)
       contourlevel1 = antilogit(logit.prior.mean
