@@ -746,7 +746,7 @@ output$estimateTable =
         SplitRawMean,
         posterior.mean.w,
         CVoptimalEstimate,
-        rValues$bivariateNormResults$postmean.p[1]
+        bivariateNormResults$postmean.p[1]
       ),
       weightsForLump = c(
         1,
