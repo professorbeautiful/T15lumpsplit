@@ -33,6 +33,9 @@ useShinyjs(rmd=TRUE)
 
 knitr::opts_chunk$set(echo = FALSE)
 options(knitr.duplicate.label = 'allow')
+```
+
+```{r}
 #options(error=browser)
 require(T15lumpsplit)
 require(shiny)
@@ -46,7 +49,6 @@ if(!require(shinyDebuggingPanel))
 require(magrittr);require(shinyBS)
 require(knitr);require(rmarkdown);
 #source('rstudio.markdownToHTML.R', local=TRUE)
-
 
 analysisReactiveSetup_options = paste0(c('inst/T15lumpsplit/', '',  'T15lumpsplit/'),'analysisReactiveSetup.R')
 whichExist = print(sapply(analysisReactiveSetup_options, file.exists))
@@ -87,6 +89,7 @@ source('getsetDLdata.R', local=TRUE)
 #onStop(function() {
    #cat("Doing application cleanup\n")
 #})
+# Wish it worked.
 ```
 
 ```{r}
