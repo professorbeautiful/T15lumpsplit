@@ -4,16 +4,16 @@ printDTCProgress = FALSE
 
 cellNames = c('RD', 'ND', 'RL', 'NL')
 
-disable = function(id) {
-  addClass(id, class='disabled')
-  removeClass(id, class='enabled')
-  shinyjs::disable(id)
-}
-enable = function(id) {
-  addClass(id, class='enabled')
-  removeClass(id, class='disabled')
-  shinyjs::enable(id)
-}
+# disable = function(id) {
+#   addClass(id, class='disabled')
+#   removeClass(id, class='enabled')
+#   shinyjs::disable(id)
+# }
+# enable = function(id) {
+#   addClass(id, class='enabled')
+#   removeClass(id, class='disabled')
+#   shinyjs::enable(id)
+# }
 
 #### If the user changes a number,
 #### then update rValues$DLdataMyChoice and rValues$DLdataLastUsed

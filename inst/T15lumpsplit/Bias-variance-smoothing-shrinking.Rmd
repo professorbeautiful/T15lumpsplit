@@ -29,15 +29,15 @@ options(knitr.duplicate.label = 'allow')
 ```
 ```{r, context="server", echo=FALSE}
 #shinyjs::useShinyjs(html = TRUE)
-require(shinyjs)
-useShinyjs(rmd=TRUE)
+# require(shinyjs)
+# useShinyjs(rmd=TRUE)
+#<script src="shinyjs/inject.js"></script>
 
 ```
-<script src="shinyjs/inject.js"></script>
 
 
 
-```{r}
+```{r include = FALSE}
 #options(error=browser)
 require(T15lumpsplit)
 require(shiny)
@@ -53,8 +53,8 @@ require(knitr);require(rmarkdown);
 #source('rstudio.markdownToHTML.R', local=TRUE)
 
 analysisReactiveSetup_options = paste0(c('inst/T15lumpsplit/', '',  'T15lumpsplit/'),'analysisReactiveSetup.R')
-whichExist = print(sapply(analysisReactiveSetup_options, file.exists))
-analysisReactiveSetup = print(analysisReactiveSetup_options[whichExist][1])
+whichExist = (sapply(analysisReactiveSetup_options, file.exists))
+analysisReactiveSetup = (analysisReactiveSetup_options[whichExist][1])
 ```
 
 ```{r setup numbering, warning=FALSE}
