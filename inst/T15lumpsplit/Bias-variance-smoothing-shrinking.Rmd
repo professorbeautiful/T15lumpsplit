@@ -778,39 +778,25 @@ In this section we explore different scenarios of external information, to see h
 
 ##	Strong prior belief that feature $X_{DL}$ is *un*important <!-- #title -->
 
-What if D and L represent dark hair color and light hair color? "Dr. Who" may be highly skeptical that this $X_{DL}$ really affects response, and express this by choosing a prior odds that favors Dr. Lump  over Dr. Split. Experiment by choosing such a value for prior odds here: 
-
-```{r WhoPriorProbNumericInput1}
-WhoPriorProbNumericInput()
-```
-
-and reviewing revised results at these previous locations:
-
-
-```{r QA-Strong-prior-belief-X_DL-unimportant}
-inclRmd('jumpBack.Rmd')
-QandAha('QA-Strong-prior-belief-X_DL-unimportant')
-```
-
-
+What if D and L represent dark hair color and light hair color? "Dr. Who" may be highly skeptical that this $X_{DL}$ really affects response, and express this by choosing a prior odds that favors Dr. Lump  over Dr. Split. 
 ##	Strong prior belief that the feature $X_{DL}$ is important <!-- #title -->
 
-What if D and L represent two alleles of a gene believed to affect this drug's pharmacodynamics? Or perhaps, $X_{DL} = D = dark hair$, $X_{DL} = L = light hair$, but hair color is strongly tied to ethnicity in this sample … which is strongly tied to a key genetic variant.
+What if D and L represent two alleles of a gene believed to affect this drug's pharmacodynamics? Or perhaps, $X_{DL} = D = dark hair$, $X_{DL} = L = light hair$, but hair color is strongly tied to ethnicity in this sample … which is strongly tied to a key genetic variant."Dr. Who" can express choosing a prior odds that favors  Dr. Split over Dr. Lump. 
 
-"Dr. Who" can express this by choosing a prior odds that favors Dr. Split over Dr. Lump. Experiment by choosing such a value here: 
+You can experiment with the effects of prior belief by choosing such a value here: 
 
 ```{r WhoPriorProbNumericInput2}
 WhoPriorProbNumericInput()
 ```
 
 and reviewing revised results at these previous locations:
-
   
 ```{r QA-Strong-prior-belief-X_DL-important}
 inclRmd('jumpBack.Rmd')
-QandAha('QA-Strong-prior-belief-X_DL-important')
+QandAha('QA-Strong-prior-belief-about-X_DL')
 ```
 
+Which of the previous analyses allow you to interject prior belief on the Lump-versus-Split axis?
 
 ##	Multiple features, with some prior belief <!-- #title -->
 
