@@ -357,11 +357,12 @@ jumpList = c(jumpList, plotLumpSplitPoints='Plot of lump & split points')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 #cat("After first analysisInitialSetup.R, getDTCnumber('plotLumpSplitPoints') =",
 #    getDTCnumber('plotLumpSplitPoints'), '\n' )
-estimates = observeEvent( getDLdata('plotLumpSplitPoints'),
+estimates_Lump_Split = observeEvent( 
+  eventExpr = getDLdata('plotLumpSplitPoints'),
   {
   source(analysisReactiveSetup, local=TRUE)
   thisData = getDLdata('plotLumpSplitPoints')
-  rValues$estimates = list(
+  rValues$estimates_Lump_Split = list(
     lump = sum(thisData['R', ])/
       sum(thisData[ , ]),
     split = (thisData['R', 'D'])/
@@ -380,10 +381,10 @@ output$confInterval_Lump = renderText(
     try(silent = TRUE,
         paste("Lump:  (", 
           signif(digits=2,
-              rValues$estimates[['confInterval_Lump']][1]),
+              rValues$estimates_Lump_Split[['confInterval_Lump']][1]),
           "-",
           signif(digits=2,
-              rValues$estimates[['confInterval_Lump']][2]),
+              rValues$estimates_Lump_Split[['confInterval_Lump']][2]),
           ")"
     ) )
   })
@@ -394,10 +395,10 @@ output$confInterval_Split = renderText(
       try(silent = TRUE,
           paste("Split:  (", 
                 signif(digits=2,
-                       rValues$estimates[['confInterval_Split']][1]),
+                       rValues$estimates_Lump_Split[['confInterval_Split']][1]),
                 "-",
                 signif(digits=2,
-                       rValues$estimates[['confInterval_Split']][2]),
+                       rValues$estimates_Lump_Split[['confInterval_Split']][2]),
           ")"
     ) )
   }) 
@@ -434,10 +435,10 @@ Examine the data table below.
 (Throughout this module, you can change the numbers in the table and observe the results. 
 Be sure to press "reset" when done.)
 
-If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*rValues$estimates$lump))`*%*. 
+If you *"lump"*, ignoring the group, you will estimate that the response rate (`Pr(R|D)`) for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*rValues$estimates_Lump_Split$lump))`*%*. 
 
 If you *"split"*, you will estimate that the response rate (`Pr(R|D)`), utilizing the D patients only, is 
-`r reactive(round(100*rValues$estimates$split))`*%*. 
+`r reactive(round(100*rValues$estimates_Lump_Split$split))`*%*. 
 
 In the following plot, we see the estimate and the confidence interval for `Pr(R|D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
 
@@ -678,11 +679,13 @@ source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analys
 output$estimateTable = 
   renderTable(rownames = TRUE, {
     analysisName = 'estimateTable'
+    
     source(analysisReactiveSetup, local=TRUE);
       ###  Use the last-data for everything.
-
+    
     isolate( {
       cat(paste(thisData), '\n')
+      cat(paste(DLdataLastUsed), '\n')
       cat('Copying data to other analyses:\n')
       for(aN in 1:analysisNumber) {
         cat('  =>',  names(mapAnalysisToDTCnumber) [aN], ':  ')

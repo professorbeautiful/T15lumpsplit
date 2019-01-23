@@ -112,6 +112,8 @@ observeEvent(input$linktext, {
       session,
       theCellIds[[cellnum]],
       value = DLdataLastUsed[cellnum])
+  setDLdata(value=DLdataLastUsed, DTCnumber=destDTCnum)
+  setDLdata(value=DLdataLastUsed, DTCnumber=destDTCnum, myChoice=TRUE)
 })
 
 #From session help:

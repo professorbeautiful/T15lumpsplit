@@ -63,7 +63,7 @@ plotPlightPdarkPosteriorReactive = reactive( {
   tau <- input$tauInput
   phi <- input$phiInput
   mu0 <- input$mu0Input
-  cat('analysisReactiveSetup.R: ', paste(getDLdata(analysisName) ))
+  cat('plotPlightPdarkPosteriorReactive: ', paste(getDLdata(analysisName) ), '\n')
   bivariateNormResults = rValues$bivariateNormResults <<-
     calculatePlightPdarkPosterior(DLdata=getDLdata(analysisName),
                              tau=tau, phi=phi, mu0=mu0,
