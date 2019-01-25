@@ -100,7 +100,7 @@ linkinLink = function(anchorName, linktext) {
                    labelString)
 }
 
-observeEvent(input$linktext, {
+linktextProcessor = function() {
   ### Copy DLdataLastUsed to theCellIds for the destination.
   ### (Or the current myChoice data instead? Harder though.)
   destAnalysisNumber = which(jumpList == gsub('▸ ', '', input$linktext) )
@@ -114,7 +114,8 @@ observeEvent(input$linktext, {
       value = DLdataLastUsed[cellnum])
   setDLdata(value=DLdataLastUsed, DTCnumber=destDTCnum)
   setDLdata(value=DLdataLastUsed, DTCnumber=destDTCnum, myChoice=TRUE)
-})
+}
+observeEvent(input$linktext, { linktextProcessor() } )
 
 #From session help:
 #url_protocol, url_hostname, url_port, url_pathname, url_search,
