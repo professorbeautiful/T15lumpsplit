@@ -106,7 +106,9 @@ linktextProcessor = function() {
   destAnalysisNumber = which(jumpList == gsub('▸ ', '', input$linktext) )
   destDTCnum = getDTCnumber(destAnalysisNumber)
   theCellIds = as.list(paste0('m', cellNames, 'idPanelDTC', destDTCnum) )
-  cat('Linktext (dest) = ', input$linktext, ' updating from ', paste(DLdataLastUsed), '\n')
+  cat('linktextProcessor: copying ', paste(DLdataLastUsed),
+      ' from source=', input$currentLocationId,
+      ' to dest = ', input$linktext, '\n')
   for(cellnum in 1:4)
     updateNumericInput(
       session,
