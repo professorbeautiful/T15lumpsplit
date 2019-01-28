@@ -688,7 +688,7 @@ output$estimateTable =
     isolate( {
       cat(paste(thisData), '\n')
       cat(paste(DLdataLastUsed), '\n')
-      cat('Copying data to other analyses:\n')
+      cat('Copying thisData to other analyses:\n')
       for(aN in 1:analysisNumber) {
         cat('  =>',  names(mapAnalysisToDTCnumber) [aN], ':  ')
         setDLdata(value=thisData, myChoice=TRUE,
