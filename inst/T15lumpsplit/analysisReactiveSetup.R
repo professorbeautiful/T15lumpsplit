@@ -17,7 +17,7 @@ if(is.null(
   rValues[[paste0('DLdata', currentDTCnumber) ]]
   ) )
   rValues[[paste0('DLdata', currentDTCnumber) ]] = DLdataOriginal
-thisData =   rValues[[paste0('DLdata', currentDTCnumber) ]]
+thisData <<- rValues[[paste0('DLdata', currentDTCnumber) ]]
 DLdataLastUsed <<- thisData
 
 cat(' thisData: ', paste(thisData), '\n')
