@@ -719,7 +719,7 @@ output$estimateTable =
     
     ## CV results
     setDLdata(value=thisData, analysisName='crossvalidationPlot')
-    CVanalysisResult = doCVanalysis()
+    CVanalysisResult = doCVanalysis(thisData)
     CVoptimalEstimate = CVanalysisResult$CVoptimalEstimate
     CVoptimalWeight = CVanalysisResult$optimalWeight
 
