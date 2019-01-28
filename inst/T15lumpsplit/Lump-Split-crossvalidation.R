@@ -15,7 +15,7 @@ penaltyFunction = function(outcome, prediction)
 
 doCVanalysis <- reactive( {
   analysisName = 'crossvalidationPlot'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
   cat("mychoice data", paste(getDLdata(myChoice=TRUE, analysisName) ), '\n')
   cat("thisData", paste(thisData ), '\n')
 
@@ -73,7 +73,7 @@ doCVanalysis <- reactive( {
 
 output$crossvalidationPlot = renderPlot({
   analysisName = 'crossvalidationPlot'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
   result = doCVanalysis()
   print(names(result))
   for(ob in names(result))

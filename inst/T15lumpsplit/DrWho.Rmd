@@ -51,7 +51,7 @@ TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing
 ```{r}
 output$mSplit = renderText({
   analysisName = 'whoMixturePlot'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
   signif(digits=3, mSplit(thisData)); 
   })
 ```
@@ -72,7 +72,7 @@ conditionalPanelWithCheckbox(
 ```{r}
 output$mLump = renderText({
   analysisName = 'whoMixturePlot'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
   signif(digits=3, mLump(thisData)); 
 })
 ```
@@ -116,7 +116,7 @@ source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analys
 output$whoMixturePlot = 
   renderPlot(expr =  {
     analysisName = 'whoMixturePlot'
-    source('analysisReactiveSetup.R', local=TRUE)
+    source(analysisReactiveSetup, local=TRUE)
     pSeq = seq(0,1, length=100)
     par(mfrow=c(1,2))
     prior.s = dbeta(pSeq, 1, 1)
@@ -249,7 +249,7 @@ output$BForig = renderText({DrWhoBayesFactor(DLdataOriginal)})
 ```{r}
 output$BF = renderText({
   analysisName = 'whoMixturePlot'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
   DrWhoBayesFactor(thisData)
 })
 ```
@@ -270,7 +270,7 @@ More generally,
 ```{r}
 output$bayesAverage = renderText({
   analysisName = 'whoMixturePlot'
-  source('analysisReactiveSetup.R', local=TRUE)
+  source(analysisReactiveSetup, local=TRUE)
   paste0('Pr(Lump) *  mLump + Pr(Split) * mSplit',
          '= ',
          signif(digits=3,
