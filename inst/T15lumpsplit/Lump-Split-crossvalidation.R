@@ -13,10 +13,10 @@ penaltyFunction = function(outcome, prediction)
 # penaltyFunction = function(outcome, prediction)
 #   -log(dbinom((outcome=='R'), size = 1, prob=prediction))
 
-doCVanalysis <- reactive( {
+doCVanalysis <- function( thisData) {
   analysisName = 'crossvalidationPlot'
-  source(analysisReactiveSetup, local=TRUE)
-  cat("mychoice data", paste(getDLdata(myChoice=TRUE, analysisName) ), '\n')
+  #source(analysisReactiveSetup, local=TRUE)
+  #cat("mychoice data", paste(getDLdata(myChoice=TRUE, analysisName) ), '\n')
   cat("thisData", paste(thisData ), '\n')
 
   proportionOverall = sum(thisData['R', ])/sum(thisData)
@@ -68,13 +68,14 @@ doCVanalysis <- reactive( {
                 proportionOverall=proportionOverall,
                 proportionThisGroup=proportionThisGroup)
   return(result)
-} )
+}
 
 
 output$crossvalidationPlot = renderPlot({
   analysisName = 'crossvalidationPlot'
   source(analysisReactiveSetup, local=TRUE)
-  result = doCVanalysis()
+
+  result = doCVanalysis(thisData)
   print(names(result))
   for(ob in names(result))
     assign(ob, result[[ob]])
