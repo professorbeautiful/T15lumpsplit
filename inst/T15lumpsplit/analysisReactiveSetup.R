@@ -12,14 +12,24 @@
 currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
 cat('analysisReactiveSetup.R:', analysisName, '  currentDTCnumber=', currentDTCnumber)
+cat('\n    BEFORE:  ' )
+cat('thisData: ', paste(thisData), 'DLdataLastUsed: ', paste(DLdataLastUsed),
+    'rValues DLdata: ',
+    paste(rValues[[paste0('DLdata', currentDTCnumber) ]]))
 
-if(is.null(
-  rValues[[paste0('DLdata', currentDTCnumber) ]]
+isolate({
+  if(is.null(
+    rValues[[paste0('DLdata', currentDTCnumber) ]]
   ) )
-  rValues[[paste0('DLdata', currentDTCnumber) ]] = DLdataOriginal
-thisData <<- rValues[[paste0('DLdata', currentDTCnumber) ]]
-DLdataLastUsed <<- thisData
+    rValues[[paste0('DLdata', currentDTCnumber) ]] = DLdataOriginal
+})
+thisData <<- DLdataLastUsed <<- rValues[[paste0('DLdata', currentDTCnumber) ]]
 
-cat(' thisData: ', paste(thisData), '\n')
+cat('\n    AFTER:  ' )
+cat('thisData: ', paste(thisData), 'DLdataLastUsed: ', paste(DLdataLastUsed),
+    'rValues DLdata: ',
+    paste(rValues[[paste0('DLdata', currentDTCnumber) ]]),
+    '\n')
+
 
 
