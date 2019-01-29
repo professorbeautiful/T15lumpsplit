@@ -65,6 +65,8 @@ createDLdataChoiceObserver <- function(analysisName) {
                    if(exists('saved_DLdataMyChoice')) browser()
                  }
                  DLdataLastUsed <<- getDLdata(analysisName, myChoice=TRUE)
+                 cat('END: handler for ', myName, ' DLdataLastUsed is now: ',
+                     paste(DLdataLastUsed), '\n')
                }) ### End of isolate()
              }) ### End of try()
            }
@@ -124,6 +126,8 @@ dataTableComponent = function(showhide='show', analysisName) {
                           DLdataLastUsed <<- DLdataOriginal
                           setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
                         })  ### end of the isolate() call
+                        cat('END: handler for ', resetIdThisDTC, ' DLdataLastUsed is now: ',
+                            paste(DLdataLastUsed), '\n')
                       })
   )
 
