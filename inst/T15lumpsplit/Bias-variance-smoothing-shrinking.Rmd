@@ -362,6 +362,7 @@ source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analys
 estimates_Lump_Split = observeEvent( 
   eventExpr = getDLdata('plotLumpSplitPoints'),
   {
+    analysisName = 'plotLumpSplitPoints'
   source(analysisReactiveSetup, local=TRUE)
   thisData = getDLdata('plotLumpSplitPoints')
   rValues$estimates_Lump_Split = list(
