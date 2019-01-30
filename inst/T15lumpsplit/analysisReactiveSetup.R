@@ -11,6 +11,8 @@
 
 currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
+if( ! exists(x = 'thisData')) thisData = '(not set yet)'
+if( ! exists(x = 'DLdataLastUsed')) DLdataLastUsed = '(not set yet)'
 cat('analysisReactiveSetup.R:', analysisName, '  currentDTCnumber=', currentDTCnumber)
 cat('\n    BEFORE:  ' )
 cat('thisData: ', paste(thisData), 'DLdataLastUsed: ', paste(DLdataLastUsed),
