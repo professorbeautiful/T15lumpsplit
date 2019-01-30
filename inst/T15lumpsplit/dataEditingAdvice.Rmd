@@ -11,6 +11,9 @@ It reappears for different analysis approaches.
 You can change the numbers in the table and observe changes to the results. 
 Generally there are also links to the other analyses,
 to see how they change as well.
+When you click a link, you jump to the other analysis,
+<br> AND the data here are copied to the destination analysis.
+<br>  (Data at other analyses not change.)
 Return to where you were by pressing the <b>ESCAPE</b> key.
 <br>
 A reset button next to each copy of the table
