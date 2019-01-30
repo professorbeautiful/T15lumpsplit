@@ -725,7 +725,7 @@ output$estimateTable =
     CVoptimalWeight = CVanalysisResult$optimalWeight
 
     ### Bivariate logit method results.
-    setDLdata(value=thisData, analysisName='bivariateContourPlot')
+    #setDLdata(value=thisData, analysisName='bivariateContourPlot')
     
     bivariateNormResults = isolate({
       calculatePlightPdarkPosterior(
