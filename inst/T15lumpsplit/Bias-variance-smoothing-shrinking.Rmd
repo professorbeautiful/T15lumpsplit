@@ -52,11 +52,11 @@ require(magrittr);require(shinyBS)
 require(knitr);require(rmarkdown);
 #source('rstudio.markdownToHTML.R', local=TRUE)
 
-analysisReactiveSetup_options = paste0(c('inst/T15lumpsplit/', '',  'T15lumpsplit/'),'analysisReactiveSetup.R')
-whichExist = (sapply(analysisReactiveSetup_options, file.exists))
-analysisReactiveSetup = (analysisReactiveSetup_options[whichExist][1])
-
-analysisReactiveSetup = paste0('inst/T15lumpsplit/', 'analysisReactiveSetup.R')
+if(interactive()) {  ### Running out of RStudio locally
+  analysisReactiveSetup = paste0('inst/T15lumpsplit/', 'analysisReactiveSetup.R')
+} else  { ### Running at shinyapps.io
+  analysisReactiveSetup =  'analysisReactiveSetup.R'
+}
 ```
 
 ```{r setup numbering, warning=FALSE}
