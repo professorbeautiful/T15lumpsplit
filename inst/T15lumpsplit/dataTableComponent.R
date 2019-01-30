@@ -37,10 +37,10 @@ createDLdataChoiceObserver <- function(analysisName) {
                        input[[theCellIds[[3]]]],input[[theCellIds[[4]]]]), '\n')
              try(silent = FALSE, {
                isolate({
-                 cat('updateDLdataMyChoice: changing MyChoice', '\n')
+                 cat('updateDLdataMyChoice: changing MyChoice')
                  currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
                  if( ! exists('saved_DLdataMyChoice')) {
-                   cat(': Responding to numericInputs: \n')
+                   cat(': Responding to numericInputs: ')
                    if( is.null(getDLdata(analysisName, myChoice=TRUE)))
                      DLdataMyChoice = DLdataOriginal
                    else
@@ -51,21 +51,21 @@ createDLdataChoiceObserver <- function(analysisName) {
                    DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[[4]] ]])
                    setDLdata(DLdataMyChoice, analysisName)
                    setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
-                   cat(paste(DLdataMyChoice), ' ', analysisName, '\n')
+                   cat(paste(DLdataMyChoice), ' ', analysisName)
                  }
                  else {
                    saved_DLdataMyChoice_location = find('saved_DLdataMyChoice')
                    cat(': Restoring saved_DLdataMyChoice ',
                        paste(saved_DLdataMyChoice),
                        'from ',
-                       saved_DLdataMyChoice_location, '\n')
+                       saved_DLdataMyChoice_location)
                    setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
                    rm('saved_DLdataMyChoice', pos='.GlobalEnv')
                    cat('Back to Original; but saved_DLdataMyChoice is saved.\n')
                    if(exists('saved_DLdataMyChoice')) browser()
                  }
                  DLdataLastUsed <<- getDLdata(analysisName, myChoice=TRUE)
-                 cat('END: handler for ', myName, ' DLdataLastUsed is now: ',
+                 cat('\nEND: handler for ', myName, ' DLdataLastUsed is now: ',
                      paste(DLdataLastUsed), '\n')
                }) ### End of isolate()
              }) ### End of try()
