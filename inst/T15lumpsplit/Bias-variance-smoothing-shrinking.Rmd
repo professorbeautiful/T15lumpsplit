@@ -600,11 +600,11 @@ For this reason a "continuity fudge" is applied, if necessary.)
 output$postmean.p = renderText(
   try(silent = TRUE, ## Looks ok despite initial error message
       paste0(
-        signif(digits=2, rValues$bivariateNormResults$postmean.p[1]),
+        signif(digits=2, rValues$bivariateNormResults_bivPlot$postmean.p[1]),
         ' (95% confidence interval: ', 
-        signif(digits=2, rValues$bivariateNormResults$confints.p[1 , 1]),
+        signif(digits=2, rValues$bivariateNormResults_bivPlot$confints.p[1 , 1]),
         '-',
-        signif(digits=2, rValues$bivariateNormResults$confints.p[2 , 1]),
+        signif(digits=2, rValues$bivariateNormResults_bivPlot$confints.p[2 , 1]),
         ')'
       )
   )
@@ -735,6 +735,7 @@ output$estimateTable =
         mu0=input$mu0Input
       )
     })
+    rValues$bivariateNormResults_bivPlot = bivariateNormResults
     cat("table of estimates: names(bivariateNormResults) ",
         paste(names(bivariateNormResults)), '\n')
     implicitWeight1_ForLogit = 
