@@ -364,7 +364,7 @@ estimates_Lump_Split = observeEvent(
   {
     analysisName = 'plotLumpSplitPoints'
   source(analysisReactiveSetup, local=TRUE)
-  thisData = getDLdata('plotLumpSplitPoints')
+  #thisData = getDLdata('plotLumpSplitPoints')
   rValues$estimates_Lump_Split = list(
     lump = sum(thisData['R', ])/
       sum(thisData[ , ]),
@@ -410,11 +410,11 @@ output$plotLumpSplitPoints = renderPlot(
   height = 300, {
     analysisName = 'plotLumpSplitPoints'
     source(analysisReactiveSetup, local=TRUE)
-    cat('plotLumpSplitPoints: ', paste(thisData), '\n')
-    cat('plotLumpSplitPoints: ', paste(getDLdata(analysisName)), '\n')
-    bivariateNormResults = rValues$bivariateNormResults <<-
+    cat('plotLumpSplitPoints: renderPlot', paste(thisData), '\n')
+    cat('plotLumpSplitPoints: renderPlot', paste(getDLdata(analysisName)), '\n')
+    bivariateNormResults = #rValues$bivariateNormResults <<-
       calculatePlightPdarkPosterior(
-        DLdata=getDLdata(analysisName),
+        DLdata=thisData,
         tau=ifelse(is.null(input$tau), 1, input$tau),
         phi=ifelse(is.null(input$phi), 1, input$phi),
         mu0=ifelse(is.null(input$mu0), 0.5, input$mu0),
@@ -423,7 +423,7 @@ output$plotLumpSplitPoints = renderPlot(
     cat('plotLumpSplitPoints: ', names(bivariateNormResults), '\n')
 
     plotPlightPdarkPosterior(
-      DLdata=getDLdata('plotLumpSplitPoints'),
+      DLdata=thisData,
       bivariateNormResults=bivariateNormResults,
       showPrior = FALSE, 
       showPosterior=FALSE, showLikelihood=FALSE,
