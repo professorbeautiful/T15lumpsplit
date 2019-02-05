@@ -909,6 +909,7 @@ makeDLdataDF = function(DLdata=DLdataOriginal) {
 makeDLdataWithFeatures = function(DLdata=DLdataOriginal,
                                   ## Make extra features.
                                   NextraFeatures = 99, beta1=10, beta2=10,
+                                  tauTrue = 0,
                                   seed = readRDS('seedInt.rda')){
   DLdataDF = makeDLdataDF(DLdata)
   set.seed(seed)
@@ -916,37 +917,35 @@ makeDLdataWithFeatures = function(DLdata=DLdataOriginal,
   extraFeaturesProbs_R = rbeta(NextraFeatures, beta1, beta2)
   extraFeaturesOdds_R =
     extraFeaturesProbs_R/(1-extraFeaturesProbs_R)
-  extraFeaturesProbs = extraFeaturesProbs_R
-  extraFeatures = as.data.frame(
-    lapply(extraFeaturesProbs,
-           rbinom, n=sum(DLdata),size=1)
-  )
-  #extraFeaturesProbs1 = rbeta(NextraFeatures, 10, 10)
-  # tauTrue = 1
-  # oddsratios = exp(rnorm(NextraFeatures, 0, sqrt(tauTrue)))
-  # oddsratios = 1
-  # extraFeaturesOdds_N = extraFeaturesOdds_R * oddsratios
-  # extraFeaturesProbs_N =
-  #   extraFeaturesOdds_N/(1+extraFeaturesOdds_N)
-  # #plot(extraFeaturesProbs_N, extraFeaturesProbs_R)
-  # extraFeatures = sapply(
-  #   c(extraFeaturesProbs_N, extraFeaturesProbs_R),
-  #          rbinom, n=sum(DLdataDF),size=1)
-  # extraFeatures_N = sapply(extraFeaturesProbs_N,
-  #          rbinom, n=sum(DLdataDF$outcome=='N'),size=1)
-  # extraFeatures_R = sapply(extraFeaturesProbs_R,
-  #          rbinom, n=sum(DLdataDF$outcome=='R'),size=1)
-  # extraFeatures = 
-  #   matrix(NA, ncol=NextraFeatures, nrow=nrow(DLdataDF))
-  # extraFeatures[DLdataDF$outcome=='N', ] = extraFeatures_N
-  # extraFeatures[DLdataDF$outcome=='R', ] = extraFeatures_R
+  if( abs(tauTrue) < 1e-9) {
+    extraFeaturesProbs = extraFeaturesProbs_R
+    extraFeatures = as.data.frame(
+      lapply(extraFeaturesProbs,
+             rbinom, n=sum(DLdata),size=1)
+    )
+  } else {
+    oddsratios = exp(rnorm(NextraFeatures, 0, sqrt(tauTrue)))
+    extraFeaturesOdds_N = extraFeaturesOdds_R * oddsratios
+    extraFeaturesProbs_N =
+      extraFeaturesOdds_N/(1+extraFeaturesOdds_N)
+    #plot(extraFeaturesProbs_N, extraFeaturesProbs_R)
+    extraFeatures_N = sapply(extraFeaturesProbs_N,
+                             rbinom, n=sum(DLdataDF$outcome=='N'),size=1)
+    extraFeatures_R = sapply(extraFeaturesProbs_R,
+                             rbinom, n=sum(DLdataDF$outcome=='R'),size=1)
+    extraFeatures =
+      matrix(NA, ncol=NextraFeatures, nrow=nrow(DLdataDF))
+    extraFeatures[DLdataDF$outcome=='N', ] = extraFeatures_N
+    extraFeatures[DLdataDF$outcome=='R', ] = extraFeatures_R
+  }
   colnames(extraFeatures) = 
     paste0('X', 1+(1:NextraFeatures))
 ## Combine DL feature with extra features. 
   return(cbind(DLdataDF, extraFeatures ) )
 }
 ## generateAllPvalues.
-generateAllPvalues = function(DLdataWithFeatures = makeDLdataWithFeatures()) {
+generateAllPvalues = function(
+  DLdataWithFeatures = makeDLdataWithFeatures()) {
   allFisherPs <<- 
     sapply(DLdataWithFeatures[-1], function(feature) 
       fisher.test(feature,
@@ -987,10 +986,14 @@ allChisqPs_original = allPvalues$allChisqPs
 ```{r regenerateFeatures button}
 actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
 ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified DLdata.
-observeEvent(list(input$regenerateFeatures), {
-    isolate( {
+observeEvent(list(input$regenerateFeatures, input$ORvarianceID), {
+    try( {
+      tauTrue = as.numeric(input$ORvarianceID) 
+      cat('tauTrue:', tauTrue, '\n')
+      if(length(tauTrue)==0) tauTrue = 0
       rValues$DLdataDFwithFeatures = 
-       makeDLdataWithFeatures(DLdataOriginal) 
+        makeDLdataWithFeatures(DLdata = DLdataOriginal, 
+                               tauTrue = tauTrue)
     })
 })
 ```
@@ -1088,19 +1091,25 @@ makeBHtable = function(pValues, qStar=1, columns=8) {
 jumpList = c(jumpList, BHtable='Benjamini-Hochberg')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
-numericInput('qStarID', 'qStar (False Discovery Rate upper bound)',
-             value = 1, min=0,  step=0.1)
+div(
+  numericInput('qStarID', 'qStar (False Discovery Rate upper bound)',
+               value = 1, min=0,  step=0.1),
+  numericInput('ORvarianceID', 'Variance of the Odds Ratio ',
+               value = 0, min=0,  step=0.1)
+)
 
 observeEvent(
-  list(#rValues$allChisqPs,
+  list(rValues$allChisqPs,
        input$qStarID),
   {
-    cat('qStarID:', input$qStarID, '\n')
-    qStar = as.numeric(input$qStarID)
-    rValues$BHtable = makeBHtable(
-      rValues$allChisqPs, 
-      qStar = as.numeric(qStar)
-    )
+     try({
+      # cat('qStarID:', input$qStarID, '\n')
+      # qStar = as.numeric(input$qStarID)
+      rValues$BHtable = makeBHtable(
+        rValues$allChisqPs, 
+        qStar = as.numeric(input$qStarID)
+      )
+    })
   }
 )
 output$BHtable = renderTable(
@@ -1121,7 +1130,7 @@ TextQuestion("Using the original data, and the FDR upper bound (qStar) equal to 
 
 
 ```{r Raising qStar}
-TextQuestion("Raising qStar from 1.0, how does the collection of 'significant' features change?")
+TextQuestion("Raising or lowering qStar from 1.0, how does the collection of 'significant' features change?")
 ```
 
 This is a good time to record your thoughts!
