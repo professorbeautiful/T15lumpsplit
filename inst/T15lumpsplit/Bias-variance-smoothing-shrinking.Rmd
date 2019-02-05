@@ -74,7 +74,7 @@ source('QandAha.R', local=TRUE)
 source('TextQuestion.R', local=TRUE)
 source('WhoPriorProbNumericInput.R', local=TRUE)
 source('conditionalPanelWithCheckbox.R', local=TRUE)
-source('addAnalysis', local=TRUE)
+source('addAnalysis.R', local=TRUE)
 ```
 
 ```{r colors}
