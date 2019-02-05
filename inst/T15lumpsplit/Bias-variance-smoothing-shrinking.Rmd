@@ -54,8 +54,10 @@ require(knitr);require(rmarkdown);
 
 if(interactive()) {  ### Running out of RStudio locally
   analysisReactiveSetup = paste0('inst/T15lumpsplit/', 'analysisReactiveSetup.R')
+  analysisReactiveSetup_BDC = paste0('inst/T15lumpsplit/', 'analysisReactiveSetup_BDC.R')
 } else  { ### Running at shinyapps.io
   analysisReactiveSetup =  'analysisReactiveSetup.R'
+  analysisReactiveSetup_BDC =  'analysisReactiveSetup_BDC.R'
 }
 ```
 
@@ -325,10 +327,14 @@ We will explore a simple lumping and splitting conundrum as a jumping off point 
 QandAha(context='QA-intro-lump-split')
 ```
 
-```{r initialize-jumpList}
+```{r initialize-jumpLists}
 jumpList = list()
+jumpList_BDC = list()
 getDTCnumber = function(analysisName) {
   mapAnalysisToDTCnumber[analysisName]
+}
+getBDCnumber = function(analysisName) {
+  mapAnalysisToBDCnumber[analysisName]
 }
 ```
 
@@ -1093,9 +1099,7 @@ source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analys
 
 div(
   numericInput('qStarID', 'qStar (False Discovery Rate upper bound)',
-               value = 1, min=0,  step=0.1),
-  numericInput('ORvarianceID', 'Variance of the Odds Ratio ',
-               value = 0, min=0,  step=0.1)
+               value = 1, min=0,  step=0.1)
 )
 
 observeEvent(
@@ -1247,12 +1251,12 @@ conditionalPanelWithCheckboxPDF(
 Continuing the "empirical" part of EB, one estimate of $\tau$ is to take the total sums of squares and subtract the portion purely due to the individual data noise of the features. When the individual variances vary greatly, the estimate is a little more complicated. One way is via maximum likelihood. 
 
 ```{r empBayeslogitRatios}
-jumpList = c(jumpList, empBayeslogitRatios='Empirical Bayes logit ratios')
+jumpList_BDC = c(jumpList_BDC, empBayeslogitRatios='Empirical Bayes logit ratios')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$empBayeslogitRatios = renderPlot({
   analysisName = 'empBayeslogitRatios'
-  source(analysisReactiveSetup, local=TRUE)
+  source(analysisReactiveSetup_BDC, local=TRUE)
 
   logitRatios = rValues$logoddsratios
   logitVars = rValues$logoddsratiovariances
@@ -1318,7 +1322,8 @@ plotOutput('empBayeslogitRatios')
 
 The green horizontal lines are the 80% confidence intervals, before (below) and after (above) applying the empirical Bayes shrinking towards the mean of all the logit ratios. We see that the one above is narrower. So shrinking (which shares info among the features) makes the estimate for the log odds ratio more precise, compared to the "Dr. Split" perspective that directs us to allow only the original "D/L" feature to inform the odds ratio for that feature.
 
-The estimated variance is `r output$tauEstEB = renderText(rValues$tauEstimateEB); textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r output$tauTrue = renderText(input$ORvarianceID); textOutput('tauTrue', inline=TRUE)`) .
+The estimated variance is `r output$tauEstEB = renderText(rValues$tauEstimateEB); textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r   thisTauTrueID_text = paste0(get_thisTauTrueID(currentBDCnumber), '_text')
+output[[thisTauTrueID_text]] = renderText(input[[thisTauTrueID]]); textOutput(thisTauTrueID, inline=TRUE)`) .
 
 
 ```{r sharing information among the features justified}

@@ -4,12 +4,23 @@
 # source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 #cat('analysisInitialSetup.R: ')
-analysisNumber <- length(jumpList)
+
+context =
+  analysisNumber <- length(jumpList)
 analysisName <- names(jumpList)[[analysisNumber]]
 #cat(  analysisName, '\n')
 
+
+# get('jumpList', parent.frame(2)) works in the R box.
+# assign('mapAnalysisToBDCnumber', 1234, env= pare  nt.frame(2))
+# get('mapAnalysisToBDCnumber', env= parent.frame(2))  ## OK
+#  Might need a different #.
+
+
 if(!exists('mapAnalysisToDTCnumber'))
   mapAnalysisToDTCnumber = numeric(0)
+if(!exists('mapAnalysisToBDCnumber'))
+  mapAnalysisToBDCnumber = numeric(0)
 
 ### When the next DTC is displayed, this will be its number.
 mapAnalysisToDTCnumber[analysisName] =
