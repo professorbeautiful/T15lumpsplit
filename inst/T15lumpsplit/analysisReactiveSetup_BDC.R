@@ -17,9 +17,6 @@ if( ! exists(x = 'DLdataLastUsed')) DLdataLastUsed = '(not set yet)'
 ###    shinyapps.io.
 cat('analysisReactiveSetup_BDC.R:', analysisName, '  currentBDCnumber=', currentBDCnumber)
 cat('\n    BEFORE:  ' )
-cat('thisData: ', paste(thisData), 'DLdataLastUsed: ', paste(DLdataLastUsed),
-    'rValues DLdata: ',
-    paste(rValues[[paste0('DLdata', currentBDCnumber) ]]))
 
 isolate({
   thisTauTrueID = get_thisTauTrueID(currentBDCnumber)
@@ -29,7 +26,7 @@ isolate({
     rValues[[ thisTauTrueID ]] = 0
 })
 
-rValues[[thisTauTrueID ]]
+
 
 cat('\n    AFTER:  ' )
 cat('tauTrue: ',

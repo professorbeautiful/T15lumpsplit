@@ -70,9 +70,6 @@ bigDataComponent = function( analysisName=analysisName) {
                #enable(resetIdThisBDC)
                #disable(myChoiceIdThisBDC)
                currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
-
-               cat('   So now DLdataLastUsed is the same: ',
-                   paste(DLdataLastUsed), '\n')
              })
            })
   )
