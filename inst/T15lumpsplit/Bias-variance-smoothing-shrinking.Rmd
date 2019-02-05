@@ -920,7 +920,7 @@ makeDLdataWithFeatures = function(DLdata=DLdataOriginal,
                                   seed = readRDS('seedInt.rda')){
   DLdataDF = makeDLdataDF(DLdata)
   set.seed(seed)
-  cat('setting seed to ', seed, '\n')
+  # cat('setting seed to ', seed, '\n')
   extraFeaturesProbs_R = rbeta(NextraFeatures, beta1, beta2)
   extraFeaturesOdds_R =
     extraFeaturesProbs_R/(1-extraFeaturesProbs_R)
