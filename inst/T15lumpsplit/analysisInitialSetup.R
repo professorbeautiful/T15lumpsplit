@@ -5,8 +5,7 @@
 
 #cat('analysisInitialSetup.R: ')
 
-context =
-  analysisNumber <- length(jumpList)
+analysisNumber <- length(jumpList)
 analysisName <- names(jumpList)[[analysisNumber]]
 #cat(  analysisName, '\n')
 
