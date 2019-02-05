@@ -1102,7 +1102,7 @@ div(
   numericInput('qStarID', 'qStar (False Discovery Rate upper bound)',
                value = 1, min=0,  step=0.1)
 )
-
+  
 observeEvent(
   list(rValues$allChisqPs,
        input$qStarID),
@@ -1181,10 +1181,7 @@ output$oddsratioplot = renderPlot({
   oddsratios = sapply(rValues$DLdataDFwithFeatures[-(1)], oddsratio)
   rValues$logoddsratios = 
     logoddsratios = log(oddsratios)
-  jitteredLogits = rValues$jitteredLogits = 
-    logoddsratios + runif(length(logoddsratios), c(-1,1)*diff(range(logoddsratios))/500)
-  print(table(table(jitteredLogits)))
-  plot(density(jitteredLogits), xlab='log(oddsratios)',
+  plot(density(logoddsratios), xlab='log(oddsratios)',
        main='density smooth of log(oddsratios)')
   logoddsratiovariance = function(col, sprinkle=0.1) {
     theTable = table(col, outcome)
@@ -1195,12 +1192,13 @@ output$oddsratioplot = renderPlot({
     logoddsratiovariances =
     sapply(rValues$DLdataDFwithFeatures[-(1)],
                                  logoddsratiovariance)
+  logoddsratioSDs = sqrt(rValues$logoddsratiovariances)
   points(logoddsratios, col='red', type='h',
-       logoddsratiovariances * par('usr')[4]/
-        max(logoddsratiovariances) *0.3)
-  points(logoddsratios[1], col='green', type='h',
-       logoddsratiovariances[1] * par('usr')[4]/
-        max(logoddsratiovariances) *0.3,
+       logoddsratioSDs * par('usr')[4]/
+        max(logoddsratioSDs) *0.3)
+  points(logoddsratioSDs[1], col='green', type='h',
+       logoddsratioSDs[1] * par('usr')[4]/
+        max(logoddsratioSDs) *0.3,
        lwd=2)
   text(logoddsratios[1], 0.2, cex=2,
        expression( "" %<-% "DL data"), srt=90, col='green')
@@ -1208,10 +1206,10 @@ output$oddsratioplot = renderPlot({
 plotOutput('oddsratioplot')
 ```
 
-(The tall red lines are just multiple observations.)
 
 Using the delta method mentioned above, 
-have variances roughly equal to the sums of reciprocals of the counts. 
+have sampling variances roughly equal to the sums of reciprocals of the counts. 
+(The heights of the vertical lines are proportional to the sampling standard deviations.)
 From this we can construct confidence intervals for the logits, then pull them back to confidence intervals for the odds ratios. 
 So for example, for our original${X_{DL}}$ 
 = `D` or `L` feature, the confidence interval is given by the R expression
@@ -1264,7 +1262,7 @@ source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analys
 output$empBayeslogitRatios = renderPlot({
   analysisName = 'empBayeslogitRatios'
   source(analysisReactiveSetup_BDC, local=TRUE)
-
+  
   logitRatios = rValues$logoddsratios
   logitVars = rValues$logoddsratiovariances
   #print(summary(logitRatios))
