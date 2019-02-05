@@ -1286,7 +1286,7 @@ output$empBayeslogitRatios = renderPlot({
   #      labels = c("EB\nshrunk", "EB\nshrunk"), xpd=NA, cex=2)
   axis(3, cex=2)
   # title(
-  mtext(text = 'log of odds ratios: raw estimates ("Dr. Split" style', 
+  mtext(text = 'log of odds ratios: raw estimates ("Dr. Split" style)', 
         side = 1, line = 3, cex=2, xpd=NA)
   mtext(text = 'log of odds ratios: "shrunken" estimates with empirical Bayes', 
         side = 3, line = 2.5, cex=2, xpd=NA)
