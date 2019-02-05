@@ -1095,8 +1095,8 @@ makeBHtable = function(pValues, qStar=1, columns=8) {
 ```
 
 ```{r output for BHtable}
-jumpList = c(jumpList, BHtable='Benjamini-Hochberg')
-source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+jumpList_BDC = c(jumpList_BDC, BHtable='Benjamini-Hochberg')
+source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 div(
   numericInput('qStarID', 'qStar (False Discovery Rate upper bound)',
@@ -1164,12 +1164,12 @@ We can apply EB to a collection of estimates. In this instance, let's collect th
 This can be compared to all 100 odds ratios for the features:
 
 ```{r oddsratioplot}
-jumpList = c(jumpList, oddsratioplot='Odds ratio plot')
-source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+jumpList_BDC = c(jumpList_BDC, oddsratioplot='Odds ratio plot')
+source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$oddsratioplot = renderPlot({
   analysisName ='oddsratioplot'
-  source(analysisReactiveSetup, local=TRUE)
+  source(analysisReactiveSetup_BDC, local=TRUE)
 
   outcome = rValues$DLdataDFwithFeatures$outcome
   oddsratio = function(col, sprinkle=1) {
