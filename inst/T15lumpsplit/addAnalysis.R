@@ -1,3 +1,8 @@
+##  addAnalysis.R
+
+get_thisTauTrueID =  function(aN)
+  paste0('BigDataController_ID_', aN)
+
 addAnalysis = function(analysisName, analysisLabel, context='DTC') {
   jumpListName = paste0('jumpList_', context)
   analysisMapName = paste0('mapAnalysisTo', context, 'number')
