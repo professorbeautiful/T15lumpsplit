@@ -1027,8 +1027,8 @@ Now that we have a data set with lots of features, let's do Fisher exact tests a
 
 
 ```{r pvaluesPlots}
-jumpList = c(jumpList, pvaluesPlots='P-value plots')
-source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+jumpList_BDC = c(jumpList_BDC, pvaluesPlots='P-value plots')
+source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 ```
 
 
@@ -1323,8 +1323,22 @@ plotOutput('empBayeslogitRatios')
 
 The green horizontal lines are the 80% confidence intervals, before (below) and after (above) applying the empirical Bayes shrinking towards the mean of all the logit ratios. We see that the one above is narrower. So shrinking (which shares info among the features) makes the estimate for the log odds ratio more precise, compared to the "Dr. Split" perspective that directs us to allow only the original "D/L" feature to inform the odds ratio for that feature.
 
-The estimated variance is `r output$tauEstEB = renderText(rValues$tauEstimateEB); textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r   thisTauTrueID_text = paste0(get_thisTauTrueID(currentBDCnumber), '_text')
-output[[thisTauTrueID_text]] = renderText(input[[thisTauTrueID]]); textOutput(thisTauTrueID, inline=TRUE)`) .
+Initially, all the features are generated with an odds ratio = 1:  no relationship with response. in the graph, all the estimates are shrunk VERY hard to the grand mean of log odds ratios, which is close to log(1) = 0. 
+
+What happens if the collection of 100 odds ratios deviates from 1? You can control the variance of the log odds ratio here. 
+
+```{r}
+bigDataComponent(analysisName=analysisName)
+```
+
+```{r}
+output$tauEstEB = renderText(rValues$tauEstimateEB)
+thisTauTrueID = get_thisTauTrueID(mapAnalysisToBDCnumber[analysisName])
+thisTauTrueID_text = paste0(thisTauTrueID, '_text')
+output[[thisTauTrueID_text]] = renderText(input[[thisTauTrueID]])
+```
+
+The estimated variance is `r  textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r  textOutput(thisTauTrueID, inline=TRUE)` ) .
 
 
 ```{r sharing information among the features justified}
@@ -1359,12 +1373,12 @@ conditionalPanelWithCheckboxPDF(
 Here we apply the qValue method to the chisquare P values from our dataset with 100 features:
 
 ```{r qvaluePlot}
-jumpList = c(jumpList, qValue='Qvalue adjustment')
-source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+jumpList_BDC = c(jumpList_BDC, qValue='Qvalue adjustment')
+source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$qvaluePlot = renderPlot({
   analysisName = 'qValue'
-  source(analysisReactiveSetup, local=TRUE)
+  source(analysisReactiveSetup_BDC, local=TRUE)
   qout = rValues$qValueObject =
     qvalue::qvalue(rValues$allChisqPs)
   rValues$P_Q_for_X_DL = 
@@ -1429,10 +1443,10 @@ plotOutput('qvaluePlot')
 
 For our original D/L feature, with P value  `r reactive({rValues$P_Q_for_X_DL_original[1]})`, the Q-value is `r reactive({rValues$P_Q_for_X_DL_original[2]})`. 
 
-As before, modify the data here to see how the Q-value changes. 
+As before, you can modify the spread of the true odds ratios here to see how the Q-value changes. 
 
 ```{r}
-dataTableComponent(showhide='hide', analysisName='qValue')
+bigDataComponent(analysisName='qValue')
 
 ```
 
