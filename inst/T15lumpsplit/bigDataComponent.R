@@ -83,7 +83,10 @@ bigDataComponent = function( analysisName) {
     fluidRow(
       column(6,
              numericInput(thisTauTrueID, 'Variance of the Odds Ratio ',
-                          value = 0, min=0,  step=0.1)
+                          value = 0, min=0,  step=0.1)),
+      column(6,
+             jumpBackWithPanel_BDC(analysisNumber, thisBDCNumber)
+
     ) )
   })
   uiOutput(outputId = outputIdThisBDC)
