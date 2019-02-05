@@ -1263,7 +1263,7 @@ Continuing the "empirical" part of EB, one estimate of $\tau$ is to take the tot
 
 ```{r empBayeslogitRatios}
 jumpList_BDC = c(jumpList_BDC, empBayeslogitRatios='Empirical Bayes logit ratios')
-source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$empBayeslogitRatios = renderPlot({
   analysisName = 'empBayeslogitRatios'
