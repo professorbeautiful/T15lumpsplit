@@ -1181,7 +1181,9 @@ output$oddsratioplot = renderPlot({
   oddsratios = sapply(rValues$DLdataDFwithFeatures[-(1)], oddsratio)
   rValues$logoddsratios = 
     logoddsratios = log(oddsratios)
-  plot(density(logoddsratios), xlab='log(oddsratios)',
+  jitteredLogits = rValues$jitteredLogits = jitter(logoddsratios, 1e-2)
+  print(table(table(jitteredLogits)))
+  plot(density(jitteredLogits), xlab='log(oddsratios)',
        main='density smooth of log(oddsratios)')
   logoddsratiovariance = function(col, sprinkle=0.1) {
     theTable = table(col, outcome)
@@ -1204,6 +1206,9 @@ output$oddsratioplot = renderPlot({
 })
 plotOutput('oddsratioplot')
 ```
+
+(The tall red lines are just multiple observations.)
+
 Using the delta method mentioned above, 
 have variances roughly equal to the sums of reciprocals of the counts. 
 From this we can construct confidence intervals for the logits, then pull them back to confidence intervals for the odds ratios. 
