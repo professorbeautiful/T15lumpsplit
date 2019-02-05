@@ -1271,8 +1271,9 @@ output$empBayeslogitRatios = renderPlot({
                    interval = c(0, 1), maximum=TRUE
     )$maximum
   }
+  rValues$tauEstimateEB = tau
   cat('mu-hat: ', mu, '  tau-hat: ', tau, '\n')
-  weights = 1 - tau / (rValues$logoddsratiovariances+ tau)
+  weights = 1 - tau / (rValues$logoddsratiovariances + tau)
   rValues$posteriorMeans = 
     logitRatios * (1-weights) + mu * weights
   plot(c(-4, 3), 0:1, col='white',
@@ -1317,6 +1318,7 @@ plotOutput('empBayeslogitRatios')
 
 The green horizontal lines are the 80% confidence intervals, before (below) and after (above) applying the empirical Bayes shrinking towards the mean of all the logit ratios. We see that the one above is narrower. So shrinking (which shares info among the features) makes the estimate for the log odds ratio more precise, compared to the "Dr. Split" perspective that directs us to allow only the original "D/L" feature to inform the odds ratio for that feature.
 
+The estimated variance is `r output$tauEstEB = renderText(rValues$tauEstimateEB); textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r output$tauTrue = renderText(input$ORvarianceID); textOutput('tauTrue', inline=TRUE)`) .
 
 
 ```{r sharing information among the features justified}
