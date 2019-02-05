@@ -4,9 +4,6 @@ source('jumpBackWithPanel_bigDataController.R', local=TRUE)
 
 # Usage:  bigDataComponent(analysisName='qValue')
 
-get_thisTauTrueID =  function(aN)
-  paste0('BigDataController_ID_', aN)
-
 createBigDataParamObserver <- function(analysisName) {
   myName = paste0('bigDataParamObserver_', analysisName)
   analysisNumber = match(analysisName, names(jumpList_bigData))
