@@ -1088,20 +1088,19 @@ makeBHtable = function(pValues, qStar=1, columns=8) {
 jumpList = c(jumpList, BHtable='Benjamini-Hochberg')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
-numericInput('qStarID', 'qStar',
+numericInput('qStarID', 'qStar (False Discovery Rate upper bound)',
              value = 1, min=0,  step=0.1)
-observeEvent(input$qstarID, {
-  rValues$qStar = input$qStarID
-})
 
 observeEvent(
   list(#rValues$allChisqPs,
-       rValues$qStar),
+       input$qStarID),
   {
+    cat('qStarID:', input$qStarID, '\n')
+    qStar = as.numeric(input$qStarID)
     rValues$BHtable = makeBHtable(
       rValues$allChisqPs, 
-      qStar = rValues$qStar
-      )
+      qStar = as.numeric(qStar)
+    )
   }
 )
 output$BHtable = renderTable(
