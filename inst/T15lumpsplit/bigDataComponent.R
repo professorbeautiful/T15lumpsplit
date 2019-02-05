@@ -2,11 +2,13 @@
 
 source('jumpBackWithPanel_bigDataController.R', local=TRUE)
 
+printBDCProgress =  TRUE
+
 # Usage:  bigDataComponent(analysisName='qValue')
 
 createBigDataParamObserver <- function(analysisName) {
   myName = paste0('bigDataParamObserver_', analysisName)
-  analysisNumber = match(analysisName, names(jumpList_bigData))
+  analysisNumber = match(analysisName, names(jumpList_BDC))
 #  theBigDataController = paste0('BigDataController_ID_', analysisNumber)
   thisTauTrueID = get_thisTauTrueID(analysisNumber)
   ####  Initially, only tauTrue.
