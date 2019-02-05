@@ -1102,7 +1102,13 @@ div(
   numericInput('qStarID', 'qStar (False Discovery Rate upper bound)',
                value = 1, min=0,  step=0.1)
 )
+bigDataComponent()
+observeEvent( input[[get_thisTauTrueID()]], {
+  tauTrue = input[[get_thisTauTrueID()]]
   
+}
+              
+)
 observeEvent(
   list(rValues$allChisqPs,
        input$qStarID),
