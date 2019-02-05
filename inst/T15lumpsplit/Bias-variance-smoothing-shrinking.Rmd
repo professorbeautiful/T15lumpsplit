@@ -1098,12 +1098,15 @@ observeEvent(
   list(#rValues$allChisqPs,
        rValues$qStar),
   {
-    rValues$BHtable = makeBHtable(rValues$allChisqPs, qStar=1)
-    #rValues$qStar ????  )
+    rValues$BHtable = makeBHtable(
+      rValues$allChisqPs, 
+      qStar = rValues$qStar
+      )
   }
 )
 output$BHtable = renderTable(
-  digits=3,  expr=rValues$BHtable
+  digits=3,  expr=rValues$BHtable,
+  rownames=TRUE
 )
 
 tableOutput('BHtable')
