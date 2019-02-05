@@ -1181,7 +1181,8 @@ output$oddsratioplot = renderPlot({
   oddsratios = sapply(rValues$DLdataDFwithFeatures[-(1)], oddsratio)
   rValues$logoddsratios = 
     logoddsratios = log(oddsratios)
-  jitteredLogits = rValues$jitteredLogits = jitter(logoddsratios, 1e-2)
+  jitteredLogits = rValues$jitteredLogits = 
+    logoddsratios + runif(length(logoddsratios), c(-1,1)*diff(range(logoddsratios))/500)
   print(table(table(jitteredLogits)))
   plot(density(jitteredLogits), xlab='log(oddsratios)',
        main='density smooth of log(oddsratios)')
