@@ -31,7 +31,7 @@ createBigDataParamObserver <- function(analysisName) {
 }   ### End of createDLdataChoiceObserver()
 
 #### bigDataComponent ####
-bigDataComponent = function( analysisName) {
+bigDataComponent = function( analysisName=analysisName) {
   createBigDataParamObserver(analysisName)
   analysisNumber = which(analysisName == names(jumpList_BDC))
   thisBDCNumber = nextNumber(sequenceType = "BDC")
