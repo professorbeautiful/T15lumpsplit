@@ -867,32 +867,34 @@ Let's generate 99 extra features and examine how the methods behave when applied
 
 ```{r makeDLdataDFYesNoYes  }
 #  OK, mission accomplished, example found. We need never run this again.
-makeDLdataDFYesNoYes = function(DLdata=DLdataOriginal, qStar=1){
+makeDLdataDFYesNoYes = function(DLdata=DLdataOriginal, qStar=1, upperLimit=95){
   isYesNoYes = FALSE
-  seedInt = 44
-  #assign('.Random.seed', readRDS('savedSeed.rda') )
-  print(.Random.seed[626])
-  while(! isYesNoYes) {
+  seedInt = 40
+  while( (! isYesNoYes) & (seedInt < upperLimit)) {
     #savedSeed = .Random.seed
     seedInt = seedInt + 1
-    set.seed(seedInt)
-    DLdataDFResult = makeDLdataDF(DLdata = DLdata)
-    BHtable = DLdataDFResult$BHtable
-    isYesNoYes = identical(
-      as.vector(BHtable['P<cutoff', 1:3]),
-                             c('yes', 'no', 'yes') )
-    cat(0+isYesNoYes, seedInt, '\n')
+    checkYesNoYes(seedInt)
   }
   print(BHtable[ , 1:4])
   saveRDS(seedInt, 'seedInt.rda')
   return(seedInt)
+}
+checkYesNoYes = function(seed, qStar=1) {
+      #DLdataDFResult = makeDLdataDF(DLdata = DLdata)
+    allChisqPs = generateAllPvalues(
+      makeDLdataWithFeatures(seed=seed) )$allChisqPs
+    BHtable = makeBHtable( allChisqPs, qStar )
+    isYesNoYes = identical(
+      as.vector(BHtable['P<cutoff', 1:3]),
+                             c('yes', 'no', 'yes') )
+    cat(0+isYesNoYes, seedInt, '\n')
+    return(BHtable)
 }
 ```
 
 ```{r makeDLdataDF  }
 ## Make DLdata into a data frame.
 makeDLdataDF = function(DLdata=DLdataOriginal) {
-  set.seed(readRDS('seedInt.rda'))
   #print(DLdata)
   DLdataDF = 
     data.frame(
@@ -906,8 +908,11 @@ makeDLdataDF = function(DLdata=DLdataOriginal) {
 ## Combine DL feature with extra features. 
 makeDLdataWithFeatures = function(DLdata=DLdataOriginal,
                                   ## Make extra features.
-                                  NextraFeatures = 99, beta1=10, beta2=10){
+                                  NextraFeatures = 99, beta1=10, beta2=10,
+                                  seed = readRDS('seedInt.rda')){
   DLdataDF = makeDLdataDF(DLdata)
+  set.seed(seed)
+  cat('setting seed to ', seed, '\n')
   extraFeaturesProbs_R = rbeta(NextraFeatures, beta1, beta2)
   extraFeaturesOdds_R =
     extraFeaturesProbs_R/(1-extraFeaturesProbs_R)
@@ -1081,7 +1086,7 @@ observeEvent(input$qstarID, {
 })
 
 observeEvent(
-  list(rValues$allChisqPs,
+  list(#rValues$allChisqPs,
        rValues$qStar),
   {
     rValues$BHtable = makeBHtable(rValues$allChisqPs, qStar=1)
