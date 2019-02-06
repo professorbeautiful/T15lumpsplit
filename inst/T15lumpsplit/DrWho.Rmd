@@ -110,7 +110,7 @@ The posterior distribution for Dr. Who, which marginalizes over $\phi$ as we hav
 Viewing Dr. Who's posterior:
 
 ```{r}
-jumpList = c(jumpList, whoMixturePlot='Posterior distribution for Dr. Who')
+jumpList_DTC = c(jumpList_DTC, whoMixturePlot='Posterior distribution for Dr. Who')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$whoMixturePlot = 

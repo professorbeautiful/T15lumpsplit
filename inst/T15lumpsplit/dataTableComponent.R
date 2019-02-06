@@ -20,7 +20,7 @@ cellNames = c('RD', 'ND', 'RL', 'NL')
 createDLdataChoiceObserver <- function(analysisName) {
   myName = paste0('updateDLdataMyChoice_', analysisName)
   if(printDTCProgress ) cat('Creating ', myName, '\n')
-  analysisNumber = match(analysisName, names(jumpList))
+  analysisNumber = match(analysisName, names(jumpList_DTC))
   theCellIds = paste0('m', cellNames, 'idPanelDTC', analysisNumber)
   assign(myName,
          pos=1,
@@ -77,7 +77,7 @@ createDLdataChoiceObserver <- function(analysisName) {
 #### dataTableComponent ####
 dataTableComponent = function(showhide='show', analysisName) {
   createDLdataChoiceObserver(analysisName)
-  analysisNumber = which(analysisName == names(jumpList))
+  analysisNumber = which(analysisName == names(jumpList_DTC))
   thisDTCNumber = nextNumber(sequenceType = "DTC")
   if(printDTCProgress ) cat('Creating dataTableComponent thisDTCNumber = ', thisDTCNumber, '\n')
   if(printDTCProgress ) cat('DTCNumber=', thisDTCNumber, '   analysisNumber=', analysisNumber, '\n')
