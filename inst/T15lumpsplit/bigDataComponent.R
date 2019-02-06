@@ -73,6 +73,18 @@ bigDataComponent = function( analysisName) {
              })
            })
   )
+
+  ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified DLdata.
+  observeEvent(list(input$regenerateFeatures, input[[thisTauTrueID]]), {
+    try( {
+      tauTrue = as.numeric(input[[get_thisTauTrueID(analysisNumber)]])
+      cat('tauTrue:', tauTrue, '\n')
+      if(length(tauTrue)==0) tauTrue = 0
+      rValues$DLdataDFwithFeatures =
+        makeDLdataWithFeatures(DLdata = DLdataOriginal,
+                               tauTrue = tauTrue)
+    })
+  })
   #### Output of bigDataComponent ####
   if(printBDCProgress )
       cat('bigDataComponent for ', analysisName, ' ', thisBDCNumber, '\n')
@@ -80,7 +92,11 @@ bigDataComponent = function( analysisName) {
     fluidRow(
       column(6,
              numericInput(thisTauTrueID, 'Variance of the Odds Ratio ',
-                          value = 0, min=0,  step=0.1)),
+                          value = 0, min=0,  step=0.1),
+
+             ##```{r regenerateFeatures button}
+             actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
+             ),
       column(6,
              jumpBackWithPanel_BDC(analysisNumber, thisBDCNumber)
 
