@@ -1088,13 +1088,12 @@ div(
   numericInput('qStarID', 'qStar (False Discovery Rate upper bound)',
                value = 1, min=0,  step=0.1)
 )
-bigDataComponent()
-observeEvent( input[[get_thisTauTrueID()]], {
+bigDataComponent(analysisName)
+
+observeEvent( input[[get_thisTauTrueID(analysisName)]], {
   tauTrue = input[[get_thisTauTrueID()]]
-  
-}
-              
-)
+})
+
 observeEvent(
   list(rValues$allChisqPs,
        input$qStarID),
@@ -1254,6 +1253,7 @@ source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', an
 output$empBayeslogitRatios = renderPlot({
   analysisName = 'empBayeslogitRatios'
   source(analysisReactiveSetup_BDC, local=TRUE)
+  
   
   logitRatios = rValues$logoddsratios
   logitVars = rValues$logoddsratiovariances
