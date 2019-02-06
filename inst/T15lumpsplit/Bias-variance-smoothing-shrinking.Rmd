@@ -917,10 +917,10 @@ makeDLdataWithFeatures = function(DLdata=DLdataOriginal,
                                   ## Make extra features.
                                   NextraFeatures = 99, beta1=10, beta2=10,
                                   tauTrue = 0,
-                                  seed = readRDS('seedInt.rda')){
+                                  seed){
   DLdataDF = makeDLdataDF(DLdata)
-  set.seed(seed)
-  # cat('setting seed to ', seed, '\n')
+  if(! missing(seed))
+    set.seed(seed)
   extraFeaturesProbs_R = rbeta(NextraFeatures, beta1, beta2)
   extraFeaturesOdds_R =
     extraFeaturesProbs_R/(1-extraFeaturesProbs_R)
@@ -980,7 +980,7 @@ generateAllPvalues = function(
 
 ```{r}
 
-DLdataDFwithFeatures_original = makeDLdataWithFeatures(DLdataOriginal)
+DLdataDFwithFeatures_original = makeDLdataWithFeatures(DLdataOriginal, seed=45)
 #print(summary(DLdataDFwithFeatures_original))
 allPvalues = generateAllPvalues()
 allFisherPs_original = allPvalues$allFisherPs
@@ -991,7 +991,7 @@ allChisqPs_original = allPvalues$allChisqPs
 ```
 
 ```{r Pvalues all features}
-observeEvent(rValues$DLdataDFwithFeatures, {
+observer_Pvalues_all_features = observeEvent(rValues$DLdataDFwithFeatures, {
              Pvalues = generateAllPvalues(
                DLdataWithFeatures = rValues$DLdataDFwithFeatures
              )
