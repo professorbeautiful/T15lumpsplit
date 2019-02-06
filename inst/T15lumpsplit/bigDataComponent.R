@@ -11,6 +11,7 @@ createBigDataParamObserver <- function(analysisName) {
   analysisNumber = match(analysisName, names(jumpList_BDC))
 #  theBigDataController = paste0('BigDataController_ID_', analysisNumber)
   thisTauTrueID = get_thisTauTrueID(analysisNumber)
+  cat(myName, ': thisTauTrueID=', thisTauTrueID, '\n')
   ####  Initially, only tauTrue.
   assign(myName,
          pos=1,
@@ -33,7 +34,7 @@ createBigDataParamObserver <- function(analysisName) {
 }   ### End of createDLdataChoiceObserver()
 
 #### bigDataComponent ####
-bigDataComponent = function( analysisName) {
+bigDataComponent = function(analysisName) {
   createBigDataParamObserver(analysisName)
   analysisNumber = which(analysisName == names(jumpList_BDC))
   thisBDCNumber = nextNumber(sequenceType = "BDC")
@@ -80,11 +81,13 @@ bigDataComponent = function( analysisName) {
   observeEvent(list(input$regenerateFeatures, input[[thisTauTrueID]]), {
     try( {
       tauTrue = as.numeric(input[[get_thisTauTrueID(analysisNumber)]])
-      cat('tauTrue:', tauTrue, '\n')
+      cat('BDC:  tauTrue: ', tauTrue, '  analysisName=', analysisName, '\n')
       if(length(tauTrue)==0) tauTrue = 0
-      rValues$DLdataDFwithFeatures =
+      isolate({
+        rValues$DLdataDFwithFeatures =
         makeDLdataWithFeatures(DLdata = DLdataOriginal,
                                tauTrue = tauTrue)
+      })
       #generateAllPvalues(rValues$DLdataDFwithFeatures)
       #not necessary; observer in place. observer_Pvalues_all_features
     })
