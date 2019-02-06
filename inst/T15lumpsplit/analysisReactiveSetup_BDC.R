@@ -20,18 +20,20 @@ cat('\n    BEFORE:  ' )
 
 isolate({
   thisTauTrueID = get_thisTauTrueID(currentBDCnumber)
+  cat( 'analysisReactiveSetup_BDC.R: thisTauTrueID=', thisTauTrueID, '\n')
+
   if(is.null(
     rValues[[ thisTauTrueID]]
   ) )
     rValues[[ thisTauTrueID ]] = 0
+  cat('\n    AFTER:  ' )
+  cat('tauTrue: ',
+      paste(rValues[[ thisTauTrueID]]),
+      '\n')
 })
 
 
 
-cat('\n    AFTER:  ' )
-cat('tauTrue: ',
-    paste(rValues[[ thisTauTrueID]]),
-    '\n')
 
 
 
