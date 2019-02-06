@@ -22,7 +22,9 @@ createBigDataParamObserver <- function(analysisName) {
              try(silent = FALSE, {
                isolate({
                  currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
-
+                 rValues$
+                   makeDLdataWithFeatures(DLdataOriginal)
+                 #print(summary(DLdataDFwithFeatures_original))
                }) ### End of isolate()
              }) ### End of try()
            }
@@ -83,6 +85,8 @@ bigDataComponent = function( analysisName) {
       rValues$DLdataDFwithFeatures =
         makeDLdataWithFeatures(DLdata = DLdataOriginal,
                                tauTrue = tauTrue)
+      #generateAllPvalues(rValues$DLdataDFwithFeatures)
+      #not necessary; observer in place. observer_Pvalues_all_features
     })
   })
   #### Output of bigDataComponent ####
