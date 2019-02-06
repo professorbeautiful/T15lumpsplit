@@ -990,20 +990,6 @@ allChisqPs_original = allPvalues$allChisqPs
 # BHtable_original = DLdataDF_originalResult$BHtable
 ```
 
-```{r regenerateFeatures button}
-actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
-### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified DLdata.
-observeEvent(list(input$regenerateFeatures, input$ORvarianceID), {
-    try( {
-      tauTrue = as.numeric(input$ORvarianceID) 
-      cat('tauTrue:', tauTrue, '\n')
-      if(length(tauTrue)==0) tauTrue = 0
-      rValues$DLdataDFwithFeatures = 
-        makeDLdataWithFeatures(DLdata = DLdataOriginal, 
-                               tauTrue = tauTrue)
-    })
-})
-```
 ```{r Pvalues all features}
 observeEvent(rValues$DLdataDFwithFeatures, {
              Pvalues = generateAllPvalues(
