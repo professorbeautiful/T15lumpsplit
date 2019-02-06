@@ -1,8 +1,12 @@
 ##  addAnalysis.R
 
-get_thisTauTrueID =  function(aN)
+get_thisTauTrueID =  function(aN) {
+  if(is.character(aN))
+    aN  = mapAnalysisToBDCnumber[analysisName]
   paste0('BigDataController_ID_', aN)
+}
 
+###   Not yet used:  addAnalysis  .  Possibly a way to avoid a source().
 addAnalysis = function(analysisName, analysisLabel, context='DTC') {
   jumpListName = paste0('jumpList_', context)
   analysisMapName = paste0('mapAnalysisTo', context, 'number')
