@@ -1032,18 +1032,18 @@ output$pvaluesPlots = renderPlot({
          pch='X', col='red', cex=2)
 } )
 plotOutput('pvaluesPlots')
-
+bigDataComponent(analysisName=analysisName)
 ```
 
 Applying the *"Bonferroni correction"* to the Fisher P value for our feature $X_{DL}$ means multiplying the P value `r signif(digits=4, allFisherPs_original[1])` by 100, to get P=`r signif(digits=4, 100* allFisherPs_original[1])`. So the evidence that the `D` people really are different is minimal at best. (To say it carefully, if a 'cutoff' for defining 'statistically significant' happened to be chosen at `r signif(digits=4, 100* allFisherPs_original[1])`, then our result for $X_{DL}$ would be just on the edge of 'significance'. That's not a compelling cutoff!) 
 
 In the classical statistics spirit, we would now go with Dr. Lump instead of Dr. Split. (Choosing instead the chisquare test, the Bonferroni correction gives us P=`r signif(digits=4, 100* allChisqPs_original[1])`).
 
-As before, you have the opportunity to play around with changing the data, or reverting to the original data set.
 
 ```{r}
-dataTableComponent(showhide='hide', analysisName='pvaluesPlots')
-
+# As before, you have the opportunity to play around with changing the data, or reverting to the original data set.
+# dataTableComponent(showhide='hide', analysisName='pvaluesPlots')
+# We probably will not put dataTableComponent in the K=100 portion.
 ```
 
 
@@ -1088,7 +1088,7 @@ div(
   numericInput('qStarID', 'qStar (False Discovery Rate upper bound)',
                value = 1, min=0,  step=0.1)
 )
-bigDataComponent(analysisName)
+bigDataComponent(analysisName=analysisName)
 
 observeEvent( input[[get_thisTauTrueID(analysisName)]], {
   tauTrue = input[[get_thisTauTrueID()]]
