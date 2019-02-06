@@ -1199,7 +1199,7 @@ plotOutput('oddsratioplot')
 
 
 Using the delta method mentioned above, 
-have sampling variances roughly equal to the sums of reciprocals of the counts. 
+the logs of the odds ratios have sampling variances roughly equal to the sums of reciprocals of the counts. 
 (The heights of the vertical lines are proportional to the sampling standard deviations.)
 From this we can construct confidence intervals for the logits, then pull them back to confidence intervals for the odds ratios. 
 So for example, for our original${X_{DL}}$ 
