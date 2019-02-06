@@ -1,0 +1,13 @@
+**Jump to other data plots**
+
+```{r echo=FALSE}
+tag('ul', tagList( lapply(1:(analysisNumber), function(aN)
+  tagList(
+    linkinLink(paste0('a_', names(jumpList_BDC)[aN]),
+             jumpList_BDC[[aN]]),
+    br()
+  )
+) ) ) 
+```
+
+(Press ESC key to return here.)
