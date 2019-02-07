@@ -103,12 +103,13 @@ linkinLink = function(anchorName, linktext) {
 getContext = function(linktext) {
   whereInDTC = which(jumpList_DTC == gsub('▸ ', '', input$linktext) )
   whereInBDC = which(jumpList_BDC == gsub('▸ ', '', input$linktext) )
-  if(whereInDTC != 0) whichContext = 'DTC'
-  if(whereInBDC != 0) whichContext = 'BDC'
-  if(whereInDTC != 0 & whereInBDC != 0)
+  if(length(whereInDTC) > 0) whichContext = 'DTC'
+  if(length(whereInBDC) > 0) whichContext = 'BDC'
+  if(length(whereInDTC) > 0 & length(whereInBDC) > 0)
     warn('linktextProcessor: ', 'input$linktext in both contexts? ',  input$linktext)
   return(whichContext)  ### currently, BDC overrides.
 }
+#debug(getContext)
 
 linktextProcessor = function() {
   ### Copy DLdataLastUsed to theCellIds for the destination.
@@ -117,7 +118,7 @@ linktextProcessor = function() {
   whichContext = getContext(input$linktext )
   if(whichContext == 'DTC') {
     thisJumpList = jumpList_DTC
-    destAnalysisNumber = whereInDTC
+    destAnalysisNumber = which(jumpList_DTC == gsub('▸ ', '', input$linktext) )
     destDTCnum = getDTCnumber(destAnalysisNumber)
     theCellIds = as.list(paste0('m', cellNames, 'idPanelDTC', destDTCnum) )
     cat('linktextProcessor: copying ', paste(DLdataLastUsed),
@@ -132,7 +133,7 @@ linktextProcessor = function() {
     setDLdata(value=DLdataLastUsed, DTCnumber=destDTCnum, myChoice=TRUE)
   }
   if(whichContext == 'BDC') {
-    destAnalysisNumber = whereInBDC
+    destAnalysisNumber = which(jumpList_BDC == gsub('▸ ', '', input$linktext) )
     destBDCnum = getBDCnumber(destAnalysisNumber)
     cat('linktextProcessor: copying ', tauTrueLastUsed,
         ' from source=', input$currentLocationId,
