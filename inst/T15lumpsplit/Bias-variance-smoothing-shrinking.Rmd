@@ -1169,6 +1169,8 @@ output$oddsratioplot = renderPlot({
        expression( "" %<-% "DL data"), srt=90, col='green')
 })
 plotOutput('oddsratioplot')
+bigDataComponent(analysisName=analysisName)
+
 ```
 
 
