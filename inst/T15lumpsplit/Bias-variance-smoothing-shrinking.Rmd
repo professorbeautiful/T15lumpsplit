@@ -50,13 +50,12 @@ if(!require(shinyDebuggingPanel))
   devtools::install_github('professorbeautiful/shinyDebuggingPanel')
 require(magrittr);require(shinyBS)
 require(knitr);require(rmarkdown);
-#source('rstudio.markdownToHTML.R', local=TRUE)
 
 if(interactive()) {  ### Running out of RStudio locally
-  analysisReactiveSetup = paste0('inst/T15lumpsplit/', 'analysisReactiveSetup.R')
+  analysisReactiveSetup_DTC = paste0('inst/T15lumpsplit/', 'analysisReactiveSetup_DTC.R')
   analysisReactiveSetup_BDC = paste0('inst/T15lumpsplit/', 'analysisReactiveSetup_BDC.R')
 } else  { ### Running at shinyapps.io
-  analysisReactiveSetup =  'analysisReactiveSetup.R'
+  analysisReactiveSetup_DTC =  'analysisReactiveSetup_DTC.R'
   analysisReactiveSetup_BDC =  'analysisReactiveSetup_BDC.R'
 }
 ```
@@ -330,14 +329,14 @@ Goal: decide whether to treat the "$D$ patients" (or at least, whether to put re
 ## Simple "Lump" and "Split" estimates of Pr(R|D) <!-- #title -->
 ```{r analysis-plotLumpSplitPoints}
 jumpList_DTC = c(jumpList_DTC, plotLumpSplitPoints='Plot of lump & split points')
-source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
-#cat("After first analysisInitialSetup.R, getDTCnumber('plotLumpSplitPoints') =",
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+#cat("After first analysisInitialSetup_DTC.R, getDTCnumber('plotLumpSplitPoints') =",
 #    getDTCnumber('plotLumpSplitPoints'), '\n' )
 estimates_Lump_Split = observeEvent( 
   eventExpr = getDLdata('plotLumpSplitPoints'),
   {
     analysisName = 'plotLumpSplitPoints'
-  source(analysisReactiveSetup, local=TRUE)
+  source(analysisReactiveSetup_DTC, local=TRUE)
   #thisData = getDLdata('plotLumpSplitPoints')
   rValues$estimates_Lump_Split = list(
     lump = sum(thisData['R', ])/
@@ -354,7 +353,7 @@ estimates_Lump_Split = observeEvent(
 output$confInterval_Lump = renderText(
   {
   analysisName = 'plotLumpSplitPoints'
-  source(analysisReactiveSetup, local=TRUE)
+  source(analysisReactiveSetup_DTC, local=TRUE)
     try(silent = TRUE,
         paste("Lump:  (", 
           signif(digits=2,
@@ -368,7 +367,7 @@ output$confInterval_Lump = renderText(
 output$confInterval_Split = renderText(
   {
       analysisName = 'plotLumpSplitPoints'
-      source(analysisReactiveSetup, local=TRUE)
+      source(analysisReactiveSetup_DTC, local=TRUE)
       try(silent = TRUE,
           paste("Split:  (", 
                 signif(digits=2,
@@ -383,7 +382,7 @@ output$confInterval_Split = renderText(
 output$plotLumpSplitPoints = renderPlot(
   height = 300, {
     analysisName = 'plotLumpSplitPoints'
-    source(analysisReactiveSetup, local=TRUE)
+    source(analysisReactiveSetup_DTC, local=TRUE)
     cat('plotLumpSplitPoints: renderPlot', paste(thisData), '\n')
     cat('plotLumpSplitPoints: renderPlot', paste(getDLdata(analysisName)), '\n')
     bivariateNormResults = #rValues$bivariateNormResults <<-
@@ -452,7 +451,7 @@ Splitting gives an answer with high variance ($N$=5) but low bias-- because it i
 
 output$fisherResult = renderText({
   analysisName = 'plotLumpSplitPoints'
-  source(analysisReactiveSetup, local=TRUE)
+  source(analysisReactiveSetup_DTC, local=TRUE)
 
   Pvalue = fisher.test(thisData)$p.value
   paste0(
@@ -522,7 +521,7 @@ For this example dataset, we perform leave-one-out cross-validation as follows:
 
 ```{r Lump-Split-crossvalidation.R}
 jumpList_DTC = c(jumpList_DTC, crossvalidationPlot='Cross-validation plot')
-source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 source('Lump-Split-crossvalidation.R', local=TRUE)  # , echo = FALSE)
 
@@ -610,7 +609,7 @@ QandAha('QA-joint-posterior')
 
 ```{r BayesLogitPlot}
 jumpList_DTC = c(jumpList_DTC, bivariateContourPlot='Bivariate contour plot')
-source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 source('bivariateContourPlotReactive.R', local=TRUE)
 
@@ -651,13 +650,13 @@ Assembling the results of the approaches to estimating Pr(R|D):
 
 ```{r tableOfEstimates}
 jumpList_DTC = c(jumpList_DTC, estimateTable='Table of estimates')
-source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$estimateTable = 
   renderTable(rownames = TRUE, {
     analysisName = 'estimateTable'
     
-    source(analysisReactiveSetup, local=TRUE);
+    source(analysisReactiveSetup_DTC, local=TRUE);
       ###  Use the last-data for everything.
     
     isolate( {
@@ -996,7 +995,7 @@ source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', an
 ```{r pvaluesPlots-react}
 output$pvaluesPlots = renderPlot({
   analysisName = 'pvaluesPlots'
-  source(analysisReactiveSetup, local=TRUE)
+  source(analysisReactiveSetup_BDC, local=TRUE)
   hist(rValues$allFisherPs)
   #head(sort(allFisherPs))
   hist(rValues$allChisqPs)

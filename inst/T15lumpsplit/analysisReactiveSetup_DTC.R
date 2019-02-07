@@ -15,7 +15,7 @@ if( ! exists(x = 'thisData')) thisData = '(not set yet)'
 if( ! exists(x = 'DLdataLastUsed')) DLdataLastUsed = '(not set yet)'
 ### This nonsense was necessary to keep the app from disconnecting from a warning at
 ###    shinyapps.io.
-cat('analysisReactiveSetup.R:', analysisName, '  currentDTCnumber=', currentDTCnumber)
+cat('analysisReactiveSetup_DTC.R:', analysisName, '  currentDTCnumber=', currentDTCnumber)
 cat('\n    BEFORE:  ' )
 cat('thisData: ', paste(thisData), 'DLdataLastUsed: ', paste(DLdataLastUsed),
     'rValues DLdata: ',

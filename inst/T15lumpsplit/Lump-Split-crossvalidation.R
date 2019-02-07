@@ -72,7 +72,7 @@ doCVanalysis <- function(thisData ) {
 
 output$crossvalidationPlot = renderPlot({
   analysisName = 'crossvalidationPlot'
-  source(analysisReactiveSetup, local=TRUE)
+  source(analysisReactiveSetup_DTC, local=TRUE)
 
   result = doCVanalysis(thisData)
   print(names(result))
