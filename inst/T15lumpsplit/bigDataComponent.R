@@ -22,6 +22,7 @@ createBigDataParamObserver <- function(analysisName) {
              cat('START: handler for ', myName)
              try(silent = FALSE, {
                isolate({
+                 tauTrueLastUsed <<- input[[thisTauTrueID]]
                  currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
                  rValues$
                    makeDLdataWithFeatures(DLdataOriginal)
@@ -83,6 +84,7 @@ bigDataComponent = function(analysisName) {
       tauTrue = as.numeric(input[[get_thisTauTrueID(analysisNumber)]])
       cat('BDC:  tauTrue: ', tauTrue, '  analysisName=', analysisName, '\n')
       if(length(tauTrue)==0) tauTrue = 0
+      tauTrueLastUsed <<- tauTrue
       isolate({
         rValues$DLdataDFwithFeatures =
         makeDLdataWithFeatures(DLdata = DLdataOriginal,

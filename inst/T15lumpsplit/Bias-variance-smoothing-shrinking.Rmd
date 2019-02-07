@@ -1065,6 +1065,7 @@ bigDataComponent(analysisName=analysisName)
 
 observeEvent( input[[get_thisTauTrueID(analysisName)]], {
   tauTrueLastUsed <<- input[[get_thisTauTrueID()]]
+  cat('Setting tauTrueLastUsed to ', tauTrueLastUsed, '\n')
 })
 
 observeEvent(
@@ -1300,7 +1301,10 @@ What happens if the collection of 100 odds ratios deviates from 1? You can contr
 bigDataComponent(analysisName=analysisName)
 ```
 
-```{r}
+```{r tau comparison}
+cat(' tau comparison: ', analysisName, ' ', mapAnalysisToBDCnumber[analysisName],
+    get_thisTauTrueID(mapAnalysisToBDCnumber[analysisName]),
+    '\n')
 output$tauEstEB = renderText(rValues$tauEstimateEB)
 thisTauTrueID = get_thisTauTrueID(mapAnalysisToBDCnumber[analysisName])
 thisTauTrueID_text = paste0(thisTauTrueID, '_text')
