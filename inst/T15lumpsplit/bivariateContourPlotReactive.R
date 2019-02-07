@@ -58,7 +58,7 @@ ContoursPanelLegend = list(
 ###{r plotPlightPdarkPosteriorReactive}
 plotPlightPdarkPosteriorReactive = reactive( {
   analysisName = 'bivariateContourPlot'
-  source(analysisReactiveSetup, local=TRUE)
+  source(analysisReactiveSetup_DTC, local=TRUE)
 
   tau <- input$tauInput
   phi <- input$phiInput

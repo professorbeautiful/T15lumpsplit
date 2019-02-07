@@ -5,12 +5,12 @@
 
 #cat('analysisInitialSetup.R: ')
 
-analysisNumber <- length(jumpList)
-analysisName <- names(jumpList)[[analysisNumber]]
+analysisNumber <- length(jumpList_DTC)
+analysisName <- names(jumpList_DTC)[[analysisNumber]]
 #cat(  analysisName, '\n')
 
 
-# get('jumpList', parent.frame(2)) works in the R box.
+# get('jumpList_DTC', parent.frame(2)) works in the R box.
 # assign('mapAnalysisToBDCnumber', 1234, env= pare  nt.frame(2))
 # get('mapAnalysisToBDCnumber', env= parent.frame(2))  ## OK
 #  Might need a different #.
