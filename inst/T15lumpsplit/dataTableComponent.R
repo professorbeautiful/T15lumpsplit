@@ -43,10 +43,14 @@ createDLdataChoiceObserver <- function(analysisName) {
                      DLdataMyChoice = DLdataOriginal
                    else
                      DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
-                   DLdataMyChoice[1,1] =  as.numeric(input[[theCellIds[[1]] ]])
-                   DLdataMyChoice[2,1] =  as.numeric(input[[theCellIds[[2]] ]])
-                   DLdataMyChoice[1,2] =  as.numeric(input[[theCellIds[[3]] ]])
-                   DLdataMyChoice[2,2] =  as.numeric(input[[theCellIds[[4]] ]])
+                   newValues = sapply(1:4, function(N)as.numeric(input[[theCellIds[[N]] ]]) )
+                   if( ! any(is.na(newValues)) & all(newValues >= 0 ) ) {
+                     newValues = round(newValues)
+                     DLdataMyChoice[1,1] =  newValues[1]
+                     DLdataMyChoice[2,1] =  newValues[2]
+                     DLdataMyChoice[1,2] =  newValues[3]
+                     DLdataMyChoice[2,2] =  newValues[4]
+                   }
                    setDLdata(DLdataMyChoice, analysisName)
                    setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
                    cat(paste(DLdataMyChoice), ' ', analysisName)
