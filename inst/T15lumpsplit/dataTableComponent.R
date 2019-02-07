@@ -178,7 +178,7 @@ dataTableComponent = function(showhide='show', analysisName) {
              actionButton(inputId = myChoiceIdThisDTC,
                             label = "Reset data to my choice"),
              br(),
-             jumpBackWithPanel(analysisNumber, thisDTCNumber)
+             jumpBackWithPanel_DTC(analysisNumber, thisDTCNumber)
       )
     )
   })
