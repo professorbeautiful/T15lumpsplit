@@ -1,5 +1,3 @@
-source('jumpBackWithPanel_DTC.R', local=TRUE)
-
 printDTCProgress = FALSE
 
 cellNames = c('RD', 'ND', 'RL', 'NL')
