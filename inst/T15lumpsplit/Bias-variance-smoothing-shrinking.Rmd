@@ -329,7 +329,7 @@ QandAha(context='QA-intro-lump-split')
 ```
 
 ```{r initialize-jumpLists}
-jumpList = list()
+jumpList_DTC = list()
 jumpList_BDC = list()
 getDTCnumber = function(analysisName) {
   mapAnalysisToDTCnumber[analysisName]
@@ -355,7 +355,7 @@ Goal: decide whether to treat the "$D$ patients" (or at least, whether to put re
 
 ## Simple "Lump" and "Split" estimates of Pr(R|D) <!-- #title -->
 ```{r analysis-plotLumpSplitPoints}
-jumpList = c(jumpList, plotLumpSplitPoints='Plot of lump & split points')
+jumpList_DTC = c(jumpList_DTC, plotLumpSplitPoints='Plot of lump & split points')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 #cat("After first analysisInitialSetup.R, getDTCnumber('plotLumpSplitPoints') =",
 #    getDTCnumber('plotLumpSplitPoints'), '\n' )
@@ -547,7 +547,7 @@ Cross-validation is a technique in which the performance of a model can be check
 For this example dataset, we perform leave-one-out cross-validation as follows:
 
 ```{r Lump-Split-crossvalidation.R}
-jumpList = c(jumpList, crossvalidationPlot='Cross-validation plot')
+jumpList_DTC = c(jumpList_DTC, crossvalidationPlot='Cross-validation plot')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 source('Lump-Split-crossvalidation.R', local=TRUE)  # , echo = FALSE)
@@ -635,7 +635,7 @@ QandAha('QA-joint-posterior')
 
 
 ```{r BayesLogitPlot}
-jumpList = c(jumpList, bivariateContourPlot='Bivariate contour plot')
+jumpList_DTC = c(jumpList_DTC, bivariateContourPlot='Bivariate contour plot')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 source('bivariateContourPlotReactive.R', local=TRUE)
@@ -676,7 +676,7 @@ div(
 Assembling the results of the approaches to estimating Pr(R|D):
 
 ```{r tableOfEstimates}
-jumpList = c(jumpList, estimateTable='Table of estimates')
+jumpList_DTC = c(jumpList_DTC, estimateTable='Table of estimates')
 source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$estimateTable = 
@@ -817,7 +817,7 @@ WhoPriorProbNumericInput()
 and reviewing revised results at these previous locations:
   
 ```{r QA-Strong-prior-belief-X_DL-important}
-inclRmd('jumpBack.Rmd')
+inclRmd('jumpBack_DTC.Rmd')
 QandAha('QA-Strong-prior-belief-about-X_DL')
 ```
 

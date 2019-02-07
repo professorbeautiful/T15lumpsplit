@@ -4,7 +4,7 @@ observeEvent(input$linktext, {
   rValues$linkedAnalysisName = analysisName
 })
 
-jumpBackWithPanel = function(analysisNumber, thisDTCNumber) {
+jumpBackWithPaneL_DTC = function(analysisNumber, thisDTCNumber) {
   theJumpLinks =
     #tag('ul',
         tagList( lapply(1:length(jumpList), function(aN)

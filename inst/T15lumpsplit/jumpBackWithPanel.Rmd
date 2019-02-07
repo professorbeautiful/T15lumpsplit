@@ -5,8 +5,8 @@ theJumpLinks =
   tag('ul', 
       tagList( lapply(1:(analysisNumber), function(aN)
         tagList(
-          linkinLink(paste0('a_', names(jumpList)[aN]),
-                     jumpList[[aN]]),
+          linkinLink(paste0('a_', names(jumpList_DTC)[aN]),
+                     jumpList_DTC[[aN]]),
           br()
         )
       ) 
