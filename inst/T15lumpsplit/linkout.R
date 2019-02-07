@@ -27,7 +27,7 @@ linkout = function(fileName, labelString) {
   #theCommand = paste0(
   #  "browseURL('", theFile, "')")
   #eval(parse(text=theCommand))
-#  "system('open ", theFile, "')")
+  #  "system('open ", theFile, "')")
 }
 
 linkoutLink = function(fileName, linkouttext) {
@@ -48,8 +48,8 @@ linkoutLink = function(fileName, linkouttext) {
   #                ),
   #                initialValue=FALSE
   #              )
-    div(
-      checkboxInput(IdThisLinkout,
+  div(
+    checkboxInput(IdThisLinkout,
                   strong(em(showhideString(linkouttext, FALSE)
                   )),
                   value=FALSE),
@@ -61,7 +61,7 @@ linkoutLink = function(fileName, linkouttext) {
                         border: 0px
                        ",
                        src=fileName) )
-    )
+  )
 }
 
 
@@ -83,7 +83,7 @@ linkinLink = function(anchorName, linktext) {
 
     "Shiny.onInputChange('linktext', '",
     linktext, "');"
-    )
+  )
   ## https://stackoverflow.com/questions/39273043/shiny-modules-not-working-with-renderui
   ## function(a,b,c){c=addDefaultInputOpts(c),p.setInput(a,b,c)}
   # linkinLink972
@@ -95,27 +95,52 @@ linkinLink = function(anchorName, linktext) {
            '</font>'))
   a(id=IdThisLinkin,
     onclick=onclickAction,
-                   href=paste0('#section-',
-                               anchorName),
-                   labelString)
+    href=paste0('#section-',
+                anchorName),
+    labelString)
+}
+
+getContext = function(linktext) {
+  whereInDTC = which(jumpList_DTC == gsub('▸ ', '', input$linktext) )
+  whereInBDC = which(jumpList_BDC == gsub('▸ ', '', input$linktext) )
+  if(whereInDTC != 0) whichContext = 'DTC'
+  if(whereInBDC != 0) whichContext = 'BDC'
+  if(whereInDTC != 0 & whereInBDC != 0)
+    warn('linktextProcessor: ', 'input$linktext in both contexts? ',  input$linktext)
+  return(whichContext)  ### currently, BDC overrides.
 }
 
 linktextProcessor = function() {
   ### Copy DLdataLastUsed to theCellIds for the destination.
   ### (Or the current myChoice data instead? Harder though.)
-  destAnalysisNumber = which(jumpList == gsub('▸ ', '', input$linktext) )
-  destDTCnum = getDTCnumber(destAnalysisNumber)
-  theCellIds = as.list(paste0('m', cellNames, 'idPanelDTC', destDTCnum) )
-  cat('linktextProcessor: copying ', paste(DLdataLastUsed),
-      ' from source=', input$currentLocationId,
-      ' to dest = ', input$linktext, '\n')
-  for(cellnum in 1:4)
-    updateNumericInput(
-      session,
-      theCellIds[[cellnum]],
-      value = DLdataLastUsed[cellnum])
-  setDLdata(value=DLdataLastUsed, DTCnumber=destDTCnum)
-  setDLdata(value=DLdataLastUsed, DTCnumber=destDTCnum, myChoice=TRUE)
+
+  whichContext = getContext(input$linktext )
+  if(whichContext == 'DTC') {
+    thisJumpList = jumpList_DTC
+    destAnalysisNumber = whereInDTC
+    destDTCnum = getDTCnumber(destAnalysisNumber)
+    theCellIds = as.list(paste0('m', cellNames, 'idPanelDTC', destDTCnum) )
+    cat('linktextProcessor: copying ', paste(DLdataLastUsed),
+        ' from source=', input$currentLocationId,
+        ' to dest = ', input$linktext, '\n')
+    for(cellnum in 1:4)
+      updateNumericInput(
+        session,
+        theCellIds[[cellnum]],
+        value = DLdataLastUsed[cellnum])
+    setDLdata(value=DLdataLastUsed, DTCnumber=destDTCnum)
+    setDLdata(value=DLdataLastUsed, DTCnumber=destDTCnum, myChoice=TRUE)
+  }
+  if(whichContext == 'BDC') {
+    destAnalysisNumber = whereInBDC
+    destBDCnum = getBDCnumber(destAnalysisNumber)
+    cat('linktextProcessor: copying ', tauTrueLastUsed,
+        ' from source=', input$currentLocationId,
+        ' to dest = ', input$linktext, '\n')
+    setTau(value=tauTrueLastUsed, BDCnumber=destBDCnum)
+    setTau(value=tauTrueLastUsed, BDCnumber=destBDCnum, myChoice=TRUE)
+  }
+
 }
 observeEvent(input$linktext, { linktextProcessor() } )
 
