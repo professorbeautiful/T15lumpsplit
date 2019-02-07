@@ -1,0 +1,25 @@
+
+```{r echo=FALSE}
+## also possible is shiny::selectInput()
+theJumpLinks = 
+  tag('ul', 
+      tagList( lapply(1:(analysisNumber), function(aN)
+        tagList(
+          linkinLink(paste0('a_', names(jumpList_BDC)[aN]),
+                     jumpList_BDC[[aN]]),
+          br()
+        )
+      ) 
+      ) 
+  ) ## OK it works!
+conditionalPanelWithCheckbox(
+  labelString = print(paste('Jump to other analyses', '___', 
+                      #getSequenceLength(sequenceType="DTC")) 
+                      thisDTCNumber) ),
+  html='HERE',
+  #html=theJumpLinks,
+#  html=tagList(theJumpLinks, '(Press ESC key to return here.)'),
+  initialValue=FALSE)
+```
+
+
