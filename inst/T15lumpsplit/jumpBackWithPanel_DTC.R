@@ -1,16 +1,16 @@
 observeEvent(input$linktext, {
   # update the cells for the corresponding analysis
-  analysisName = names(jumpList)[match(input$linktext, jumpList)]
+  analysisName = names(jumpList_DTC)[match(input$linktext, jumpList_DTC)]
   rValues$linkedAnalysisName = analysisName
 })
 
 jumpBackWithPaneL_DTC = function(analysisNumber, thisDTCNumber) {
   theJumpLinks =
     #tag('ul',
-        tagList( lapply(1:length(jumpList), function(aN)
+        tagList( lapply(1:length(jumpList_DTC), function(aN)
           tagList(
-            linkinLink(paste0('a_', names(jumpList)[aN]),
-                      paste0('▸ ', jumpList[[aN]]) ),
+            linkinLink(paste0('a_', names(jumpList_DTC)[aN]),
+                      paste0('▸ ', jumpList_DTC[[aN]]) ),
             br()
           )
         )
