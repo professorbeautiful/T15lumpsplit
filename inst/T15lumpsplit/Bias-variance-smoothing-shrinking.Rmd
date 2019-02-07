@@ -90,6 +90,7 @@ source('interactiveSection.R', local=T)
 source('includeHTMLtrimmed.R', local=T)
 source('observeEvent-for-fileInput.R', local=TRUE)
 source('getsetDLdata.R', local=TRUE)
+source('getsetTauTrue.R', local=TRUE)
 ```
 
 ```{r onStop}
