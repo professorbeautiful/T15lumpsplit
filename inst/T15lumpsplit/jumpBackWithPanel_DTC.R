@@ -1,10 +1,11 @@
 observeEvent(input$linktext, {
   # update the cells for the corresponding analysis
   analysisName = names(jumpList_DTC)[match(input$linktext, jumpList_DTC)]
-  rValues$linkedAnalysisName = analysisName
+  if(!is.na(analysisName))
+    rValues$linkedAnalysisName = analysisName
 })
 
-jumpBackWithPaneL_DTC = function(analysisNumber, thisDTCNumber) {
+jumpBackWithPanel_DTC = function(analysisNumber, thisDTCNumber) {
   theJumpLinks =
     #tag('ul',
         tagList( lapply(1:length(jumpList_DTC), function(aN)

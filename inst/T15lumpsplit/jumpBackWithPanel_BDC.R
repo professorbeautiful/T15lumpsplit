@@ -1,7 +1,8 @@
 observeEvent(input$linktext, {
   # update the cells for the corresponding analysis
   analysisName = names(jumpList_BDC)[match(input$linktext, jumpList_BDC)]
-  rValues$linkedAnalysisName = analysisName
+  if(!is.na(analysisName))
+    rValues$linkedAnalysisName = analysisName
 })
 
 jumpBackWithPanel_BDC = function(analysisNumber, thisBDCNumber) {
