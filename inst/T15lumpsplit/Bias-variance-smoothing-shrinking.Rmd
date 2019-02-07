@@ -68,29 +68,13 @@ if(exists(x = 'envNumberSequences')) {
   envNumberSequences = new.env()
 ### Note that the .GlobalEnv seen here is different from your R session... and it persists across Rmd runs!
 
-source('nextNumber.R', local=TRUE)
-source('interactiveSection.R', local=TRUE)
-source('QandAha.R', local=TRUE)
-source('TextQuestion.R', local=TRUE)
-source('WhoPriorProbNumericInput.R', local=TRUE)
-source('conditionalPanelWithCheckbox.R', local=TRUE)
-source('addAnalysis.R', local=TRUE)
+source('initializations.R', local=TRUE)
 ```
 
 ```{r colors}
 adviceForeground = 'darkred'
 adviceBackground = 'snow'
 ## https://www.w3schools.com/cssref/css_colors.asp
-```
-
-```{r includeFunctions}
-source('inclRmd.R', local=T)
-source('linkout.R', local=T)
-source('interactiveSection.R', local=T)
-source('includeHTMLtrimmed.R', local=T)
-source('observeEvent-for-fileInput.R', local=TRUE)
-source('getsetDLdata.R', local=TRUE)
-source('getsetTauTrue.R', local=TRUE)
 ```
 
 ```{r onStop}
@@ -118,11 +102,6 @@ ColorForPosterior="blue";
 ColorForLikelihood="black"
 TOCnum =  0
 ```
-
-```{r navTOCid.R}
-#source('navTOCid.R', local=T)
-```
-
 
 ```{r servercode}
 DLdata = list()
@@ -175,11 +154,6 @@ observeEvent(input$ctrlDpressed, {}) # just to flush the ctrl-D press.
 shinyDebuggingPanel::makeDebuggingPanelOutput(
    session, toolsInitialState = FALSE, 
    condition='ctrlDpressed === true') 
-```
-
-
-```{r navTOCid.R.2}
-#source('navTOCid.R', local=T)
 ```
 
 ```{r fat arrow, results='asis'}
@@ -295,7 +269,6 @@ conditionalPanelWithCheckbox(
 
 
 ```{r listings}
-source('initializations.R', local=TRUE)
 # ls()
 # cat('-=-=-=-=\n')
 # ls(pos=1)
