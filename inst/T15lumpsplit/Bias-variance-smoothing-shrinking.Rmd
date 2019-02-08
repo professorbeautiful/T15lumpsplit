@@ -894,19 +894,22 @@ makeDLdataWithFeatures = function(DLdata=DLdataOriginal,
   DLdataDF = makeDLdataDF(DLdata)
   if(! missing(seed))
     set.seed(seed)
-  extraFeaturesProbs_R = rbeta(NextraFeatures, beta1, beta2)
-  extraFeaturesOdds_R =
+  extraFeaturesProbs_R <<- rbeta(NextraFeatures, beta1, beta2)
+  extraFeaturesOdds_R <<-
     extraFeaturesProbs_R/(1-extraFeaturesProbs_R)
+  
   if( abs(tauTrue) < 1e-9) {
-    extraFeaturesProbs = extraFeaturesProbs_R
+    oddsratios = 1
+    extraFeaturesProbs_N <<- extraFeaturesProbs_R
+    extraFeaturesOdds_N <<- extraFeaturesOdds_R
     extraFeatures = as.data.frame(
-      lapply(extraFeaturesProbs,
+      lapply(extraFeaturesProbs_R,
              rbinom, n=sum(DLdata),size=1)
     )
   } else {
-    oddsratios = exp(rnorm(NextraFeatures, 0, sqrt(tauTrue)))
-    extraFeaturesOdds_N = extraFeaturesOdds_R * oddsratios
-    extraFeaturesProbs_N =
+    oddsratios <<- exp(rnorm(NextraFeatures, 0, sqrt(tauTrue)))
+    extraFeaturesOdds_N <<- extraFeaturesOdds_R * oddsratios
+    extraFeaturesProbs_N <<-
       extraFeaturesOdds_N/(1+extraFeaturesOdds_N)
     #plot(extraFeaturesProbs_N, extraFeaturesProbs_R)
     extraFeatures_N = sapply(extraFeaturesProbs_N,
