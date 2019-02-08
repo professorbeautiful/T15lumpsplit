@@ -1,6 +1,5 @@
 ###   bigDataComponent
 
-source('jumpBackWithPanel_BDC.R', local=TRUE)
 
 printBDCProgress =  TRUE
 
