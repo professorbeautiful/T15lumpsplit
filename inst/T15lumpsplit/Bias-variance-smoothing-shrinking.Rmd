@@ -997,9 +997,9 @@ source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', an
 output$pvaluesPlots = renderPlot({
   analysisName = 'pvaluesPlots'
   source(analysisReactiveSetup_BDC, local=TRUE)
-  hist(rValues$allFisherPs)
+  #hist(rValues$allFisherPs)
   #head(sort(allFisherPs))
-  hist(rValues$allChisqPs)
+  #hist(rValues$allChisqPs)
   #head(sort(allChisqPs))
   plot(rValues$allChisqPs, rValues$allFisherPs, log='xy')
   points(rValues$allChisqPs[1], rValues$allFisherPs[1],
