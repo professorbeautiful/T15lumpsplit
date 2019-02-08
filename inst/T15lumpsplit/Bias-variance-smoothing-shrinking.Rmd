@@ -1188,11 +1188,12 @@ which for a 95% confidence level is
 
 To apply the EB idea, we use the data for all the features, to "shrink" all the logit ratios ${X_i}$ towards the common mean, estimated as ${\hat{~\mu}}$. This solution uses a model in which the true logit ratios are all drawn from a common parent distribution, assumed to be normal (Gaussian). Then a standard Bayesian calculation gives us the posterior means (and variances) for each logit ratio. In particular, letting ${\mu_i}$ be the logit ratio for feature $i$, with variance ${\sigma_i}$ (which we estimate from the delta method to get ${\hat{~\sigma_i}}$), the posterior mean is 
 
-  $E({\mu _i}|{X_i}) = {X_i}(1 - {w_i}) + \hat{~\mu} {w_i}$,
+  \[E({\mu _i}|{X_i}) = {X_i}(1 - {w_i}) + \hat{~\mu} {w_i},\]
  
  where the weights $w_i$ vary with the feature:
  
-  $w_i = \frac{\hat{~\sigma_i}}{{\hat{~\sigma_i}}+\hat{~A}}$ .
+  \[w_i = \frac{\hat{~\sigma_i}}{{\hat{~\sigma_i}}+\hat{~A}}.\]
+  
   
 $\hat{~A}$ is the estimated prior variance for all the true ${\mu_i}$.
  
@@ -1200,13 +1201,13 @@ This is yet another example of bias-variance trade-off. By accepting some bias i
  
 But we would have to know the true mean and variance of the parent distribution. 
 
-The "empirical" part of empirical Bayes is to use the data to estimate the mean and variance of the parent distribution generating the $\mu_i$. As you can see in the document in the panel just above, the "empirical" step needs the marginal distribution of the observed logit ratios.
+The "empirical" part of empirical Bayes is to use the data to estimate the mean and variance of the parent distribution generating the $\mu_i$. As you can see in the document in the panel just above, the "empirical" step needs the marginal distribution of the observed logit ratios:
 
-  ${X_i}|\tau \sim N(\mu,\tau  + {\sigma _i})$
+  \[{X_i}|\tau \sim N(\mu,\tau  + {\sigma _i}),\]
 
 where we will get the variances ${\sigma _i}$ from the delta method. The unknown $\mu$ and $\tau$ are called the "hyperparameters". We can estimate them however we prefer, but using maximum posterior estimation we get
 
-$\hat{~\mu}  = \sum {\left( {{X_i}{w_i}} \right)} /\sum {\left( {{w_i}} \right)}$
+\[\hat{~\mu}  = \sum {\left( {{X_i}{w_i}} \right)} /\sum {\left( {{w_i}} \right)}\]
 
 where the weights are ${w_i} = 1/{\sigma _i}$. 
 These are the optimal weights for smallest variance of $\hat{~\mu}$. 
