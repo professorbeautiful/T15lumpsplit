@@ -1,9 +1,11 @@
-observeEvent(input$linktext, {
-  # update the cells for the corresponding analysis
-  analysisName = names(jumpList_BDC)[match(input$linktext, jumpList_BDC)]
-  if(!is.na(analysisName))
-    rValues$linkedAnalysisName = analysisName
-})
+# observeEvent(input$linktext, {
+#   # update tauTrue for the corresponding analysis
+#   analysisName = names(jumpList_BDC)[match(input$linktext, jumpList_BDC)]
+#   if(!is.na(analysisName)) {
+#     cat('observeEvent for linktext, analysisName is ', analysisName, '\n')
+#     rValues$linkedAnalysisName = analysisName
+#   }
+# })
 
 jumpBackWithPanel_BDC = function(analysisNumber, thisBDCNumber) {
   theJumpLinks =
