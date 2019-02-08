@@ -921,7 +921,8 @@ makeDLdataWithFeatures = function(DLdata=DLdataOriginal,
   colnames(extraFeatures) = 
     paste0('X', 1+(1:NextraFeatures))
 ## Combine DL feature with extra features. 
-  return(cbind(DLdataDF, extraFeatures ) )
+  DLdataWithFeatures <<- cbind(DLdataDF, extraFeatures ) 
+  return(DLdataWithFeatures)
 }
 ## generateAllPvalues.
 generateAllPvalues = function(
