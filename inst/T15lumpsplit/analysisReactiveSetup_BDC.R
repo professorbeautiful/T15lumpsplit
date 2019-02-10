@@ -11,33 +11,31 @@
 
 currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
 
-if( ! exists(x = 'thisData')) thisData = '(not set yet)'
-if( ! exists(x = 'DLdataLastUsed')) DLdataLastUsed = '(not set yet)'
+if( ! exists(x = 'thisBigData')) thisBigData = '(not set yet)'
+if( ! exists(x = 'BigDataLastUsed')) BigDataLastUsed = '(not set yet)'
 ### This nonsense was necessary to keep the app from disconnecting from a warning at
 ###    shinyapps.io.
-cat('analysisReactiveSetup_BDC.R:', analysisName, '  currentBDCnumber=', currentBDCnumber)
-cat('\n    BEFORE:  ' )
+
+if(printFromAnalysisReactiveSetup_BDC) {
+  cat('analysisReactiveSetup_BDC.R:', analysisName, '  currentBDCnumber=', currentBDCnumber)
+  cat('\n    BEFORE:  ' )
+  cat('thisBigData: ', paste(thisBigData), 'BigDataLastUsed: ', paste(BigDataLastUsed),
+      'rValues BigDataLastUsed: ')
+  paste(head(rValues[[paste0('BigDataLastUsed', currentBDCnumber) ]], 4))
+}
 
 isolate({
-  thisTauTrueID = get_thisTauTrueID(currentBDCnumber)
-  cat( 'analysisReactiveSetup_BDC.R: thisTauTrueID=', thisTauTrueID,
-       ' value is ', input[[ thisTauTrueID ]], '\n')
-  tauTrueLastUsed <<- input[[ thisTauTrueID]]
-  rValues[[ thisTauTrueID]] = input[[ thisTauTrueID]]
-
   if(is.null(
-    rValues[[ thisTauTrueID]]
+    rValues[[paste0('BigData', currentBDCnumber) ]]
   ) )
-    rValues[[ thisTauTrueID ]] = 0
+    rValues[[paste0('BigData', currentBDCnumber) ]] = BigDataOriginal
 
-  cat('\n    AFTER:  ' )
-  cat('tauTrue: ',
-      paste(rValues[[ thisTauTrueID]]),
-      '\n')
+  thisBigData <<- BigDataLastUsed <<- rValues[[paste0('BigData', currentBDCnumber) ]]
+
+  if(printFromAnalysisReactiveSetup_BDC) {
+    cat('\n    AFTER:  ' )
+    cat( 'analysisReactiveSetup_BDC.R: first 4 rows now = ')
+    paste(head(rValues[[paste0('BigDataLastUsed', currentBDCnumber) ]], 4))
+  }
 })
-
-
-
-
-
 

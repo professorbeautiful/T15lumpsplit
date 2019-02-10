@@ -1,4 +1,4 @@
-### analysisReactiveSetup.R
+### analysisReactiveSetup_DTC.R
 ## Initialize data for this analysis if necessary.
 
 ### First, set analysisName before
@@ -9,31 +9,32 @@
 #cat('analysisReactiveSetup.R: ')
 #cat( analysisName, '  ', system('pwd', intern=TRUE), '\n')
 
+printFromAnalysisReactiveSetup_DTC = TRUE
+
 currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
 if( ! exists(x = 'thisData')) thisData = '(not set yet)'
 if( ! exists(x = 'DLdataLastUsed')) DLdataLastUsed = '(not set yet)'
 ### This nonsense was necessary to keep the app from disconnecting from a warning at
 ###    shinyapps.io.
-cat('analysisReactiveSetup_DTC.R:', analysisName, '  currentDTCnumber=', currentDTCnumber)
-cat('\n    BEFORE:  ' )
-cat('thisData: ', paste(thisData), 'DLdataLastUsed: ', paste(DLdataLastUsed),
-    'rValues DLdata: ',
-    paste(rValues[[paste0('DLdata', currentDTCnumber) ]]))
-
+if(printFromAnalysisReactiveSetup_DTC) {
+  cat('analysisReactiveSetup_DTC.R:', analysisName, '  currentDTCnumber=', currentDTCnumber)
+  cat('\n    BEFORE:  ' )
+  cat('thisData: ', paste(thisData), 'DLdataLastUsed: ', paste(DLdataLastUsed),
+      'rValues DLdata: ',
+      paste(rValues[[paste0('DLdata', currentDTCnumber) ]]))
+}
 isolate({
   if(is.null(
     rValues[[paste0('DLdata', currentDTCnumber) ]]
   ) )
     rValues[[paste0('DLdata', currentDTCnumber) ]] = DLdataOriginal
+  thisData <<- DLdataLastUsed <<- rValues[[paste0('DLdata', currentDTCnumber) ]]
+
+  if(printFromAnalysisReactiveSetup_DTC) {
+    cat('\n    AFTER:  ' )
+    cat('thisData: ', paste(thisData), 'DLdataLastUsed: ', paste(DLdataLastUsed),
+        'rValues DLdata: ')
+    print(paste(rValues[[paste0('DLdata', currentDTCnumber) ]]))
+  }
 })
-thisData <<- DLdataLastUsed <<- rValues[[paste0('DLdata', currentDTCnumber) ]]
-
-cat('\n    AFTER:  ' )
-cat('thisData: ', paste(thisData), 'DLdataLastUsed: ', paste(DLdataLastUsed),
-    'rValues DLdata: ',
-    paste(rValues[[paste0('DLdata', currentDTCnumber) ]]),
-    '\n')
-
-
-
