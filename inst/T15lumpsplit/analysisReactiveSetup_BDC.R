@@ -17,6 +17,14 @@ if( ! exists(x = 'BigDataLastUsed')) BigDataLastUsed = '(not set yet)'
 ### This nonsense was necessary to keep the app from disconnecting from a warning at
 ###    shinyapps.io.
 
+## We need to trigger the  reaction!
+
+thisBigDataID = paste0('BigData', currentBDCnumber)
+if(is.null(
+  rValues[[thisBigDataID ]]
+) )
+  rValues[[thisBigDataID ]] = BigDataOriginal
+
 if(printFromAnalysisReactiveSetup_BDC) {
   cat('analysisReactiveSetup_BDC.R:', analysisName, '  currentBDCnumber=', currentBDCnumber)
   cat('\n    BEFORE:  ' )
