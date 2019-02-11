@@ -10,6 +10,7 @@
 #cat( analysisName, '  ', system('pwd', intern=TRUE), '\n')
 
 currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
+printFromAnalysisReactiveSetup_BDC = TRUE
 
 if( ! exists(x = 'thisBigData')) thisBigData = '(not set yet)'
 if( ! exists(x = 'BigDataLastUsed')) BigDataLastUsed = '(not set yet)'
