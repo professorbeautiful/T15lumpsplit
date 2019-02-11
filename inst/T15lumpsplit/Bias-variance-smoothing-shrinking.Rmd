@@ -1009,8 +1009,8 @@ output$pvaluesPlots = renderPlot({
   #head(sort(allFisherPs))
   #hist(rValues$allChisqPs)
   #head(sort(allChisqPs))
-  plot(rValues$allChisqPs, rValues$allFisherPs, log='xy')
-  points(rValues$allChisqPs[1], rValues$allFisherPs[1],
+  plot(allChisqPs, allFisherPs, log='xy')
+  points(allChisqPs[1], allFisherPs[1],
          pch='X', col='red', cex=2)
 } )
 plotOutput('pvaluesPlots')
