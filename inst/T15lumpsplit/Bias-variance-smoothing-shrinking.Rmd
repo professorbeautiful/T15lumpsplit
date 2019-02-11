@@ -862,7 +862,7 @@ makeDLdataDFYesNoYes = function(DLdata=DLdataOriginal, qStar=1, upperLimit=95){
 checkYesNoYes = function(seed, qStar=1) {
       #DLdataDFResult = makeDLdataDF(DLdata = DLdata)
     allChisqPs = generateAllPvalues(
-      makeDLdataWithFeatures(seed=seed) )$allChisqPs
+      makeBigDataWithFeatures(seed=seed) )$allChisqPs
     BHtable = makeBHtable( allChisqPs, qStar )
     isYesNoYes = identical(
       as.vector(BHtable['P<cutoff', 1:3]),
@@ -886,7 +886,7 @@ makeDLdataDF = function(DLdata=DLdataOriginal) {
   return(DLdataDF)
 }
 ## Combine DL feature with extra features. 
-makeDLdataWithFeatures = function(DLdata=DLdataOriginal,
+makeBigDataWithFeatures = function(DLdata = DLdataOriginal,
                                   ## Make extra features.
                                   NextraFeatures = 99, beta1=10, beta2=10,
                                   tauTrue = 0,
@@ -927,20 +927,23 @@ makeDLdataWithFeatures = function(DLdata=DLdataOriginal,
   DLdataWithFeatures <<- cbind(DLdataDF, extraFeatures ) 
   return(DLdataWithFeatures)
 }
+
+#debug(makeBigDataWithFeatures)
+
 ## generateAllPvalues.
 generateAllPvalues = function(
-  DLdataWithFeatures = makeDLdataWithFeatures()) {
+  BigData = makeBigDataWithFeatures()) {
   allFisherPs <<- 
-    sapply(DLdataWithFeatures[-1], function(feature) 
+    sapply(BigData[-1], function(feature) 
       fisher.test(feature,
-                  DLdataWithFeatures$outcome)$p.value
+                  BigData$outcome)$p.value
     )
   options.saved = options(warn=-1)
   allChisqPs <<- 
-    sapply(DLdataWithFeatures[-1], ## removing the outcome column 
+    sapply(BigData[-1], ## removing the outcome column 
            function(feature) {
              result = chisq.test(feature,
-                        DLdataWithFeatures$outcome)
+                        BigData$outcome)
              # if(max(result$expected) < 5)
              #   result = chisq.test(feature,
              #            DLdataWithFeatures$outcome, simulate.p.value = TRUE)
@@ -953,11 +956,13 @@ generateAllPvalues = function(
          allChisqPs=allChisqPs))
   ) 
 }
+
+#debug(generateAllPvalues)
 ```
 
 ```{r}
 
-DLdataDFwithFeatures_original = makeDLdataWithFeatures(DLdataOriginal, seed=45)
+BigDataOriginal = makeBigDataWithFeatures(DLdataOriginal, seed=45)
 #print(summary(DLdataDFwithFeatures_original))
 allPvalues = generateAllPvalues()
 allFisherPs_original = allPvalues$allFisherPs
