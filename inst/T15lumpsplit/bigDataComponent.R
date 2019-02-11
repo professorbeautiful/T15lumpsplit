@@ -25,7 +25,8 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                  cat('updateBigDataParamMyChoice: changing MyChoice')
                  currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
                  if( ! exists('saved_BigDataMyChoice')) {
-                   cat(': Responding to numericInput for tauTrue: ')
+                   cat(': Responding to numericInput for tauTrue: ',
+                       as.numeric(input[[thisTauTrueID ]]))
                    if( is.null(getBigData(analysisName, myChoice=TRUE)))
                      BigDataMyChoice = BigDataOriginal
                    else
