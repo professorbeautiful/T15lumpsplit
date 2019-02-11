@@ -28,23 +28,19 @@ if(is.null(
 if(printFromAnalysisReactiveSetup_BDC) {
   cat('analysisReactiveSetup_BDC.R:', analysisName, '  currentBDCnumber=', currentBDCnumber)
   cat('\n    BEFORE:  ' )
-  cat('thisBigData: ', paste(thisBigData), 'BigDataLastUsed: ', paste(BigDataLastUsed),
-      'rValues BigDataLastUsed: ')
-  paste(head(rValues[[paste0('BigDataLastUsed', currentBDCnumber) ]], 4))
+  cat('rValues BigDataLastUsed: ')
+
+  paste(head(rValues[[thisBigDataID ]], 4))
+  cat('\n')
 }
 
-isolate({
-  if(is.null(
-    rValues[[paste0('BigData', currentBDCnumber) ]]
-  ) )
-    rValues[[paste0('BigData', currentBDCnumber) ]] = BigDataOriginal
 
-  thisBigData <<- BigDataLastUsed <<- rValues[[paste0('BigData', currentBDCnumber) ]]
+thisBigData <<- BigDataLastUsed <<- rValues[[thisBigDataID ]]
 
-  if(printFromAnalysisReactiveSetup_BDC) {
-    cat('\n    AFTER:  ' )
-    cat( 'analysisReactiveSetup_BDC.R: first 4 rows now = ')
-    paste(head(rValues[[paste0('BigDataLastUsed', currentBDCnumber) ]], 4))
-  }
-})
+if(printFromAnalysisReactiveSetup_BDC) {
+  cat('\n    AFTER:  ' )
+  cat( 'analysisReactiveSetup_BDC.R: first 4 rows now = ')
+  paste(head(rValues[[thisBigDataID ]], 4))
+}
+
 
