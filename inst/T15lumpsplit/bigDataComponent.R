@@ -64,7 +64,7 @@ createBigDataParamChoiceObserver <- function(analysisName) {
 
 #### bigDataComponent ####
 bigDataComponent = function(analysisName) {
-  createBigDataParamObserver(analysisName)
+  createBigDataParamChoiceObserver(analysisName)
   analysisNumber = which(analysisName == names(jumpList_BDC))
   thisBDCNumber = nextNumber(sequenceType = "BDC")
   if(printBDCProgress ) cat('Creating bigDataComponent thisBDCNumber = ', thisBDCNumber, '\n')
