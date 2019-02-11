@@ -89,7 +89,8 @@ bigDataComponent = function(analysisName) {
                           cat('Handler:  Pressed ', resetIdThisBDC, '\n')
                           currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
                           saved_BigDataMyChoice <<- getBigData(analysisName, myChoice=TRUE)
-                          cat('saved_BigDataMyChoice:', paste(saved_BigDataMyChoice), '\n')                          updateNumericInput(
+                          cat('saved_BigDataMyChoice:', paste(saved_BigDataMyChoice), '\n')
+                          updateNumericInput(
                             session,
                             thisTauTrueID,
                             value = 0)
