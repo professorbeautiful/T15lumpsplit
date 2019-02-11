@@ -34,7 +34,7 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                    newValue = as.numeric(input[[thisTauTrueID ]])
                    if( ! is.na(newValue) & (newValue >= 0 ) ) {
                      newValue = round(newValue)
-                     BigDataMyChoice = makeBigDataWithFeatures(BigDataOriginal)
+                     BigDataMyChoice = makeBigDataWithFeatures(DLdataOriginal)
                    }
                    setBigData(BigDataMyChoice, analysisName)
                    setBigData(BigDataMyChoice, analysisName, myChoice=TRUE)
@@ -140,7 +140,7 @@ bigDataComponent = function(analysisName) {
       tauTrueLastUsed <<- tauTrue
       isolate({
         rValues$BigDataDFwithFeatures =
-          makeBigDataWithFeatures(BigData = BigDataOriginal,
+          makeBigDataWithFeatures(DLdata = DLdataOriginal,
                                   tauTrue = tauTrue)
       })
       #generateAllPvalues(rValues$BigDataDFwithFeatures)
