@@ -1,9 +1,9 @@
-observeEvent(input$linktext, {
-  # update the cells for the corresponding analysis
-  analysisName = names(jumpList_DTC)[match(input$linktext, jumpList_DTC)]
-  if(!is.na(analysisName))
-    rValues$linkedAnalysisName = analysisName
-})
+# observeEvent(input$linktext, {
+#   # update the cells for the corresponding analysis
+#   analysisName = names(jumpList_DTC)[match(input$linktext, jumpList_DTC)]
+#   if(!is.na(analysisName))
+#     rValues$linkedAnalysisName = analysisName
+# })
 
 jumpBackWithPanel_DTC = function(analysisNumber, thisDTCNumber) {
   theJumpLinks =
