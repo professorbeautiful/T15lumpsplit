@@ -9,9 +9,9 @@
 #cat('analysisReactiveSetup.R: ')
 #cat( analysisName, '  ', system('pwd', intern=TRUE), '\n')
 
-printFromAnalysisReactiveSetup_DTC = TRUE
 
 currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
+printFromAnalysisReactiveSetup_DTC = TRUE
 
 if( ! exists(x = 'thisData')) thisData = '(not set yet)'
 if( ! exists(x = 'DLdataLastUsed')) DLdataLastUsed = '(not set yet)'
