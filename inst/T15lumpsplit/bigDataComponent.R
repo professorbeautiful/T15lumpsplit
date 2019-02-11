@@ -38,12 +38,12 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                    }
                    setBigData(BigDataMyChoice, analysisName)
                    setBigData(BigDataMyChoice, analysisName, myChoice=TRUE)
-                   cat(paste(BigDataMyChoice), ' ', analysisName)
+                   #cat(paste(BigDataMyChoice), ' ', analysisName)
                  }
                  else {
                    saved_BigDataMyChoice_location = find('saved_BigDataMyChoice')
                    cat(': Restoring saved_BigDataMyChoice ',
-                       paste(saved_BigDataMyChoice),
+                       #paste(saved_BigDataMyChoice),
                        'from ',
                        saved_BigDataMyChoice_location)
                    setBigData(saved_BigDataMyChoice, analysisName, myChoice=TRUE)
@@ -52,8 +52,8 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                    if(exists('saved_BigDataMyChoice')) browser()
                  }
                  BigDataLastUsed <<- getBigData(analysisName, myChoice=TRUE)
-                 cat('\nEND: handler for ', myName, ' BigDataLastUsed is now: ',
-                     paste(BigDataLastUsed), '\n')
+                 cat('\nEND: handler for ', myName, ' BigDataLastUsed is now: ')
+                 paste(head(BigDataLastUsed,4))
                  #print(summary(BigDataDFwithFeatures_original))
                }) ### End of isolate()
              }) ### End of try()
