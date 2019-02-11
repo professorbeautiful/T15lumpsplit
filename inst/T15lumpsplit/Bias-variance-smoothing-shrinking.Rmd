@@ -1068,7 +1068,7 @@ div(
 bigDataComponent(analysisName=analysisName)
 
 observeEvent( input[[get_thisTauTrueID(analysisName)]], {
-  tauTrueLastUsed <<- input[[get_thisTauTrueID()]]
+  tauTrueLastUsed <<- input[[get_thisTauTrueID(analysisName)]]
   cat('Setting tauTrueLastUsed to ', tauTrueLastUsed, '\n')
 })
 
