@@ -973,13 +973,13 @@ allChisqPs_original = allPvalues$allChisqPs
 ```
 
 ```{r Pvalues all features}
-observer_Pvalues_all_features = observeEvent(rValues$DLdataDFwithFeatures, {
-             Pvalues = generateAllPvalues(
-               DLdataWithFeatures = rValues$DLdataDFwithFeatures
-             )
-             rValues$allChisqPs = Pvalues$allChisqPs
-             rValues$allFisherPs = Pvalues$allFisherPs
-})
+# observer_Pvalues_all_features = observeEvent(rValues$DLdataDFwithFeatures, {
+#              Pvalues = generateAllPvalues(
+#                BigData = rValues$DLdataDFwithFeatures
+#              )
+#              allChisqPs <<- rValues$allChisqPs = Pvalues$allChisqPs
+#              allFisherP <<- rValues$allFisherPs = Pvalues$allFisherPs
+# })
 
 # DLdata = rValues$DLdata, qStar=rValues$qStar)
 #     rValues$DLdataDF = makeDLdataDFResult$DLdataDF
@@ -1013,6 +1013,7 @@ output$pvaluesPlots = renderPlot({
   points(allChisqPs[1], allFisherPs[1],
          pch='X', col='red', cex=2)
 } )
+
 plotOutput('pvaluesPlots')
 bigDataComponent(analysisName=analysisName)
 ```
@@ -1072,30 +1073,35 @@ div(
 )
 bigDataComponent(analysisName=analysisName)
 
-observeEvent( input[[get_thisTauTrueID(analysisName)]], {
-  tauTrueLastUsed <<- input[[get_thisTauTrueID(analysisName)]]
-  cat('Setting tauTrueLastUsed to ', tauTrueLastUsed, '\n')
-})
+# observeEvent( input[[get_thisTauTrueID(analysisName)]], {
+#   tauTrueLastUsed <<- input[[get_thisTauTrueID(analysisName)]]
+#   cat('Setting tauTrueLastUsed to ', tauTrueLastUsed, '\n')
+# })
 
-observeEvent(
-  list(rValues$allChisqPs,
-       input$qStarID),
-  {
-     try({
-      # cat('qStarID:', input$qStarID, '\n')
-      # qStar = as.numeric(input$qStarID)
-      rValues$BHtable = makeBHtable(
-        rValues$allChisqPs, 
-        qStar = as.numeric(input$qStarID)
-      )
-    })
-  }
-)
 output$BHtable = renderTable(
-  digits=3,  expr=rValues$BHtable,
-  rownames=TRUE
+  digits=3,
+  rownames=TRUE,
+  expr={ fun.BHtable()}
 )
+fun.BHtable = function(){
+  input$qStarID
+  source(analysisReactiveSetup_BDC, local=TRUE);
+  tryResult = try({
+    # cat('qStarID:', input$qStarID, '\n')
+    as.numeric(input$qStarID)
+  })
+  if(class(tryResult) == 'try-error' | is.null(tryResult) |is.na(tryResult)) {
+    qStar = 0
+  } else qStar = tryResult
+  rValues$BHtable = makeBHtable(
+    rValues$allChisqPs, 
+    qStar = qStar
+  )
+  
+  rValues$BHtable
+}
 
+debug(fun.BHtable)
 tableOutput('BHtable')
 
 ```
@@ -1137,46 +1143,53 @@ We can apply EB to a collection of estimates. In this instance, let's collect th
 
 This can be compared to all 100 odds ratios for the features:
 
-```{r oddsratioplot}
-jumpList_BDC = c(jumpList_BDC, oddsratioplot='Odds ratio plot')
-source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
-
-output$oddsratioplot = renderPlot({
-  analysisName ='oddsratioplot'
-  source(analysisReactiveSetup_BDC, local=TRUE)
-
-  outcome = rValues$DLdataDFwithFeatures$outcome
-  oddsratio = function(col, sprinkle=1) {
+```{r oddsratiofunctions}
+  fun.oddsratio = function(col, sprinkle=1) {
     theTable = table(col, outcome)
     theTable = sprinkle + theTable
     return(theTable[1,1]/theTable[2,1]
            /theTable[1,2]*theTable[2,2])
   }
-  oddsratios = sapply(rValues$DLdataDFwithFeatures[-(1)], oddsratio)
-  rValues$logoddsratios = 
-    logoddsratios = log(oddsratios)
-  plot(density(logoddsratios), xlab='log(oddsratios)',
-       main='density smooth of log(oddsratios)')
-  logoddsratiovariance = function(col, sprinkle=0.1) {
+
+  fun.logitRatioVariance = function(col, sprinkle=0.1) {
     theTable = table(col, outcome)
     theTable = sprinkle + theTable
     sum(1/theTable)
   }
-  rValues$logoddsratiovariances =
-    logoddsratiovariances =
-    sapply(rValues$DLdataDFwithFeatures[-(1)],
-                                 logoddsratiovariance)
-  logoddsratioSDs = sqrt(rValues$logoddsratiovariances)
-  points(logoddsratios, col='red', type='h',
-       logoddsratioSDs * par('usr')[4]/
-        max(logoddsratioSDs) *0.3)
-  points(logoddsratioSDs[1], col='green', type='h',
-       logoddsratioSDs[1] * par('usr')[4]/
-        max(logoddsratioSDs) *0.3,
+```
+
+```{r oddsratioplot}
+
+jumpList_BDC = c(jumpList_BDC, oddsratioplot='Odds ratio plot')
+source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+
+output$oddsratioplot = renderPlot({ fun.oddsratioplot () })
+fun.oddsratioplot = function() {
+  analysisName ='oddsratioplot'
+  source(analysisReactiveSetup_BDC, local=TRUE)
+
+  outcome = thisBigData$outcome
+  oddsratios = sapply(thisBigData[-(1)], fun.oddsratio)
+  logitRatios = log(oddsratios)
+
+  logitRatioVariances =
+    sapply(thisBigData[-(1)],
+                                 fun.logitRatioVariance)
+  logitRatioSDs = sqrt(logitRatioVariances)
+  
+  plot(density(logitRatios), xlab='log(oddsratios)',
+       main='density smooth of log(oddsratios)')
+  points(logitRatios, col='red', type='h',
+       logitRatioSDs * par('usr')[4]/
+        max(logitRatioSDs) *0.3)
+  points(logitRatioSDs[1], col='green', type='h',
+       logitRatioSDs[1] * par('usr')[4]/
+        max(logitRatioSDs) *0.3,
        lwd=2)
-  text(logoddsratios[1], 0.2, cex=2,
+  text(logitRatios[1], 0.2, cex=2,
        expression( "" %<-% "DL data"), srt=90, col='green')
-})
+}
+debug(fun.oddsratioplot)
 plotOutput('oddsratioplot')
 bigDataComponent(analysisName=analysisName)
 
@@ -1236,13 +1249,20 @@ Continuing the "empirical" part of EB, one estimate of $\tau$ is to take the tot
 jumpList_BDC = c(jumpList_BDC, empBayeslogitRatios='Empirical Bayes logit ratios')
 source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
-output$empBayeslogitRatios = renderPlot({
+output$empBayeslogitRatios = renderPlot({ fun.empBayeslogitRatios() })
+fun.empBayeslogitRatios = function(){
   analysisName = 'empBayeslogitRatios'
   source(analysisReactiveSetup_BDC, local=TRUE)
   
-  
-  logitRatios = rValues$logoddsratios
-  logitVars = rValues$logoddsratiovariances
+    oddsratios = sapply(thisBigData[-(1)], fun.oddsratio)
+  logitRatios = log(oddsratios)
+
+  logitRatioVariances =
+    sapply(thisBigData[-(1)],
+                                 fun.logitRatioVariance)
+  logitRatioSDs = sqrt(logitRatioVariances)
+
+  logitVars = logitRatioVariances
   #print(summary(logitRatios))
   #print(summary(logitVars))
   loglikFun=function(mu,tau) {
@@ -1260,7 +1280,7 @@ output$empBayeslogitRatios = renderPlot({
   }
   rValues$tauEstimateEB = tau
   cat('mu-hat: ', mu, '  tau-hat: ', tau, '\n')
-  weights = 1 - tau / (rValues$logoddsratiovariances + tau)
+  weights = 1 - tau / (rValues$logitRatioVariances + tau)
   rValues$posteriorMeans = 
     logitRatios * (1-weights) + mu * weights
   plot(c(-4, 3), 0:1, col='white',
@@ -1298,8 +1318,8 @@ output$empBayeslogitRatios = renderPlot({
   lines(rValues$posteriorMeans[1]+c(-1,1)*qnorm(alpha)*
           posteriorStDev_DL, 
         c(1,1), col='green', lwd=3)
-})
-
+}
+debug(fun.empBayeslogitRatios)
 plotOutput('empBayeslogitRatios')
 ```
 
@@ -1361,20 +1381,21 @@ Here we apply the qValue method to the chisquare P values from our dataset with 
 jumpList_BDC = c(jumpList_BDC, qValue='Qvalue adjustment')
 source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
-output$qvaluePlot = renderPlot({
+output$qvaluePlot = renderPlot({ fun.qvaluePlot() })
+fun.qvaluePlot = function(){
   analysisName = 'qValue'
   source(analysisReactiveSetup_BDC, local=TRUE)
   qout = rValues$qValueObject =
-    qvalue::qvalue(rValues$allChisqPs)
-  rValues$P_Q_for_X_DL = 
+    qvalue::qvalue(allChisqPs)
+  P_Q_for_X_DL = 
     c(qout$pvalues[1], qout$qvalues[1])
   qout.orig  =
     qvalue::qvalue(c(allChisqPs_original[1], rValues$allChisqPs[-1]) )
-  rValues$P_Q_for_X_DL_original = 
+  P_Q_for_X_DL_original = 
     c(qout.orig$pvalues[1], qout.orig$qvalues[1])
   qout.mod  =
-    qvalue::qvalue(rValues$allChisqPs )
-  rValues$P_Q_for_X_DL_modified = 
+    qvalue::qvalue(allChisqPs )
+  P_Q_for_X_DL_modified = 
     c(qout.mod$pvalues[1], qout.mod$qvalues[1])
   xlim = c(0, 0.004) #c(0, 1.1 * max(rValues$P_Q_for_X_DL_modified,
         #             sort(qout.mod$pvalues)[1:8][8]) )
@@ -1421,8 +1442,10 @@ output$qvaluePlot = renderPlot({
   abline(a=0, b=1, col='blue')
   text(0.003, 0.003, 'diagonal', cex=2, pos=3, # 3 = above
        srt=diagTilt, col='blue')
-  #plot(qvalue::qvalue(rValues$allChisqPs) )
-})
+  #plot(qvalue::qvalue(allChisqPs) )
+}
+
+debug(fun.qvaluePlot)
 plotOutput('qvaluePlot')
 ```
 
