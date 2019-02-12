@@ -140,9 +140,10 @@ bigDataComponent = function(analysisName) {
       if(length(tauTrue)==0) tauTrue = 0
       tauTrueLastUsed <<- tauTrue
       isolate({
-        rValues$BigDataDFwithFeatures =
+        setBigData(
           makeBigDataWithFeatures(DLdata = DLdataOriginal,
-                                  tauTrue = tauTrue)
+                                  tauTrue = tauTrue),
+          analysisName, myChoice=FALSE)
       })
       #generateAllPvalues(rValues$BigDataDFwithFeatures)
       #not necessary; observer in place. observer_Pvalues_all_features
