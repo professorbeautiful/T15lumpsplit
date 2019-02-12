@@ -3,11 +3,17 @@
 ##  Then,
 # source('analysisInitialSetup.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
-#cat('analysisInitialSetup.R: ')
+#### the "cat" output appears in the document.
+
+printFromAnalysisReactiveSetup_BDC =  TRUE
+
+if(printFromAnalysisReactiveSetup_BDC)
+  cat('analysisInitialSetup_BDC.R: ')
 
 analysisNumber <- length(jumpList_BDC)
 analysisName <- names(jumpList_BDC)[[analysisNumber]]
-#cat(  analysisName, '\n')
+if(printFromAnalysisReactiveSetup_BDC)
+  cat(  analysisName, ' ', analysisNumber)
 
 
 # get('jumpList_BDC', parent.frame(2)) works in the R box.
@@ -18,7 +24,10 @@ analysisName <- names(jumpList_BDC)[[analysisNumber]]
 if(!exists('mapAnalysisToBDCnumber'))
   mapAnalysisToBDCnumber = numeric(0)
 
-### When the next BDC is displayed, this will be its number.
+### When the bigDataComponent for this analysis is displayed, this will be its number.
 mapAnalysisToBDCnumber[analysisName] =
   currentBDCnumber =
   getSequenceLength("BDC") + 1
+### bigDataComponent will increment the BDC sequence when created.
+if(printFromAnalysisReactiveSetup_BDC)
+  cat('  currentBDCnumber ', currentBDCnumber, '\n')
