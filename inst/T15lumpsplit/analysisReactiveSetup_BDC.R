@@ -27,10 +27,11 @@ if(is.null(
   rValues[[thisBigDataID ]] = BigDataOriginal
 
 if(printFromAnalysisReactiveSetup_BDC) {
-  cat('analysisReactiveSetup_BDC.R:', analysisName, '  currentBDCnumber=', currentBDCnumber)
-  cat('\n    BEFORE:  ' )
-  cat('rValues BigDataLastUsed: ')
-  print( rValues[[thisBigDataID ]]  [1:3, 1:5] )
+  cat('analysisReactiveSetup_BDC.R:', analysisName,
+      '  currentBDCnumber=', currentBDCnumber, '\n')
+  #cat('\n    BEFORE:  ' )
+  #cat('rValues BigDataLastUsed: ')
+  #print( rValues[[thisBigDataID ]]  [1:3, 1:5] )
 }
 
 thisBigData <<- BigDataLastUsed <<- rValues[[thisBigDataID ]] <<-
@@ -42,9 +43,9 @@ allChisqPs <<-  Pvalues$allChisqPs
 allFisherPs <<- Pvalues$allFisherPs
 
 if(printFromAnalysisReactiveSetup_BDC) {
-  cat('\n    AFTER:  ' )
-  cat( 'analysisReactiveSetup_BDC.R: first 4 Pvalues are = ')
-  print( allChisqPs  [1:4] )
+  # cat('\n    AFTER:  ' )
+  # cat( 'analysisReactiveSetup_BDC.R: first 4 Pvalues are = ')
+  # print( allChisqPs  [1:4] )
 }
 
 #browser()
