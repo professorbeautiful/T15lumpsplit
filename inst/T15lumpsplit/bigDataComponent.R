@@ -135,7 +135,7 @@ bigDataComponent = function(analysisName) {
   ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified BigData.
   observeEvent(list(input$regenerateFeatures, input[[thisTauTrueID]]), {
     try( {
-      tauTrue = as.numeric(input[[get_thisTauTrueID(analysisNumber)]])
+      tauTrue = as.numeric(input[[thisTauTrueID]])
       cat('BDC:  tauTrue: ', tauTrue, '  analysisName=', analysisName, '\n')
       if(length(tauTrue)==0) tauTrue = 0
       tauTrueLastUsed <<- tauTrue
