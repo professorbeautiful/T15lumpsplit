@@ -1,10 +1,5 @@
 ##  addAnalysis.R
 
-get_thisTauTrueID =  function(aN) {
-  if(is.character(aN))
-    aN  = mapAnalysisToBDCnumber[analysisName]
-  paste0('BigDataController_ID_', aN)
-}
 
 ###   Not yet used:  addAnalysis  .  Possibly a way to avoid a source().
 addAnalysis = function(analysisName, analysisLabel, context='DTC') {

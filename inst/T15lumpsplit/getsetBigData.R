@@ -17,6 +17,13 @@ setBigData = function(value, analysisName, myChoice=FALSE, BDCnumber) {
                  BDCnumber)
   rValues[[ index ]] = value
 }
+
+get_thisTauTrueID =  function(aN) {
+  if(is.character(aN))
+    aN  = mapAnalysisToBDCnumber[analysisName]
+  paste0('BigDataController_ID_', aN)
+}
+
 getBigData_tauTrue = function(analysisName, myChoice=FALSE, BDCnumber) {
   if( ! missing(analysisName))
     BDCnumber = mapAnalysisToBDCnumber[analysisName]
