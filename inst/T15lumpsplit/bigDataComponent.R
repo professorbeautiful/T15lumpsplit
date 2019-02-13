@@ -18,27 +18,26 @@ createBigDataParamChoiceObserver <- function(analysisName) {
            label=myName,
            eventExpr = input[[thisTauTrueID]], ## tauTrueID
            handlerExpr = {
-             cat('START: handler for ', myName, ' new input tau = ',
-                 input[[thisTauTrueID]], '\n')
+             cat('START: handler for ', myName, ' new input tau = /',
+                 input[[thisTauTrueID]], '/\n')
              try(silent = FALSE, {
                isolate({
                  cat('updateBigDataParamMyChoice: changing MyChoice')
                  currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
                  if( ! exists('saved_BigDataMyChoice')) {
                    cat(': Responding to numericInput for tauTrue: ',
-                       as.numeric(input[[thisTauTrueID ]]))
+                       (input[[thisTauTrueID ]]))
                    if( is.null(getBigData(analysisName, myChoice=TRUE)))
                      BigDataMyChoice = BigDataOriginal
                    else
                      BigDataMyChoice = getBigData(analysisName, myChoice=TRUE)
-                   newValue = as.numeric(input[[thisTauTrueID ]])
-                   if( ! is.na(newValue) & (newValue >= 0 ) ) {
-                     newValue = round(newValue)
+                   newValue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
+                   #newValue = round(newValue)
                      BigDataMyChoice = makeBigDataWithFeatures(DLdataOriginal)
-                   }
                    setBigData(BigDataMyChoice, analysisName)
                    setBigData(BigDataMyChoice, analysisName, myChoice=TRUE)
-                   #cat(paste(BigDataMyChoice), ' ', analysisName)
+                   cat('BigDataMyChoice for ',  analysisName, ' is:\n')
+                   print(BigDataMyChoice[1:2,1:3])
                  }
                  else {
                    saved_BigDataMyChoice_location = find('saved_BigDataMyChoice')
@@ -135,9 +134,8 @@ bigDataComponent = function(analysisName) {
   ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified BigData.
   observeEvent(list(input$regenerateFeatures, input[[thisTauTrueID]]), {
     try( {
-      tauTrue = as.numeric(input[[thisTauTrueID]])
+      tauTrue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
       cat('BDC:  tauTrue: ', tauTrue, '  analysisName=', analysisName, '\n')
-      if(length(tauTrue)==0) tauTrue = 0
       tauTrueLastUsed <<- tauTrue
       isolate({
         setBigData(

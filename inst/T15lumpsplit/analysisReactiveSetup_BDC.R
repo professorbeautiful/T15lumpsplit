@@ -21,21 +21,29 @@ if( ! exists(x = 'BigDataLastUsed')) BigDataLastUsed <<- '(not set yet)'
 
 currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
 thisBigDataID = paste0('BigData', currentBDCnumber)
+thisTauTrueID = get_thisTauTrueID(analysisNumber)
+thisTauTrue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
+
+isolate({
+  rValues[[thisBigDataID ]] <<-
+    makeBigDataWithFeatures(DLdata = DLdataOriginal, tauTrue = thisTauTrue)
+})
+
 if(is.null(
   rValues[[thisBigDataID ]]
 ) )
   rValues[[thisBigDataID ]] = BigDataOriginal
+
+thisBigData <<- BigDataLastUsed <<- rValues[[thisBigDataID ]]
 
 if(printFromAnalysisReactiveSetup_BDC) {
   cat('analysisReactiveSetup_BDC.R:', analysisName,
       '  currentBDCnumber=', currentBDCnumber, '\n')
   #cat('\n    BEFORE:  ' )
   #cat('rValues BigDataLastUsed: ')
-  #print( rValues[[thisBigDataID ]]  [1:3, 1:5] )
+  print( rValues[[thisBigDataID ]]  [1:3, 1:5] )
 }
 
-thisBigData <<- BigDataLastUsed <<- rValues[[thisBigDataID ]] <<-
-  makeBigDataWithFeatures(DLdata = DLdataOriginal)
 
 Pvalues = generateAllPvalues(  BigData = BigDataLastUsed)
 
