@@ -38,7 +38,8 @@ options(knitr.duplicate.label = 'allow')
 
 
 ```{r include = FALSE}
-#options(error=browser)
+#  options(error=utils::recover)  # I wish this helped!
+
 require(T15lumpsplit)
 require(shiny)
 require(xtable)
