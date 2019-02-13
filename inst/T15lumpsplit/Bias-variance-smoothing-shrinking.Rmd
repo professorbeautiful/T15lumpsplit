@@ -1116,7 +1116,7 @@ fun.BHtable = function(){
   rValues$BHtable
 }
 
-debug(fun.BHtable)
+#debug(fun.BHtable)
 tableOutput('BHtable')
 
 ```
@@ -1204,7 +1204,7 @@ fun.oddsratioplot = function() {
   text(logitRatios[1], 0.2, cex=2,
        expression( "" %<-% "DL data"), srt=90, col='green')
 }
-debug(fun.oddsratioplot)
+#debug(fun.oddsratioplot)
 plotOutput('oddsratioplot')
 bigDataComponent(analysisName=analysisName)
 
@@ -1461,7 +1461,7 @@ fun.qvaluePlot = function(){
   #plot(qvalue::qvalue(allChisqPs) )
 }
 
-debug(fun.qvaluePlot)
+#debug(fun.qvaluePlot)
 plotOutput('qvaluePlot')
 ```
 
