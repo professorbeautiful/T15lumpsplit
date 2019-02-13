@@ -1017,7 +1017,8 @@ source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', an
 
 
 ```{r pvaluesPlots-react}
-output$pvaluesPlots = renderPlot({
+output$pvaluesPlots = renderPlot({fun.pvaluesPlots()})
+fun.pvaluesPlots = function() {
   analysisName = 'pvaluesPlots'
   source(analysisReactiveSetup_BDC, local=TRUE)
   #hist(rValues$allFisherPs)
@@ -1027,8 +1028,8 @@ output$pvaluesPlots = renderPlot({
   plot(allChisqPs, allFisherPs, log='xy')
   points(allChisqPs[1], allFisherPs[1],
          pch='X', col='red', cex=2)
-} )
-
+} 
+#debug(fun.pvaluesPlots)
 plotOutput('pvaluesPlots')
 bigDataComponent(analysisName=analysisName)
 ```
