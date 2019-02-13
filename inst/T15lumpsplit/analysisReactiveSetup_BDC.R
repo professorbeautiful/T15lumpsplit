@@ -56,6 +56,6 @@ if(printFromAnalysisReactiveSetup_BDC) {
   # print( allChisqPs  [1:4] )
 }
 
-#browser()
+browser(text = 'analysisReactiveSetup')
 
 
