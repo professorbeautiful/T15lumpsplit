@@ -966,11 +966,10 @@ generateAllPvalues = function(
 
 makeSureTauTrueIsGood = function(tauTrue) {
   tauTrue = as.numeric(tauTrue)
-  if(
-    is.na(tauTrue)
-    | is.nan(tauTrue)
-    | ! (length(tauTrue)==1) )
-    return(0)
+  if( ! (length(tauTrue)==1) )
+    tauTrue = 0
+  if(is.na(tauTrue)  | is.nan(tauTrue) )
+    tauTrue = 0
   return(tauTrue)
 }
 ```
