@@ -1159,14 +1159,14 @@ We can apply EB to a collection of estimates. In this instance, let's collect th
 This can be compared to all 100 odds ratios for the features:
 
 ```{r oddsratiofunctions}
-  fun.oddsratio = function(col, sprinkle=1) {
+  fun.oddsratio = function(col, outcome, sprinkle=1) {
     theTable = table(col, outcome)
     theTable = sprinkle + theTable
     return(theTable[1,1]/theTable[2,1]
            /theTable[1,2]*theTable[2,2])
   }
 
-  fun.logitRatioVariance = function(col, sprinkle=0.1) {
+  fun.logitRatioVariance = function(col, outcome, sprinkle=0.1) {
     theTable = table(col, outcome)
     theTable = sprinkle + theTable
     sum(1/theTable)
@@ -1184,7 +1184,7 @@ fun.oddsratioplot = function() {
   source(analysisReactiveSetup_BDC, local=TRUE)
 
   outcome = thisBigData$outcome
-  oddsratios = sapply(thisBigData[-(1)], fun.oddsratio)
+  oddsratios = sapply(thisBigData[-(1)], fun.oddsratio, outcome=thisBigData[[1]])
   logitRatios = log(oddsratios)
 
   logitRatioVariances =
@@ -1269,12 +1269,13 @@ fun.empBayeslogitRatios = function(){
   analysisName = 'empBayeslogitRatios'
   source(analysisReactiveSetup_BDC, local=TRUE)
   
-    oddsratios = sapply(thisBigData[-(1)], fun.oddsratio)
+  oddsratios = sapply(thisBigData[-(1)], 
+                      fun.oddsratio,  outcome=thisBigData[[1]])
   logitRatios = log(oddsratios)
 
   logitRatioVariances =
     sapply(thisBigData[-(1)],
-                                 fun.logitRatioVariance)
+           fun.logitRatioVariance,  outcome=thisBigData[[1]])
   logitRatioSDs = sqrt(logitRatioVariances)
 
   logitVars = logitRatioVariances
