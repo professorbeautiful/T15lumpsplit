@@ -928,7 +928,7 @@ makeBigDataWithFeatures = function(DLdata = DLdataOriginal,
   return(DLdataWithFeatures)
 }
 
-#debug(makeBigDataWithFeatures)
+#debugonce(makeBigDataWithFeatures)
 
 ## generateAllPvalues.
 generateAllPvalues = function(
@@ -957,7 +957,7 @@ generateAllPvalues = function(
   ) 
 }
 
-#debug(generateAllPvalues)
+#debugonce(generateAllPvalues)
 ```
 
 ```{r}
