@@ -1109,7 +1109,7 @@ fun.BHtable = function(){
     qStar = 0
   } else qStar = tryResult
   rValues$BHtable = makeBHtable(
-    rValues$allChisqPs, 
+    allChisqPs, 
     qStar = qStar
   )
   
@@ -1406,7 +1406,7 @@ fun.qvaluePlot = function(){
   P_Q_for_X_DL = 
     c(qout$pvalues[1], qout$qvalues[1])
   qout.orig  =
-    qvalue::qvalue(c(allChisqPs_original[1], rValues$allChisqPs[-1]) )
+    qvalue::qvalue(c(allChisqPs_original[1], allChisqPs[-1]) )
   P_Q_for_X_DL_original = 
     c(qout.orig$pvalues[1], qout.orig$qvalues[1])
   qout.mod  =
