@@ -992,16 +992,16 @@ allChisqPs_original = allPvalues$allChisqPs
 #              Pvalues = generateAllPvalues(
 #                BigData = rValues$DLdataDFwithFeatures
 #              )
-#              allChisqPs <<- rValues$allChisqPs = Pvalues$allChisqPs
+#              allChisqPs <<- allChisqPs = Pvalues$allChisqPs
 #              allFisherP <<- rValues$allFisherPs = Pvalues$allFisherPs
 # })
 
 # DLdata = rValues$DLdata, qStar=rValues$qStar)
 #     rValues$DLdataDF = makeDLdataDFResult$DLdataDF
 #     rValues$allFisherPs = makeDLdataDFResult$allFisherPs
-#     rValues$allChisqPs = makeDLdataDFResult$allChisqPs
+#     allChisqPs = makeDLdataDFResult$allChisqPs
 #     allFisherPs <<- rValues$allFisherPs
-#     allChisqPs <<- rValues$allChisqPs
+#     allChisqPs <<- allChisqPs
 #   })
 
 ```
