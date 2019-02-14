@@ -1184,13 +1184,15 @@ fun.oddsratioplot = function() {
   source(analysisReactiveSetup_BDC, local=TRUE)
 
   outcome = thisBigData$outcome
-  oddsratios = sapply(thisBigData[-(1)], fun.oddsratio, outcome=thisBigData[[1]])
+  oddsratios = 
+    sapply(thisBigData[-(1)], fun.oddsratio, 
+           outcome=outcome)
   logitRatios = log(oddsratios)
 
   logitRatioVariances =
     sapply(thisBigData[-(1)],
            fun.logitRatioVariance,
-           outcome=thisBigData[[1]])
+           outcome=outcome)
   logitRatioSDs = sqrt(logitRatioVariances)
   
   plot(density(logitRatios), xlab='log(oddsratios)',
@@ -1278,26 +1280,27 @@ fun.empBayeslogitRatios = function(){
     sapply(thisBigData[-(1)],
            fun.logitRatioVariance,  outcome=thisBigData[[1]])
   logitRatioSDs = sqrt(logitRatioVariances)
-
-  logitVars = logitRatioVariances
-  #print(summary(logitRatios))
-  #print(summary(logitVars))
   loglikFun=function(mu,tau) {
-    sum(log(dnorm(logitRatios, mu, sqrt(tau+logitVars))) )
+    sum(log(dnorm(logitRatios, mu, sqrt(tau+logitRatioVariances))) )
   }
   mu = mean(logitRatios)
-  tau = 0   #(var(logitRatios) - mean(logitVars))
+  tau = 0   #(var(logitRatios) - mean(logitRatioVariances))
   for( irep in 1:13) { # we ain't buildin' no cathedral here.
+    mu.last = mu
     mu = optimize(f = loglikFun, tau = tau,
                   interval = c(-4,4), maximum=TRUE
     )$maximum
+    tau.last = tau
     tau = optimize(f = loglikFun, mu = mu,
                    interval = c(0, 1), maximum=TRUE
     )$maximum
+    if(max(abs(mu.last-mu), abs(tau.last-tau)) < 1e-4)
+      break
   }
+  
   rValues$tauEstimateEB = tau
   cat('mu-hat: ', mu, '  tau-hat: ', tau, '\n')
-  weights = 1 - tau / (rValues$logitRatioVariances + tau)
+  weights = 1 - tau / (logitRatioVariances + tau)
   rValues$posteriorMeans = 
     logitRatios * (1-weights) + mu * weights
   plot(c(-4, 3), 0:1, col='white',
@@ -1326,11 +1329,11 @@ fun.empBayeslogitRatios = function(){
          pch="X", col='green', cex=3)
   lines(c(logitRatios[iobs], rValues$posteriorMeans[iobs]),
         0:1)
-  posteriorVariance_DL =  weights[1] * logitVars[1]
+  posteriorVariance_DL =  weights[1] * logitRatioVariances[1]
   posteriorStDev_DL = sqrt(posteriorVariance_DL)
   alpha = 0.1
   lines(logitRatios[1]+c(-1,1)*qnorm(alpha)*
-          sqrt(logitVars[1]), 
+          sqrt(logitRatioVariances[1]), 
         c(0,0), col='green', lwd=3)
   lines(rValues$posteriorMeans[1]+c(-1,1)*qnorm(alpha)*
           posteriorStDev_DL, 
