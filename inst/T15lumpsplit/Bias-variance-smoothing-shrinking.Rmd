@@ -1189,7 +1189,8 @@ fun.oddsratioplot = function() {
 
   logitRatioVariances =
     sapply(thisBigData[-(1)],
-                                 fun.logitRatioVariance)
+           fun.logitRatioVariance,
+           outcome=thisBigData[[1]])
   logitRatioSDs = sqrt(logitRatioVariances)
   
   plot(density(logitRatios), xlab='log(oddsratios)',
