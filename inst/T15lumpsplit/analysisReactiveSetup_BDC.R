@@ -21,10 +21,10 @@ if( ! exists(x = 'BigDataLastUsed')) BigDataLastUsed <<- '(not set yet)'
 
 currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
 thisBigDataID = paste0('BigData', currentBDCnumber)
-thisTauTrueID = get_thisTauTrueID(analysisNumber)
+thisTauTrueID = get_thisTauTrueID(analysisName)
 thisTauTrue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
 if(printFromAnalysisReactiveSetup_BDC)
-  cat('analysisReactiveSetup.R: ', analysisName, ' ', analysisNumber,
+  cat('\nanalysisReactiveSetup.R: ', analysisName, ' ', analysisNumber,
       ' ', thisTauTrueID, ' ', thisTauTrue,
       ' currentBDCnumber: ', currentBDCnumber, '\n')
 
