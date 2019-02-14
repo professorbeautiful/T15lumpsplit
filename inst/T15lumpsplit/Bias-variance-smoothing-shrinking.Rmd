@@ -1097,7 +1097,6 @@ output$BHtable = renderTable(
   rownames=TRUE,
   expr={ 
     input$qStarID; 
-    analysisName = 'BHtable'
     currentBDCnumber = mapAnalysisToBDCnumber['BHtable']
     thisBigDataID = paste0('BigData', currentBDCnumber)
     thisTauTrueID = get_thisTauTrueID('BHtable')
@@ -1121,7 +1120,7 @@ fun.BHtable = function(){
     qStar = qStar
   )
   
-  rValues$BHtable
+  #rValues$BHtable
 }
 
 debug(fun.BHtable)
