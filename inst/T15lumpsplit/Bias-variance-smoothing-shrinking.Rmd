@@ -1360,10 +1360,11 @@ cat(' tau comparison: ', analysisName, ' ', mapAnalysisToBDCnumber[analysisName]
 output$tauEstEB = renderText(rValues$tauEstimateEB)
 thisTauTrueID = get_thisTauTrueID(mapAnalysisToBDCnumber[analysisName])
 thisTauTrueID_text = paste0(thisTauTrueID, '_text')
-output[[thisTauTrueID_text]] = renderText(input[[thisTauTrueID]])
+output[[thisTauTrueID_text]] = renderText(
+  signif(digits=4, input[[thisTauTrueID]]))
 ```
 
-The estimated variance is `r  textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r  textOutput(thisTauTrueID, inline=TRUE)` ) .
+The estimated variance of the logits is `r  textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r  textOutput(thisTauTrueID_text, inline=TRUE)` ) .
 
 
 ```{r sharing information among the features justified}
