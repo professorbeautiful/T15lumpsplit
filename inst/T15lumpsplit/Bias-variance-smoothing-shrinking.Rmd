@@ -1335,7 +1335,7 @@ fun.empBayeslogitRatios = function(){
           posteriorStDev_DL, 
         c(1,1), col='green', lwd=3)
 }
-debug(fun.empBayeslogitRatios)
+#debug(fun.empBayeslogitRatios)
 plotOutput('empBayeslogitRatios')
 ```
 
