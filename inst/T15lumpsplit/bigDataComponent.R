@@ -51,9 +51,8 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                    if(exists('saved_BigDataMyChoice')) browser()
                  }
                  BigDataLastUsed <<- getBigData(analysisName, myChoice=TRUE)
-                 cat('\nEND: handler for ', myName, ' BigDataLastUsed is now: ')
-                 paste(head(BigDataLastUsed,4))
-                 #print(summary(BigDataDFwithFeatures_original))
+                 cat('\nEND: handler for ', myName, ' BigDataLastUsed is now: \n')
+                 print(BigDataLastUsed[1:2, 1:4])
                }) ### End of isolate()
              }) ### End of try()
            }
