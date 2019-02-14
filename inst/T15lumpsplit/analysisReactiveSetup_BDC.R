@@ -23,6 +23,10 @@ currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
 thisBigDataID = paste0('BigData', currentBDCnumber)
 thisTauTrueID = get_thisTauTrueID(analysisNumber)
 thisTauTrue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
+if(printFromAnalysisReactiveSetup_BDC)
+  cat('analysisReactiveSetup.R: ', analysisName, ' ', analysisNumber,
+      ' ', thisTauTrueID, ' ', thisTauTrue,
+      ' currentBDCnumber: ', currentBDCnumber, '\n')
 
 isolate({
   rValues[[thisBigDataID ]] <<-
