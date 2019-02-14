@@ -152,7 +152,7 @@ bigDataComponent = function(analysisName) {
   output[[outputIdThisBDC]] = renderUI({
     fluidRow(
       column(6,
-             numericInput(thisTauTrueID, 'Variance of the Odds Ratio ',
+             numericInput(thisTauTrueID, 'Variance of the Log Odds Ratio ',
                           value = 0, min=0,  step=0.1),
 
              ##```{r regenerateFeatures button}
