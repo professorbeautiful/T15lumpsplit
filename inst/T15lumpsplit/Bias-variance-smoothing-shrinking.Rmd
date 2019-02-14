@@ -1095,10 +1095,19 @@ div(
 output$BHtable = renderTable(
   digits=3,
   rownames=TRUE,
-  expr={ fun.BHtable()}
+  expr={ 
+    input$qStarID; 
+    analysisName = 'BHtable'
+    currentBDCnumber = mapAnalysisToBDCnumber['BHtable']
+    thisBigDataID = paste0('BigData', currentBDCnumber)
+    thisTauTrueID = get_thisTauTrueID('BHtable')
+    thisTauTrue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
+
+    fun.BHtable()
+  }
 )
 fun.BHtable = function(){
-  input$qStarID
+  analysisName = 'BHtable'
   source(analysisReactiveSetup_BDC, local=TRUE);
   tryResult = try({
     # cat('qStarID:', input$qStarID, '\n')
@@ -1115,7 +1124,7 @@ fun.BHtable = function(){
   rValues$BHtable
 }
 
-#debug(fun.BHtable)
+debug(fun.BHtable)
 tableOutput('BHtable')
 bigDataComponent(analysisName=analysisName)
 
