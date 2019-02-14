@@ -31,7 +31,6 @@ if(printFromAnalysisReactiveSetup_BDC)
 isolate({
   rValues[[thisBigDataID ]] <<-
     makeBigDataWithFeatures(DLdata = DLdataOriginal, tauTrue = thisTauTrue)
-})
 
 if(is.null(
   rValues[[thisBigDataID ]]
@@ -47,6 +46,8 @@ if(printFromAnalysisReactiveSetup_BDC) {
   #cat('rValues BigDataLastUsed: ')
   print( rValues[[thisBigDataID ]]  [1:3, 1:5] )
 }
+})
+
 
 
 Pvalues = generateAllPvalues(  BigData = BigDataLastUsed)
