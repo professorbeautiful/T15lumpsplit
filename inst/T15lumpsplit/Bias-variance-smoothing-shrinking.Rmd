@@ -1329,7 +1329,10 @@ fun.empBayeslogitRatios = function(){
          pch="X", col='green', cex=3)
   lines(c(logitRatios[iobs], rValues$posteriorMeans[iobs]),
         0:1)
-  posteriorVariance_DL =  weights[1] * logitRatioVariances[1]
+  posteriorVariance_DL =  max(0, 1/(
+    (1-weights[1]) / logitRatioVariances[1]
+     +   weights[1] / tau)
+  )
   posteriorStDev_DL = sqrt(posteriorVariance_DL)
   alpha = 0.1
   lines(logitRatios[1]+c(-1,1)*qnorm(alpha)*
