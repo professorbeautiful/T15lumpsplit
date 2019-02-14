@@ -1195,14 +1195,14 @@ fun.oddsratioplot = function() {
   
   plot(density(logitRatios), xlab='log(oddsratios)',
        main='density smooth of log(oddsratios)')
-  points(logitRatios, col='red', type='h',
-       logitRatioSDs * par('usr')[4]/
+  points(logitRatios[-1], col='red', type='h',
+       logitRatioSDs[-1] * par('usr')[4]/
         max(logitRatioSDs) *0.3)
-  points(logitRatioSDs[1], col='green', type='h',
-       logitRatioSDs[1] * par('usr')[4]/
-        max(logitRatioSDs) *0.3,
-       lwd=2)
-  text(logitRatios[1], 0.2, cex=2,
+  points(x = logitRatios[1], col='green', type='h',
+         y = logitRatioSDs[1] * par('usr')[4]/
+           max(logitRatioSDs) *0.3,
+         lwd=2)
+  text(x = logitRatios[1], y = par('usr')[4], pos = 2, cex=2,
        expression( "" %<-% "DL data"), srt=90, col='green')
 }
 #debug(fun.oddsratioplot)
