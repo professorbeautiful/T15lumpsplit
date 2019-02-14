@@ -156,7 +156,7 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(
    condition='ctrlDpressed === true')
 
 
-options(shiny.trace=TRUE)
+#options(shiny.trace=TRUE)
 ```
 
 ```{r fat arrow, results='asis'}
