@@ -20,7 +20,7 @@ setBigData = function(value, analysisName, myChoice=FALSE, BDCnumber) {
 
 get_thisTauTrueID =  function(aN) {
   if(is.character(aN))
-    aN  = mapAnalysisToBDCnumber[analysisName]
+    aN  = mapAnalysisToBDCnumber[aN]
   paste0('BigDataController_ID_', aN)
 }
 
