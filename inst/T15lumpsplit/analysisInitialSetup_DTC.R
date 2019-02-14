@@ -18,8 +18,6 @@ analysisName <- names(jumpList_DTC)[[analysisNumber]]
 
 if(!exists('mapAnalysisToDTCnumber'))
   mapAnalysisToDTCnumber = numeric(0)
-if(!exists('mapAnalysisToBDCnumber'))
-  mapAnalysisToBDCnumber = numeric(0)
 
 ### When the next DTC is displayed, this will be its number.
 mapAnalysisToDTCnumber[analysisName] =
