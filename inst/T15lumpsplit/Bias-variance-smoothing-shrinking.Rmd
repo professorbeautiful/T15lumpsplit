@@ -152,7 +152,7 @@ invisible(
 observeEvent(input$ctrlDpressed, {}) # just to flush the ctrl-D press.
 
 shinyDebuggingPanel::makeDebuggingPanelOutput(
-   session, toolsInitialState = FALSE,
+   session, toolsInitialState = TRUE,
    condition='ctrlDpressed === true')
 
 
