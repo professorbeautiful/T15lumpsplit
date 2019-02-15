@@ -1291,26 +1291,26 @@ fun.empBayeslogitRatios = function(){
   loglikFun=function(mu,tau) {
     sum(log(dnorm(logitRatios, mu, sqrt(tau+logitRatioVariances))) )
   }
-  mu = mean(logitRatios)
-  tau = 0   #(var(logitRatios) - mean(logitRatioVariances))
+  muHat = mean(logitRatios)
+  tauHat = 0   #(var(logitRatios) - mean(logitRatioVariances))
   for( irep in 1:13) { # we ain't buildin' no cathedral here.
-    mu.last = mu
-    mu = optimize(f = loglikFun, tau = tau,
+    mu.last = muHat
+    muHat = optimize(f = loglikFun, tau = tauHat,
                   interval = c(-4,4), maximum=TRUE
     )$maximum
-    tau.last = tau
-    tau = optimize(f = loglikFun, mu = mu,
+    tau.last = tauHat
+    tauHat = optimize(f = loglikFun, mu = muHat,
                    interval = c(0, 1), maximum=TRUE
     )$maximum
-    if(max(abs(mu.last-mu), abs(tau.last-tau)) < 1e-4)
+    if(max(abs(mu.last-muHat), abs(tau.last-tauHat)) < 1e-4)
       break
   }
   
-  rValues$tauEstimateEB = tau
-  cat('mu-hat: ', mu, '  tau-hat: ', tau, '\n')
+  rValues$tauEstimateEB = tauHat
+  cat('mu-hat: ', muHat, '  tau-hat: ', tauHat, '\n')
   weights = 1 - tau / (logitRatioVariances + tau)
   rValues$posteriorMeans = 
-    logitRatios * (1-weights) + mu * weights
+    logitRatios * (1-weights) + muHat * weights
   plot(c(-4, 3), 0:1, col='white',
        xlab= '', ylab='', axes=F,
        cex=2)
@@ -1339,7 +1339,7 @@ fun.empBayeslogitRatios = function(){
         0:1)
   posteriorVariance_DL =  max(0, 1/(
     (1-weights[1]) / logitRatioVariances[1]
-     +   weights[1] / tau)
+     +   weights[1] / tauHat)
   )
   posteriorStDev_DL = sqrt(posteriorVariance_DL)
   alpha = 0.1
