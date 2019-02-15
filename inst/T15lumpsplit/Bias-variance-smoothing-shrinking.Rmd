@@ -1123,7 +1123,7 @@ fun.BHtable = function(){
   #rValues$BHtable
 }
 
-debug(fun.BHtable)
+#debug(fun.BHtable)
 tableOutput('BHtable')
 bigDataComponent(analysisName=analysisName)
 
