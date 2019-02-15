@@ -9,7 +9,7 @@
 #cat('analysisReactiveSetup.R: ')
 #cat( analysisName, '  ', system('pwd', intern=TRUE), '\n')
 
-printFromAnalysisReactiveSetup_BDC = TRUE
+printFromAnalysisReactiveSetup_BDC = FALSE
 
 
 if( ! exists(x = 'thisBigData')) thisBigData <<- '(not set yet)'

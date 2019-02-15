@@ -5,7 +5,7 @@
 
 #### the "cat" output appears in the document.
 
-printFromAnalysisReactiveSetup_BDC =  TRUE
+printFromAnalysisReactiveSetup_BDC =  FALSE
 
 if(printFromAnalysisReactiveSetup_BDC)
   cat('analysisInitialSetup_BDC.R: ')
