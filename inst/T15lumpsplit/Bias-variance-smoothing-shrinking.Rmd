@@ -1308,7 +1308,7 @@ fun.empBayeslogitRatios = function(){
   
   rValues$tauEstimateEB = tauHat
   cat('mu-hat: ', muHat, '  tau-hat: ', tauHat, '\n')
-  weights = 1 - tau / (logitRatioVariances + tau)
+  weights = 1 - tauHat / (logitRatioVariances + tauHat)
   rValues$posteriorMeans = 
     logitRatios * (1-weights) + muHat * weights
   plot(c(-4, 3), 0:1, col='white',
