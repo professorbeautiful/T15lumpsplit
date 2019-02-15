@@ -138,8 +138,8 @@ linktextProcessor = function() {
     cat('linktextProcessor: copying ', tauTrueLastUsed,
         ' from source=', input$currentLocationId,
         ' to dest = ', input$linktext, '\n')
-    setTau(value=tauTrueLastUsed, BDCnumber=destBDCnum)
-    setTau(value=tauTrueLastUsed, BDCnumber=destBDCnum, myChoice=TRUE)
+    setBigData_tauTrue(value=tauTrueLastUsed, BDCnumber=destBDCnum)
+    setBigData_tauTrue(value=tauTrueLastUsed, BDCnumber=destBDCnum, myChoice=TRUE)
   }
 
 }
