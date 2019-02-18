@@ -1,7 +1,7 @@
 ###   bigDataComponent
 
 
-printBDCProgress =  TRUE
+printBDCProgress =  FALSE
 
 
 # Usage:  bigDataComponent(analysisName='qValue')
