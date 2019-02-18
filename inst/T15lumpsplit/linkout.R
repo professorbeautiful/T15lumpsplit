@@ -137,7 +137,9 @@ linktextProcessor = function() {
     destBDCnum = getBDCnumber(destAnalysisNumber)
     cat('linktextProcessor: copying ', tauTrueLastUsed,
         ' from source=', input$currentLocationId,
-        ' to dest = ', input$linktext, '\n')
+        ' to dest = ', input$linktext, '\n',
+        '  destAnalysisNumber=', destAnalysisNumber,
+        '  destBDCnum=', destBDCnum, '\n')
     setBigData_tauTrue(value=tauTrueLastUsed, BDCnumber=destBDCnum)
     setBigData_tauTrue(value=tauTrueLastUsed, BDCnumber=destBDCnum, myChoice=TRUE)
   }
