@@ -1372,7 +1372,7 @@ output$tauEstEB = renderText(rValues$tauEstimateEB)
 thisTauTrueID = get_thisTauTrueID(mapAnalysisToBDCnumber[analysisName])
 thisTauTrueID_text = paste0(thisTauTrueID, '_text')
 output[[thisTauTrueID_text]] = renderText(
-  signif(digits=4, input[[thisTauTrueID]]))
+  signif(digits=4, getBigData_tauTrue(analysisName)) )
 ```
 
 The estimated variance of the logits is `r  textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r  textOutput(thisTauTrueID_text, inline=TRUE)` ) .
