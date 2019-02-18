@@ -3,6 +3,7 @@
 
 printBDCProgress =  TRUE
 
+
 # Usage:  bigDataComponent(analysisName='qValue')
 
 
@@ -33,7 +34,8 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                      BigDataMyChoice = getBigData(analysisName, myChoice=TRUE)
                    newValue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
                    #newValue = round(newValue)
-                     BigDataMyChoice = makeBigDataWithFeatures(DLdataOriginal)
+                   if(newValue == 0) set.seed(45)
+                   BigDataMyChoice = makeBigDataWithFeatures(DLdataOriginal)
                    setBigData(BigDataMyChoice, analysisName)
                    setBigData(BigDataMyChoice, analysisName, myChoice=TRUE)
                    cat('BigDataMyChoice for ',  analysisName, ' is:\n')
