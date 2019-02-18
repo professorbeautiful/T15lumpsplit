@@ -5,14 +5,14 @@
 
 #### the "cat" output appears in the document.
 
-printFromAnalysisReactiveSetup_BDC =  FALSE
+printFromAnalysisInitialSetup_BDC =  FALSE
 
-if(printFromAnalysisReactiveSetup_BDC)
+if(printFromAnalysisInitialSetup_BDC)
   cat('analysisInitialSetup_BDC.R: ')
 
 analysisNumber <- length(jumpList_BDC)
 analysisName <- names(jumpList_BDC)[[analysisNumber]]
-if(printFromAnalysisReactiveSetup_BDC)
+if(printFromAnalysisInitialSetup_BDC)
   cat(  analysisName, ' ', analysisNumber)
 
 
@@ -29,5 +29,5 @@ mapAnalysisToBDCnumber[analysisName] =
   currentBDCnumber =
   getSequenceLength("BDC") + 1
 ### bigDataComponent will increment the BDC sequence when created.
-if(printFromAnalysisReactiveSetup_BDC)
+if(printFromAnalysisInitialSetup_BDC)
   cat('  currentBDCnumber ', currentBDCnumber, '\n')
