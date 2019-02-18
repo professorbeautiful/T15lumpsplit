@@ -32,8 +32,13 @@ getBigData_tauTrue = function(analysisName, myChoice=FALSE, BDCnumber) {
   rValues[[ index ]]
 }
 setBigData_tauTrue = function(value, analysisName, myChoice=FALSE, BDCnumber) {
+  if( missing(analysisName))
+    analysisName = names(mapAnalysisToBDCnumber)[
+      match(BDCnumber, mapAnalysisToBDCnumber)]
   if( ! missing(analysisName))
     BDCnumber = mapAnalysisToBDCnumber[analysisName]
+  updateNumericInput(session, get_thisTauTrueID( analysisName),
+                     value=value)
   index = paste0(ifelse(myChoice, 'BigData_tauTrue_MyChoice', 'BigData_tauTrue'),
                  BDCnumber)
   rValues[[ index ]] = value
