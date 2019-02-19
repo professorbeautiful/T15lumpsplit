@@ -1,18 +1,34 @@
 ```{r}
 output$contentsAdviceOutput = renderUI({
-  text =  HTML(
-    "ADVICE: You can save your 'comments' and 'answers' any time, with Control-Shift-S. <br>(View your current contributions at the bottom.) 
-    <br> To resume later in a new session, you can reload your saved content files from your Downloads folder. 
-    <br>Click here to locate them and fill the content boxes below. 
-    <br>(Only blank comments&answers will be filled.)")
+  content_filename = paste0("_", user, "_UserEntries_T15lumpsplit.txt")
+  text = div(
+      style=paste(
+        #'display: flex; justify-content: flex-center;',
+      'color:', adviceForeground, '; background: ', adviceBackground, ';
+         font-size:larger'),
+    "ADVICE: You can save your 'comments' and 'answers' any time, 
+    with Control-Shift-S.", 
+    br(), 
+    "(View your current contributions at the bottom of the page)", 
+    br(), 
+    "To resume later in a new session, 
+    you can reload your saved content file from your Downloads folder.",
+    br(),
+    "Click here to locate",
+    br(),
+    tags$b(content_filename), 
+    br(),
+    "and fill the content boxes below.", 
+    br(),
+    "(Only blank comments&answers will be filled.)"
+  )
   contentFileInput = function(
-    label=c('comments','answers')) {
+    label=c('all_entries_', 'comments','answers')) {
     #https://stackoverflow.com/questions/49506469/shiny-customise-fileinput?rq=1
     thisfileInput =
       fileInput(inputId = paste0(label,"FileInput"), 
               label = NULL,
-              buttonLabel=paste0("Find _", label,
-                             "_T15lumpsplit.txt"),
+              buttonLabel=paste0("Please find&select the file ", content_filename),
               accept = c(
                 "text/csv",
                 "text/comma-separated-values,text/plain")
@@ -22,20 +38,16 @@ output$contentsAdviceOutput = renderUI({
     thisfileInput
   }
   div(
-    tagAppendAttributes(
-      span(text),
-      style=paste(
-        'display: flex; justify-content: flex-center;',
-      'color:', adviceForeground, '; background: ', adviceBackground, ';
-        font-weight:bold; font-size:larger')),
+    text,
     tagAppendAttributes(
       style=paste(
       'color:', adviceForeground, '; background: ', adviceBackground, ';
         font-weight:bold; font-size:larger'),
       fluidRow(
         column(2, ""),
-        column(4, contentFileInput('comments')),
-        column(4, contentFileInput('answers'))
+        # column(4, contentFileInput('comments')),
+        # column(4, contentFileInput('answers'))
+        column(8, contentFileInput('all_entries_'))
       )
     )
   )
@@ -53,8 +65,9 @@ uiOutput('contentsAdvice')
 ```
 
 ```{r}
-observeEventForFileInput(contentType = 'comments')
-observeEventForFileInput(contentType = 'answers')
+observeEventForFileInput(contentType = 'all_entries_')
+#observeEventForFileInput(contentType = 'comments')
+#observeEventForFileInput(contentType = 'answers')
 ### Strange--  source() from here requires prefix "inst/T15lumpsplit"
 ### But it's not necessary in the main Rmd.
 ```

@@ -40,6 +40,8 @@ options(knitr.duplicate.label = 'allow')
 ```{r include = FALSE}
 #  options(error=utils::recover)  # I wish this helped!
 
+user = system('echo $USER', intern = TRUE) # for saving&retrieving files.
+
 require(T15lumpsplit)
 require(shiny)
 require(xtable)
@@ -1558,6 +1560,10 @@ assembleTQAnswers = reactive({
   TQanswers
 })
 
+assembleUserEntries = reactive({
+  rbind(assembleTQAnswers(), assembleQAComments())
+})
+
 ### linebreak works but not needed. renderTable will abide.
 linebreak = function(s, maxchar=30) {
   wordsplit = strsplit(s, split=' ')[[1]]
@@ -1612,6 +1618,14 @@ output$downloadQandA <- downloadHandler(
     write.csv(comments, file, row.names = FALSE)
   }
 )
+output$downloadAllUserEntries <- downloadHandler(
+  filename = paste0("_", user, "_UserEntries_T15lumpsplit.txt"),
+  content = function(file) {
+    entries = assembleUserEntries()  ### QA and TQ
+    #commentsText <<- capture.output(comments)
+    write.csv(entries, file, row.names = FALSE)
+  }
+)
 ```
 
 ```{r assemble comments and answers}
@@ -1620,22 +1634,19 @@ div(
   tags$b('View and download your "Questions&Ahas" comments and "TextQuestion" answers here.'),
   div(
     #`data-display-if` = 'false',
-    downloadButton(outputId="downloadQandA", 
-                     "Download your Q&A comments") ),
+    downloadButton(outputId="downloadAllUserEntries", 
+                     "Download your Q&A comments and your TQ answers here."),
   conditionalPanelWithCheckbox(
     labelString = 'View your comments', 
     html=tableOutput('commentsToText'),
     initialValue = FALSE  ),
-  div(
-    #`data-display-if` = 'false',
-    downloadButton(outputId="downloadAnswers", 
-                   "Download your answers") ),
   conditionalPanelWithCheckbox(
     labelString = 'View your answers', 
     html=tableOutput('answersToText'),
     initialValue = FALSE  ),
   tags$b(
     'Save these 2 files, to share & discuss with a mentor.')
+  )
 )
 ```
 

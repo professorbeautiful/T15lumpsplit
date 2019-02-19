@@ -1,32 +1,36 @@
-observeEventForFileInput = function(contentType = 'comments')
+observeEventForFileInput = function(contentType = 'all_entries_')
   observeEvent(
-  input[[paste0(contentType, 'FileInput')]], {
-    print(paste0("Entering ", 'observeEvent_for_',contentType))
-    inFile <- input[[paste0(contentType, 'FileInput')]]
-    if (is.null(inFile))
-      return(NULL)
-    savedContents = read.csv(
-      file = inFile$datapath,
-      header = TRUE,
-      stringsAsFactors = FALSE)
-    rValues[[paste0('saved', contentType)]] = savedContents
-    if(contentType == 'comments'){
-      the_contexts = QA_contexts
-      the_prefix = 'idQA'
+    input[[paste0(contentType, 'FileInput')]], {
+      print(paste0("Entering ", 'observeEvent_for_',contentType))
+      fun_observeEventForFileInput(contentType)
     }
-    if(contentType == 'answers'){
-      the_contexts = TQ_contexts
-      the_prefix = 'idTQ'
-    }
+  )
+
+fun_observeEventForFileInput = function(contentType) {
+  inFile <- input[[paste0(contentType, 'FileInput')]]
+  if (is.null(inFile))
+    return(NULL)
+  savedContents = read.csv(
+    file = inFile$datapath,
+    header = TRUE,
+    stringsAsFactors = FALSE)
+  rValues[[paste0('saved', contentType)]] = savedContents
+  for(contentType in c('QA', 'TQ')) {
+      the_contexts = get(paste0(contentType, '_contexts'))
+      the_prefix = paste0('id', contentType)
+      savedContents_this_contentType =
+        savedContents[grep(paste0('^', contentType),
+                           savedContents$contexts),
+                      ]
     for(contextNumber in seq(along=the_contexts) ) {
       contextID = paste0(the_prefix, contextNumber)
       context = the_contexts[[contextNumber]]
       cat("input ", contextID, "\n")
       print(paste(contextID, " in place", context, "===>",
                   input[[contextID]], '\n'))
-      retrievedcontext = savedContents[contextNumber, 'contexts']
+      retrievedcontext = savedContents_this_contentType[contextNumber, 'contexts']
       retrievedcontent = gsub('^ *', '',
-                              savedContents[contextNumber, 'contents'])
+                              savedContents_this_contentType[contextNumber, 'contents'])
       retrievedcontent = gsub('[1] *', '', fixed = TRUE, retrievedcontent)
       print(paste(contextID, 'retrieved: ',
                   retrievedcontext, "===>", retrievedcontent, '/'))
@@ -42,4 +46,6 @@ observeEventForFileInput = function(contentType = 'comments')
       }
     }
   }
-)
+}
+
+# debug(fun_observeEventForFileInput)
