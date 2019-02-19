@@ -1434,10 +1434,11 @@ fun.qvaluePlot = function(){
   ylim = c(0, 0.04) #c(0, 1.1 * max(rValues$P_Q_for_X_DL_modified,
           #           sort(qout.mod$qvalues)[1:8][8]) )
   plot(qout.mod$pvalues, qout.mod$qvalues, 
-       xlim=xlim, 
-       ylim=ylim, 
+       # xlim=xlim, 
+       # ylim=ylim, 
        cex=2,
-       xlab="P value", ylab='Q value')
+       xlab="P value", ylab='Q value', 
+       log='xy')
   ## interpolate for the original? No, easy version. 
   ## allChisqPs_original[1]
   ## 
@@ -1465,15 +1466,25 @@ fun.qvaluePlot = function(){
   # LEFTWARDS BLACK ARROW
   # Unicode: U+2B05 U+FE0E, UTF-8: E2 AC 85 EF B8 8E
   nFeatures = 100
-  abline(a=0, b=nFeatures, col='darkred')
-  aspect = diff(par("usr")[2:1])/diff(par("usr")[4:3])
-  bonfTilt = atan(nFeatures * aspect)* 180/pi
-  diagTilt = atan( aspect )* 180/pi
-  text(0.00025, 0.00025 * nFeatures, 'Bonferroni', cex=2, pos=3, # 3 = above
-       srt=bonfTilt, col='darkred')
+  #abline(a=0, b=nFeatures, col='darkred')
+  sidak = function(p, n) (1-(1-p)^n)
+  left = par("usr")[1]   ##  10 ^ par("usr")[1:2]
+  right = par("usr")[2]
+  bottom = par("usr")[3]
+  top = par("usr")[4]
+  xvalues = seq(left, right, length.out = 100)
+  lines(10^xvalues, sidak(10^xvalues, n=nFeatures), col='darkred')
+  # aspect = `/`(par("usr")[2:1])/`/`(par("usr")[4:3])
+  #bonfTilt = atan(nFeatures * aspect)* 180/pi
+  #diagTilt = atan( aspect )* 180/pi
+  text(x=10^xvalues[20], y=sidak(10^xvalues[20], n=nFeatures),
+       'Bonferroni\n(Sidak)', cex=2, pos=2, # 2 = to the left
+       #srt=bonfTilt,
+       col='darkred')
   abline(a=0, b=1, col='blue')
-  text(0.003, 0.003, 'diagonal', cex=2, pos=3, # 3 = above
-       srt=diagTilt, col='blue')
+  text(10^(bottom/2), 10^(bottom/2), 'diagonal', cex=2, pos=4, # 4 = to the right
+       #srt=diagTilt, 
+       col='blue')
   #plot(qvalue::qvalue(allChisqPs) )
 }
 
