@@ -22,9 +22,19 @@ $(document).on("keyup", function (event) {
     if(x==68 && event.ctrlKey) { // control d
       ctrlDpressed = ! ctrlDpressed;  // toggle
       Shiny.onInputChange("ctrlDpressed", ctrlDpressed);
-      if(ctrlDpressed === true)
+      if(ctrlDpressed === true) {
+        savedYposition=window.scrollY;
+        Shiny.onInputChange('savedYposition', savedYposition);
         navigateToY(0);
-      //navigateToId(currentLocationId);
+      }
+      else {
+        Key_pressed_for_navigateToY = true;
+        Shiny.onInputChange("KeypressedfornavigateToY",
+          Key_pressed_for_navigateToY);
+        Yoffset = 209;   // Because the debugger box changes the position
+        // Should be calculated from window dimensions.
+        navigateToY(savedYposition+Yoffset);
+      }      //navigateToId(currentLocationId);
       //alert('control d ' + e.ctrlKey + ' ' + event.ctrlKey);
       // The alert works.
       // The panel appears only after something else JS happens.  WAIT, THAT'S NOT TRUE! IT WORKS!
