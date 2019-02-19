@@ -446,9 +446,9 @@ fluidRow(
 # div(br(),br(),br())
 ```
 
-Lumping gives an answer with low variance ($N$=100; the sample size is fairly high) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. So we get a precise answer to what might be the wrong question. The confidence interval follows the diagonal of the plot on the left above, where $Pr(R|D)=Pr(R|L)$.
+Lumping gives an answer with low variance ($N$=100 initially; the sample size is fairly high) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. So we get a precise answer to what might be the wrong question. The confidence interval follows the diagonal of the plot on the left above, where $Pr(R|D)=Pr(R|L)$.
 
-Splitting gives an answer with high variance ($N$=5) but low bias-- because it is including only patients who ARE in the $D$ group:  it is directly asking the right question, but with little precision. The very wide horizontal confidence interval reflects this high variance.
+Splitting gives an answer with high variance ($N$=6 initially) but low bias-- because it is including only patients who ARE in the $D$ group:  it is directly asking the right question, but with little precision. The very wide horizontal confidence interval reflects this high variance.
 
 ### <a name='section-ClassicalTest'> Classical estimation bifurcating on a hypothesis test</a> <!-- #title -->
 
