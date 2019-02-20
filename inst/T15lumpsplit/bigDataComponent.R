@@ -11,7 +11,7 @@ createBigDataParamChoiceObserver <- function(analysisName) {
   myName = paste0('bigDataParamChoiceObserver_', analysisName)
   analysisNumber = match(analysisName, names(jumpList_BDC))
   thisTauTrueID = get_thisTauTrueID(analysisNumber)
-  cat(myName, ': thisTauTrueID=', thisTauTrueID, '\n')
+  #cat(myName, ': thisTauTrueID=', thisTauTrueID, '\n')
   ####  Initially, only tauTrue.
   assign(myName,
          pos=1,
