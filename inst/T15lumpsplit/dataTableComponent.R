@@ -95,9 +95,9 @@ dataTableComponent = function(showhide='show', analysisName) {
   output[[splitMarginIdThisDTC]] = renderUI({
     thisDLdata = getDLdata(analysisName, myChoice=TRUE)
     div(style=paste0('color:', splitColor),
-      paste0('---', thisDLdata[1,1], '/', sum(thisDLdata[ ,1]),
+      paste0('', thisDLdata[1,1], '/', sum(thisDLdata[ ,1]),
            '=', round(digits=3, thisDLdata[1,1] / sum(thisDLdata[ ,1])),
-           '---')
+           '')
     )
   })
   output[[lumpMarginIdThisDTC]] = renderUI({
