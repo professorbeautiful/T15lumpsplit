@@ -1,5 +1,5 @@
 
-Dr. Who is not confident in either Dr. Split or Dr. Lump.  Maybe one’s right ($\phi  = Split$ ), maybe the other ( $\phi  = Lump$). Here is a prior that might represent this view:;
+Dr. Who is not confident in either Dr. Split or Dr. Lump, but is prepared to let the data guide a right compromise between the two viewpoints.  Maybe one’s right ($\phi  = Split$ ), maybe the other ( $\phi  = Lump$). Here is a prior that might represent this view:;
 
 \[\pi _{Who}^{}({\bf{p}}) = \pi _{Who}^{}(\phi  = Split)\pi _{Split}^{}({\bf{p}}) + \pi _{Who}^{}(\phi  = Lump)\pi _{Lump}^{}({\bf{p}}).\]
  

@@ -325,7 +325,7 @@ getBDCnumber = function(analysisName) {
 
 ## Description of the challenge <!-- #title -->
 
-The Problem:  A new treatment is given to `r sum(DLdataOriginal)` patients.  
+**The Problem**:  A new treatment is given to `r sum(DLdataOriginal)` patients.  
 Of them, only `r sum(DLdataOriginal["R", ])` respond.  The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
 
 That is discouraging. 
@@ -335,12 +335,16 @@ But there is a subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r sum(
 This feature $X_{DL}$ might be a valuable biomarker. Or it might be nonsense.
 Possibilities for the actual identity of $X_{DL}$ will be explored later.
 
-The challenge: decide whether to treat the "$D$ patients" -- or more modestly, to decide whether to put resources into studying the treatment further for "$D$ patients".
+**The Challenge**: decide whether to treat the "$D$ patients" -- or more modestly, to decide whether to put resources into studying the treatment further for "$D$ patients". To guide the decision, we need to assess what we know about the **conditional probability**, probability that the patient responds to treatment given that the patient is a $D$ patient. We can see this conditional probability written different ways, some long, some short, using the vertical bar or the dot to say *"conditional on"*:
+
+* Probability of response given a $D$ patient
+* $Pr(Y~=~R ~|~ X_{DL} ~=~ D)$
+* $Pr(R ~|~ D)$
+* $P_{R~.~D}$
 
 
 
-
-## Simple "Lump" and "Split" estimates of Pr(R|D) <!-- #title -->
+## Simple "Lump" and "Split" estimates of $Pr(R ~|~ D)$ <!-- #title -->
 ```{r analysis-plotLumpSplitPoints}
 jumpList_DTC = c(jumpList_DTC, plotLumpSplitPoints='Plot of lump & split points')
 source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
@@ -396,7 +400,8 @@ output$confInterval_Split = renderText(
   }) 
 
 output$plotLumpSplitPoints = renderPlot(
-  height = 300, {
+  height = 300, 
+  {
     analysisName = 'plotLumpSplitPoints'
     source(analysisReactiveSetup_DTC, local=TRUE)
     cat('plotLumpSplitPoints: renderPlot', paste(thisData), '\n')
@@ -424,20 +429,20 @@ output$plotLumpSplitPoints = renderPlot(
 
 Two colleagues on the study hold some strong but opposite opinions.
 
-**Dr. Split** speaks:  “I believe that $X_{DL}$  is an important biomarker-- so imporant that the $D$ people and the $L$ people are fundamentally different. Since the question is what to do with $D$ people, I will only look at their data.”  
+**Dr. Split** speaks:  “I believe that $X_{DL}$  is an important *biomarker*-- so imporant that the $D$ people and the $L$ people are fundamentally different. Since the question is what to do with $D$ people, I will only look at their data.”  
 
-**Dr. Lump* disagrees!   “No no, I am sure that this so-called "biomarker" $X_{DL}$  is irrelevant! I will ignore it, and look at the data for all the patients.” 
+**Dr. Lump**   disagrees!   “No no, I am sure that this so-called *'biomarker'* $X_{DL}$  is irrelevant! I will ignore it, and look at the data for *all* the patients. My estimate will be more accurate.” 
 
 Examine the data table below. 
+
 (Throughout this module, you can change the numbers in the table and observe the results. Be sure to press "reset" when done.)
 
-*Dr. Split* will *"split"* the sample of patients into the two groups, estimating the response rate (`Pr(R|D)`) by utilizing the D patients only, is 
+*Dr. Split* will *"split"* the sample of patients into the two groups, estimating the response rate `Pr(R | D)` by utilizing the D patients only, is 
 `r reactive(round(100*rValues$estimates_Lump_Split$split))`*%*. 
 
-*Dr. Lump* will  *"lump"* together all the patients, estimating that the response rate (`Pr(R|D)`) for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*rValues$estimates_Lump_Split$lump))`*%*. 
-
-
-In the following plot, we see the estimate and the confidence interval for `Pr(R|D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
+*Dr. Lump* will  *"lump"* together all the patients, estimating that the response rate `Pr(R | D)` for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*rValues$estimates_Lump_Split$lump))`*%*. 
+  
+In the following plot, we see the estimate and the confidence interval for `Pr(R | D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
 
 
 ```{r plotLumpSplit-UI}
@@ -445,7 +450,7 @@ fluidRow(
   column(4, 
          br(),
          div(style='text-align:center;font-weight: bold', 
-             "Two estimates for Pr(R|D),",
+             "Two estimates for Pr(R | D),",
              br(),
              "with confidence intervals :"),
          tagAppendAttributes(style=paste0("color:", splitColor,
@@ -457,13 +462,11 @@ fluidRow(
          plotOutput('plotLumpSplitPoints')
   ),
   column(8,
-         #br(),br(),br(),
          dataTableComponent(showhide='show', analysisName=analysisName))
 )
-# div(br(),br(),br())
 ```
 
-Lumping gives an answer with low variance ($N$=100 initially; the sample size is fairly high) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. So we get a precise answer to what might be the wrong question. The confidence interval follows the diagonal of the plot on the left above, where $Pr(R|D)=Pr(R|L)$.
+Lumping gives an answer with low variance ($N$=100 initially; the sample size is fairly high) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. So we get a precise answer to what might be the wrong question. The confidence interval follows the diagonal of the plot on the left above, where $Pr(R~|~D)=Pr(R~|~L)$.
 
 Splitting gives an answer with high variance ($N$=6 initially) but low bias-- because it is including only patients who ARE in the $D$ group:  it is directly asking the right question, but with little precision. The very wide horizontal confidence interval reflects this high variance.
 
@@ -516,7 +519,7 @@ TextQuestion('Why focus on this parameter?')
 QandAha(context='QA-parametrization')
 ```
 
-## Approaches to estimating Pr(R|D) <!-- #title -->
+## Approaches to estimating Pr(R | D) <!-- #title -->
 
 * [Classical test: is $X_{DL}$ independent of the outcome Y?](#ClassicalTest)
 * [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
@@ -526,7 +529,7 @@ QandAha(context='QA-parametrization')
 
 ### <a name='section-Bayes_mixture'> Approach: Dr. Who's Bayes mixture of "Lump" and "Split"</a> <!-- #title -->
 
-Dr. Who doesn't know *who* to believe, but is prepared to let the data make the right compromise.
+Dr. Who doesn't know *who* to believe.
 
 
 ```{r child = 'DrWho.Rmd'}
@@ -564,13 +567,13 @@ QandAha('QA-for crossvalidation')
 
 ### <a name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a> <!-- #title -->
 
-Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R|D) and Pr(R|L). This allows data on the two probabilities to be shared between them, smoothly instead of a crude mixture of the two extreme views of   "Dr. Lump" and "Dr. Split".
+Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R | D) and Pr(R | L). This allows data on the two probabilities to be shared between them, smoothly instead of a crude mixture of the two extreme views of   "Dr. Lump" and "Dr. Split".
 ```{r QA-smooth-joint-prior}
 QandAha('QA-smooth-joint-prior')
 ```
 Once we have this joint prior distribution, we compute the joint posterior.
 
-To set the prior on the joint distribution of Pr(R|D) and Pr(R|L), we first convert them to logits ("logit" means "log(odds)").
+To set the prior on the joint distribution of Pr(R | D) and Pr(R | L), we first convert them to logits ("logit" means "log(odds)").
 ```{r Details about the logit}
 conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rmd')
 ```
@@ -607,7 +610,7 @@ output$postmean.p = renderText(
 )
 ```
 
-Finally, Pr(R|D) marginalized over Pr(R|L) has posterior mean =  `r  (textOutput('postmean.p', inline=TRUE))` .
+Finally, Pr(R | D) marginalized over Pr(R | L) has posterior mean =  `r  (textOutput('postmean.p', inline=TRUE))` .
 
 ```{r linkoutbivariate}
 conditionalPanelWithCheckboxPDF(
@@ -669,7 +672,7 @@ div(
 
 ### Summary table of estimates  <!-- #title -->
 
-Assembling the results of the approaches to estimating Pr(R|D):
+Assembling the results of the approaches to estimating Pr(R | D):
 
 ```{r tableOfEstimates}
 jumpList_DTC = c(jumpList_DTC, estimateTable='Table of estimates')
