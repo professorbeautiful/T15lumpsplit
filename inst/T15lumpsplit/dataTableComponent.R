@@ -266,11 +266,11 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
         ),
         br(),
         splitLayout(cellWidths = c("30%",'35%','35%'),
-                    div(style=paste0('color', splitColor), "Dr. Split:"),
+                    div(style=paste0('color:', splitColor), "Dr. Split:"),
                     uiOutput(splitMarginIdThisDTC),
                     ""),
         splitLayout(cellWidths = c("30%",'70%'),
-                    div(style=paste0('color', lumpColor), "Dr. Lump:"),
+                    div(style=paste0('color:', lumpColor), "Dr. Lump:"),
                     uiOutput(lumpMarginIdThisDTC),
                     "")
         #uiOutput(outputId = panelIdThisDTC)
