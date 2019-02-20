@@ -13,9 +13,12 @@ A likelihood function compares different explanations for the observed data. In 
 Different sampling plans have different distributions.
 
 •	If the sample size is fixed by design at 100, then the model is *multinomial*, and the given parametrization ${\bf{p}}$ is natural.  
-•	If the two bottom margins are fixed by design, the model is *a product of independent binomials*, and the natural parametrization is  $({p_{R.D}},{p_{R.L}})$, where each ${p_{R.X}}$ is the conditional probability ${p_{R.X}} = {p_{RX}}/({p_{RX}}+{p_{NX}}))$.  
+•	If the two bottom margins are fixed by design, the model is *a product of independent binomials*, and the natural parametrization is  $({p_{R~.~D}},{p_{R~.~L}})$, where each ${p_{R~.~X}}$ 
+is the conditional probability 
+
+          ${p_{R~.~X}} = {p_{RX}}/({p_{RX}}+{p_{NX}}))$.  
 •	If both margin counts are fixed by design, then the model is *hypergeometric*, and the natural parametrization is $({p_D},{p_R},\phi )$ where $\phi$ is the odds ratio. (But that sampling model is impossible to implement in a clinical study).  
 
 But they all have the same likelihood function! The differences in sampling correspond to putting constraints on ${\bf{p}}$, and  different sample spaces for the data ${\bf{n}}$.
 
-For the "personalized medicine" question at hand, the thing we care about is ${p_{R.D}}$.   
+For the "personalized medicine" question at hand, the thing we care about is ${p_{R~.~D}}$.   
