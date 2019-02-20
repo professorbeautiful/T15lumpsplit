@@ -48,10 +48,13 @@ ContoursPanelLegend = list(
   "Shaded: 50% highest posterior region",
   #  "X:   observed data", br(),
   div(style='color:red',
-      "L:  Dr.Lump's MP estimate", br(),
-      "S:  Dr.Split's MP estimate", br(),
-      "W:  Dr.Who's MP estimate"
-  )
+      "L:  Dr.Lump's MP estimate"),
+  div(style='color:blue',
+      "S:  Dr.Split's MP estimate"),
+  div(style='color:green',
+      "W:  Dr.Who's MP estimate"),
+  br(),
+  "(MP = mean posterior)"
 )
 ###
 
