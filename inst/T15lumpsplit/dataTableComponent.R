@@ -89,8 +89,27 @@ dataTableComponent = function(showhide='show', analysisName) {
   panelIdThisDTC = paste0('idPanelDTC', thisDTCNumber)
   resetIdThisDTC = paste0('idResetDTC', thisDTCNumber)
   myChoiceIdThisDTC = paste0('idMyChoiceDTC', thisDTCNumber)
+  splitMarginIdThisDTC = paste0('idSplitMarginDTC', thisDTCNumber)
+  lumpMarginIdThisDTC = paste0('idLumpMarginDTC', thisDTCNumber)
 
-  theCellIds = as.list(paste0('m', cellNames, 'idPanelDTC',
+  output[[splitMarginIdThisDTC]] = renderUI({
+    thisDLdata = getDLdata(analysisName, myChoice=TRUE)
+    div(style=paste0('color:', splitColor),
+      paste0('---', thisDLdata[1,1], '/', sum(thisDLdata[ ,1]),
+           '=', round(digits=3, thisDLdata[1,1] / sum(thisDLdata[ ,1])),
+           '---')
+    )
+  })
+  output[[lumpMarginIdThisDTC]] = renderUI({
+    thisDLdata = getDLdata(analysisName, myChoice=TRUE)
+    div(style=paste0('color:', lumpColor),
+         paste0('------', sum(thisDLdata[1, ]), '/', sum(thisDLdata),
+           '=', round(digits=3, sum(thisDLdata[1, ]) / sum(thisDLdata)),
+           '------')
+    )
+  })
+
+    theCellIds = as.list(paste0('m', cellNames, 'idPanelDTC',
                       getDTCnumber(analysisNumber)) )
   names(theCellIds) = cellNames
 
@@ -173,6 +192,8 @@ dataTableComponent = function(showhide='show', analysisName) {
              panelOfData(panelIdThisDTC=panelIdThisDTC,
                          resetIdThisDTC=resetIdThisDTC,
                          myChoiceIdThisDTC=myChoiceIdThisDTC,
+                         splitMarginIdThisDTC=splitMarginIdThisDTC,
+                         lumpMarginIdThisDTC=lumpMarginIdThisDTC,
                          showhide=showhide)
       ),
       column(6, br(), br(),
@@ -205,6 +226,7 @@ dataRowLabel = function(html, angle=360-40, color='green') {
 ### Do not call panelOfData() directly. Use dataTableComponent().
 
 panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
+                       splitMarginIdThisDTC, lumpMarginIdThisDTC,
                        showhide='show') {
   span(
     conditionalPanelWithCheckbox(
@@ -243,7 +265,15 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
                                  min=0)
         ),
         br(),
-        uiOutput(outputId = panelIdThisDTC)
+        splitLayout(cellWidths = c("30%",'35%','35%'),
+                    div(style=paste0('color', splitColor), "Dr. Split:"),
+                    uiOutput(splitMarginIdThisDTC),
+                    ""),
+        splitLayout(cellWidths = c("30%",'70%'),
+                    div(style=paste0('color', lumpColor), "Dr. Lump:"),
+                    uiOutput(lumpMarginIdThisDTC),
+                    "")
+        #uiOutput(outputId = panelIdThisDTC)
       )
     )
   )

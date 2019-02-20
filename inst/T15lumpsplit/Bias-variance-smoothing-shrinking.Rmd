@@ -76,6 +76,9 @@ source('initializations.R', local=TRUE)
 ```{r colors}
 adviceForeground = 'darkred'
 adviceBackground = 'snow'
+lumpColor = 'red'
+splitColor = 'blue'
+
 ## https://www.w3schools.com/cssref/css_colors.asp
 ```
 
@@ -431,9 +434,11 @@ fluidRow(
          br(),
          span(style='text-align:center;font-weight: bold', 
               "Confidence intervals for Pr(R|D):"),
-         tagAppendAttributes(style="color:red;text-align:center",
+         tagAppendAttributes(style=paste0("color:", lumpColor,
+                                          "; text-align:center"),
                              textOutput('confInterval_Lump')),
-         tagAppendAttributes(style="color:blue;text-align:center",
+         tagAppendAttributes(style=paste0("color:", splitColor,
+                                          "; text-align:center"),
                              textOutput('confInterval_Split')),
          # span(style='color:red; text-align:center', 
          # "L = Lump, S = Split"),
