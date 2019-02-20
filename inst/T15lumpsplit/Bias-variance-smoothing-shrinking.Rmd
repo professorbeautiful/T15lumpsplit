@@ -364,7 +364,8 @@ output$confInterval_Lump = renderText(
   analysisName = 'plotLumpSplitPoints'
   source(analysisReactiveSetup_DTC, local=TRUE)
     try(silent = TRUE,
-        paste("Lump:  (", 
+        paste("Dr. Lump:  ", rValues$estimates_Lump_Split[['lump']],
+              "  (", 
           signif(digits=2,
               rValues$estimates_Lump_Split[['confInterval_Lump']][1]),
           "-",
@@ -378,7 +379,8 @@ output$confInterval_Split = renderText(
       analysisName = 'plotLumpSplitPoints'
       source(analysisReactiveSetup_DTC, local=TRUE)
       try(silent = TRUE,
-          paste("Split:  (", 
+          paste("Dr. Split: ", rValues$estimates_Lump_Split[['split']],
+              "  (", 
                 signif(digits=2,
                        rValues$estimates_Lump_Split[['confInterval_Split']][1]),
                 "-",
@@ -432,16 +434,16 @@ In the following plot, we see the estimate and the confidence interval for `Pr(R
 fluidRow(
   column(4, 
          br(),
-         span(style='text-align:center;font-weight: bold', 
-              "Confidence intervals for Pr(R|D):"),
-         tagAppendAttributes(style=paste0("color:", lumpColor,
-                                          "; text-align:center"),
-                             textOutput('confInterval_Lump')),
+         div(style='text-align:center;font-weight: bold', 
+             "Two estimates for Pr(R|D),",
+             br(),
+             "with confidence intervals :"),
          tagAppendAttributes(style=paste0("color:", splitColor,
                                           "; text-align:center"),
                              textOutput('confInterval_Split')),
-         # span(style='color:red; text-align:center', 
-         # "L = Lump, S = Split"),
+         tagAppendAttributes(style=paste0("color:", lumpColor,
+                                          "; text-align:center"),
+                             textOutput('confInterval_Lump')),
          plotOutput('plotLumpSplitPoints')
   ),
   column(8,
