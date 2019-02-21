@@ -94,7 +94,8 @@ dataTableComponent = function(showhide='show', analysisName) {
 
   output[[splitMarginIdThisDTC]] = renderUI({
     thisDLdata = getDLdata(analysisName, myChoice=TRUE)
-    div(style=paste0('color:', splitColor),
+    div(style=paste0('color:', splitColor,
+                     '; text-align:center;'),
       paste0('', thisDLdata[1,1], '/', sum(thisDLdata[ ,1]),
            '=', round(digits=3, thisDLdata[1,1] / sum(thisDLdata[ ,1])),
            '')
@@ -102,11 +103,11 @@ dataTableComponent = function(showhide='show', analysisName) {
   })
   output[[lumpMarginIdThisDTC]] = renderUI({
     thisDLdata = getDLdata(analysisName, myChoice=TRUE)
-    div(style=paste0('color:', lumpColor),
-         paste0('------', sum(thisDLdata[1, ]), '/', sum(thisDLdata),
-           '=', round(digits=3, sum(thisDLdata[1, ]) / sum(thisDLdata)),
-           '------')
-    )
+    div(
+      style=paste0('color:', lumpColor,
+                   '; text-align:center;'),
+          paste0(sum(thisDLdata[1, ]), '/', sum(thisDLdata),
+                 '=', round(digits=3, sum(thisDLdata[1, ]) / sum(thisDLdata))))
   })
 
     theCellIds = as.list(paste0('m', cellNames, 'idPanelDTC',
@@ -266,13 +267,23 @@ panelOfData = function(panelIdThisDTC, resetIdThisDTC, myChoiceIdThisDTC,
         ),
         br(),
         splitLayout(cellWidths = c("30%",'35%','35%'),
-                    div(style=paste0('color:', splitColor), "Dr. Split:"),
+                    div(style=paste0('color:', splitColor,
+                                     '; text-align:center;'),
+                        "Dr. Split:"),
                     uiOutput(splitMarginIdThisDTC),
                     ""),
+        splitLayout(cellWidths = c("30%",'35%','35%'),
+                    "",
+                    hr(style=paste0('border-color :', splitColor) ),
+                    ""),
         splitLayout(cellWidths = c("30%",'70%'),
-                    div(style=paste0('color:', lumpColor), "Dr. Lump:"),
-                    uiOutput(lumpMarginIdThisDTC),
-                    "")
+                    div(style=paste0('color:', lumpColor),
+                        "Dr. Lump:"),
+                    uiOutput(lumpMarginIdThisDTC) ),
+        splitLayout(cellWidths = c("30%",'70%'),
+                    "",
+                    hr(style=paste0('border-color :', lumpColor) )
+        )
         #uiOutput(outputId = panelIdThisDTC)
       )
     )
