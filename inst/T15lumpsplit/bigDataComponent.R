@@ -6,6 +6,29 @@ printBDCProgress =  FALSE
 
 # Usage:  bigDataComponent(analysisName='qValue')
 
+handlerForobserveEvent_myChoiceIdThisBDC = function(
+  myChoiceIdThisBDC, analysisName, thisTauTrueID){
+  cat('Handler: Pressed ', myChoiceIdThisBDC, '\n')
+  #enable(resetIdThisBDC)
+  #disable(myChoiceIdThisBDC)
+  currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
+  BigDataMyChoice = getBigData(analysisName, myChoice=TRUE)
+  BigData_tauTrue_MyChoice = getBigData_tauTrue(analysisName, myChoice=TRUE)
+  cat('   Copying BigData_tauTrue_MyChoice into numericinput: ',
+      paste(BigData_tauTrue_MyChoice), '\n')
+  updateNumericInput(
+    session,
+    thisTauTrueID,
+    value = BigData_tauTrue_MyChoice
+  )
+  setBigData(BigDataMyChoice, analysisName)
+  BigDataLastUsed <<- BigDataMyChoice
+  setBigData_tauTrue(BigData_tauTrue_MyChoice, analysisName)
+  tauTrueLastUsed <<- BigData_tauTrue_MyChoice
+  cat('   So now tauTrueLastUsed is the same: ',
+      paste(tauTrueLastUsed), '\n')
+
+}  #### End of handlerForobserveEvent_myChoiceIdThisBDC
 
 createBigDataParamChoiceObserver <- function(analysisName) {
   myName = paste0('bigDataParamChoiceObserver_', analysisName)
@@ -108,28 +131,10 @@ bigDataComponent = function(analysisName) {
            label = myName,
            eventExpr = input[[myChoiceIdThisBDC]],
            handlerExpr =  {
-             isolate({
-               cat('Handler: Pressed ', myChoiceIdThisBDC, '\n')
-               #enable(resetIdThisBDC)
-               #disable(myChoiceIdThisBDC)
-               currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
-               BigDataMyChoice = getBigData(analysisName, myChoice=TRUE)
-               BigData_tauTrue_MyChoice = getBigData_tauTrue(analysisName, myChoice=TRUE)
-               cat('   Copying BigData_tauTrue_MyChoice into numericinput: ',
-                   paste(BigData_tauTrue_MyChoice), '\n')
-               updateNumericInput(
-                   session,
-                   thisTauTrueID,
-                   value = BigData_tauTrue_MyChoice
-                 )
-               setBigData(BigDataMyChoice, analysisName)
-               BigDataLastUsed <<- BigDataMyChoice
-               setBigData_tauTrue(BigData_tauTrue_MyChoice, analysisName)
-               tauTrueLastUsed <<- BigDataBigData_tauTrue_MyChoiceMyChoice
-               cat('   So now tauTrueLastUsed is the same: ',
-                   paste(tauTrueLastUsed), '\n')
-             })
-           })
+             handlerForobserveEvent_myChoiceIdThisBDC(
+               myChoiceIdThisBDC, analysisName, thisTauTrueID)
+           }
+         )
   )
 
   ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified BigData.
