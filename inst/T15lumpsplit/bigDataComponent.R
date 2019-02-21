@@ -58,7 +58,11 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                    newValue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
                    #newValue = round(newValue)
                    if(newValue == 0) set.seed(45)
-                   BigDataMyChoice = makeBigDataWithFeatures(DLdataOriginal)
+                   BigDataMyChoice = makeBigDataWithFeatures(
+                     DLdataOriginal,
+                     tauTrue=newValue)
+                   setBigData_tauTrue(value=newValue, BDCnumber=destBDCnum)
+                   setBigData_tauTrue(value=newValue, BDCnumber=destBDCnum, myChoice=TRUE)
                    setBigData(BigDataMyChoice, analysisName)
                    setBigData(BigDataMyChoice, analysisName, myChoice=TRUE)
                    cat('BigDataMyChoice for ',  analysisName, ' is:\n')
