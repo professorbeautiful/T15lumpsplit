@@ -357,17 +357,17 @@ estimates_Lump_Split = observeEvent(
   source(analysisReactiveSetup_DTC, local=TRUE)
   #thisData = getDLdata('plotLumpSplitPoints')
   rValues$estimates_Lump_Split = list(
-    lump = sum(thisData['R', ])/
-      sum(thisData[ , ]),
-    split = (thisData['R', 'D'])/
-      sum(thisData[ , 'D']),
+    lump = round(digits=2, sum(thisData['R', ])/
+      sum(thisData[ , ])),
+    split =  round(digits=2, (thisData['R', 'D'])/
+      sum(thisData[ , 'D'])),
     confInterval_Split = binom.test(x = thisData['R', 'D'],
                                     n = sum(thisData[ , 'D']) )$conf.int,
     confInterval_Lump = binom.test(x = sum(thisData['R', ]),
                                    n = sum(thisData[ , ]) )$conf.int
   )
 })
-  
+ 
 output$confInterval_Lump = renderText(
   {
   analysisName = 'plotLumpSplitPoints'
