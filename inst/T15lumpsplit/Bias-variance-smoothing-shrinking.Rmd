@@ -39,7 +39,7 @@ saveEntriesJScode =
 helloJScode = 
   "shinyjs.helloJS = function() {alert('HELLO');};"
 shinyjs::extendShinyjs(text = saveEntriesJScode)
-shinyjs::extendShinyjs(text = helloJScode)
+shinyjs::extendShinyjs(text = helloJScode, functions=c('saveEntriesJS','helloJS'))
 ```
 
 
