@@ -38,8 +38,7 @@ saveEntriesJScode =
   "shinyjs.saveEntriesJS = function() {document.getElementById('downloadAllUserEntries').click();};"
 helloJScode = 
   "shinyjs.helloJS = function() {alert('HELLO');};"
-shinyjs::extendShinyjs(text = saveEntriesJScode)
-shinyjs::extendShinyjs(text = helloJScode, functions=c('saveEntriesJS','helloJS'))
+shinyjs::extendShinyjs(text = saveEntriesJScode, functions=c('saveEntriesJS'))
 ```
 
 
