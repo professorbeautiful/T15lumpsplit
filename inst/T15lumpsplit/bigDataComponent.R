@@ -3,18 +3,21 @@
 
 printBDCProgress =  FALSE
 
+printBDCProgress = FALSE
 
 # Usage:  bigDataComponent(analysisName='qValue')
 
 handlerForobserveEvent_myChoiceIdThisBDC = function(
   myChoiceIdThisBDC, analysisName, thisTauTrueID){
-  cat('Handler: Pressed ', myChoiceIdThisBDC, '\n')
+  if(printBDCProgress)
+    cat('Handler: Pressed ', myChoiceIdThisBDC, '\n')
   #enable(resetIdThisBDC)
   #disable(myChoiceIdThisBDC)
   currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
   BigDataMyChoice = getBigData(analysisName, myChoice=TRUE)
   BigData_tauTrue_MyChoice = getBigData_tauTrue(analysisName, myChoice=TRUE)
-  cat('   Copying BigData_tauTrue_MyChoice into numericinput: ',
+  if(printBDCProgress)
+    cat('   Copying BigData_tauTrue_MyChoice into numericinput: ',
       paste(BigData_tauTrue_MyChoice), '\n')
   updateNumericInput(
     session,
@@ -25,7 +28,8 @@ handlerForobserveEvent_myChoiceIdThisBDC = function(
   BigDataLastUsed <<- BigDataMyChoice
   setBigData_tauTrue(BigData_tauTrue_MyChoice, analysisName)
   tauTrueLastUsed <<- BigData_tauTrue_MyChoice
-  cat('   So now tauTrueLastUsed is the same: ',
+  if(printBDCProgress)
+    cat('   So now tauTrueLastUsed is the same: ',
       paste(tauTrueLastUsed), '\n')
 
 }  #### End of handlerForobserveEvent_myChoiceIdThisBDC
@@ -42,14 +46,17 @@ createBigDataParamChoiceObserver <- function(analysisName) {
            label=myName,
            eventExpr = input[[thisTauTrueID]], ## tauTrueID
            handlerExpr = {
-             cat('START: handler for ', myName, ' new input tau = /',
+             if(printBDCProgress)
+               cat('START: handler for ', myName, ' new input tau = /',
                  input[[thisTauTrueID]], '/\n')
              try(silent = FALSE, {
                isolate({
-                 cat('updateBigDataParamMyChoice: changing MyChoice')
+                 if(printBDCProgress)
+                   cat('updateBigDataParamMyChoice: changing MyChoice')
                  currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
                  if( ! exists('saved_BigDataMyChoice')) {
-                   cat(': Responding to numericInput for tauTrue: ',
+                   if(printBDCProgress)
+                     cat(': Responding to numericInput for tauTrue: ',
                        (input[[thisTauTrueID ]]))
                    if( is.null(getBigData(analysisName, myChoice=TRUE)))
                      BigDataMyChoice = BigDataOriginal
@@ -61,27 +68,33 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                    BigDataMyChoice = makeBigDataWithFeatures(
                      DLdataOriginal,
                      tauTrue=newValue)
-                   setBigData_tauTrue(value=newValue, BDCnumber=destBDCnum)
-                   setBigData_tauTrue(value=newValue, BDCnumber=destBDCnum, myChoice=TRUE)
+                   setBigData_tauTrue(value=newValue, analysisName=analysisName)
+                   setBigData_tauTrue(value=newValue, analysisName=analysisName, myChoice=TRUE)
                    setBigData(BigDataMyChoice, analysisName)
                    setBigData(BigDataMyChoice, analysisName, myChoice=TRUE)
-                   cat('BigDataMyChoice for ',  analysisName, ' is:\n')
-                   print(BigDataMyChoice[1:2,1:3])
+                   if(printBDCProgress) {
+                     cat('BigDataMyChoice for ',  analysisName, ' is:\n')
+                     print(BigDataMyChoice[1:2,1:3])
+                   }
                  }
                  else {
                    saved_BigDataMyChoice_location = find('saved_BigDataMyChoice')
-                   cat(': Restoring saved_BigDataMyChoice ',
+                   if(printBDCProgress)
+                     cat(': Restoring saved_BigDataMyChoice ',
                        #paste(saved_BigDataMyChoice),
                        'from ',
                        saved_BigDataMyChoice_location)
                    setBigData(saved_BigDataMyChoice, analysisName, myChoice=TRUE)
                    rm('saved_BigDataMyChoice', pos='.GlobalEnv')
-                   cat('Back to Original; but saved_BigDataMyChoice is saved.\n')
+                   if(printBDCProgress)
+                     cat('Back to Original; but saved_BigDataMyChoice is saved.\n')
                    if(exists('saved_BigDataMyChoice')) browser()
                  }
                  BigDataLastUsed <<- getBigData(analysisName, myChoice=TRUE)
-                 cat('\nEND: handler for ', myName, ' BigDataLastUsed is now: \n')
+                 if(printBDCProgress) {
+                   cat('\nEND: handler for ', myName, ' BigDataLastUsed is now: \n')
                  print(BigDataLastUsed[1:2, 1:4])
+                 }
                }) ### End of isolate()
              }) ### End of try()
            }
@@ -113,10 +126,12 @@ bigDataComponent = function(analysisName) {
                       eventExpr = input[[resetIdThisBDC]],
                       handlerExpr =  {
                         isolate({
-                          cat('Handler:  Pressed ', resetIdThisBDC, '\n')
+                          if(printBDCProgress)
+                            cat('Handler:  Pressed ', resetIdThisBDC, '\n')
                           currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
                           saved_BigDataMyChoice <<- getBigData(analysisName, myChoice=TRUE)
-                          cat('saved_BigDataMyChoice:', paste(saved_BigDataMyChoice), '\n')
+                          if(printBDCProgress)
+                            cat('saved_BigDataMyChoice:', paste(saved_BigDataMyChoice), '\n')
                           updateNumericInput(
                             session,
                             thisTauTrueID,
@@ -145,7 +160,8 @@ bigDataComponent = function(analysisName) {
   observeEvent(list(input$regenerateFeatures, input[[thisTauTrueID]]), {
     try( {
       tauTrue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
-      cat('BDC:  tauTrue: ', tauTrue, '  analysisName=', analysisName, '\n')
+      if(printBDCProgress)
+        cat('BDC:  tauTrue: ', tauTrue, '  analysisName=', analysisName, '\n')
       tauTrueLastUsed <<- tauTrue
       isolate({
         setBigData(

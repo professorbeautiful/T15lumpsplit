@@ -19,7 +19,7 @@ jumpBackWithPanel_BDC = function(analysisNumber, thisBDCNumber) {
         )
         )
     #) ## OK it works!
-  labelString = print(paste('Jump to other analyses (100 features)', '___',
+  labelString = (paste('Jump to other analyses (100 features)', '___',
               #getSequenceLength(sequenceType="BDC"))
               thisBDCNumber) )
   conditionalPanelWithCheckbox(

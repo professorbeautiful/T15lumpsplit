@@ -11,7 +11,7 @@
 
 
 currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
-printFromAnalysisReactiveSetup_DTC = TRUE
+printFromAnalysisReactiveSetup_DTC = FALSE
 
 if( ! exists(x = 'thisData')) thisData = '(not set yet)'
 if( ! exists(x = 'DLdataLastUsed')) DLdataLastUsed = '(not set yet)'

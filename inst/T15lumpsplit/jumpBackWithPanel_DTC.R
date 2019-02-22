@@ -17,7 +17,7 @@ jumpBackWithPanel_DTC = function(analysisNumber, thisDTCNumber) {
         )
         )
     #) ## OK it works!
-  labelString = print(paste('Jump to other analyses', '___',
+  labelString = (paste('Jump to other analyses', '___',
               #getSequenceLength(sequenceType="DTC"))
               thisDTCNumber) )
   conditionalPanelWithCheckbox(

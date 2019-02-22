@@ -32,15 +32,18 @@ createDLdataChoiceObserver <- function(analysisName) {
                input[[theCellIds[[3]] ]], #RL
                input[[theCellIds[[4]] ]]), #NL
            handlerExpr = {
-             cat('START: handler for ', myName, ' new inputs: ',
+             if(printDTCProgress)
+               cat('START: handler for ', myName, ' new inputs: ',
                  paste(input[[theCellIds[[1]]]],input[[theCellIds[[2]]]],
                        input[[theCellIds[[3]]]],input[[theCellIds[[4]]]]), '\n')
              try(silent = FALSE, {
                isolate({
-                 cat('updateDLdataMyChoice: changing MyChoice')
+                 if(printDTCProgress)
+                   cat('updateDLdataMyChoice: changing MyChoice')
                  currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
                  if( ! exists('saved_DLdataMyChoice')) {
-                   cat(': Responding to numericInputs: ')
+                   if(printDTCProgress)
+                     cat(': Responding to numericInputs: ')
                    if( is.null(getDLdata(analysisName, myChoice=TRUE)))
                      DLdataMyChoice = DLdataOriginal
                    else
@@ -55,21 +58,25 @@ createDLdataChoiceObserver <- function(analysisName) {
                    }
                    setDLdata(DLdataMyChoice, analysisName)
                    setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
-                   cat(paste(DLdataMyChoice), ' ', analysisName)
+                   if(printDTCProgress)
+                     cat(paste(DLdataMyChoice), ' ', analysisName)
                  }
                  else {
                    saved_DLdataMyChoice_location = find('saved_DLdataMyChoice')
-                   cat(': Restoring saved_DLdataMyChoice ',
+                   if(printDTCProgress)
+                     cat(': Restoring saved_DLdataMyChoice ',
                        paste(saved_DLdataMyChoice),
                        'from ',
                        saved_DLdataMyChoice_location)
                    setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
                    rm('saved_DLdataMyChoice', pos='.GlobalEnv')
-                   cat('Back to Original; but saved_DLdataMyChoice is saved.\n')
+                   if(printDTCProgress)
+                     cat('Back to Original; but saved_DLdataMyChoice is saved.\n')
                    if(exists('saved_DLdataMyChoice')) browser()
                  }
                  DLdataLastUsed <<- getDLdata(analysisName, myChoice=TRUE)
-                 cat('\nEND: handler for ', myName, ' DLdataLastUsed is now: ',
+                 if(printDTCProgress)
+                   cat('\nEND: handler for ', myName, ' DLdataLastUsed is now: ',
                      paste(DLdataLastUsed), '\n')
                }) ### End of isolate()
              }) ### End of try()
@@ -124,7 +131,8 @@ dataTableComponent = function(showhide='show', analysisName) {
                       eventExpr = input[[resetIdThisDTC]],
                       handlerExpr =  {
                         isolate({
-                          cat('Handler:  Pressed ', resetIdThisDTC, '\n')
+                          if(printDTCProgress)
+                            cat('Handler:  Pressed ', resetIdThisDTC, '\n')
                           #disable(resetIdThisDTC)
                           #enable(myChoiceIdThisDTC)
                           ### PREVENT placing DLdataOriginal into
@@ -132,7 +140,8 @@ dataTableComponent = function(showhide='show', analysisName) {
                           currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
 
                           saved_DLdataMyChoice <<- getDLdata(analysisName, myChoice=TRUE)
-                          cat('saved_DLdataMyChoice:', paste(saved_DLdataMyChoice), '\n')
+                          if(printDTCProgress)
+                            cat('saved_DLdataMyChoice:', paste(saved_DLdataMyChoice), '\n')
                           # updater = get(paste0('updateDLdataMyChoice_', analysisName))
                           # counter= 0
                           # while(updater$.suspended == FALSE)
@@ -150,7 +159,8 @@ dataTableComponent = function(showhide='show', analysisName) {
                           DLdataLastUsed <<- DLdataOriginal
                           setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
                         })  ### end of the isolate() call
-                        cat('END: handler for ', resetIdThisDTC, ' DLdataLastUsed is now: ',
+                        if(printDTCProgress)
+                          cat('END: handler for ', resetIdThisDTC, ' DLdataLastUsed is now: ',
                             paste(DLdataLastUsed), '\n')
                       })
   )
@@ -163,12 +173,14 @@ dataTableComponent = function(showhide='show', analysisName) {
            eventExpr = input[[myChoiceIdThisDTC]],
            handlerExpr =  {
              isolate({
-               cat('Handler: Pressed ', myChoiceIdThisDTC, '\n')
+               if(printDTCProgress)
+                 cat('Handler: Pressed ', myChoiceIdThisDTC, '\n')
                #enable(resetIdThisDTC)
                #disable(myChoiceIdThisDTC)
                currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
                DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
-               cat('   Copying DLdataMyChoice into numericinputs: ',
+               if(printDTCProgress)
+                 cat('   Copying DLdataMyChoice into numericinputs: ',
                    paste(DLdataMyChoice), '\n')
                for(cellnum in 1:4)
                  updateNumericInput(
@@ -178,7 +190,8 @@ dataTableComponent = function(showhide='show', analysisName) {
                  )
                setDLdata(DLdataMyChoice, analysisName)
                DLdataLastUsed <<- DLdataMyChoice
-               cat('   So now DLdataLastUsed is the same: ',
+               if(printDTCProgress)
+                 cat('   So now DLdataLastUsed is the same: ',
                    paste(DLdataLastUsed), '\n')
              })
            })
