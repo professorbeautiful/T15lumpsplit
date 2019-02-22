@@ -8,6 +8,7 @@ QandAha = function(context='QA', linkLabel= "save") {
   textareaIdThisQA = paste0('id', outputIdThisQA)
   linkIdThisQA = paste0('id', outputIdThisQA, "_link")
   observeEvent(eventExpr = input[[linkIdThisQA]], {
+    cat('Calling saveEntriesJS', date(), '\n')
       js$saveEntriesJS()
   })
   splitLayout(cellWidths = c("75%", "25%"),
