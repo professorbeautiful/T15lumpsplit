@@ -1540,7 +1540,7 @@ bigDataComponent(analysisName='qValue')
 TextQuestion('When you change the data set, what changes do you see, & why?')
 ```
 
-```{r Q-qvalues-changing-extra-features}
+```{r TQ-qvalues-changing-extra-features}
 TextQuestion('When you regenerate the extra features, what changes do you see, & why?')
 ```
 
