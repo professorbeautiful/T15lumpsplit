@@ -28,11 +28,18 @@ options(knitr.duplicate.label = 'allow')
 #shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
 ```{r, context="server", echo=FALSE}
-#shinyjs::useShinyjs(html = TRUE)
+library(shinyjs)
+shinyjs::useShinyjs(html = TRUE)
 # require(shinyjs)
-# useShinyjs(rmd=TRUE)
+shinyjs::useShinyjs(rmd=TRUE)
 #<script src="shinyjs/inject.js"></script>
 
+saveEntriesJScode = 
+  "shinyjs.saveEntriesJS = function() {document.getElementById('downloadAllUserEntries').click();};"
+helloJScode = 
+  "shinyjs.helloJS = function() {alert('HELLO');};"
+shinyjs::extendShinyjs(text = saveEntriesJScode)
+shinyjs::extendShinyjs(text = helloJScode)
 ```
 
 

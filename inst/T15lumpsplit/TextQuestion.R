@@ -6,11 +6,21 @@ TextQuestion = function(question="What do you think?") {
 
   outputIdThisTQ = paste0('TQ', thisTQNumber)
   textareaIdThisTQ = paste0('id', outputIdThisTQ)
+  linkIdThisTQ = paste0('id', outputIdThisTQ, "_link")
+  observeEvent(eventExpr = input[[linkIdThisTQ]], {
+    js$saveEntriesJS()
+  })
   output[[outputIdThisTQ]] = renderUI({
     div(HTML(paste0(strong("A question for you: "), em(question))),
-        textAreaInput(inputId = textareaIdThisTQ,
-                      label = paste("(TQ", thisTQNumber, ")",
-                                    "Your answer:")
+        splitLayout(cellWidths = c("75%", "25%"),
+          #          style='display:block; width: 200%',
+          textAreaInput(inputId = textareaIdThisTQ, width='200%',
+                        label = paste("(TQ", thisTQNumber, ")",
+                                      "Your answer:   ")
+          )
+          , actionLink(inputId = linkIdThisTQ,
+                         label = '(click to save all responses)' )
+          #(click or shift-cmd S saves all responses)')
         )
     )
   })
