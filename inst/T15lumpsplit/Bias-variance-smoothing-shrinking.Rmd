@@ -24,10 +24,10 @@ knitr::opts_chunk$set(echo = FALSE)
 options(knitr.duplicate.label = 'allow')
 ```
 
-```{r, echo=FALSE}
+
+```{r shinyjs, context="server", echo=FALSE, include=FALSE}
+
 #shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
-```
-```{r, context="server", echo=FALSE}
 library(shinyjs)
 shinyjs::useShinyjs(html = TRUE)
 # require(shinyjs)
