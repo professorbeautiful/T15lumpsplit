@@ -1397,11 +1397,17 @@ bigDataComponent(analysisName=analysisName)
 cat(' tau comparison: ', analysisName, ' ', mapAnalysisToBDCnumber[analysisName],
     get_thisTauTrueID(mapAnalysisToBDCnumber[analysisName]),
     '\n')
-output$tauEstEB = renderText(rValues$tauEstimateEB)
+output$tauEstEB = renderText({
+  try(silent = TRUE, {rValues$tauEstimateEB}) 
+})
 thisTauTrueID = get_thisTauTrueID(mapAnalysisToBDCnumber[analysisName])
 thisTauTrueID_text = paste0(thisTauTrueID, '_text')
-output[[thisTauTrueID_text]] = renderText(
-  signif(digits=4, getBigData_tauTrue(analysisName)) )
+output[[thisTauTrueID_text]] = renderText({
+  try(silent = TRUE, {
+    signif(digits=4, getBigData_tauTrue(analysisName)) 
+    ## the 'try' is just to protect from a meaningless error msg first time through.
+  })
+})
 ```
 
 The estimated variance of the logits is `r  textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r  textOutput(thisTauTrueID_text, inline=TRUE)` ) .
