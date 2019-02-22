@@ -1562,6 +1562,16 @@ We won't illustrate this with data here, but think about this situation and how 
 QandAha(context='QA-big-joint-priors')
 ```
 
+#  Final thoughts
+
+Thanks for trying out this material. Any thoughts about your experience with this module will be appreciated.
+
+```{r TQ-final-thoughts}
+TextQuestion('What worked well, what worked badly, what needs improvement?')
+```
+
+
+
 #  Save your Comments and Answers
 ```{r assembleComments}
 
