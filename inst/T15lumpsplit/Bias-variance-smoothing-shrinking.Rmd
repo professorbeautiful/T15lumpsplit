@@ -1570,7 +1570,7 @@ Thanks for trying out this material. Any thoughts about your experience with thi
 TextQuestion('What worked well, what worked badly, what needs improvement?')
 ```
 
-
+The code for this module is hosted at ['professorbeautiful/T15lumpsplit'](https://github.com/professorbeautiful/T15lumpsplit).
 
 #  Save your Comments and Answers
 ```{r assembleComments}
