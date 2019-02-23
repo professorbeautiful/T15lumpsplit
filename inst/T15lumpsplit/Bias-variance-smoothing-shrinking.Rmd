@@ -17,6 +17,10 @@ output:
       smooth_scroll: no
 ---
 
+\[
+\newcommand{\mylarge}[1] {\large{#1}\normalsize}
+\newcommand{\mynormal}[1] {{\normalsize{#1}}}
+\]
 
 ```{r setup, include=FALSE}
 

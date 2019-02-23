@@ -2,10 +2,6 @@
   <!-- I suggest using \[   \] instead of $$    $$ and \(   \) for $   $. Also instead of using static \big( and \big), it is better to use dynamic \left( and \right) -->
   <!-- \raisebox{0.2ex} -->
   
-\[
-\newcommand{\mylarge}[1] {\large{#1}\normalsize}
-\newcommand{\mynormal}[1] {{\normalsize{#1}}}
-\]
 *Setup*:  The data from the table are the four numbers \[\mylarge{\bf{n}} = ({\mylarge{n}_{RD}},{\mylarge{n}_{RL}},{\mylarge{n}_{ND}},{\mylarge{n}_{NL}}).\]
 For example ${\mylarge{n}_{RD}}$  is shorthand for the number of patients for which the outcome $Y=R$ and the feature $X=D$.
 
