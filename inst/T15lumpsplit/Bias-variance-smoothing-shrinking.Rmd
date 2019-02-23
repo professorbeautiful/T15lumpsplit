@@ -891,7 +891,10 @@ conditionalPanelWithCheckboxPDF(
 
 Let's put those worries aside for now.
 
-Let's generate 99 extra features and examine how the methods behave when applied when the extra features are added to the D/L feature of our little data set. You can use either the original data or the data as you may have modified it.
+What if we add lots of features to the feature ($X_{DL}$) of our little data set? How will the methods we have used behave when applied in this "big" data set.
+Let's refer to $X_{DL}$ as $X_1$, and let's generate 99 extra features $X_2 ... X_{100}$ (each with only two possible values, 0 or 1).
+<!-- You can use either the original data or the data as you may have modified it. -->
+
 
 ```{r makeDLdataDFYesNoYes  }
 #  OK, mission accomplished, example found. We need never run this again.
@@ -1052,6 +1055,7 @@ allChisqPs_original = allPvalues$allChisqPs
 Now that we have a data set with lots of features, let's do Fisher exact tests and chisquare tests to all the features. The red "X" is of course our original data feature, with $X_{DL}$ = D or L.
 
 
+
 ```{r pvaluesPlots}
 jumpList_BDC = c(jumpList_BDC, pvaluesPlots='P-value plots')
 source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
@@ -1072,8 +1076,20 @@ fun.pvaluesPlots = function() {
   points(allChisqPs[1], allFisherPs[1],
          pch='X', col='red', cex=2)
 } 
+
 #debug(fun.pvaluesPlots)
 plotOutput('pvaluesPlots')
+```
+
+For each of these features $X_2 ... X_{100}$, the disparity between the two groups $X_j = 0$ and $X_j = 1$ can be represented as the odds ratio:
+
+\[\frac{{odds(Y = R|{X_j} = 0)}}{{odds(Y = R|{X_j} = 1)}} = \frac{{\Pr (Y = R|{X_j} = 0)/\Pr (Y = N|{X_j} = 0)}}{{\Pr (Y = R|{X_j} = 1)/\Pr (Y = N|{X_j} = 1)}}\]
+
+Initially the extra 99 feature are all "null hypotheses". The odds ratios all equal 1, so the odds that $Y=R$ does not change with $X_j$. But we can explore what happens if they do not all equal 1.
+You can control Omega, the variance of logs of the odds ratios below. When Omega equals zero, the odds ratios all equal 1. Otherwise, they will spread out, some bigger than 1 and some smaller.
+
+
+```{r }
 bigDataComponent(analysisName=analysisName)
 ```
 
