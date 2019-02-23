@@ -8,47 +8,47 @@ printBDCProgress = FALSE
 # Usage:  bigDataComponent(analysisName='qValue')
 
 handlerForobserveEvent_myChoiceIdThisBDC = function(
-  myChoiceIdThisBDC, analysisName, thisTauTrueID){
+  myChoiceIdThisBDC, analysisName, thisOmegaID){
   if(printBDCProgress)
     cat('Handler: Pressed ', myChoiceIdThisBDC, '\n')
   #enable(resetIdThisBDC)
   #disable(myChoiceIdThisBDC)
   currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
   BigDataMyChoice = getBigData(analysisName, myChoice=TRUE)
-  BigData_tauTrue_MyChoice = getBigData_tauTrue(analysisName, myChoice=TRUE)
+  BigData_Omega_MyChoice = getBigData_Omega(analysisName, myChoice=TRUE)
   if(printBDCProgress)
-    cat('   Copying BigData_tauTrue_MyChoice into numericinput: ',
-      paste(BigData_tauTrue_MyChoice), '\n')
+    cat('   Copying BigData_Omega_MyChoice into numericinput: ',
+      paste(BigData_Omega_MyChoice), '\n')
   updateNumericInput(
     session,
-    thisTauTrueID,
-    value = BigData_tauTrue_MyChoice
+    thisOmegaID,
+    value = BigData_Omega_MyChoice
   )
   setBigData(BigDataMyChoice, analysisName)
   BigDataLastUsed <<- BigDataMyChoice
-  setBigData_tauTrue(BigData_tauTrue_MyChoice, analysisName)
-  tauTrueLastUsed <<- BigData_tauTrue_MyChoice
+  setBigData_Omega(BigData_Omega_MyChoice, analysisName)
+  OmegaLastUsed <<- BigData_Omega_MyChoice
   if(printBDCProgress)
-    cat('   So now tauTrueLastUsed is the same: ',
-      paste(tauTrueLastUsed), '\n')
+    cat('   So now OmegaLastUsed is the same: ',
+      paste(OmegaLastUsed), '\n')
 
 }  #### End of handlerForobserveEvent_myChoiceIdThisBDC
 
 createBigDataParamChoiceObserver <- function(analysisName) {
   myName = paste0('bigDataParamChoiceObserver_', analysisName)
   analysisNumber = match(analysisName, names(jumpList_BDC))
-  thisTauTrueID = get_thisTauTrueID(analysisNumber)
-  #cat(myName, ': thisTauTrueID=', thisTauTrueID, '\n')
-  ####  Initially, only tauTrue.
+  thisOmegaID = get_thisOmegaID(analysisNumber)
+  #cat(myName, ': thisOmegaID=', thisOmegaID, '\n')
+  ####  Initially, only Omega.
   assign(myName,
          pos=1,
          observeEvent(
            label=myName,
-           eventExpr = input[[thisTauTrueID]], ## tauTrueID
+           eventExpr = input[[thisOmegaID]], ## OmegaID
            handlerExpr = {
              if(printBDCProgress)
                cat('START: handler for ', myName, ' new input tau = /',
-                 input[[thisTauTrueID]], '/\n')
+                 input[[thisOmegaID]], '/\n')
              try(silent = FALSE, {
                isolate({
                  if(printBDCProgress)
@@ -56,20 +56,20 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                  currentBDCnumber = mapAnalysisToBDCnumber[analysisName]
                  if( ! exists('saved_BigDataMyChoice')) {
                    if(printBDCProgress)
-                     cat(': Responding to numericInput for tauTrue: ',
-                       (input[[thisTauTrueID ]]))
+                     cat(': Responding to numericInput for Omega: ',
+                       (input[[thisOmegaID ]]))
                    if( is.null(getBigData(analysisName, myChoice=TRUE)))
                      BigDataMyChoice = BigDataOriginal
                    else
                      BigDataMyChoice = getBigData(analysisName, myChoice=TRUE)
-                   newValue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
+                   newValue = makeSureOmegaIsGood(input[[thisOmegaID]])
                    #newValue = round(newValue)
                    if(newValue == 0) set.seed(45)
                    BigDataMyChoice = makeBigDataWithFeatures(
                      DLdataOriginal,
-                     tauTrue=newValue)
-                   setBigData_tauTrue(value=newValue, analysisName=analysisName)
-                   setBigData_tauTrue(value=newValue, analysisName=analysisName, myChoice=TRUE)
+                     Omega=newValue)
+                   setBigData_Omega(value=newValue, analysisName=analysisName)
+                   setBigData_Omega(value=newValue, analysisName=analysisName, myChoice=TRUE)
                    setBigData(BigDataMyChoice, analysisName)
                    setBigData(BigDataMyChoice, analysisName, myChoice=TRUE)
                    if(printBDCProgress) {
@@ -115,10 +115,10 @@ bigDataComponent = function(analysisName) {
   myChoiceIdThisBDC = paste0('idMyChoiceBDC', thisBDCNumber)
 
     #  theBigDataController = paste0('BigDataController_ID_', analysisNumber)
-  thisTauTrueID = get_thisTauTrueID(analysisNumber)
+  thisOmegaID = get_thisOmegaID(analysisNumber)
 
   #### resetIdThisBDC button ####
-  'When resetIdThisBDC Button  is clicked, update tauTrueId input to zero and copy to tauTrueLastUsed.'
+  'When resetIdThisBDC Button  is clicked, update OmegaId input to zero and copy to OmegaLastUsed.'
   myName = paste0('observeEvent_resetIdThisBDC_', thisBDCNumber)
   assign(myName,
          pos=1,
@@ -134,7 +134,7 @@ bigDataComponent = function(analysisName) {
                             cat('saved_BigDataMyChoice:', paste(saved_BigDataMyChoice), '\n')
                           updateNumericInput(
                             session,
-                            thisTauTrueID,
+                            thisOmegaID,
                             value = 0)
                           setBigData(BigDataOriginal, analysisName)
                           BigDataLastUsed <<- BigDataOriginal
@@ -151,22 +151,22 @@ bigDataComponent = function(analysisName) {
            eventExpr = input[[myChoiceIdThisBDC]],
            handlerExpr =  {
              handlerForobserveEvent_myChoiceIdThisBDC(
-               myChoiceIdThisBDC, analysisName, thisTauTrueID)
+               myChoiceIdThisBDC, analysisName, thisOmegaID)
            }
          )
   )
 
   ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified BigData.
-  observeEvent(list(input$regenerateFeatures, input[[thisTauTrueID]]), {
+  observeEvent(list(input$regenerateFeatures, input[[thisOmegaID]]), {
     try( {
-      tauTrue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
+      Omega = makeSureOmegaIsGood(input[[thisOmegaID]])
       if(printBDCProgress)
-        cat('BDC:  tauTrue: ', tauTrue, '  analysisName=', analysisName, '\n')
-      tauTrueLastUsed <<- tauTrue
+        cat('BDC:  Omega: ', Omega, '  analysisName=', analysisName, '\n')
+      OmegaLastUsed <<- Omega
       isolate({
         setBigData(
           makeBigDataWithFeatures(DLdata = DLdataOriginal,
-                                  tauTrue = tauTrue),
+                                  Omega = Omega),
           analysisName, myChoice=FALSE)
       })
       #generateAllPvalues(rValues$BigDataDFwithFeatures)
@@ -179,7 +179,7 @@ bigDataComponent = function(analysisName) {
   output[[outputIdThisBDC]] = renderUI({
     fluidRow(
       column(6,
-             numericInput(thisTauTrueID, 'Variance of the Log Odds Ratio ',
+             numericInput(thisOmegaID, 'Omega: the variance of the Log Odds Ratio',
                           value = 0, min=0,  step=0.1),
 
              ##```{r regenerateFeatures button}
@@ -188,9 +188,9 @@ bigDataComponent = function(analysisName) {
       column(6, br(), br(),
              #disabled(  #Start disabled. Doesn't seem to work.
              actionButton(inputId = resetIdThisBDC,
-                          label = "Reset tauTrue and multi-feature data to original") ,
+                          label = "Reset Omega and multi-feature data to original") ,
              actionButton(inputId = myChoiceIdThisBDC,
-                          label = "Reset tauTrue and multi-feature data to my choice"),
+                          label = "Reset Omega and multi-feature data to my choice"),
              br(),
              jumpBackWithPanel_BDC(analysisNumber, thisBDCNumber)
 

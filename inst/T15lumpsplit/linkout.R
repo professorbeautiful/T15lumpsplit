@@ -135,13 +135,13 @@ linktextProcessor = function() {
   if(whichContext == 'BDC') {
     destAnalysisNumber = which(jumpList_BDC == gsub('▸ ', '', input$linktext) )
     destBDCnum = getBDCnumber(destAnalysisNumber)
-    cat('linktextProcessor: copying ', tauTrueLastUsed,
+    cat('linktextProcessor: copying ', OmegaLastUsed,
         ' from source=', input$currentLocationId,
         ' to dest = ', input$linktext, '\n',
         '  destAnalysisNumber=', destAnalysisNumber,
         '  destBDCnum=', destBDCnum, '\n')
-    setBigData_tauTrue(value=tauTrueLastUsed, BDCnumber=destBDCnum)
-    setBigData_tauTrue(value=tauTrueLastUsed, BDCnumber=destBDCnum, myChoice=TRUE)
+    setBigData_Omega(value=OmegaLastUsed, BDCnumber=destBDCnum)
+    setBigData_Omega(value=OmegaLastUsed, BDCnumber=destBDCnum, myChoice=TRUE)
   }
 
 }

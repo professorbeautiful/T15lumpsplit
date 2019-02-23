@@ -1,6 +1,6 @@
 '#### Complication:
 For DTC, the data in the numericInputs and DLdata are the same numbers.
-For BDC, tauTrue does not determine BigData and vice versa.
+For BDC, Omega does not determine BigData and vice versa.
 So we have to manage them both.'
 
 getBigData = function(analysisName, myChoice=FALSE, BDCnumber) {
@@ -18,28 +18,28 @@ setBigData = function(value, analysisName, myChoice=FALSE, BDCnumber) {
   rValues[[ index ]] = value
 }
 
-get_thisTauTrueID =  function(aN) {
+get_thisOmegaID =  function(aN) {
   if(is.character(aN))
     aN  = mapAnalysisToBDCnumber[aN]
   paste0('BigDataController_ID_', aN)
 }
 
-getBigData_tauTrue = function(analysisName, myChoice=FALSE, BDCnumber) {
+getBigData_Omega = function(analysisName, myChoice=FALSE, BDCnumber) {
   if( ! missing(analysisName))
     BDCnumber = mapAnalysisToBDCnumber[analysisName]
-  index = paste0(ifelse(myChoice, 'BigData_tauTrue_MyChoice', 'BigData_tauTrue'),
+  index = paste0(ifelse(myChoice, 'BigData_Omega_MyChoice', 'BigData_Omega'),
                  BDCnumber)
   rValues[[ index ]]
 }
-setBigData_tauTrue = function(value, analysisName, myChoice=FALSE, BDCnumber) {
+setBigData_Omega = function(value, analysisName, myChoice=FALSE, BDCnumber) {
   if( missing(analysisName))
     analysisName = names(mapAnalysisToBDCnumber)[
       match(BDCnumber, mapAnalysisToBDCnumber)]
   if( ! missing(analysisName))
     BDCnumber = mapAnalysisToBDCnumber[analysisName]
-  updateNumericInput(session, get_thisTauTrueID( analysisName),
+  updateNumericInput(session, get_thisOmegaID( analysisName),
                      value=value)
-  index = paste0(ifelse(myChoice, 'BigData_tauTrue_MyChoice', 'BigData_tauTrue'),
+  index = paste0(ifelse(myChoice, 'BigData_Omega_MyChoice', 'BigData_Omega'),
                  BDCnumber)
   rValues[[ index ]] = value
 }

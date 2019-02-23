@@ -933,7 +933,7 @@ makeDLdataDF = function(DLdata=DLdataOriginal) {
 makeBigDataWithFeatures = function(DLdata = DLdataOriginal,
                                   ## Make extra features.
                                   NextraFeatures = 99, beta1=10, beta2=10,
-                                  tauTrue = 0,
+                                  Omega = 0,
                                   seed){
   DLdataDF = makeDLdataDF(DLdata)
   if(! missing(seed))
@@ -942,7 +942,7 @@ makeBigDataWithFeatures = function(DLdata = DLdataOriginal,
   extraFeaturesOdds_R <<-
     extraFeaturesProbs_R/(1-extraFeaturesProbs_R)
   
-  if( abs(tauTrue) < 1e-9) {
+  if( abs(Omega) < 1e-9) {
     oddsratios = 1
     extraFeaturesProbs_N <<- extraFeaturesProbs_R
     extraFeaturesOdds_N <<- extraFeaturesOdds_R
@@ -951,7 +951,7 @@ makeBigDataWithFeatures = function(DLdata = DLdataOriginal,
              rbinom, n=sum(DLdata),size=1)
     )
   } else {
-    oddsratios <<- exp(rnorm(NextraFeatures, 0, sqrt(tauTrue)))
+    oddsratios <<- exp(rnorm(NextraFeatures, 0, sqrt(Omega)))
     extraFeaturesOdds_N <<- extraFeaturesOdds_R * oddsratios
     extraFeaturesProbs_N <<-
       extraFeaturesOdds_N/(1+extraFeaturesOdds_N)
@@ -1004,13 +1004,13 @@ generateAllPvalues = function(
 #debugonce(generateAllPvalues)
 
 
-makeSureTauTrueIsGood = function(tauTrue) {
-  tauTrue = as.numeric(tauTrue)
-  if( ! (length(tauTrue)==1) )
-    tauTrue = 0
-  if(is.na(tauTrue)  | is.nan(tauTrue) )
-    tauTrue = 0
-  return(tauTrue)
+makeSureOmegaIsGood = function(Omega) {
+  Omega = as.numeric(Omega)
+  if( ! (length(Omega)==1) )
+    Omega = 0
+  if(is.na(Omega)  | is.nan(Omega) )
+    Omega = 0
+  return(Omega)
 }
 ```
 
@@ -1127,9 +1127,9 @@ div(
                value = 1, min=0,  step=0.1)
 )
 
-# observeEvent( input[[get_thisTauTrueID(analysisName)]], {
-#   tauTrueLastUsed <<- input[[get_thisTauTrueID(analysisName)]]
-#   cat('Setting tauTrueLastUsed to ', tauTrueLastUsed, '\n')
+# observeEvent( input[[get_thisOmegaID(analysisName)]], {
+#   OmegaLastUsed <<- input[[get_thisOmegaID(analysisName)]]
+#   cat('Setting OmegaLastUsed to ', OmegaLastUsed, '\n')
 # })
 
 output$BHtable = renderTable(
@@ -1139,8 +1139,8 @@ output$BHtable = renderTable(
     input$qStarID; 
     currentBDCnumber = mapAnalysisToBDCnumber['BHtable']
     thisBigDataID = paste0('BigData', currentBDCnumber)
-    thisTauTrueID = get_thisTauTrueID('BHtable')
-    thisTauTrue = makeSureTauTrueIsGood(input[[thisTauTrueID]])
+    thisOmegaID = get_thisOmegaID('BHtable')
+    thisOmega = makeSureOmegaIsGood(input[[thisOmegaID]])
 
     fun.BHtable()
   }
@@ -1406,22 +1406,22 @@ bigDataComponent(analysisName=analysisName)
 
 ```{r tau comparison}
 cat(' tau comparison: ', analysisName, ' ', mapAnalysisToBDCnumber[analysisName],
-    get_thisTauTrueID(mapAnalysisToBDCnumber[analysisName]),
+    get_thisOmegaID(mapAnalysisToBDCnumber[analysisName]),
     '\n')
 output$tauEstEB = renderText({
   try(silent = TRUE, {rValues$tauEstimateEB}) 
 })
-thisTauTrueID = get_thisTauTrueID(mapAnalysisToBDCnumber[analysisName])
-thisTauTrueID_text = paste0(thisTauTrueID, '_text')
-output[[thisTauTrueID_text]] = renderText({
+thisOmegaID = get_thisOmegaID(mapAnalysisToBDCnumber[analysisName])
+thisOmegaID_text = paste0(thisOmegaID, '_text')
+output[[thisOmegaID_text]] = renderText({
   try(silent = TRUE, {
-    signif(digits=4, getBigData_tauTrue(analysisName)) 
+    signif(digits=4, getBigData_Omega(analysisName)) 
     ## the 'try' is just to protect from a meaningless error msg first time through.
   })
 })
 ```
 
-The estimated variance of the logits is `r  textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r  textOutput(thisTauTrueID_text, inline=TRUE)` ) .
+The estimated variance of the logits is `r  textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r  textOutput(thisOmegaID_text, inline=TRUE)` ) .
 
 
 ```{r sharing information among the features justified}

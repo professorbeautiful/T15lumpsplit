@@ -1,5 +1,5 @@
 # observeEvent(input$linktext, {
-#   # update tauTrue for the corresponding analysis
+#   # update Omega for the corresponding analysis
 #   analysisName = names(jumpList_BDC)[match(input$linktext, jumpList_BDC)]
 #   if(!is.na(analysisName)) {
 #     cat('observeEvent for linktext, analysisName is ', analysisName, '\n')
