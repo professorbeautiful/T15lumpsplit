@@ -24,7 +24,7 @@ if(printFromAnalysisReactiveSetup_DTC) {
       'rValues DLdata: ',
       paste(rValues[[paste0('DLdata', currentDTCnumber) ]]))
 }
-isolate({
+#isolate({
   if(is.null(
     rValues[[paste0('DLdata', currentDTCnumber) ]]
   ) )
@@ -37,4 +37,4 @@ isolate({
         'rValues DLdata: ')
     print(paste(rValues[[paste0('DLdata', currentDTCnumber) ]]))
   }
-})
+#})
