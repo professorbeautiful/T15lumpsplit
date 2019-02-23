@@ -1,24 +1,42 @@
-*Setup*:  The data from the table are the four numbers \[{\bf{n}} = ({n_{RD}},{n_{RL}},{n_{ND}},{n_{NL}}).\]
-For example ${n_{RD}}$  is shorthand for the number of patients for which the outcome $Y=R$ and the feature $X=D$.
+  <!-- https://engineering.purdue.edu/ECN/Support/KB/Docs/LaTeXChangingTheFont -->
+  <!-- I suggest using \[   \] instead of $$    $$ and \(   \) for $   $. Also instead of using static \big( and \big), it is better to use dynamic \left( and \right) -->
+  <!-- \raisebox{0.2ex} -->
+  
+\[
+\newcommand{\mylarge}[1] {\large{#1}\normalsize}
+\newcommand{\mynormal}[1] {{\normalsize{#1}}}
+\]
+*Setup*:  The data from the table are the four numbers \[\mylarge{\bf{n}} = ({\mylarge{n}_{RD}},{\mylarge{n}_{RL}},{\mylarge{n}_{ND}},{\mylarge{n}_{NL}}).\]
+For example ${\mylarge{n}_{RD}}$  is shorthand for the number of patients for which the outcome $Y=R$ and the feature $X=D$.
 
 Parametrize the cell count probabilities as  
-\[{\bf{p}} = ({p_{RD}},{p_{RL}},{p_{ND}},{p_{NL}}).\]
+\[\mylarge{\bf{p}} = ({\mylarge{p}_{RD}},{\mylarge{p}_{RL}},{\mylarge{p}_{ND}},{\mylarge{p}_{NL}}).\]
 
-For example ${p_{RD}}$  is shorthand for the probability that the outcome $Y=R$ and the feature $X=D$. These four probabilities add to 1.
+For example ${\mylarge{p}_{RD}}$  is shorthand for the probability that the outcome $Y=R$ and the feature $X=D$. These four probabilities add to 1.
 
-The likelihood function is  \[\ell ({\bf{p}}) = p_{RD}^{{n_{RD}}} \cdot p_{RL}^{{n_{RL}}} \cdot p_{ND}^{{n_{ND}}} \cdot p_{NL}^{{n_{NL}}}.\]  
 
-A likelihood function compares different explanations for the observed data. In this case, the "different explanations" are all the possible values of the probability vector ${\bf{p}}$.
+The likelihood function is  \[\mylarge{\ell} ({\bf{p}}) = (\mylarge{p}_{RD})^{{\mylarge{n}_{RD}}} ~~ (\mylarge{p}_{RL})^{{\mylarge{n}_{RL}}} ~~ (\mylarge{p}_{ND})^{{\mylarge{n}_{ND}}} ~~ (\mylarge{p}_{NL})^{{\mylarge{n}_{NL}}}\]  .
 
-Different sampling plans have different distributions.
+<!-- Using ~~ in place of \cdot -->
 
-•	If the sample size is fixed by design at 100, then the model is *multinomial*, and the given parametrization ${\bf{p}}$ is natural.  
-•	If the two bottom margins are fixed by design, the model is *a product of independent binomials*, and the natural parametrization is  $({p_{R~.~D}},{p_{R~.~L}})$, where each ${p_{R~.~X}}$ 
+Likelihood functions are powerful tools in statistics, with many uses.
+A likelihood function compares different explanations for the observed data. In this case, the "different explanations" are all the different possible values of the probability vector ${\bf{p}}$.
+
+Different sampling plans have different distributions but do not affect the likelihood function. Multiplying a likelihood function with a number $K(\mylarge{\bf{n}})$ that depends only on the observed data $\mylarge{\bf{n}}$ and does not depend on the unknown "explanation" $\mylarge{\bf{p}}$ does NOT change the likelihood function, in the sense that every use of the likelihood function that number $K$ washes out.
+
+•	If the sample size is fixed by design at 100, then the model is *multinomial*, and the  parametrization ${\bf{p}}$ given above is quite natural.
+\[Pr(\mylarge{\bf{n}}~|~\mylarge{\bf{p}})~=~K(\mylarge{\bf{n}})~\mylarge{\ell} ({\bf{p}})\]
+where $K~=~(100)!/({\mylarge{n}_{RD}}! ~{\mylarge{n}_{RL}}! ~{\mylarge{n}_{ND}}! ~{\mylarge{n}_{NL}}!)$.
+
+•	If the two bottom margins are fixed by design, the model is *a product of independent binomials*, and the natural parametrization is  $({\mylarge{p}_{R~.~D}},{\mylarge{p}_{R~.~L}})$, where each ${\mylarge{p}_{R~.~X}}$ for $X \in  \{D,L\}$
 is the conditional probability 
-
-          ${p_{R~.~X}} = {p_{RX}}/({p_{RX}}+{p_{NX}}))$.  
-•	If both margin counts are fixed by design, then the model is *hypergeometric*, and the natural parametrization is $({p_D},{p_R},\phi )$ where $\phi$ is the odds ratio. (But that sampling model is impossible to implement in a clinical study).  
+  ${\mylarge{p}_{R~.~X}} = {\mylarge{p}_{RX}}/({\mylarge{p}_{RX}}+{\mylarge{p}_{NX}}))$. 
+  Then $K$ is the product of the two binomial coefficients, one for the $D$ margin and one for the $L$ margin:
+  
+  \[K~=~(\mylarge{n}_{RD}+ ~{\mylarge{n}_{ND}})!/({\mylarge{n}_{RD}}! ~{\mylarge{n}_{ND}}!) ~~~ (\mylarge{n}_{RL}+ ~{\mylarge{n}_{NL}})!/ ({\mylarge{n}_{RL}}! ~{\mylarge{n}_{NL}}!)\]
+  
+•	If both margin counts are fixed by design, then the model is *hypergeometric*, and the natural parametrization is $({\mylarge{p}_D},{\mylarge{p}_R},~\mylarge{\phi} )$ where $\phi$ is the odds ratio. (Details are omitted.) But that sampling model is impossible to implement in a clinical study design, even though when one uses the Fisher "exact" test one is pretending that it is the sampling model.  
 
 But they all have the same likelihood function! The differences in sampling correspond to putting constraints on ${\bf{p}}$, and  different sample spaces for the data ${\bf{n}}$.
 
-For the "personalized medicine" question at hand, the thing we care about is ${p_{R~.~D}}$.   
+For the **"personalized medicine"** question at hand, the thing we care about is ${\mylarge{p}_{R~.~D}}$.   
