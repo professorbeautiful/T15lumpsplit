@@ -8,6 +8,7 @@ TextQuestion = function(question="What do you think?") {
   textareaIdThisTQ = paste0('id', outputIdThisTQ)
   linkIdThisTQ = paste0('id', outputIdThisTQ, "_link")
   observeEvent(eventExpr = input[[linkIdThisTQ]], {
+    cat('Calling saveEntriesJS (TQ)', date(), '\n')
     js$saveEntriesJS()
   })
   output[[outputIdThisTQ]] = renderUI({
