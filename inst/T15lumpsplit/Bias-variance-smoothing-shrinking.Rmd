@@ -481,13 +481,20 @@ Splitting gives an answer with high variance ($N$=6 initially) but low bias-- be
 
 ```{r panelOfBifurcation}
 
-output$fisherResult = renderText({
+output$fisherResult = renderUI({
   analysisName = 'plotLumpSplitPoints'
   source(analysisReactiveSetup_DTC, local=TRUE)
 
   Pvalue = fisher.test(thisData)$p.value
-  paste0(
-    '   P = ', signif(digits=3, Pvalue), '\n')
+  print(thisData)
+  print(DLdataOriginal)
+  print(identical(DLdataOriginal, thisData))
+  if(identical(DLdataOriginal, thisData))
+     "" ### output nothing
+     else
+       span(
+    'Since  you have changed the data in the table above, the P value is now P = ' ,
+    strong(em(signif(digits=3, Pvalue))), ".")
 })
 output$fisherResultOriginal = renderText({
   Pvalue = fisher.test(DLdataOriginal)$p.value
@@ -500,7 +507,12 @@ output$fisherResultOriginal = renderText({
 A time-honored but fading technique is to use a classical hypothesis test, to guide which of two analyses "Lump" or "Split", to present.
 Here the hypothesis to be tested is " $X_{DL}$ is independent of Y";  the response rate of D patients does not differ from L patients.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
 
-One test frequently performed to test independence in a 2x2 table like this one is the *Fisher exact test*. On the original data, the P value is `r textOutput('fisherResultOriginal', inline=TRUE)`. If you have changed the data in the table above, it is now `r textOutput('fisherResult', inline=TRUE)`.
+One test frequently performed to test independence in a 2x2 table like this one is the *Fisher exact test*. On the original data, the P value is 
+**`r textOutput('fisherResultOriginal', inline=TRUE)`.** 
+
+ `r uiOutput('fisherResult')`
+`r br()`
+
 
 If the P-value is "significant" (which "by tradition" means "less than 5%"), the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!
 
