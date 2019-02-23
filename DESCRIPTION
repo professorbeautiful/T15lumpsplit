@@ -1,8 +1,8 @@
 Package: T15lumpsplit
 Type: Package
 Title: T15lumpsplit tutorial on bias, variance, smoothing and shrinking. 
-Version: 0.972
-Date: 2019-02-21
+Version: 0.975
+Date: 2019-02-23
 Author: Roger Day
 Maintainer: Roger Day<day01@pitt.edu>
 Description: A tutorial module for biomedical informatics students, relating "personalized medicine" to topics in statistics.
