@@ -9,7 +9,7 @@ QandAha = function(context='QA', linkLabel= "save") {
   linkIdThisQA = paste0('id', outputIdThisQA, "_link")
   observeEvent(eventExpr = input[[linkIdThisQA]], {
     cat('Calling saveEntriesJS (QA)', date(), '\n')
-    js$saveEntriesJS()
+    shinyjs::js$saveEntriesJS()
   })
   splitLayout(cellWidths = c("75%", "25%"),
               textAreaInput(inputId = textareaIdThisQA, width='200%',

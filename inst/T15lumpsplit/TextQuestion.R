@@ -9,7 +9,7 @@ TextQuestion = function(question="What do you think?") {
   linkIdThisTQ = paste0('id', outputIdThisTQ, "_link")
   observeEvent(eventExpr = input[[linkIdThisTQ]], {
     cat('Calling saveEntriesJS (TQ)', date(), '\n')
-    js$saveEntriesJS()
+    shinyjs::js$saveEntriesJS()
   })
   output[[outputIdThisTQ]] = renderUI({
     div(HTML(paste0(strong("A question for you: "), em(question))),
