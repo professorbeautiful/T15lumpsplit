@@ -12,8 +12,10 @@ Installing from github you get a warning.
 But then deploying bombs with a mysterious message, can't find the temp file path.
 
 ```{r}
-options(repos = c(BiocInstaller::biocinstallRepos() ) )
-                  #, "https://cran.rstudio.com/") )
+# options(repos = c(BiocInstaller::biocinstallRepos()  
+#                   , "https://cran.rstudio.com/") )
+options(repos = c(BiocInstaller::biocinstallRepos()  ) )
+## "https://cran.rstudio.com/" is redundant 
 
 rsconnect::appDependencies(appDir = 'inst/T15lumpsplit/')
 .install...
