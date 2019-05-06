@@ -7,6 +7,6 @@ Author: Roger Day
 Maintainer: Roger Day<day01@pitt.edu>
 Description: A tutorial module for biomedical informatics students, relating "personalized medicine" to topics in statistics.
 License: MIT + file LICENSE
-Imports: shiny, devtools, magrittr, shinyBS, knitr, rmarkdown, qvalue, shinyjs
+Imports: shiny, devtools, magrittr, shinyBS, knitr, rmarkdown, qvalue, shinyjs, shinyDebuggingPanel
 Encoding: UTF-8
 LazyData: true
