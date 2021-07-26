@@ -88,7 +88,7 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                    rm('saved_BigDataMyChoice', pos='.GlobalEnv')
                    if(printBDCProgress)
                      cat('Back to Original; but saved_BigDataMyChoice is saved.\n')
-                   if(exists('saved_BigDataMyChoice')) browser()
+                   #if(exists('saved_BigDataMyChoice')) browser()
                  }
                  BigDataLastUsed <<- getBigData(analysisName, myChoice=TRUE)
                  if(printBDCProgress) {

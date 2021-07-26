@@ -72,7 +72,7 @@ createDLdataChoiceObserver <- function(analysisName) {
                    rm('saved_DLdataMyChoice', pos='.GlobalEnv')
                    if(printDTCProgress)
                      cat('Back to Original; but saved_DLdataMyChoice is saved.\n')
-                   if(exists('saved_DLdataMyChoice')) browser()
+                   #if(exists('saved_DLdataMyChoice')) browser()
                  }
                  DLdataLastUsed <<- getDLdata(analysisName, myChoice=TRUE)
                  if(printDTCProgress)

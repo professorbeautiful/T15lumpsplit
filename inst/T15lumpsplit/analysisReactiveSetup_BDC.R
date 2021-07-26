@@ -61,8 +61,8 @@ if(printFromAnalysisReactiveSetup_BDC) {
   # print( allChisqPs  [1:4] )
 }
 
-if(FALSE)
-  browser(text = paste('analysisReactiveSetup: ', analysisName))
+#if(FALSE)
+#  browser(text = paste('analysisReactiveSetup: ', analysisName))
 # from the Browse> prompt, access with browserText()
 #  condition arg and browserCondition() are of no extra use that I can see.
 

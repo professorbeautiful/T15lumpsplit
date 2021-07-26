@@ -31,8 +31,8 @@ inclRmd <- function(path, wd, openMe=FALSE) {
     HTML %>%
     withMathJax %>%
     tee(., paste0(path, '.inclOutput.Rmd'))
-  if(openMe)
-    browseURL(paste0(path, '.inclOutput.Rmd'))
+  #if(openMe)
+  #  browseURL(paste0(path, '.inclOutput.Rmd'))
   if(!missing(wd))
     setwd(savedwd)
   return(knitrOutput)

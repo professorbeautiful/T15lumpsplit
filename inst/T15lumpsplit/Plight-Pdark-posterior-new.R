@@ -61,7 +61,7 @@ plotPlightPdarkPosterior = function(
   ### unpack the calculations.
   if(missing(bivariateNormResults)) {
     cat('missing(bivariateNormResults)')
-    browser()
+    #browser()
   }
   for(ob in names(bivariateNormResults))
     assign(ob, bivariateNormResults[[ob]])
