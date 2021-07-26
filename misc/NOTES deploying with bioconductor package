@@ -1,0 +1,12 @@
+NOTES deploying with bioconductor package
+
+https://community.rstudio.com/t/failing-to-deploy-shinyapp-depending-on-bioconductor-packages/6970
+
+
+2021-07-26
+Updating R and Rstudio after a long time...
+re-installing many packages. cran.rstudio.com
+OK: rmarkdown and dependencies
+OK: devtools and dependencies
+OK: bioconductor. utf8 needs compilation. OK.
+BiocManager::install(pkgs = 'qvalue')

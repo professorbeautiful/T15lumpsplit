@@ -1,0 +1,132 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 LucidaGrande;\f2\fnil\fcharset0 HelveticaNeue;
+}
+{\colortbl;\red255\green255\blue255;\red240\green241\blue241;\red15\green112\blue1;\red255\green255\blue255;
+}
+{\*\expandedcolortbl;;\cssrgb\c95294\c95686\c95686;\cssrgb\c0\c50196\c0;\cssrgb\c100000\c100000\c100000;
+}
+\margl1440\margr1440\vieww10800\viewh12060\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+\
+\
+\
+\
+\
+See the git log to learn how these problems were solved:\
+\
+=-=-=-=-=-=\
+SEND \{"recalculating":\{"name":"pvaluesPlots","status":"recalculating"\}\}\
+analysisReactiveSetup_BDC.R: pvaluesPlots   currentBDCnumber= 1 \
+SEND \{"recalculating":\{"name":"pvaluesPlots","status":"recalculated"\}\}\
+\
+SEND \{"recalculating":\{"name":"BHtable","status":"recalculating"\}\}\
+analysisReactiveSetup_BDC.R: qValue   currentBDCnumber= 5     ^^^ should be 2!\
+SEND \{"recalculating":\{"name":"BHtable","status":"recalculated"\}\}\
+\
+SEND \{"recalculating":\{"name":"oddsratioplot","status":"recalculating"\}\}\
+analysisReactiveSetup_BDC.R: oddsratioplot   currentBDCnumber= 3 \
+SEND \{"recalculating":\{"name":"oddsratioplot","status":"recalculated"\}\}\
+\
+SEND \{"recalculating":\{"name":"empBayeslogitRatios","status":"recalculating"\}\}\
+analysisReactiveSetup_BDC.R: empBayeslogitRatios   currentBDCnumber= 4 \
+mu-hat:  -0.04127265   tau-hat:  6.610696e-05 \
+SEND \{"recalculating":\{"name":"empBayeslogitRatios","status":"recalculated"\}\}\
+\
+SEND \{"recalculating":\{"name":"qvaluePlot","status":"recalculating"\}\}\
+analysisReactiveSetup_BDC.R: qValue   currentBDCnumber= 5 \
+SEND \{"recalculating":\{"name":"qvaluePlot","status":"recalculated"\}\}\
+\
+SEND \{"recalculating":\{"name":"pvaluesPlots","status":"recalculating"\}\}\
+analysisReactiveSetup_BDC.R: pvaluesPlots   currentBDCnumber= 1 \
+SEND \{"recalculating":\{"name":"pvaluesPlots","status":"recalculated"\}\}\
+\
+SEND \{"recalculating":\{"name":"BHtable","status":"recalculating"\}\}\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 The cause is NOT \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b0 \cf0 jumpBackWithPanel_BDC\
+Having more than one BDC analysis. One is enough.\
+Anything in bigDataComponent\
+\
+If I comment out the 
+\b makeBigDataWithFeatures 
+\b0 call, \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 thisBigData <<- BigDataLastUsed <<- rValues[[thisBigDataID ]] <<-\
+  makeBigDataWithFeatures(DLdata = DLdataOriginal)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b0 \cf0 the cycling stops.\
+Wrapping it in isolate is also enough to stop it.\
+\
+\
+As of 
+\f1 \cb2 \expnd0\expndtw0\kerning0
+297d243f, if now we remove all BDC analyses except the first,\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b \cf0 \cb1 \kerning1\expnd0\expndtw0 pvaluesPlots,
+\f1\b0 \cb2 \expnd0\expndtw0\kerning0
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \cb1 \kerning1\expnd0\expndtw0 the first BDC works including sensible results when tauTrue is made big (10).\
+But adding the others, cycles return.\
+Add 
+\b BH
+\b0 , it looks ok. Responds well to tauTrue.  \
+Does not respond to Regenerate.\
+\
+\
+in input$,  \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f2\fs28 \cf3 \cb4 \expnd0\expndtw0\kerning0
+[3] "BigDataController_ID_"\'a0\
+[4] "BigDataController_ID_1"\'a0\
+[5] "BigDataController_ID_2"\'a0
+\f0\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 why one without a number?\
+BDC1 is responding to input$
+\f2\fs28 \cf3 \cb4 \expnd0\expndtw0\kerning0
+BigDataController_ID_2
+\f0\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+So, out of sync.\
+\
+\
+OK, solved all those problems.\
+\
+Works fine with the 1st 2 BDC analyses.\
+\
+=-=-=-=-=-=\
+\
+Back to cycling again!\
+\
+With the 5th qValue analysis.\
+But remove it and now the 4th cycles:\
+\
+empBayeslogitRatios   4   BigDataController_ID_4   0  currentBDCnumber:  4 \
+analysisReactiveSetup_BDC.R: empBayeslogitRatios   currentBDCnumber= 4 \
+  outcome X_DL X2 X3 X4\
+1       R    D  0  1  0\
+2       R    D  1  1  0\
+3       R    D  1  1  0\
+\
+analysisReactiveSetup.R:  empBayeslogitRatios   4   BigDataController_ID_4   0  currentBDCnumber:  4 \
+analysisReactiveSetup_BDC.R: empBayeslogitRatios   currentBDCnumber= 4 \
+  outcome X_DL X2 X3 X4\
+1       R    D  1  1  1\
+2       R    D  0  1  0\
+3       R    D  1  1  0\
+\
+\
+\
+}

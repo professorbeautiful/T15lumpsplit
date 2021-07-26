@@ -1,9 +1,9 @@
 
  To deploy:
  The most recent installation of the package must be with .installFromGithub().
- Also view https://community.rstudio.com/t/failing-to-deploy-shinyapp-depending-on-bioconductor-packages/6970
-
 Then, use the blue broken circle button to Publish to shinyapps.io.
+(See my "NOTES deploying with bioconductor package".  For me, qvalue.)
+
 To view logs of the shinyapps run, go to https://www.shinyapps.io/admin ,
 select the running app, and click the log tab.
 
