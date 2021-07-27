@@ -367,6 +367,108 @@ Possibilities for the actual identity of $X_{DL}$ will be explored later.
 
 # TO HERE 368 -- NO jquery-3.3.1.min.js
 
-# TO HERE 333 -- NO jquery-3.3.1.min.js
+
+## Simple "Lump" and "Split" estimates of $Pr(R ~|~ D)$ <!-- #title -->
+```{r analysis-plotLumpSplitPoints}
+jumpList_DTC = c(jumpList_DTC, plotLumpSplitPoints='Plot of lump & split points')
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+#cat("After first analysisInitialSetup_DTC.R, getDTCnumber('plotLumpSplitPoints') =",
+#    getDTCnumber('plotLumpSplitPoints'), '\n' )
+estimates_Lump_Split = observeEvent( 
+  eventExpr = getDLdata('plotLumpSplitPoints'),
+  {
+    analysisName = 'plotLumpSplitPoints'
+  source(analysisReactiveSetup_DTC, local=TRUE)
+  #thisData = getDLdata('plotLumpSplitPoints')
+  rValues$estimates_Lump_Split = list(
+    lump = round(digits=2, sum(thisData['R', ])/
+      sum(thisData[ , ])),
+    split =  round(digits=2, (thisData['R', 'D'])/
+      sum(thisData[ , 'D'])),
+    confInterval_Split = binom.test(x = thisData['R', 'D'],
+                                    n = sum(thisData[ , 'D']) )$conf.int,
+    confInterval_Lump = binom.test(x = sum(thisData['R', ]),
+                                   n = sum(thisData[ , ]) )$conf.int
+  )
+})
+ 
+output$confInterval_Lump = renderText(
+  {
+  analysisName = 'plotLumpSplitPoints'
+  source(analysisReactiveSetup_DTC, local=TRUE)
+    try(silent = TRUE,
+        paste("Dr. Lump:  ", rValues$estimates_Lump_Split[['lump']],
+              "  (", 
+          signif(digits=2,
+              rValues$estimates_Lump_Split[['confInterval_Lump']][1]),
+          "-",
+          signif(digits=2,
+              rValues$estimates_Lump_Split[['confInterval_Lump']][2]),
+          ")"
+    ) )
+  })
+output$confInterval_Split = renderText(
+  {
+      analysisName = 'plotLumpSplitPoints'
+      source(analysisReactiveSetup_DTC, local=TRUE)
+      try(silent = TRUE,
+          paste("Dr. Split: ", rValues$estimates_Lump_Split[['split']],
+              "  (", 
+                signif(digits=2,
+                       rValues$estimates_Lump_Split[['confInterval_Split']][1]),
+                "-",
+                signif(digits=2,
+                       rValues$estimates_Lump_Split[['confInterval_Split']][2]),
+          ")"
+    ) )
+  }) 
+
+output$plotLumpSplitPoints = renderPlot(
+  height = 300, 
+  {
+    analysisName = 'plotLumpSplitPoints'
+    source(analysisReactiveSetup_DTC, local=TRUE)
+    cat('plotLumpSplitPoints: renderPlot', paste(thisData), '\n')
+    cat('plotLumpSplitPoints: renderPlot', paste(getDLdata(analysisName)), '\n')
+    bivariateNormResults = #rValues$bivariateNormResults <<-
+      calculatePlightPdarkPosterior(
+        DLdata=thisData,
+        tau=ifelse(is.null(input$tau), 1, input$tau),
+        phi=ifelse(is.null(input$phi), 1, input$phi),
+        mu0=ifelse(is.null(input$mu0), 0.5, input$mu0),
+        fudgeFactor=ifelse(is.null(input$fudgeFactor), 1e-6, input$fudgeFactor)
+      ) 
+    cat('plotLumpSplitPoints: ', names(bivariateNormResults), '\n')
+
+    plotPlightPdarkPosterior(
+      DLdata=thisData,
+      bivariateNormResults=bivariateNormResults,
+      showPrior = FALSE, 
+      showPosterior=FALSE, showLikelihood=FALSE,
+      showS = TRUE,
+      showL = TRUE,
+      showW = FALSE)
+  })
+```
+
+Two colleagues on the study hold some strong but opposite opinions.
+
+**Dr. Split** speaks:  “I believe that $X_{DL}$  is an important *biomarker*-- so imporant that the $D$ people and the $L$ people are fundamentally different. Since the question is what to do with $D$ people, I will only look at their data.”  
+
+**Dr. Lump**   disagrees!   “No no, I am sure that this so-called *'biomarker'* $X_{DL}$  is irrelevant! I will ignore it, and look at the data for *all* the patients. My estimate will be more accurate.” 
+
+Examine the data table below. 
+
+(Throughout this module, you can change the numbers in the table and observe the results. Be sure to press "reset" when done.)
+
+*Dr. Split* will *"split"* the sample of patients into the two groups, estimating the response rate `Pr(R | D)` by utilizing the D patients only, is 
+`r reactive(round(100*rValues$estimates_Lump_Split$split))`*%*. 
+
+*Dr. Lump* will  *"lump"* together all the patients, estimating that the response rate `Pr(R | D)` for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*rValues$estimates_Lump_Split$lump))`*%*. 
+  
+In the following plot, we see the estimate and the confidence interval for `Pr(R | D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
+
+
+# TO HERE 472 -- NO jquery-3.3.1.min.js
 
 
