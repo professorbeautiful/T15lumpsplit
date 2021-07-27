@@ -33,9 +33,10 @@ options(knitr.duplicate.label = 'allow')
 
 #shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 #library(shinyjs)
-shinyjs::useShinyjs(html = TRUE)
-require(shinyjs)
-shinyjs::useShinyjs(rmd=TRUE)
+invisible( {
+  require(shinyjs);
+  shinyjs::useShinyjs(rmd=TRUE, html = TRUE)
+})
 #<script src="shinyjs/inject.js"></script>
 
 saveEntriesJScode =  
