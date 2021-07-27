@@ -711,3 +711,414 @@ div(
 
 # TO HERE 712 -- NO jquery-3.3.1.min.js
 
+
+
+### Summary table of estimates  <!-- #title -->
+
+Assembling the results of the approaches to estimating Pr(R | D):
+
+```{r tableOfEstimates}
+jumpList_DTC = c(jumpList_DTC, estimateTable='Table of estimates')
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+
+output$estimateTable = 
+  renderTable(rownames = TRUE, {
+    analysisName = 'estimateTable'
+    
+    source(analysisReactiveSetup_DTC, local=TRUE);
+      ###  Use the last-data for everything.
+    
+    isolate( {
+      cat(paste(thisData), '\n')
+      cat(paste(DLdataLastUsed), '\n')
+      cat('Copying thisData to other analyses:\n')
+      for(aN in 1:analysisNumber) {
+        cat('  =>',  names(mapAnalysisToDTCnumber) [aN], ':  ')
+        setDLdata(value=thisData, myChoice=TRUE,
+                  names(mapAnalysisToDTCnumber) [aN] )
+        cat(paste(getDLdata(myChoice=TRUE, 
+                            names(mapAnalysisToDTCnumber) [aN]) 
+        ), '\n' )
+      }
+    })
+    nRD=thisData['R','D']
+    nND=thisData['N','D']
+    nR=sum(thisData['R', ])
+    nN=sum(thisData['N', ])
+    ## Raw results
+    LumpRawMean=(nR)/(nN)
+    SplitRawMean=(nRD)/(nRD+nND)
+    
+    ### Dr. Who's results.
+    ###  Only for the flat priors. We don't allow Split and Lump priors to change.
+    posterior.mean.s = (1+nRD)/(2+nRD+nND)
+    posterior.mean.l = (2+nR)/(4+nN)
+    pProbSplit = posteriorProb(theData=thisData)
+      ### Is this responsive to user's Who prior?
+    pProbLump = (1-pProbSplit)
+    posterior.mean.w = 
+      pProbSplit * posterior.mean.s +
+      pProbLump * posterior.mean.l
+    
+    ## CV results
+    setDLdata(value=thisData, analysisName='crossvalidationPlot')
+    CVanalysisResult = doCVanalysis(thisData)
+    CVoptimalEstimate = CVanalysisResult$CVoptimalEstimate
+    CVoptimalWeight = CVanalysisResult$optimalWeight
+
+    ### Bivariate logit method results.
+    #setDLdata(value=thisData, analysisName='bivariateContourPlot')
+    
+    bivariateNormResults = isolate({
+      calculatePlightPdarkPosterior(
+        thisData, 
+        tau=input$tauInput,
+        phi=input$phiInput,
+        mu0=input$mu0Input
+      )
+    })
+    rValues$bivariateNormResults_bivPlot = bivariateNormResults
+    cat("table of estimates: names(bivariateNormResults) ",
+        paste(names(bivariateNormResults)), '\n')
+    implicitWeight1_ForLogit = 
+      (bivariateNormResults$postmean.p[1] - LumpRawMean)/
+      (SplitRawMean - LumpRawMean)
+    implicitWeights_ForLogit = 
+      c(implicitWeight1_ForLogit, 1-implicitWeight1_ForLogit)
+    
+    niceColHeader = c(
+      'Probability estimate Pr(R | D)', 'Weight (Lump)', 'Weight (Split)')
+    
+    result = data.frame(
+      means = c(
+        LumpRawMean,
+        SplitRawMean,
+        posterior.mean.w,
+        CVoptimalEstimate,
+        bivariateNormResults$postmean.p[1]
+      ),
+      weightsForLump = c(
+        1,
+        0,
+        pProbLump,
+        1-CVoptimalWeight,
+        implicitWeights_ForLogit[2]
+      ),
+      weightsForSplit = c(
+        0,
+        1,
+        pProbSplit,
+        CVoptimalWeight,
+        implicitWeights_ForLogit[1]
+      )
+    )
+    result = as.data.frame(lapply(result, round, digits=2) )
+    rownames(result) = c(
+      'Raw proportion (Lump)',
+      'Raw proportion (Split)',
+      "Dr.Who mixture posterior mean", 
+      "Cross-validation optimal",
+      'Bivariate inverse logit of logit posterior mean')
+    return( (result) )
+  })
+
+
+div(style='fontsize:large;', 
+    h4("Posterior probabilities and weights"),
+    tableOutput('estimateTable'),
+    dataTableComponent(analysisName = 'estimateTable')
+)
+```
+
+As you change Dr. Who's prior probability or the data values, observe the changes in this summary table. Raw (Lump) & Raw (Split)	are the table proportions taken at face value  by Dr. Lump and Dr. Split. Bayes Mean (Lump)	and Bayes Mean (Split) and Bayes Mean (Who) are Bayesian posterior means that we calculated above. Bayes Pr(Lump) and	Bayes Pr(Split) are Dr. Who's posterior probabilities that Dr. Lump or Dr. Split (respectively) is correct.
+
+```{r QA-Who-prior-probability}
+QandAha('QA-Who-prior-probability')
+```
+
+
+# The role of external information, explored by introducing different identities for "D" and "L". <!-- #title -->
+
+So, when should we lump? When should we split? Should we aim to compromise, and if so, how should we strike the balance?  
+
+In this section we explore different scenarios of external information, to see how they affect the estimation of ${Pr(R|D}$.
+
+##	Strong prior belief that feature $X_{DL}$ is *un*important <!-- #title -->
+
+What if D and L represent dark hair color and light hair color? "Dr. Who" may be highly skeptical that this $X_{DL}$ really affects response, and express this by choosing a prior odds that favors Dr. Lump  over Dr. Split. 
+##	Strong prior belief that the feature $X_{DL}$ is important <!-- #title -->
+
+What if D and L represent two alleles of a gene believed to affect this drug's pharmacodynamics? Or perhaps, $X_{DL} = D = dark hair$, $X_{DL} = L = light hair$, but hair color is strongly tied to ethnicity in this sample … which is strongly tied to a key genetic variant."Dr. Who" can express choosing a prior odds that favors  Dr. Split over Dr. Lump. 
+
+You can experiment with the effects of prior belief by choosing such a value here: 
+
+```{r WhoPriorProbNumericInput2}
+WhoPriorProbNumericInput()
+```
+
+and reviewing revised results at these previous locations:
+  
+```{r QA-Strong-prior-belief-X_DL-important}
+inclRmd('jumpBack_DTC.Rmd')
+QandAha('QA-Strong-prior-belief-about-X_DL')
+```
+
+Which of the previous analyses allow you to interject prior belief on the Lump-versus-Split axis?
+
+##	Multiple features, with some prior belief <!-- #title -->
+
+Suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. Our feature $X_{DL}$ happens to be one of them; otherwise unselected.
+
+```{r modify the "classical" approach}
+TextQuestion(' How would you modify the "classical" approach that chooses Lump or Split based on a hypothesis test?')
+```
+
+
+```{r Bayesian account for this knowledge }
+TextQuestion(' How would you account for this knowledge in one of the two Bayesian approaches?')
+```
+
+##	Best feature of 100, with some prior belief <!-- #title -->
+
+As before, suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. But this time, our feature $X_{DL}$ is selected to be the best of the one hundred features.
+
+This situation entails dealing with *"multiple comparisons"*. Pure chance can make a feature seem strongly associated with the response outcome when in reality it is not associated. When the best-appearing relationship is selected out of a large number, we can be fooled into thinking the strength of evidence is stronger than it really is.
+
+*"The more questions you ask, the more wrong answers you are likely to get."*
+```{r Intro to multiple comparisons}
+conditionalPanelWithCheckboxPDF(
+  labelString="Intro to multiple comparisons", 
+  filename='Multiple comparisons- introduction.pdf',
+  cbStringId='multiple_comparisons')
+```
+
+
+One way to handle multiple comparisons is through a classical frequentist multiple testing adjustment. This evaluates the chance of getting a P-value as low as (or lower than) the minimum of the P-values for the features. The best-known of these methods are the Bonferroni, Sidak, and permutation /randomization tests. Here are some details on these approaches: 
+```{r Multiple comparisons- classic methods}
+conditionalPanelWithCheckboxPDF(
+  labelString="Multiple comparisons- classic methods", 
+  filename='Multiple comparisons- classic methods.pdf',
+  cbStringId='Multiple_comparisons_classic')
+```
+
+and here are some examples that highlight some strange and unsettling aspects of the classical methods:
+
+```{r Multiple comparisons- disturbing examples}
+conditionalPanelWithCheckboxPDF(
+  labelString="Multiple comparisons- disturbing examples", 
+  filename='Multiple comparisons- disturbing examples.pdf',
+  cbStringId='Multiple_comparisons_disturbing')
+```
+
+Let's put those worries aside for now.
+
+What if we add lots of features to the feature ($X_{DL}$) of our little data set? How will the methods we have used behave when applied in this "big" data set.
+Let's refer to $X_{DL}$ as $X_1$, and let's generate 99 extra features $X_2 ... X_{100}$ (each with only two possible values, 0 or 1).
+<!-- You can use either the original data or the data as you may have modified it. -->
+
+
+```{r makeDLdataDFYesNoYes  }
+#  OK, mission accomplished, example found. We need never run this again.
+makeDLdataDFYesNoYes = function(DLdata=DLdataOriginal, qStar=1, upperLimit=95){
+  isYesNoYes = FALSE
+  seedInt = 40
+  while( (! isYesNoYes) & (seedInt < upperLimit)) {
+    #savedSeed = .Random.seed
+    seedInt = seedInt + 1
+    checkYesNoYes(seedInt)
+  }
+  print(BHtable[ , 1:4])
+  saveRDS(seedInt, 'seedInt.rda')
+  return(seedInt)
+}
+checkYesNoYes = function(seed, qStar=1) {
+      #DLdataDFResult = makeDLdataDF(DLdata = DLdata)
+    allChisqPs = generateAllPvalues(
+      makeBigDataWithFeatures(seed=seed) )$allChisqPs
+    BHtable = makeBHtable( allChisqPs, qStar )
+    isYesNoYes = identical(
+      as.vector(BHtable['P<cutoff', 1:3]),
+                             c('yes', 'no', 'yes') )
+    cat(0+isYesNoYes, seedInt, '\n')
+    return(BHtable)
+}
+```
+
+```{r makeDLdataDF  }
+## Make DLdata into a data frame.
+makeDLdataDF = function(DLdata=DLdataOriginal) {
+  #print(DLdata)
+  DLdataDF = 
+    data.frame(
+      outcome = rep(c("R","N", "R","N"),
+                    times=c(DLdata)),
+      X_DL = rep(c("D","D", "L","L"),
+                 times=c(DLdata))
+    )
+  return(DLdataDF)
+}
+## Combine DL feature with extra features. 
+makeBigDataWithFeatures = function(DLdata = DLdataOriginal,
+                                  ## Make extra features.
+                                  NextraFeatures = 99, beta1=10, beta2=10,
+                                  Omega = 0,
+                                  seed){
+  DLdataDF = makeDLdataDF(DLdata)
+  if(! missing(seed))
+    set.seed(seed)
+  extraFeaturesProbs_R <<- rbeta(NextraFeatures, beta1, beta2)
+  extraFeaturesOdds_R <<-
+    extraFeaturesProbs_R/(1-extraFeaturesProbs_R)
+  
+  if( abs(Omega) < 1e-9) {
+    oddsratios = 1
+    extraFeaturesProbs_N <<- extraFeaturesProbs_R
+    extraFeaturesOdds_N <<- extraFeaturesOdds_R
+    extraFeatures = as.data.frame(
+      lapply(extraFeaturesProbs_R,
+             rbinom, n=sum(DLdata),size=1)
+    )
+  } else {
+    oddsratios <<- exp(rnorm(NextraFeatures, 0, sqrt(Omega)))
+    extraFeaturesOdds_N <<- extraFeaturesOdds_R * oddsratios
+    extraFeaturesProbs_N <<-
+      extraFeaturesOdds_N/(1+extraFeaturesOdds_N)
+    #plot(extraFeaturesProbs_N, extraFeaturesProbs_R)
+    extraFeatures_N = sapply(extraFeaturesProbs_N,
+                             rbinom, n=sum(DLdataDF$outcome=='N'),size=1)
+    extraFeatures_R = sapply(extraFeaturesProbs_R,
+                             rbinom, n=sum(DLdataDF$outcome=='R'),size=1)
+    extraFeatures =
+      matrix(NA, ncol=NextraFeatures, nrow=nrow(DLdataDF))
+    extraFeatures[DLdataDF$outcome=='N', ] = extraFeatures_N
+    extraFeatures[DLdataDF$outcome=='R', ] = extraFeatures_R
+  }
+  colnames(extraFeatures) = 
+    paste0('X', 1+(1:NextraFeatures))
+## Combine DL feature with extra features. 
+  DLdataWithFeatures <<- cbind(DLdataDF, extraFeatures ) 
+  return(DLdataWithFeatures)
+}
+
+#debugonce(makeBigDataWithFeatures)
+
+## generateAllPvalues.
+generateAllPvalues = function(
+  BigData = makeBigDataWithFeatures()) {
+  allFisherPs <<- 
+    sapply(BigData[-1], function(feature) 
+      fisher.test(feature,
+                  BigData$outcome)$p.value
+    )
+  options.saved = options(warn=-1)
+  allChisqPs <<- 
+    sapply(BigData[-1], ## removing the outcome column 
+           function(feature) {
+             result = chisq.test(feature,
+                        BigData$outcome)
+             # if(max(result$expected) < 5)
+             #   result = chisq.test(feature,
+             #            DLdataWithFeatures$outcome, simulate.p.value = TRUE)
+             result$p.value
+           }
+    ) 
+  options(options.saved)
+  return(invisible(
+    list(allFisherPs=allFisherPs,
+         allChisqPs=allChisqPs))
+  ) 
+}
+
+#debugonce(generateAllPvalues)
+
+
+makeSureOmegaIsGood = function(Omega) {
+  Omega = as.numeric(Omega)
+  if( ! (length(Omega)==1) )
+    Omega = 0
+  if(is.na(Omega)  | is.nan(Omega) )
+    Omega = 0
+  return(Omega)
+}
+```
+
+```{r}
+
+BigDataOriginal = makeBigDataWithFeatures(DLdataOriginal, seed=45)
+#print(summary(DLdataDFwithFeatures_original))
+allPvalues = generateAllPvalues()
+allFisherPs_original = allPvalues$allFisherPs
+#print(summary(allFisherPs_original))
+allChisqPs_original = allPvalues$allChisqPs
+#print(summary(allChisqPs_original))
+# BHtable_original = DLdataDF_originalResult$BHtable
+```
+
+```{r Pvalues all features}
+# observer_Pvalues_all_features = observeEvent(rValues$DLdataDFwithFeatures, {
+#              Pvalues = generateAllPvalues(
+#                BigData = rValues$DLdataDFwithFeatures
+#              )
+#              allChisqPs <<- allChisqPs = Pvalues$allChisqPs
+#              allFisherP <<- rValues$allFisherPs = Pvalues$allFisherPs
+# })
+
+# DLdata = rValues$DLdata, qStar=rValues$qStar)
+#     rValues$DLdataDF = makeDLdataDFResult$DLdataDF
+#     rValues$allFisherPs = makeDLdataDFResult$allFisherPs
+#     allChisqPs = makeDLdataDFResult$allChisqPs
+#     allFisherPs <<- rValues$allFisherPs
+#     allChisqPs <<- allChisqPs
+#   })
+
+```
+
+Now that we have a data set with lots of features, let's do Fisher exact tests and chisquare tests to all the features. The red "X" is of course our original data feature, with $X_{DL}$ = D or L.
+
+
+
+```{r pvaluesPlots}
+jumpList_BDC = c(jumpList_BDC, pvaluesPlots='P-value plots')
+source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+```
+
+
+
+```{r pvaluesPlots-react}
+output$pvaluesPlots = renderPlot({fun.pvaluesPlots()})
+fun.pvaluesPlots = function() {
+  analysisName = 'pvaluesPlots'
+  source(analysisReactiveSetup_BDC, local=TRUE)
+  #hist(rValues$allFisherPs)
+  #head(sort(allFisherPs))
+  #hist(rValues$allChisqPs)
+  #head(sort(allChisqPs))
+  plot(allChisqPs, allFisherPs, log='xy')
+  points(allChisqPs[1], allFisherPs[1],
+         pch='X', col='red', cex=2)
+} 
+
+#debug(fun.pvaluesPlots)
+plotOutput('pvaluesPlots')
+```
+
+For each of these features $X_2 ... X_{100}$, the disparity between the two groups $X_j = 0$ and $X_j = 1$ can be represented as the odds ratio:
+
+\[\frac{{odds(Y = R|{X_j} = 0)}}{{odds(Y = R|{X_j} = 1)}} = \frac{{\Pr (Y = R|{X_j} = 0)/\Pr (Y = N|{X_j} = 0)}}{{\Pr (Y = R|{X_j} = 1)/\Pr (Y = N|{X_j} = 1)}}\]
+
+Initially the extra 99 feature are all "null hypotheses". The odds ratios all equal 1, so the odds that $Y=R$ does not change with $X_j$. But we can explore what happens if they do not all equal 1.
+You can control Omega, the variance of logs of the odds ratios below. When Omega equals zero, the odds ratios all equal 1. Otherwise, they will spread out, some bigger than 1 and some smaller.
+
+
+```{r }
+bigDataComponent(analysisName=analysisName)
+```
+
+Applying the *"Bonferroni correction"* to the Fisher P value for our feature $X_{DL}$ means multiplying the P value `r signif(digits=4, allFisherPs_original[1])` by 100, to get P=`r signif(digits=4, 100* allFisherPs_original[1])`. So the evidence that the `D` people really are different is minimal at best. (To say it carefully, if a 'cutoff' for defining 'statistically significant' happened to be chosen at `r signif(digits=4, 100* allFisherPs_original[1])`, then our result for $X_{DL}$ would be just on the edge of 'significance'. That's not a compelling cutoff!) 
+
+In the classical statistics spirit, we would now go with Dr. Lump instead of Dr. Split. (Choosing instead the chisquare test, the Bonferroni correction gives us P=`r signif(digits=4, 100* allChisqPs_original[1])`).
+
+
+# TO HERE 1122 -- NO jquery-3.3.1.min.js
+
+
