@@ -205,7 +205,7 @@ h3("NOTE: this is a work in progress!")
 ```{r withDebuggingPanel}
 
 fluidRow(
-  shinyDebuggingPanel::withDebuggingPanel()
+shinyDebuggingPanel::withDebuggingPanel()
 )
 ```
 
@@ -220,7 +220,7 @@ includeCSS('TOC.css')
 ### includeCSS doesn't work early on.
 ### It worksin the YAML.
 includeCSS('lumpsplit.css')
-includeScript('www/jquery-3.3.1.min.js')
+#includeScript('www/jquery-3.3.1.min.js')
 
 ```
 
