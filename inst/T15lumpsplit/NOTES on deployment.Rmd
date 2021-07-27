@@ -14,7 +14,7 @@ But then deploying bombs with a mysterious message, can't find the temp file pat
 ```{r}
 # options(repos = c(BiocInstaller::biocinstallRepos()  
 #                   , "https://cran.rstudio.com/") )
-options(repos = c(BiocInstaller::biocinstallRepos()  ) )
+## options(repos = c(BiocInstaller::biocinstallRepos()  ) )
 ## "https://cran.rstudio.com/" is redundant 
 
 rsconnect::appDependencies(appDir = 'inst/T15lumpsplit/')
