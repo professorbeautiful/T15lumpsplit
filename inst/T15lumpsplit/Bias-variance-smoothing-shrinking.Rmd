@@ -29,7 +29,7 @@ options(knitr.duplicate.label = 'allow')
 ```
 
 
-```{r shinyjs, context="server", echo=FALSE, include=TRUE}
+```{r shinyjs, context="server", echo=FALSE, results='hide', include=TRUE}
 
 #shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 #library(shinyjs)
