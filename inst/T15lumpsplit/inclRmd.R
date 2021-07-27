@@ -35,5 +35,5 @@ inclRmd <- function(path, wd, openMe=FALSE) {
   #  browseURL(paste0(path, '.inclOutput.Rmd'))
   if(!missing(wd))
     setwd(savedwd)
-  return(knitrOutput)
+  return(invisible(knitrOutput))
 }
