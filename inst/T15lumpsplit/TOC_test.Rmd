@@ -1122,3 +1122,635 @@ In the classical statistics spirit, we would now go with Dr. Lump instead of Dr.
 # TO HERE 1122 -- NO jquery-3.3.1.min.js
 
 
+```{r}
+# As before, you have the opportunity to play around with changing the data, or reverting to the original data set.
+# dataTableComponent(showhide='hide', analysisName='pvaluesPlots')
+# We probably will not put dataTableComponent in the K=100 portion.
+```
+
+
+```{r QA-multiple-comparisons-corrections}
+QandAha('QA-multiple-comparisons-corrections')
+```
+
+## The Benjamini-Hochberg method <!-- #title -->
+
+Another classical approach, the Benjamini-Hochberg method, is widely used in high-throughput biological assays. It is also classical frequentist method. It has a technical advantage in that the stated "false discovery rate" is accurate. However, it also has peculiar and disturbing behavior:
+
+
+```{r Benjamini-Hochberg method}
+conditionalPanelWithCheckboxPDF(
+  labelString="The Benjamini-Hochberg method", 
+  filename='Benjamini-Hochberg.pdf',
+  cbStringId='Benjamini_Hochberg')
+```
+
+When applied to our augmented data set with 100 potential predictors, this is what we get, depending on qStar, the upper bound for the false discovery rate (FDR):
+
+```{r makeBHtable}
+makeBHtable = function(pValues, qStar=1, columns=8) {
+  somePvalues  = 
+    signif(digits=3, sort(pValues)[1:columns])
+  BHtable = data.frame(
+    Pvalue = somePvalues,
+    cutoff = qStar * (1:columns)/100)
+  BHtable[[ 'P<cutoff' ]] = c('no','yes')[
+    1 + (BHtable$cutoff > BHtable$Pvalue) ]
+  BHtable = t(BHtable)
+  rownames(BHtable) = c('Pvalue', 'cutoff', 'P<cutoff')
+  return(BHtable)
+}
+```
+
+```{r output for BHtable}
+jumpList_BDC = c(jumpList_BDC, BHtable='Benjamini-Hochberg')
+source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+
+div(
+  numericInput('qStarID', 'qStar (False Discovery Rate upper bound)',
+               value = 1, min=0,  step=0.1)
+)
+
+# observeEvent( input[[get_thisOmegaID(analysisName)]], {
+#   OmegaLastUsed <<- input[[get_thisOmegaID(analysisName)]]
+#   cat('Setting OmegaLastUsed to ', OmegaLastUsed, '\n')
+# })
+
+output$BHtable = renderTable(
+  digits=3,
+  rownames=TRUE,
+  expr={ 
+    input$qStarID; 
+    currentBDCnumber = mapAnalysisToBDCnumber['BHtable']
+    thisBigDataID = paste0('BigData', currentBDCnumber)
+    thisOmegaID = get_thisOmegaID('BHtable')
+    thisOmega = makeSureOmegaIsGood(input[[thisOmegaID]])
+
+    fun.BHtable()
+  }
+)
+fun.BHtable = function(){
+  analysisName = 'BHtable'
+  source(analysisReactiveSetup_BDC, local=TRUE);
+  tryResult = try({
+    # cat('qStarID:', input$qStarID, '\n')
+    as.numeric(input$qStarID)
+  })
+  if(class(tryResult) == 'try-error' | is.null(tryResult) |is.na(tryResult)) {
+    qStar = 0
+  } else qStar = tryResult
+  rValues$BHtable = makeBHtable(
+    allChisqPs, 
+    qStar = qStar
+  )
+  
+  #rValues$BHtable
+}
+
+#debug(fun.BHtable)
+tableOutput('BHtable')
+bigDataComponent(analysisName=analysisName)
+
+```
+
+
+
+```{r which features are significant}
+TextQuestion("Using the original data, and the FDR upper bound (qStar) equal to one, which features are 'significant'? How many 'false discoveries' are there?")
+```
+
+
+
+```{r Raising qStar}
+TextQuestion("Raising or lowering qStar from 1.0, how does the collection of 'significant' features change?")
+```
+
+This is a good time to record your thoughts!
+
+```{r QA-Benjamini-Hochberg}
+QandAha('QA-Benjamini-Hochberg')
+```
+
+## An Empirical Bayes approach to multiple comparisons <!-- #title -->
+
+Another approach is through *empirical Bayes*, a method that presumes that the associations of the features with the outcome are drawn from a distribution. This allows a kind of sharing of information reminiscent of the sharing of information between the $X_{DL}$=D and $X_{DL}$=L patients, but sharing across features instead of across subgroups defined by one feature. 
+
+The following link develops the empirical Bayes idea in the context of medical decision-making. When done reading this, close the panel, record your Questions and Aha's, and continue to see the application of EB for our example.
+
+```{r Introduction to Hierarchical Bayes and Empirical Bayes}
+conditionalPanelWithCheckboxPDF(
+  labelString="An Introduction to Hierarchical Bayes and Empirical Bayes", 
+  filename='www/Intro_to_Hierarchical_Bayes_and_Empirical_Bayes.pdf',
+  cbStringId='EmpiricalBayes')
+```
+
+We can apply EB to a collection of estimates. In this instance, let's collect the estimates of association between the outcome and all 100 features. These estimates are the odds ratios. For the original feature $X_{DL}$, the odds ratio is
+`r DLdataOriginal['R','D']` / `r DLdataOriginal['N','D']` * `r DLdataOriginal['R','L']` / `r DLdataOriginal['N','L']`), which is 
+`r oddsRatioOriginal = DLdataOriginal['R','D'] / DLdataOriginal['N','D'] * DLdataOriginal['R','L'] / DLdataOriginal['N','L'] ` ).
+
+This can be compared to all 100 odds ratios for the features:
+
+```{r oddsratiofunctions}
+  fun.oddsratio = function(col, outcome, sprinkle=1) {
+    theTable = table(col, outcome)
+    theTable = sprinkle + theTable
+    return(theTable[1,1]/theTable[2,1]
+           /theTable[1,2]*theTable[2,2])
+  }
+
+  fun.logitRatioVariance = function(col, outcome, sprinkle=0.1) {
+    theTable = table(col, outcome)
+    theTable = sprinkle + theTable
+    sum(1/theTable)
+  }
+```
+
+```{r oddsratioplot}
+
+jumpList_BDC = c(jumpList_BDC, oddsratioplot='Odds ratio plot')
+source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+
+output$oddsratioplot = renderPlot({ fun.oddsratioplot () })
+fun.oddsratioplot = function() {
+  analysisName ='oddsratioplot'
+  source(analysisReactiveSetup_BDC, local=TRUE)
+
+  outcome = thisBigData$outcome
+  oddsratios = 
+    sapply(thisBigData[-(1)], fun.oddsratio, 
+           outcome=outcome)
+  logitRatios = log(oddsratios)
+
+  logitRatioVariances =
+    sapply(thisBigData[-(1)],
+           fun.logitRatioVariance,
+           outcome=outcome)
+  logitRatioSDs = sqrt(logitRatioVariances)
+  
+  plot(density(logitRatios), xlab='log(oddsratios)',
+       main='density smooth of log(oddsratios)')
+  points(logitRatios[-1], col='red', type='h',
+       logitRatioSDs[-1] * par('usr')[4]/
+        max(logitRatioSDs) *0.3)
+  points(x = logitRatios[1], col='green', type='h',
+         y = logitRatioSDs[1] * par('usr')[4]/
+           max(logitRatioSDs) *0.3,
+         lwd=2)
+  text(x = logitRatios[1], y = par('usr')[4], pos = 2, cex=2,
+       expression( "" %<-% "DL data"), srt=90, col='green')
+}
+#debug(fun.oddsratioplot)
+plotOutput('oddsratioplot')
+bigDataComponent(analysisName=analysisName)
+
+```
+
+
+Using the delta method mentioned above, 
+the logs of the odds ratios have sampling variances roughly equal to the sums of reciprocals of the counts. 
+(The heights of the vertical lines are proportional to the sampling standard deviations.)
+From this we can construct confidence intervals for the logits, then pull them back to confidence intervals for the odds ratios. 
+So for example, for our original${X_{DL}}$ 
+= `D` or `L` feature, the confidence interval is given by the R expression
+
+`exp ( log(oddsRatioOriginal) + c(-1,1)*sqrt(sum(1/DLdataOriginal))*qnorm(0.975))`,
+
+which for a 95% confidence level is 
+`r {ci=signif(digits=3, exp ( log(oddsRatioOriginal) + c(-1,1)*sqrt(sum(1/DLdataOriginal))*qnorm(0.975))); paste(ci, collapse=' to ')}`.
+
+To apply the EB idea, we use the data for all the features, to "shrink" all the logit ratios ${X_i}$ towards the common mean, estimated as ${\hat{~\mu}}$. This solution uses a model in which the true logit ratios are all drawn from a common parent distribution, assumed to be normal (Gaussian). Then a standard Bayesian calculation gives us the posterior means (and variances) for each logit ratio. In particular, letting ${\mu_i}$ be the logit ratio for feature $i$, with variance ${\sigma_i}$ (which we estimate from the delta method to get ${\hat{~\sigma_i}}$), the posterior mean is 
+
+  \[E({\mu _i}|{X_i}) = {X_i}(1 - {w_i}) + \hat{~\mu} {w_i},\]
+ 
+ where the weights $w_i$ vary with the feature:
+ 
+  \[w_i = \frac{\hat{~\sigma_i}}{{\hat{~\sigma_i}}+\hat{~A}}.\]
+  
+  
+$\hat{~A}$ is the estimated prior variance for all the true ${\mu_i}$.
+ 
+This is yet another example of bias-variance trade-off. By accepting some bias in including data from other features, the variance of the estimate decreases, enough to make the net result more accurate.
+ 
+But we would have to know the true mean and variance of the parent distribution. 
+
+The "empirical" part of empirical Bayes is to use the data to estimate the mean and variance of the parent distribution generating the $\mu_i$. As you can see in the document in the panel just above, the "empirical" step needs the marginal distribution of the observed logit ratios:
+
+  \[{X_i}|\tau \sim N(\mu,\tau  + {\sigma _i}),\]
+
+where we will get the variances ${\sigma _i}$ from the delta method. The unknown $\mu$ and $\tau$ are called the "hyperparameters". We can estimate them however we prefer, but using maximum posterior estimation we get
+
+\[\hat{~\mu}  = \sum {\left( {{X_i}{w_i}} \right)} /\sum {\left( {{w_i}} \right)}\]
+
+where the weights are ${w_i} = 1/{\sigma _i}$. 
+These are the optimal weights for smallest variance of $\hat{~\mu}$. 
+
+As an *optional topic*, you may read the following on Lagrange multiplier method for optimization. Example (A) covers this case.
+
+```{r Lagrange multipliers}
+conditionalPanelWithCheckboxPDF(
+  labelString="Lagrange multipliers", 
+  filename='www/Lagrange multipliers with examples.pdf',
+  cbStringId='Lagrange_multipliers')
+```
+
+Continuing the "empirical" part of EB, one estimate of $\tau$ is to take the total sums of squares and subtract the portion purely due to the individual data noise of the features. When the individual variances vary greatly, the estimate is a little more complicated. One way is via maximum likelihood. 
+
+```{r empBayeslogitRatios}
+jumpList_BDC = c(jumpList_BDC, empBayeslogitRatios='Empirical Bayes logit ratios')
+source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+
+output$empBayeslogitRatios = renderPlot({ fun.empBayeslogitRatios() })
+fun.empBayeslogitRatios = function(){
+  analysisName = 'empBayeslogitRatios'
+  source(analysisReactiveSetup_BDC, local=TRUE)
+  
+  oddsratios = sapply(thisBigData[-(1)], 
+                      fun.oddsratio,  outcome=thisBigData[[1]])
+  logitRatios = log(oddsratios)
+
+  logitRatioVariances =
+    sapply(thisBigData[-(1)],
+           fun.logitRatioVariance,  outcome=thisBigData[[1]])
+  logitRatioSDs = sqrt(logitRatioVariances)
+  loglikFun=function(mu,tau) {
+    sum(log(dnorm(logitRatios, mu, sqrt(tau+logitRatioVariances))) )
+  }
+  muHat = mean(logitRatios)
+  tauHat = 0   #(var(logitRatios) - mean(logitRatioVariances))
+  for( irep in 1:13) { # we ain't buildin' no cathedral here.
+    mu.last = muHat
+    muHat = optimize(f = loglikFun, tau = tauHat,
+                  interval = c(-4,4), maximum=TRUE
+    )$maximum
+    tau.last = tauHat
+    tauHat = optimize(f = loglikFun, mu = muHat,
+                   interval = c(0, 1), maximum=TRUE
+    )$maximum
+    if(max(abs(mu.last-muHat), abs(tau.last-tauHat)) < 1e-4)
+      break
+  }
+  
+  rValues$tauEstimateEB = tauHat
+  # cat('mu-hat: ', muHat, '  tau-hat: ', tauHat, '\n')
+  weights = 1 - tauHat / (logitRatioVariances + tauHat)
+  rValues$posteriorMeans = 
+    logitRatios * (1-weights) + muHat * weights
+  plot(c(-4, 3), 0:1, col='white',
+       xlab= '', ylab='', axes=F,
+       cex=2)
+  axis(1, cex=2)
+  #  axis(2, at = 0:1, labels = c("raw", "EB shrunk"), lwd = 0)
+  # text(x = range(logitRatios)*1.05, y=c(0,0), 
+  #      labels = c("raw", "raw"), xpd=NA, cex=2)
+  # text(x = range(logitRatios)*1.05, y=c(1,1), 
+  #      labels = c("EB\nshrunk", "EB\nshrunk"), xpd=NA, cex=2)
+  axis(3, cex=2)
+  # title(
+  mtext(text = 'log of odds ratios: raw estimates ("Dr. Split" style)', 
+        side = 1, line = 3, cex=2, xpd=NA)
+  mtext(text = 'log of odds ratios: "shrunken" estimates with empirical Bayes', 
+        side = 3, line = 2.5, cex=2, xpd=NA)
+  for(iobs in 2:length(logitRatios))
+    lines(c(logitRatios[iobs], rValues$posteriorMeans[iobs]),
+          0:1)
+  lines(c(logitRatios[1], rValues$posteriorMeans[1]),
+        0:1, col='green', lwd=3)
+  points(logitRatios[1], 0, 
+         pch="X", col='green', cex=3)
+  points(rValues$posteriorMeans[1], 1,
+         pch="X", col='green', cex=3)
+  lines(c(logitRatios[iobs], rValues$posteriorMeans[iobs]),
+        0:1)
+  posteriorVariance_DL =  max(0, 1/(
+    (1-weights[1]) / logitRatioVariances[1]
+     +   weights[1] / tauHat)
+  )
+  posteriorStDev_DL = sqrt(posteriorVariance_DL)
+  alpha = 0.1
+  lines(logitRatios[1]+c(-1,1)*qnorm(alpha)*
+          sqrt(logitRatioVariances[1]), 
+        c(0,0), col='green', lwd=3)
+  lines(rValues$posteriorMeans[1]+c(-1,1)*qnorm(alpha)*
+          posteriorStDev_DL, 
+        c(1,1), col='green', lwd=3)
+}
+#debug(fun.empBayeslogitRatios)
+plotOutput('empBayeslogitRatios')
+```
+
+The green horizontal lines are the 80% confidence intervals, before (below) and after (above) applying the empirical Bayes shrinking towards the mean of all the logit ratios. We see that the one above is narrower. So shrinking (which shares info among the features) makes the estimate for the log odds ratio more precise, compared to the "Dr. Split" perspective that directs us to allow only the original "D/L" feature to inform the odds ratio for that feature.
+
+Initially, all the features are generated with an odds ratio = 1:  no relationship with response. in the graph, all the estimates are shrunk VERY hard to the grand mean of log odds ratios, which is close to log(1) = 0. 
+
+What happens if the collection of 100 odds ratios deviates from 1? You can control the variance of the log odds ratio here. 
+
+```{r}
+bigDataComponent(analysisName=analysisName)
+```
+
+```{r tau comparison}
+cat(' tau comparison: ', analysisName, ' ', mapAnalysisToBDCnumber[analysisName],
+    get_thisOmegaID(mapAnalysisToBDCnumber[analysisName]),
+    '\n')
+output$tauEstEB = renderText({
+  try(silent = TRUE, {rValues$tauEstimateEB}) 
+})
+thisOmegaID = get_thisOmegaID(mapAnalysisToBDCnumber[analysisName])
+thisOmegaID_text = paste0(thisOmegaID, '_text')
+output[[thisOmegaID_text]] = renderText({
+  try(silent = TRUE, {
+    signif(digits=4, getBigData_Omega(analysisName)) 
+    ## the 'try' is just to protect from a meaningless error msg first time through.
+  })
+})
+```
+
+The estimated variance of the logits is `r  textOutput('tauEstEB', inline=TRUE)`. (The value that generated the data is `r  textOutput(thisOmegaID_text, inline=TRUE)` ) .
+
+
+```{r sharing information among the features justified}
+TextQuestion(
+'Is this approach really an improvement here? Is this  sharing information among the features justified? What factors might make you more, or less, inclined to take this approach? ')
+QandAha('QA-empBayeslogitRatios')
+```
+This is fine as far as it goes, but our result for the odds ratio does not directly address the original question of interest:  "What is the true response rate for `D` people?" 
+So here is a challenge question:
+
+```{r convert this estimate of the odds ratio}
+TextQuestion('
+How could we convert this estimate of the odds ratio for the X_DL feature into an estimate for Pr(Response | X_DL = D)? 
+')
+```
+
+
+##  The Qvalue approach for multiple testing <!-- #title -->
+
+We can also apply EB in quite a different way, to judge a collection of P values. One popular alternative to the Bonferroni and Sidak adjustments with an empirical Bayes flavor is the "Qvalue" method. 
+
+This method assumes that the distribution of the observed P values is a mixture of a uniform distribution for the true null hypotheses and a distribution concentrated near zero for the true alternative hypotheses. The false discovery rate (FDR) and posterior probability of each null hypothesis come directly from Bayes Theorem. However, the mixture proportion, which is the prior probability of each null hypothesis, is unknown. The empirical Bayes idea directs us to estimate it. Here are some details.
+
+```{r Storey-Tibshirani Qvalue method}
+conditionalPanelWithCheckboxPDF(
+  labelString="The Storey-Tibshirani Qvalue method", 
+  filename='Storey-Tibshirani.pdf',
+  cbStringId='Storey_Tibshirani'
+)
+```
+
+Here we apply the qValue method to the chisquare P values from our dataset with 100 features:
+
+```{r qvaluePlot}
+jumpList_BDC = c(jumpList_BDC, qValue='Qvalue adjustment')
+source('analysisInitialSetup_BDC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+
+output$qvaluePlot = renderPlot({ fun.qvaluePlot() })
+fun.qvaluePlot = function(){
+  analysisName = 'qValue'
+  source(analysisReactiveSetup_BDC, local=TRUE)
+  qout = rValues$qValueObject =
+    qvalue::qvalue(allChisqPs)
+  P_Q_for_X_DL = 
+    c(qout$pvalues[1], qout$qvalues[1])
+  qout.orig  =
+    qvalue::qvalue(c(allChisqPs_original[1], allChisqPs[-1]) )
+  P_Q_for_X_DL_original = 
+    c(qout.orig$pvalues[1], qout.orig$qvalues[1])
+  qout.mod  =
+    qvalue::qvalue(allChisqPs )
+  P_Q_for_X_DL_modified = 
+    c(qout.mod$pvalues[1], qout.mod$qvalues[1])
+  xlim = c(0, 0.004) #c(0, 1.1 * max(rValues$P_Q_for_X_DL_modified,
+        #             sort(qout.mod$pvalues)[1:8][8]) )
+  ylim = c(0, 0.04) #c(0, 1.1 * max(rValues$P_Q_for_X_DL_modified,
+          #           sort(qout.mod$qvalues)[1:8][8]) )
+  plot(qout.mod$pvalues, qout.mod$qvalues, 
+       # xlim=xlim, 
+       # ylim=ylim, 
+       cex=2,
+       xlab="P value", ylab='Q value', 
+       log='xy')
+  ## interpolate for the original? No, easy version. 
+  ## allChisqPs_original[1]
+  ## 
+  
+  points(qout.orig$pvalues[1], qout.orig$qvalues[1], 
+         col='green')
+  points(qout.orig$pvalues[1], qout.orig$qvalues[1], 
+         pch='.', cex=20, col='green')
+  text(qout.orig$pvalues[1], qout.orig$qvalues[1], adj=-0.1,
+       family = "Arial Unicode MS",
+       labels = expression( phantom(0) %<-% 
+         X[DL] ~~ '(original data)'), col='green', cex=2)
+  if(qout.mod$pvalues[1] != allChisqPs_original[1]){
+    points(qout.mod$pvalues[1], qout.mod$qvalues[1], 
+           col='blue')
+    points(qout.mod$pvalues[1], qout.mod$qvalues[1], 
+           pch='.', cex=20, col='blue')
+    text(qout.mod$pvalues[1], qout.mod$qvalues[1], adj=-0.1,
+         #family = "Arial Unicode MS",
+         #labels = expression('\U2B05 X_DL (modified data)'), col='blue')
+         labels = expression( phantom(0) %<-% X[DL] ~~ '(modified data)'), 
+         col='blue', cex=2)
+  }
+  # ⬅︎
+  # LEFTWARDS BLACK ARROW
+  # Unicode: U+2B05 U+FE0E, UTF-8: E2 AC 85 EF B8 8E
+  nFeatures = 100
+  #abline(a=0, b=nFeatures, col='darkred')
+  sidak = function(p, n) (1-(1-p)^n)
+  left = par("usr")[1]   ##  10 ^ par("usr")[1:2]
+  right = par("usr")[2]
+  bottom = par("usr")[3]
+  top = par("usr")[4]
+  xvalues = seq(left, right, length.out = 100)
+  lines(10^xvalues, sidak(10^xvalues, n=nFeatures), col='darkred')
+  # aspect = `/`(par("usr")[2:1])/`/`(par("usr")[4:3])
+  #bonfTilt = atan(nFeatures * aspect)* 180/pi
+  #diagTilt = atan( aspect )* 180/pi
+  text(x=10^xvalues[20], y=sidak(10^xvalues[20], n=nFeatures),
+       'Bonferroni\n(Sidak)', cex=2, pos=2, # 2 = to the left
+       #srt=bonfTilt,
+       col='darkred')
+  abline(a=0, b=1, col='blue')
+  text(10^(bottom/2), 10^(bottom/2), 'diagonal', cex=2, pos=4, # 4 = to the right
+       #srt=diagTilt, 
+       col='blue')
+  #plot(qvalue::qvalue(allChisqPs) )
+}
+
+#debug(fun.qvaluePlot)
+plotOutput('qvaluePlot')
+```
+
+For our original D/L feature, with P value  `r reactive({rValues$P_Q_for_X_DL_original[1]})`, the Q-value is `r reactive({rValues$P_Q_for_X_DL_original[2]})`. 
+
+As before, you can modify the spread of the true odds ratios here to see how the Q-value changes. 
+
+```{r}
+bigDataComponent(analysisName='qValue')
+
+```
+
+
+```{r TQ-qvalues-changing-DL-data}
+TextQuestion('When you change the data set, what changes do you see, & why?')
+```
+
+```{r TQ-qvalues-changing-extra-features}
+TextQuestion('When you regenerate the extra features, what changes do you see, & why?')
+```
+
+We use the package `qvalue` for this calculation, which can be obtained from https://www.bioconductor.org/packages/release/bioc/html/qvalue.html. 
+
+```{r QA-empirical-Bayes}
+QandAha('QA-empirical-Bayes')
+```
+
+
+
+## Two alleles of one gene out of a hundred thousand tested; nothing known <!-- #title -->
+
+We won't illustrate this with data here, but think about this situation and how to approach it.
+
+**One key point**: none of these methods utilizes *prior belief* about the *plausibility* of any or all of these features. To utilize prior belief across ALL the features, one has to develop a *joint* prior distribution across all hypotheses. This is difficult, but there has been progress.
+
+```{r QA-big-joint-priors}
+QandAha(context='QA-big-joint-priors')
+```
+
+#  Final thoughts
+
+Thanks for trying out this material. Any thoughts about your experience with this module will be appreciated.
+
+```{r TQ-final-thoughts}
+TextQuestion('What worked well, what worked badly, what needs improvement?')
+```
+
+The code for this module is hosted at ['professorbeautiful/T15lumpsplit'](https://github.com/professorbeautiful/T15lumpsplit).
+
+#  Save your Comments and Answers
+```{r assembleComments}
+
+### TODO:  On startup, load the existing file into the answer boxes.
+assembleQAComments = reactive( {
+  lastQANumber = length(QA_contexts)
+  QAComments = data.frame(
+    contexts = unlist(QA_contexts),
+    contents = sapply(1:lastQANumber, function(num) {
+      outputIdThisQA = paste0('QA', num)
+      textareaIdThisQA = paste0('id', outputIdThisQA)
+      return(input[[textareaIdThisQA]])
+    })
+  )
+  QAComments
+})
+
+assembleTQAnswers = reactive({
+  lastTQNumber = length(TQ_contexts)
+  TQanswers = data.frame(
+    contexts = unlist(TQ_contexts),
+    contents = sapply(1:lastTQNumber, function(num) {
+      outputIdThisTQ = paste0('TQ', num)
+      textareaIdThisTQ = paste0('id', outputIdThisTQ)
+      return(input[[textareaIdThisTQ]])
+    })
+  )
+  TQanswers
+})
+
+assembleUserEntries = reactive({
+  rbind(assembleTQAnswers(), assembleQAComments())
+})
+
+### linebreak works but not needed. renderTable will abide.
+linebreak = function(s, maxchar=30) {
+  wordsplit = strsplit(s, split=' ')[[1]]
+  nchars = sapply(wordsplit, nchar)
+  cum = cumsum(nchars)%/% maxchar
+  which(cum[-length(cum)] != cum[-1])
+  paste(collapse='<br>',
+        sapply(split(wordsplit, cum), paste, collapse=' ')
+  )
+}
+
+assembledContentsToHTML = function(contents) {
+  # result = sapply(contents, function(content){
+  #   return(paste(content, '<br>'))
+  # })
+  # result = paste(contents, collapse="<BR>")
+  # print(str(result))
+  # return(HTML(result))
+  #contents[[1]] = linebreak(contents[[1]])
+  contents
+}
+
+output$commentsToText = renderTable({
+  assembleQAComments()  ### QA
+  # commentsText <<- capture.output(comments)
+  #writeLines(commentsText, commentsTextFile)
+  # assembledContentsToHTML(commentsText)
+})
+output$answersToText = renderTable({
+  assembleTQAnswers()   ## TQ
+  # answersText <<- capture.output(answers)
+  #writeLines(answersText, answersTextFile)
+  # assembledContentsToHTML(answersText) 
+})
+```
+
+```{r downloadHandlers}
+output$downloadAnswers <- downloadHandler(
+  filename = "_answers_T15lumpsplit.txt",
+  content = function(file) {
+    answers = assembleTQAnswers()   ## TQ
+    #answersText <<- capture.output(answers)
+    write.csv(answers, file, row.names = FALSE)
+  }
+  #, outputArgs=list()
+)
+output$downloadQandA <- downloadHandler(
+  filename = "_comments_T15lumpsplit.txt",
+  content = function(file) {
+    comments = assembleQAComments()  ### QA
+    #commentsText <<- capture.output(comments)
+    write.csv(comments, file, row.names = FALSE)
+  }
+)
+output$downloadAllUserEntries <- downloadHandler(
+  filename = paste0("_", user, "_UserEntries_T15lumpsplit.txt"),
+  content = function(file) {
+    entries = assembleUserEntries()  ### QA and TQ
+    #commentsText <<- capture.output(comments)
+    write.csv(entries, file, row.names = FALSE)
+  }
+)
+```
+
+```{r assemble comments and answers}
+
+div(
+  tags$b('View and download your "Questions&Ahas" comments and "TextQuestion" answers here.'),
+  div(
+    #`data-display-if` = 'false',
+    downloadButton(outputId="downloadAllUserEntries", 
+                     "Download your Q&A comments and your TQ answers here."),
+  conditionalPanelWithCheckbox(
+    labelString = 'View your comments', 
+    html=tableOutput('commentsToText'),
+    initialValue = FALSE  ),
+  conditionalPanelWithCheckbox(
+    labelString = 'View your answers', 
+    html=tableOutput('answersToText'),
+    initialValue = FALSE  ),
+  tags$b(
+    'Save these 2 files, to share & discuss with a mentor.')
+  )
+)
+```
+
+```{r initialContentReader}
+# Nope. see contentsAdvice
+# dlFolder = paste0(Sys.getenv('HOME'), 'Downloads')
+```
+
+# TO HERE 1756 – NO jquery-3.3.1.min.js
