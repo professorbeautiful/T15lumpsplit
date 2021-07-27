@@ -1,0 +1,240 @@
+---
+title: "TOC_test"
+author: "Roger Day"
+date: "7/26/2021"
+resource_files:
+- www/zoomAdvice.Rmd
+- www/zoom_triggers.js
+- www/readInnerWindow.js
+- www/the-delta-method.pdf
+- www/BayesEquation.Rmd
+runtime: shiny
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
+    toc_depth: 6
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+
+
+\[
+\newcommand{\mylarge}[1] {\large{#1}\normalsize}
+\newcommand{\mynormal}[1] {{\normalsize{#1}}}
+\]
+
+# title 1
+
+# title 2
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE)
+options(knitr.duplicate.label = 'allow')
+```
+
+
+```{r shinyjs, context="server", echo=FALSE, include=TRUE}
+
+#shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
+#library(shinyjs)
+shinyjs::useShinyjs(html = TRUE)
+require(shinyjs)
+shinyjs::useShinyjs(rmd=TRUE, html=TRUE, debug=TRUE)
+#<script src="shinyjs/inject.js"></script>
+
+saveEntriesJScode =  
+  "shinyjs.saveEntriesJS = function() {document.getElementById('downloadAllUserEntries').click();};"
+helloJScode = 
+  "shinyjs.helloJS = function() {alert('HELLO');};"
+shinyjs::extendShinyjs(text = saveEntriesJScode, functions=c('saveEntriesJS'))
+```
+
+
+
+```{r include = FALSE}
+#  options(error=utils::recover)  # I wish this helped!
+
+user = system('echo $USER', intern = TRUE) # for saving&retrieving files.
+
+require(T15lumpsplit)
+require(shiny)
+require(xtable)
+
+require(devtools)
+if(!require(T15lumpsplit))
+  devtools::install_github('professorbeautiful/T15lumpsplit')
+if(!require(shinyDebuggingPanel))
+  devtools::install_github('professorbeautiful/shinyDebuggingPanel')
+require(magrittr);require(shinyBS)
+require(knitr);require(rmarkdown);
+
+if(interactive()) {  ### Running out of RStudio locally
+  analysisReactiveSetup_DTC = paste0('inst/T15lumpsplit/', 'analysisReactiveSetup_DTC.R')
+  analysisReactiveSetup_BDC = paste0('inst/T15lumpsplit/', 'analysisReactiveSetup_BDC.R')
+} else  { ### Running at shinyapps.io
+  analysisReactiveSetup_DTC =  'analysisReactiveSetup_DTC.R'
+  analysisReactiveSetup_BDC =  'analysisReactiveSetup_BDC.R'
+}
+```
+
+```{r setup numbering, warning=FALSE}
+if(exists(x = 'envNumberSequences')) {
+  rm(list=ls(envir = envNumberSequences), envir = envNumberSequences)
+} else
+  envNumberSequences = new.env()
+### Note that the .GlobalEnv seen here is different from your R session... and it persists across Rmd runs!
+
+source('initializations.R', local=TRUE)
+```
+# title 3
+
+
+```{r colors}
+adviceForeground = 'darkred'
+adviceBackground = 'snow'
+lumpColor = 'red'
+splitColor = 'blue'
+
+## https://www.w3schools.com/cssref/css_colors.asp
+```
+
+```{r onStop}
+#onStop(function() {
+   #cat("Doing application cleanup\n")
+#})
+# Wish it worked.
+```
+
+```{r}
+#alert('GETTINGSTARTED')  // This works!
+includeScript('www/onbeforeunload.js')   ### Not doing anything now?
+```
+
+
+
+
+```{r initial values, echo=FALSE}
+
+logit <<- function(p) log(p/(1-p))
+antilogit <<- function(x) 1 - 1/(1+exp(x))
+DLdataOriginal = matrix(c(3,3,4,90),nrow=2)
+dimnames(DLdataOriginal) = list( outcome=c("R","N"), feature=c("D","L"))
+ColorForPrior="orange";     
+ColorForPosterior="blue";     
+ColorForLikelihood="black"
+TOCnum =  0
+```
+
+```{r servercode}
+DLdata = list()
+rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
+                         title_1='title 1',
+                         #DLdata=list(),
+                         #DLdataMyChoice=list(),
+                         #DLdataLastUsed = DLdataOriginal,
+                         isResetting = FALSE,
+                         isLoopingSync = FALSE,
+                         WhoPriorProbProb = 1/2,
+                         WhoPriorOdds = 1, #,
+                         #thisSession = session
+                         qStar = 1
+)
+```
+
+
+```{r sessioninitialized}
+#### This doesn't work in Rmarkdown.
+invisible(
+  tags$head(tags$script(
+    "$(document).on('shiny:sessioninitialized',
+    function(event) {
+    alert('shiny:sessioninitialized  2');
+    Shiny.onInputChange('sessioninitialized2', 2)
+});"
+  )) 
+)
+```
+
+
+```{r shiny:connected}
+### this doesn't work either.
+invisible(
+  tags$head(tags$script(
+    "$(document).on('shiny:connected', 
+  function(event) {
+    alert('shiny:connected  2');
+    Shiny.onInputChange('shinyconnected2', 2)
+  });"
+  )) 
+)
+```
+
+
+```{r makeDebuggingPanelOutput}
+observeEvent(input$ctrlDpressed, {}) # just to flush the ctrl-D press.
+
+shinyDebuggingPanel::makeDebuggingPanelOutput(
+   session, toolsInitialState = TRUE,
+   condition='ctrlDpressed === true')
+
+
+#options(shiny.trace=TRUE)
+```
+
+```{r fat arrow, results='asis'}
+#cat("\U2B07")
+# This shows you can get a fat arrow... but not in a plot.
+```
+
+```{r zoomRange}
+    #### zoomAdvice ####
+zoomRange <<- c(1200, 1400)
+```
+
+```{r zoomAdvice}
+invisible(inclRmd('www/zoomAdvice.Rmd'))
+```
+
+
+```{r browserAdvice}
+invisible(inclRmd('www/browserAdvice.Rmd'))
+```
+
+```{r contentsAdvice}
+invisible(inclRmd('www/contentsAdvice.Rmd'))
+```
+
+```{r in-progress}
+h3("NOTE: this is a work in progress!")
+```
+
+<a name='section-debugging'> </a>
+
+```{r withDebuggingPanel}
+fluidRow(
+shinyDebuggingPanel::withDebuggingPanel()
+)
+```
+
+
+```{r}
+includeScript('www/KeyHandler.js')
+includeScript('navigateToId.js')   ### ESCAPE key to return.  
+###The Chrome problem is NOT:
+# the order of these includeScripts.
+# due to navigateY. That works in JS console.
+
+includeCSS('TOC.css')    
+### includeCSS doesn't work early on.
+### It worksin the YAML.
+includeCSS('lumpsplit.css')
+#includeScript('www/jquery-3.3.1.min.js')
+
+```
+
+# TO HERE 238 
+
+
