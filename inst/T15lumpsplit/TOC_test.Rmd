@@ -231,7 +231,7 @@ includeCSS('TOC.css')
 ### includeCSS doesn't work early on.
 ### It worksin the YAML.
 includeCSS('lumpsplit.css')
-# includeScript('www/jquery-3.3.1.min.js')
+#includeScript('www/jquery-3.3.1.min.js')
 ####
 ```
 
@@ -1753,4 +1753,9 @@ div(
 # dlFolder = paste0(Sys.getenv('HOME'), 'Downloads')
 ```
 
-# TO HERE 1756 – NO jquery-3.3.1.min.js
+
+```{r browserDetect.js}
+includeScript('www/browserDetect.js')
+```
+
+# TO HERE 1761 – NO jquery-3.3.1.min.js
