@@ -227,7 +227,7 @@ includeScript('navigateToId.js')   ### ESCAPE key to return.
 # the order of these includeScripts.
 # due to navigateY. That works in JS console.
 
-includeCSS('TOC.css')    
+#includeCSS('TOC.css')    
 ### includeCSS doesn't work early on.
 ### It worksin the YAML.
 includeCSS('lumpsplit.css')
