@@ -326,4 +326,47 @@ We will explore a simple lumping and splitting conundrum as a jumping off point 
 
 # TO HERE 327 -- NO jquery-3.3.1.min.js
 
+```{r QA-intro-lump-split}
+QandAha(context='QA-intro-lump-split')
+```
+
+
+
+```{r initialize-jumpLists}
+jumpList_DTC = list()
+jumpList_BDC = list()
+getDTCnumber = function(analysisName) {
+  mapAnalysisToDTCnumber[analysisName]
+}
+getBDCnumber = function(analysisName) {
+  mapAnalysisToBDCnumber[analysisName]
+}
+```
+
+# Hypothetical medical study <!-- #title -->
+
+## Description of the challenge <!-- #title -->
+
+**The Problem**:  A new treatment is given to `r sum(DLdataOriginal)` patients.  
+Of them, only `r sum(DLdataOriginal["R", ])` respond.  The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
+
+That is discouraging. 
+
+But there is a subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r sum(DLdataOriginal["R","D"])` patients respond, yielding a response rate of `r round(100*sum(DLdataOriginal["R","D"])/sum(DLdataOriginal[ , "D"]) )`%. For now we call them "$D$ patients", and the others "$L$ patients". Which subgroup a patient belongs to is a "feature" we call $X_{DL}$, with possible values $D$ or $L$. 
+
+This feature $X_{DL}$ might be a valuable biomarker. Or it might be nonsense.
+Possibilities for the actual identity of $X_{DL}$ will be explored later.
+
+**The Challenge**: decide whether to treat the "$D$ patients" -- or more modestly, to decide whether to put resources into studying the treatment further for "$D$ patients". To guide the decision, we need to assess what we know about the **conditional probability**, probability that the patient responds to treatment given that the patient is a $D$ patient. We can see this conditional probability written different ways, some long, some short, using the vertical bar or the dot to say *"conditional on"*:
+
+* Probability of response given a $D$ patient
+* $Pr(Y~=~R ~|~ X_{DL} ~=~ D)$
+* $Pr(R ~|~ D)$
+* $P_{R~.~D}$
+
+
+# TO HERE 368 -- NO jquery-3.3.1.min.js
+
+# TO HERE 333 -- NO jquery-3.3.1.min.js
+
 
