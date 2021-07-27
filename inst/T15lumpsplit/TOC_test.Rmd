@@ -231,10 +231,51 @@ includeCSS('TOC.css')
 ### includeCSS doesn't work early on.
 ### It worksin the YAML.
 includeCSS('lumpsplit.css')
-#includeScript('www/jquery-3.3.1.min.js')
+# includeScript('www/jquery-3.3.1.min.js')
+####
+```
+
+
+```{r UI_begins}
+require(shinyBS)
+```
+*Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')`     Author: Roger Day, University of Pittsburgh*
+
+
+# OVERVIEW of this Module  <!-- #title -->
+
+
+## Contents of this Module  <!-- #title -->
+
+```{r Overview-topic}
+conditionalPanelWithCheckbox(
+  labelString = 'Overview of the topic', 
+  filename = 'Overview.Rmd', 
+  initialValue = TRUE)
+```
+
+For a refresher on the concepts of bias, variance, and mean squared error in estimation, open this panel.
+
+```{r bias-variance-meansquarederror-MSE.pdf}
+conditionalPanelWithCheckboxPDF(labelString='Concepts: bias, variance, and mean squared error in estimation',
+     filename="bias-variance-meansquarederror-MSE.pdf",
+     cbStringId='cbStringIdBiasVariance')
+```
+
+The general scope of the bias-variance axis in many settings is here:
+
+```{r biasVariancePicture}
+#### THIS WORKS. In the Preview window, iframe is turned into external to Preview  app. but not from the browser, that's OK. ####
+
+#### bias-variance axis ####
+conditionalPanelWithCheckboxPDF(labelString='The bias-variance axis',
+     filename="Reproducibility-lump-split-page-1.pdf",
+     cbStringId='cbStringIdReproducibility')
 
 ```
 
-# TO HERE 238 
+## Tips on using this Module  <!-- #title -->
+
+# TO HERE 279 -- NO jquery-3.3.1.min.js
 
 
