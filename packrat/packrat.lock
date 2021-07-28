@@ -1,11 +1,7 @@
 PackratFormat: 1.4
 PackratVersion: 0.4.9.3
 RVersion: 3.5.3
-Repos: BioCsoft=https://bioconductor.org/packages/3.7/bioc,
-    BioCann=https://bioconductor.org/packages/3.7/data/annotation,
-    BioCexp=https://bioconductor.org/packages/3.7/data/experiment,
-    BioCworkflows=https://bioconductor.org/packages/3.7/workflows,
-    CRAN=https://cran.rstudio.com/
+Repos: CRAN=https://cran.rstudio.com/
 
 Package: BH
 Source: CRAN
@@ -52,7 +48,7 @@ Package: cli
 Source: CRAN
 Version: 1.0.0
 Hash: f4239f89feb7ddc65821e4514e9734ae
-Requires: crayon, assertthat
+Requires: assertthat, crayon
 
 Package: colorspace
 Source: CRAN
@@ -95,8 +91,8 @@ Package: ggplot2
 Source: CRAN
 Version: 3.0.0
 Hash: 8332448b76ff31472a1bf6dd31fcddb1
-Requires: digest, rlang, withr, MASS, gtable, lazyeval, mgcv, plyr,
-    reshape2, scales, tibble, viridisLite
+Requires: MASS, digest, gtable, lazyeval, rlang, viridisLite, withr,
+    plyr, scales, mgcv, reshape2, tibble
 
 Package: git2r
 Source: CRAN
@@ -128,7 +124,7 @@ Package: httpuv
 Source: CRAN
 Version: 1.4.4.2
 Hash: f503a847b01e13a0160a5266238691ec
-Requires: BH, Rcpp, later, promises
+Requires: BH, R6, Rcpp, later, promises
 
 Package: httr
 Source: CRAN
@@ -145,7 +141,7 @@ Package: knitr
 Source: CRAN
 Version: 1.20
 Hash: 9c6b215d1d02b97586c8232e94533e6a
-Requires: highr, yaml, markdown, stringr, evaluate
+Requires: evaluate, highr, xfun, yaml, markdown, stringr
 
 Package: labeling
 Source: CRAN
@@ -222,7 +218,7 @@ Package: pillar
 Source: CRAN
 Version: 1.3.0
 Hash: 3e43f774fa6dfba877caca1aebbeaa6a
-Requires: crayon, rlang, cli, fansi, utf8
+Requires: crayon, fansi, rlang, utf8, cli
 
 Package: plyr
 Source: CRAN
@@ -240,13 +236,13 @@ Package: qvalue
 Source: Bioconductor
 Version: 2.12.0
 Hash: b3ed426ed920508a6032a1961804fc78
-Requires: ggplot2, reshape2
+Requires: reshape2, ggplot2
 
 Package: reshape2
 Source: CRAN
 Version: 1.4.3
 Hash: c950c8ac85b81209635acb3ce21b4cce
-Requires: Rcpp, stringr, plyr
+Requires: Rcpp, plyr, stringr
 
 Package: rlang
 Source: CRAN
@@ -257,8 +253,8 @@ Package: rmarkdown
 Source: CRAN
 Version: 1.10
 Hash: 02f1aac33000c63986c6b5585e36e7ae
-Requires: base64enc, jsonlite, mime, yaml, htmltools, stringr, tinytex,
-    evaluate, knitr
+Requires: base64enc, evaluate, jsonlite, mime, yaml, htmltools,
+    stringr, tinytex, knitr
 
 Package: rstudioapi
 Source: github
@@ -273,7 +269,7 @@ Package: scales
 Source: CRAN
 Version: 1.0.0
 Hash: 7d9b717abcec656ae7c5c982d72b75e5
-Requires: R6, Rcpp, RColorBrewer, labeling, munsell, viridisLite
+Requires: R6, RColorBrewer, Rcpp, labeling, viridisLite, munsell
 
 Package: shiny
 Source: CRAN
