@@ -1,6 +1,6 @@
-```{r}
-# Using this module: editing data
-tagAppendAttributes(
+```{r eval=TRUE, include=TRUE}
+
+advice_editing_data = tagAppendAttributes(
       style=paste(
       'color:', adviceForeground, '; background: ', adviceBackground, ';
         '),
@@ -22,4 +22,8 @@ allows you to reset the data to the original.
 Another reset button allows you to reinstate your data changes.
 "
 ) ) )
+output$advice_editing_data = renderUI({advice_editing_data})
+
+
 ```
+

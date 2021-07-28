@@ -84,6 +84,7 @@ if(exists(x = 'envNumberSequences')) {
 source('initializations.R', local=TRUE)
 ```
 
+
 ```{r colors}
 adviceForeground = 'darkred'
 adviceBackground = 'snow'
@@ -194,7 +195,7 @@ inclRmd('www/browserAdvice.Rmd')
 ```
 
 ```{r contentsAdvice}
-# inclRmd('www/contentsAdvice.Rmd')
+inclRmd('www/contentsAdvice.Rmd')
 ```
 
 ```{r in-progress}
@@ -273,16 +274,18 @@ conditionalPanelWithCheckboxPDF(labelString='The bias-variance axis',
 
 
 ```{r Overview-editing}
+inclRmd('dataEditingAdvice.Rmd')
 conditionalPanelWithCheckbox(
   labelString = 'ADVICE on editing data', 
-  filename = 'dataEditingAdvice.Rmd', 
+  html = uiOutput('advice_editing_data'), 
   initialValue = FALSE)
 ```
 
 ```{r Overview-saving-retrieving}
+inclRmd('contentsAdvice.Rmd')
 conditionalPanelWithCheckbox(
   labelString = 'ADVICE on saving and retrieving your answers questions and comments', 
-  filename = 'contentsAdvice.Rmd', 
+  html =  uiOutput('contentsAdviceOutput'),
   initialValue = FALSE)
 ```
 

@@ -1,4 +1,4 @@
-```{r}
+```{r include=FALSE}
 output$contentsAdviceOutput = renderUI({
   content_filename = paste0("_", user, "_UserEntries_T15lumpsplit.txt")
   text = div(
@@ -53,15 +53,6 @@ output$contentsAdviceOutput = renderUI({
   )
 })
 
-div(
-  
-    uiOutput('contentsAdviceOutput')
-    
-)
-```
-
-```{r}
-uiOutput('contentsAdvice')
 ```
 
 ```{r}
