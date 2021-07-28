@@ -9,7 +9,8 @@ QandAha = function(context='QA', linkLabel= "save") {
   linkIdThisQA = paste0('id', outputIdThisQA, "_link")
   observeEvent(eventExpr = input[[linkIdThisQA]], {
     cat('Calling saveEntriesJS (QA)', date(), '\n')
-    shinyjs::js$saveEntriesJS()
+    #shinyjs::js$saveEntriesJS()
+    document.getElementById('downloadAllUserEntries').click();
   })
   splitLayout(cellWidths = c("75%", "25%"),
               textAreaInput(inputId = textareaIdThisQA, width='200%',
@@ -19,7 +20,7 @@ QandAha = function(context='QA', linkLabel= "save") {
                                "Ask a question and/or describe an 'aha' here.")
     ) )
     , actionLink(inputId = linkIdThisQA,
-                 label = '(click to save all responses)' )
+                 label = '(click to download all entries now)' )
     #(click or shift-cmd S saves all responses)')
   )
 }

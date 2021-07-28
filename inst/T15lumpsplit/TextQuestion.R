@@ -9,7 +9,8 @@ TextQuestion = function(question="What do you think?") {
   linkIdThisTQ = paste0('id', outputIdThisTQ, "_link")
   observeEvent(eventExpr = input[[linkIdThisTQ]], {
     cat('Calling saveEntriesJS (TQ)', date(), '\n')
-    shinyjs::js$saveEntriesJS()
+    #shinyjs::js$saveEntriesJS()
+    document.getElementById('downloadAllUserEntries').click();
   })
   output[[outputIdThisTQ]] = renderUI({
     div(HTML(paste0(strong("A question for you: "), em(question))),
@@ -20,7 +21,7 @@ TextQuestion = function(question="What do you think?") {
                                       "Your answer:   ")
           )
           , actionLink(inputId = linkIdThisTQ,
-                         label = '(click to save all responses)' )
+                         label = '(click to download all entries now)' )
           #(click or shift-cmd S saves all responses)')
         )
     )
