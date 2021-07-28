@@ -1,7 +1,10 @@
 
  To deploy:
- The most recent installation of the package must be with .installFromGithub().
-Then, use the blue broken circle button to Publish to shinyapps.io.
+ The most recent installation of the package must be with
+ .installFromGithub()
+ 
+Then, select the tab with the Rmd file,
+and use the blue broken circle button to Publish to shinyapps.io.
 (See my "NOTES deploying with bioconductor package".  For me, qvalue.)
 
 To view logs of the shinyapps run, go to https://www.shinyapps.io/admin ,
