@@ -194,9 +194,6 @@ inclRmd('www/zoomAdvice.Rmd')
 inclRmd('www/browserAdvice.Rmd')
 ```
 
-```{r contentsAdvice}
-inclRmd('www/contentsAdvice.Rmd')
-```
 
 ```{r in-progress}
 h3("NOTE: this is a work in progress!")
@@ -286,7 +283,7 @@ inclRmd('contentsAdvice.Rmd')
 conditionalPanelWithCheckbox(
   labelString = 'ADVICE on saving and retrieving your answers questions and comments', 
   html =  uiOutput('contentsAdviceOutput'),
-  initialValue = FALSE)
+  initialValue = FALSE) 
 ```
 
 
