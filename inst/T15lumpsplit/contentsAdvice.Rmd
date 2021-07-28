@@ -1,28 +1,6 @@
 ```{r include=FALSE}
-output$contentsAdviceOutput = renderUI({
   content_filename = paste0("_", user, "_UserEntries_T15lumpsplit.txt")
-  text = div(
-      style=paste(
-        #'display: flex; justify-content: flex-center;',
-      'color:', adviceForeground, '; background: ', adviceBackground, ';
-         font-size:larger'),
-    "ADVICE: You can save your 'comments' and 'answers' any time, 
-    with Control-Shift-S.", 
-    br(), 
-    "(View your current contributions at the bottom of the page)", 
-    br(), 
-    "To resume later in a new session, 
-    you can reload your saved content file from your Downloads folder.",
-    br(),
-    "Click here to locate",
-    br(),
-    tags$b(content_filename), 
-    br(),
-    "and fill the content boxes below.", 
-    br(),
-    "(Only blank comments&answers will be filled.)"
-  )
-  contentFileInput = function(
+contentFileInput = function(
     label=c('all_entries_', 'comments','answers')) {
     #https://stackoverflow.com/questions/49506469/shiny-customise-fileinput?rq=1
     thisfileInput =
@@ -37,19 +15,29 @@ output$contentsAdviceOutput = renderUI({
     assign(paste0(label, 'FileInput'), thisfileInput, pos=1)
     thisfileInput
   }
-  div(
-    text,
-    tagAppendAttributes(
+output$contentsAdviceOutput = renderUI({
+  text = div(
       style=paste(
+        #'display: flex; justify-content: flex-center;',
       'color:', adviceForeground, '; background: ', adviceBackground, ';
-        font-weight:bold; font-size:larger'),
-      fluidRow(
-        column(2, ""),
-        # column(4, contentFileInput('comments')),
-        # column(4, contentFileInput('answers'))
-        column(8, contentFileInput('all_entries_'))
-      )
-    )
+         font-size:larger'),
+    "This page contains places for your questions, 'aha'-discoveries, and responses to imbedded questions.
+    You can save these 'comments' and 'answers' any time, 
+    with Control-Shift-S.", 
+    br(), 
+    "(View your current entries at the bottom of the page)", 
+    br(), 
+    "To resume later in a new session, 
+    you can reload your saved content file from your Downloads folder.",
+    br(),
+    "To locate and upload your saved entries, ",
+    "and fill the content boxes below,", 
+    "click here", 
+    "(sorry-- file upload cannot be fully automated...)",
+    contentFileInput('all_entries_'), 
+    #tags$b(content_filename), 
+    "(Only currently blank comments&answers will be filled from your file, so no answers will be clobbered by emptiness.)",
+br(),
   )
 })
 
