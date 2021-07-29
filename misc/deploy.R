@@ -5,21 +5,16 @@
 ## WARNING:  with shiny_arg, and/or launch.browser,
 ##  results can be VERY misleading.
 
-rerun = function(app='TOC_test.Rmd', shiny_arg,
-                   launch.browser) {
+rerun = function(app=1,
+                   launch.browser=TRUE) {
   if(app==1) app = 'Bias-variance-smoothing-shrinking.Rmd'
   if(app==2) app = 'TOC_test.Rmd'
   if(missing(launch.browser))  launch.browser =
       getOption("shiny.launch.browser", interactive())
-  if(missing(shiny_arg))
-    rmarkdown::run(
-      file = paste0("inst/T15lumpsplit/",app),
-      dir = "inst/T15lumpsplit/"  )
-  else
-    rmarkdown::run(
-      file = paste0("inst/T15lumpsplit/",app),
-      dir = "inst/T15lumpsplit/",
-      shiny_arg = list(launch.browser=launch.browser)
+  rmarkdown::run(
+    file = paste0("inst/T15lumpsplit/",app),
+    dir = "inst/T15lumpsplit/",
+    shiny_arg = list(launch.browser=launch.browser)
   )
 }
 #appDir='inst/T15lumpsplit/',shiny_args)
