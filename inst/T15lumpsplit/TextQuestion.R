@@ -7,10 +7,21 @@ TextQuestion = function(question="What do you think?") {
   outputIdThisTQ = paste0('TQ', thisTQNumber)
   textareaIdThisTQ = paste0('id', outputIdThisTQ)
   linkIdThisTQ = paste0('id', outputIdThisTQ, "_link")
+  observeEvent(eventExpr = input[[textareaIdThisTQ]], {
+    eval(parse(text=paste0(
+      'shinycookie::updateCookie(session, ',
+      outputIdThisTQ,
+      '=input[["', textareaIdThisTQ, '"]] )'
+    )  ) )
+  })
   observeEvent(eventExpr = input[[linkIdThisTQ]], {
     cat('Calling saveEntriesJS (TQ)', date(), '\n')
     #shinyjs::js$saveEntriesJS()
-    document.getElementById('downloadAllUserEntries').click();
+    clickString = paste0(
+      "document.getElementById(\\',
+      'downloadAllUserEntries\\').click();' "
+    )
+    tags$script(clickString)
   })
   output[[outputIdThisTQ]] = renderUI({
     div(HTML(paste0(strong("A question for you: "), em(question))),

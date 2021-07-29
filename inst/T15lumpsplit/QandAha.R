@@ -7,10 +7,22 @@ QandAha = function(context='QA', linkLabel= "save") {
   outputIdThisQA = paste0('QA', thisQANumber)
   textareaIdThisQA = paste0('id', outputIdThisQA)
   linkIdThisQA = paste0('id', outputIdThisQA, "_link")
+  observeEvent(eventExpr = input[[textareaIdThisQA]], {
+    eval(parse(text=paste0(
+      'shinycookie::updateCookie(session, ',
+      outputIdThisQA,
+      '=input[["', textareaIdThisQA, '"]] )'
+      )  ) )
+    })
   observeEvent(eventExpr = input[[linkIdThisQA]], {
     cat('Calling saveEntriesJS (QA)', date(), '\n')
-    #shinyjs::js$saveEntriesJS()
-    document.getElementById('downloadAllUserEntries').click();
+    # shinyjs::js$saveEntriesJS()
+    clickString =
+      "document.getElementById('downloadAllUserEntries').click();"
+    ### this fails
+    tags$script(paste0('eval("', clickString, '")') )
+    ### this works fine
+    tags$script('eval(4123413)')
   })
   splitLayout(cellWidths = c("75%", "25%"),
               textAreaInput(inputId = textareaIdThisQA, width='200%',
