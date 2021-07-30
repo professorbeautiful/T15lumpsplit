@@ -31,10 +31,10 @@ if(printFromAnalysisReactiveSetup_DTC) {
     rValues[[paste0('DLdata', currentDTCnumber) ]] = DLdataOriginal
   thisData <<- DLdataLastUsed <<- rValues[[paste0('DLdata', currentDTCnumber) ]]
 
-  if(printFromAnalysisReactiveSetup_DTC) {
-    cat('\n    AFTER:  ' )
-    cat('thisData: ', paste(thisData), 'DLdataLastUsed: ', paste(DLdataLastUsed),
-        'rValues DLdata: ')
-    print(paste(rValues[[paste0('DLdata', currentDTCnumber) ]]))
-  }
+  # if(printFromAnalysisReactiveSetup_DTC) {
+  #   cat('\n    AFTER:  ' )
+  #   cat('thisData: ', paste(thisData), 'DLdataLastUsed: ', paste(DLdataLastUsed),
+  #       'rValues DLdata: ')
+  #   print(paste(rValues[[paste0('DLdata', currentDTCnumber) ]]))
+  # }
 #})

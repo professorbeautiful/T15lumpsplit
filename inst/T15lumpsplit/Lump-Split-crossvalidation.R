@@ -75,7 +75,7 @@ output$crossvalidationPlot = renderPlot({
   source(analysisReactiveSetup_DTC, local=TRUE)
 
   result = doCVanalysis(thisData)
-  print(names(result))
+  #print(names(result))
   for(ob in names(result))
     assign(ob, result[[ob]])
   #####  plot with two vertical axes #####

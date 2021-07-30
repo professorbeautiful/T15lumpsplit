@@ -501,8 +501,8 @@ output$plotLumpSplitPoints = renderPlot(
   {
     analysisName = 'plotLumpSplitPoints'
     source(analysisReactiveSetup_DTC, local=TRUE)
-    cat('plotLumpSplitPoints: renderPlot', paste(thisData), '\n')
-    cat('plotLumpSplitPoints: renderPlot', paste(getDLdata(analysisName)), '\n')
+    #cat('plotLumpSplitPoints: renderPlot', paste(thisData), '\n')
+    #cat('plotLumpSplitPoints: renderPlot', paste(getDLdata(analysisName)), '\n')
     bivariateNormResults = #rValues$bivariateNormResults <<-
       calculatePlightPdarkPosterior(
         DLdata=thisData,
@@ -511,7 +511,7 @@ output$plotLumpSplitPoints = renderPlot(
         mu0=ifelse(is.null(input$mu0), 0.5, input$mu0),
         fudgeFactor=ifelse(is.null(input$fudgeFactor), 1e-6, input$fudgeFactor)
       ) 
-    cat('plotLumpSplitPoints: ', names(bivariateNormResults), '\n')
+    #cat('plotLumpSplitPoints: ', names(bivariateNormResults), '\n')
 
     plotPlightPdarkPosterior(
       DLdata=thisData,
@@ -577,9 +577,9 @@ output$fisherResult = renderUI({
   source(analysisReactiveSetup_DTC, local=TRUE)
 
   Pvalue = fisher.test(thisData)$p.value
-  print(thisData)
-  print(DLdataOriginal)
-  print(identical(DLdataOriginal, thisData))
+  #print(thisData)
+  #print(DLdataOriginal)
+  #print(identical(DLdataOriginal, thisData))
   if(identical(DLdataOriginal, thisData))
      "" ### output nothing
      else
@@ -795,16 +795,16 @@ output$estimateTable =
       ###  Use the last-data for everything.
     
     isolate( {
-      cat(paste(thisData), '\n')
-      cat(paste(DLdataLastUsed), '\n')
-      cat('Copying thisData to other analyses:\n')
+      #cat(paste(thisData), '\n')
+      #cat(paste(DLdataLastUsed), '\n')
+      #cat('Copying thisData to other analyses:\n')
       for(aN in 1:analysisNumber) {
-        cat('  =>',  names(mapAnalysisToDTCnumber) [aN], ':  ')
+        #cat('  =>',  names(mapAnalysisToDTCnumber) [aN], ':  ')
         setDLdata(value=thisData, myChoice=TRUE,
                   names(mapAnalysisToDTCnumber) [aN] )
-        cat(paste(getDLdata(myChoice=TRUE, 
-                            names(mapAnalysisToDTCnumber) [aN]) 
-        ), '\n' )
+        #cat(paste(getDLdata(myChoice=TRUE, 
+        #                    names(mapAnalysisToDTCnumber) [aN]) 
+        #), '\n' )
       }
     })
     nRD=thisData['R','D']
@@ -844,8 +844,8 @@ output$estimateTable =
       )
     })
     rValues$bivariateNormResults_bivPlot = bivariateNormResults
-    cat("table of estimates: names(bivariateNormResults) ",
-        paste(names(bivariateNormResults)), '\n')
+    #cat("table of estimates: names(bivariateNormResults) ",
+    #    paste(names(bivariateNormResults)), '\n')
     implicitWeight1_ForLogit = 
       (bivariateNormResults$postmean.p[1] - LumpRawMean)/
       (SplitRawMean - LumpRawMean)
@@ -993,7 +993,7 @@ makeDLdataDFYesNoYes = function(DLdata=DLdataOriginal, qStar=1, upperLimit=95){
     seedInt = seedInt + 1
     checkYesNoYes(seedInt)
   }
-  print(BHtable[ , 1:4])
+  #print(BHtable[ , 1:4])
   saveRDS(seedInt, 'seedInt.rda')
   return(seedInt)
 }

@@ -72,18 +72,18 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                    setBigData_Omega(value=newValue, analysisName=analysisName, myChoice=TRUE)
                    setBigData(BigDataMyChoice, analysisName)
                    setBigData(BigDataMyChoice, analysisName, myChoice=TRUE)
-                   if(printBDCProgress) {
-                     cat('BigDataMyChoice for ',  analysisName, ' is:\n')
-                     print(BigDataMyChoice[1:2,1:3])
-                   }
+                   # if(printBDCProgress) {
+                   #   cat('BigDataMyChoice for ',  analysisName, ' is:\n')
+                   #   print(BigDataMyChoice[1:2,1:3])
+                   # }
                  }
                  else {
                    saved_BigDataMyChoice_location = find('saved_BigDataMyChoice')
-                   if(printBDCProgress)
-                     cat(': Restoring saved_BigDataMyChoice ',
-                       #paste(saved_BigDataMyChoice),
-                       'from ',
-                       saved_BigDataMyChoice_location)
+                   # if(printBDCProgress)
+                   #   cat(': Restoring saved_BigDataMyChoice ',
+                   #     #paste(saved_BigDataMyChoice),
+                   #    s 'from ',
+                   #     saved_BigDataMyChoice_location)
                    setBigData(saved_BigDataMyChoice, analysisName, myChoice=TRUE)
                    rm('saved_BigDataMyChoice', pos='.GlobalEnv')
                    if(printBDCProgress)
