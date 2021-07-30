@@ -26,6 +26,13 @@ output:
 
 knitr::opts_chunk$set(echo = FALSE)
 options(knitr.duplicate.label = 'allow')
+cookieID = 'cookieID'
+shinycookie::initShinyCookie(cookieID, timeout = 500)
+# timeout is The length of time (in milliseconds) to poll for changes to cookies
+# I guess you could set up a listener on cookieID.
+shinycookie::updateCookie(
+  shiny::getDefaultReactiveDomain(), TQ1='I am TQ1')
+# This works.
 ```
 
 
@@ -35,18 +42,44 @@ options(knitr.duplicate.label = 'allow')
 #library(shinyjs)
 invisible( {
   require(shinyjs);
-  shinyjs::useShinyjs(rmd=TRUE, html = TRUE)
+  shinyjs::useShinyjs(rmd=TRUE, debug=TRUE, html = TRUE)
+  #shinyjs::useShinyjs()
 })
 #<script src="shinyjs/inject.js"></script>
 
 saveEntriesJScode =  
-  "shinyjs.saveEntriesJS = function() {document.getElementById('downloadAllUserEntries').click();};"
+  "shinyjs.saveEntriesJS = function() {document.getElementById('downloadAllUserEntries').click();}"
 helloJScode = 
   "shinyjs.helloJS = function() {alert('HELLO');};"
 shinyjs::extendShinyjs(text = saveEntriesJScode, functions=c('saveEntriesJS'))
+shinyjs::extendShinyjs(text = helloJScode, functions=c('helloJS'))
 ```
 
+```{r}
+tags$head(tags$script(
+    HTML('
+      Shiny.addCustomMessageHandler ("readCookie",function (message) {
+        var cookie = readCookie(message.name);
+        Shiny.onInputChange("cookie", cookie);
+      })
 
+      function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(";");
+        for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==" ") c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return      c.substring(nameEQ.length,c.length);
+        }   
+        return "No such cookie";
+      }   
+      ')
+    ))
+
+#print(paste( 'cookie is ', cookie)       )
+
+
+```
 
 ```{r include = FALSE}
 #  options(error=utils::recover)  # I wish this helped!
