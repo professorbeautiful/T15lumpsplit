@@ -17,6 +17,13 @@ output:
       collapsed: no
       smooth_scroll: no
 ---
+```{r, echo=FALSE}
+shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
+```
+```{r, context="server"}
+shinyjs::useShinyjs(rmd = TRUE)
+```
+<script src="shinyjs/inject.js"></script>
 
 \[
 \newcommand{\mylarge}[1] {\large{#1}\normalsize}
@@ -43,9 +50,9 @@ shinycookie::updateCookie(
 #library(shinyjs)
 invisible( {
   require(shinyjs);
-  shinyjs::useShinyjs(rmd=TRUE, debug=TRUE, html = TRUE)
-  #shinyjs::useShinyjs()
+  shinyjs::useShinyjs(rmd=TRUE, debug=TRUE, html=FALSE)
 })
+
 #<script src="shinyjs/inject.js"></script>
 
 saveEntriesJScode =  
@@ -250,30 +257,22 @@ inclRmd('www/zoomAdvice.Rmd')
 inclRmd('www/browserAdvice.Rmd')
 ```
 
-```{r}
+```{r loadFromCookies-Setup}
 writingCookiesIsOK = FALSE
 tags$head(tags$script("Shiny.onInputChange('cookieinput', document.cookie);"))
-observe(x = {print(cookieRetrieved <<- input$cookieinput)})
-cookieList = strsplit(cookieRetrieved, split = ';')[[1]]
-cookieNamesAndValues = strsplit(cookieList, split = '=')
-cookieNames = gsub('^ ', '', lapply(cookieNamesAndValues, '[', 1)  )
-cookieValues = gsub('^ ', '', lapply(cookieNamesAndValues, '[', 2)  )
-names(cookieValues) = cookieNames
-for(thisTQNumber in seq(along=TQ_contexts)) {
-  outputIdThisTQ = paste0('TQ', thisTQNumber)
-  if( !is.na(input[[textareaIdThisTQ]] ) ) {
-    textareaIdThisTQ = paste0('id', outputIdThisTQ)
-    updateTextAreaInput(session, 
-                        textareaIdThisTQ, 
-                        value = cookieValues[outputIdThisTQ])
-  }
-}
-writingCookiesIsOK = TRUE
-
 ```
+
 
 ```{r in-progress}
 h3("NOTE: this is a work in progress!")
+
+actionButton("button", "Click me")
+div(id = "hello", "Hello!")
+
+observeEvent(input$button, {
+ toggle("hello")
+})
+
 #print( paste('TQ22222222', #session$sendCustomMessage(type="readCookie",
 #               message=list(name='TQ22222222')) ) )
 
@@ -1688,6 +1687,42 @@ Thanks for trying out this material. Any thoughts about your experience with thi
 
 ```{r TQ-final-thoughts}
 TextQuestion('What worked well, what worked badly, what needs improvement?')
+```
+
+```{r loadFromCookies}
+writingCookiesIsOK = FALSE
+tags$script("Shiny.onInputChange('cookieinput', document.cookie);")
+
+observe(x = {
+  print(cookieRetrieved <<- input$cookieinput)
+  if (!is.null(cookieRetrieved)) {
+  cookieList = strsplit(cookieRetrieved, split = ';')[[1]]
+  cookieNamesAndValues = strsplit(cookieList, split = '=')
+  cookieNames = gsub('^ ', '', lapply(cookieNamesAndValues, '[', 1)  )
+  cookieValues <<- gsub('^ ', '',
+                        lapply(cookieNamesAndValues, '[', 2)  )
+  names(cookieValues) = cookieNames
+  # isolate ({
+  # for(thisTQNumber in seq(along=TQ_contexts)) {
+  #   outputIdThisTQ = paste0('TQ', thisTQNumber)
+  #   textareaIdThisTQ = paste0('id', outputIdThisTQ)
+  #   currentValue = as.vector(input[[textareaIdThisTQ]])
+  #   cat("outputIdThisTQ", outputIdThisTQ, '\n==>',
+  #   currentValue, '\n') 
+  #   if( !is.na(currentValue) ) {
+  #     cat('Filling ...\n', 
+  #         cookieValues[outputIdThisTQ], '\n')
+  #     updateTextAreaInput(session, 
+  #                         textareaIdThisTQ, 
+  #                         value =
+  #                           as.vector(cookieValues[outputIdThisTQ]) )
+  #   }
+  # }
+  # })
+  writingCookiesIsOK = TRUE
+  }
+} )
+# Resume updating cookies from text areas.
 ```
 
 The code for this module is hosted at ['professorbeautiful/T15lumpsplit'](https://github.com/professorbeautiful/T15lumpsplit).
