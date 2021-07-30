@@ -6,6 +6,7 @@ resource_files:
 - www/readInnerWindow.js
 - www/the-delta-method.pdf
 - www/BayesEquation.Rmd
+- www/readCookie.js
 runtime: shiny
 output:
   html_document:
