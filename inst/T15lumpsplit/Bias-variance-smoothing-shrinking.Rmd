@@ -671,7 +671,7 @@ fluidRow(
 
 ```{r TQ and QA for crossvalidation}
 TextQuestion("What advantage does the cross-validation approach here have, relative to the approaches of Drs. Split, Lump and Who?")
-QandAha('QA-for crossvalidation')
+QandAha('QA-for-crossvalidation')
 ```
 
 ### <a name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a> <!-- #title -->
