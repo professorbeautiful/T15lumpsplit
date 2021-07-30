@@ -198,6 +198,29 @@ invisible(
 ```
 
 
+
+```{r JSdoer}
+### this fails.
+output$JSdoer = renderUI({
+  thisQANumber = 1
+  outputIdThisQA = paste0('QA', thisQANumber)
+  textareaIdThisQA = paste0('id', outputIdThisQA)
+  linkIdThisQA = paste0('id', outputIdThisQA, "_link")
+  input[[linkIdThisQA]]  ## dependency
+  cat('CLICKED ', linkIdThisQA, '\n')
+  shinyjs::click('downloadAllUserEntries', asis=TRUE);
+  clickString =
+      "document.getElementById('downloadAllUserEntries').click();"
+  tags$script(clickString )
+  #tags$script(paste0('eval("', clickString, '")') )
+  tags$script('console.log("downloadAllUserEntries")' )
+})
+
+uiOutput(outputId='JSdoer')
+
+```
+
+
 ```{r makeDebuggingPanelOutput}
 observeEvent(input$ctrlDpressed, {}) # just to flush the ctrl-D press.
 
@@ -222,14 +245,44 @@ zoomRange <<- c(1200, 1400)
 ```{r zoomAdvice}
 inclRmd('www/zoomAdvice.Rmd')
 ```
-
 ```{r browserAdvice}
 inclRmd('www/browserAdvice.Rmd')
 ```
 
+```{r}
+writingCookiesIsOK = FALSE
+tags$head(tags$script("Shiny.onInputChange('cookieinput', document.cookie);"))
+observe(x = {print(cookieRetrieved <<- input$cookieinput)})
+cookieList = strsplit(cookieRetrieved, split = ';')[[1]]
+cookieNamesAndValues = strsplit(cookieList, split = '=')
+cookieNames = gsub('^ ', '', lapply(cookieNamesAndValues, '[', 1)  )
+cookieValues = gsub('^ ', '', lapply(cookieNamesAndValues, '[', 2)  )
+names(cookieValues) = cookieNames
+for(thisTQNumber in seq(along=TQ_contexts)) {
+  outputIdThisTQ = paste0('TQ', thisTQNumber)
+  if( !is.na(input[[textareaIdThisTQ]] ) ) {
+    textareaIdThisTQ = paste0('id', outputIdThisTQ)
+    updateTextAreaInput(session, 
+                        textareaIdThisTQ, 
+                        value = cookieValues[outputIdThisTQ])
+  }
+}
+writingCookiesIsOK = TRUE
+
+```
 
 ```{r in-progress}
 h3("NOTE: this is a work in progress!")
+#print( paste('TQ22222222', #session$sendCustomMessage(type="readCookie",
+#               message=list(name='TQ22222222')) ) )
+
+#jsCode <- "shinyjs.pageCol = function(params){return 12341;}"
+#extendShinyjs(text = jsCode, functions = c("pageCol"))
+#cat('jsCode ', js$pageCol(0))
+# This code works in shinyDebuggingPanel:
+#  $('body').css('background', 'green')
+# But all output appears in an alert window,
+# cannot grab into R.
 ```
 
 <a name='section-debugging'> </a>
