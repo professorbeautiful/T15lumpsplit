@@ -25,7 +25,6 @@ shinyjs::useShinyjs(rmd = TRUE)
 ```
 <script src="shinyjs/inject.js"></script>
 
-<script src="www/readCookie.js"></script>
 
 \[
 \newcommand{\mylarge}[1] {\large{#1}\normalsize}
