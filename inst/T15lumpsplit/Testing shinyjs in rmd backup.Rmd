@@ -45,9 +45,20 @@ selectInput("col", "Colour:",
 observeEvent(input$col, {
           js$pageCol(input$col)
         })
+
+cookieCode = "shinyjs.retrieveCookie = function(params) {
+  alert(document.cookie);
+  return document.cookie;
+};"
+extendShinyjs(text = cookieCode, functions = c("retrieveCookie"))
+actionButton("cookieButton", "retrieveCookie")
+observeEvent(input$cookieButton, {
+  print(js$retrieveCookie())
+  #
+})
 ```
 
 ```{r}
-js$pageCol('red')
+js$pageCol('green') # doesn't work?
 ```
 
