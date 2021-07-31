@@ -6,7 +6,6 @@ resource_files:
 - www/readInnerWindow.js
 - www/the-delta-method.pdf
 - www/BayesEquation.Rmd
-- www/readCookie.js
 runtime: shiny
 output:
   html_document:
@@ -56,6 +55,8 @@ invisible( {
 
 #<script src="shinyjs/inject.js"></script>
 
+#  This works in JS:  shinyjs.click(document.getElementById('downloadAllUserEntries') )
+
 saveEntriesJScode =  
   "shinyjs.saveEntriesJS = function() {document.getElementById('downloadAllUserEntries').click();}"
 helloJScode = 
@@ -73,8 +74,8 @@ jsCode <- "shinyjs.pageCol = function(params){$('body').css('background', params
 tags$head(tags$script(
     HTML('
       Shiny.addCustomMessageHandler ("readCookie",function (message) {
-        var cookie = readCookie(message.name);
-        Shiny.onInputChange("cookie", cookie);
+        var mycookie = readCookie(message.name);
+        Shiny.onInputChange("cookie", mycookie);
       })
 
       function readCookie(name) {

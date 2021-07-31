@@ -20,12 +20,13 @@ TextQuestion = function(question="What do you think?") {
   })
   observeEvent(eventExpr = input[[linkIdThisTQ]], {
     cat('Calling saveEntriesJS (TQ)', date(), '\n')
+    shinyjs::click('downloadAllUserEntries')
     #shinyjs::js$saveEntriesJS()
-    clickString = paste0(
-      "document.getElementById(\\',
-      'downloadAllUserEntries\\').click();' "
-    )
-    tags$script(clickString)
+    # clickString = paste0(
+    #   "document.getElementById(\\',
+    #   'downloadAllUserEntries\\').click();' "
+    # )
+    # tags$script(clickString)
   })
   output[[outputIdThisTQ]] = renderUI({
     div(HTML(paste0(strong("A question for you: "), em(question))),

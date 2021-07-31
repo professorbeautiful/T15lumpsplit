@@ -19,14 +19,15 @@ QandAha = function(context='QA', linkLabel= "save") {
     }
   })
   observeEvent(eventExpr = input[[linkIdThisQA]], {
-    cat('Calling saveEntriesJS (QA)', date(), '\n')
+    shinyjs::click('downloadAllUserEntries')
+    #cat('Calling saveEntriesJS (QA)', date(), '\n')
     # shinyjs::js$saveEntriesJS()
-    clickString =
-      "document.getElementById('downloadAllUserEntries').click();"
-    ### this fails
-    tags$script(paste0('eval("', clickString, '")') )
-    ### this works fine
-    tags$script('eval(4123413)')
+    # clickString =
+    #   "document.getElementById('downloadAllUserEntries').click();"
+    # ### this fails
+    # tags$script(paste0('eval("', clickString, '")') )
+    # ### this works fine
+    # tags$script('eval(4123413)')
   })
   splitLayout(cellWidths = c("75%", "25%"),
               textAreaInput(inputId = textareaIdThisQA, width='200%',
