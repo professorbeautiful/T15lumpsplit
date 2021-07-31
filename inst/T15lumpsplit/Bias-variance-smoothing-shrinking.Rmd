@@ -25,6 +25,8 @@ shinyjs::useShinyjs(rmd = TRUE)
 ```
 <script src="shinyjs/inject.js"></script>
 
+<script src="www/readCookie.js"></script>
+
 \[
 \newcommand{\mylarge}[1] {\large{#1}\normalsize}
 \newcommand{\mynormal}[1] {{\normalsize{#1}}}
@@ -274,7 +276,7 @@ h3("NOTE: this is a work in progress!")
 actionButton("button", "Click me")
 div(id = "hello", "Hello!")
 observeEvent(input$button, {
- toggle("hello")
+ toggle("hello") # this is working now.
 })
 selectInput("col", "Colour:",
             c("white", "yellow", "red", "blue", "purple"))
