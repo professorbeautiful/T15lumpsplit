@@ -8,12 +8,15 @@ QandAha = function(context='QA', linkLabel= "save") {
   textareaIdThisQA = paste0('id', outputIdThisQA)
   linkIdThisQA = paste0('id', outputIdThisQA, "_link")
   observeEvent(eventExpr = input[[textareaIdThisQA]], {
-    if(writingCookiesIsOK)
-      eval(parse(text=paste0(
+    if(writingCookiesIsOK) {
+      cookieText = paste0(
         'shinycookie::updateCookie(session, ',
         outputIdThisQA,
         '=input[["', textareaIdThisQA, '"]] )'
-      )  ) )
+      )
+      print(cookieText)
+      eval(parse(text= cookieText ) )
+    }
   })
   observeEvent(eventExpr = input[[linkIdThisQA]], {
     cat('Calling saveEntriesJS (QA)', date(), '\n')

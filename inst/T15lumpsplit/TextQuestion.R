@@ -8,12 +8,15 @@ TextQuestion = function(question="What do you think?") {
   textareaIdThisTQ = paste0('id', outputIdThisTQ)
   linkIdThisTQ = paste0('id', outputIdThisTQ, "_link")
   observeEvent(eventExpr = input[[textareaIdThisTQ]], {
-    if(writingCookiesIsOK)
-      eval(parse(text=paste0(
+    if(writingCookiesIsOK) {
+      cookieText = paste0(
         'shinycookie::updateCookie(session, ',
         outputIdThisTQ,
         '=input[["', textareaIdThisTQ, '"]] )'
-      )  ) )
+      )
+      print(cookieText)
+      eval(parse(text= cookieText ) )
+    }
   })
   observeEvent(eventExpr = input[[linkIdThisTQ]], {
     cat('Calling saveEntriesJS (TQ)', date(), '\n')
