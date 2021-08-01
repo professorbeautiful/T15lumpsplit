@@ -45,14 +45,14 @@ shinycookie::updateCookie(
 ```
 
 
-```{r shinyjs, context="server", echo=FALSE, results='hide', include=FALSE}
+```{r shinyjs, context="server", echo=FALSE}
 
 #shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 #library(shinyjs)
 invisible( {
   require(shinyjs);
-  shinyjs::useShinyjs(rmd=TRUE, debug=TRUE, html=FALSE)
 })
+shinyjs::useShinyjs(rmd=TRUE, html=FALSE)
 
 shinyjs::extendShinyjs(script = 'www/readCookie.js', functions=c('readCookie'))
 
