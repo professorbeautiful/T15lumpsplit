@@ -1708,20 +1708,20 @@ tags$script("Shiny.onInputChange('cookieinput', document.cookie);")
 observe(x = {
   print(cookieRetrieved <<- input$cookieinput)
   if (!is.null(cookieRetrieved)) {
-  cookieList = strsplit(cookieRetrieved, split = ';')[[1]]
-  cookieNamesAndValues = strsplit(cookieList, split = '=')
-  cookieNames = gsub('^ ', '', lapply(cookieNamesAndValues, '[', 1)  )
-  cookieValues <<- gsub('^ ', '',
-                        lapply(cookieNamesAndValues, '[', 2)  )
-  names(cookieValues) = cookieNames
-  isolate ({
-    for(thisTQNumber in seq(along=TQ_contexts)) {
-      outputIdThisTQ = paste0('TQ', thisTQNumber)
-      textareaIdThisTQ = paste0('id', outputIdThisTQ)
-      currentValue = as.vector(input[[textareaIdThisTQ]])
-      cat("outputIdThisTQ", outputIdThisTQ, '==>',
-          currentValue, '<==\n')
-#      if( !is.na(currentValue) ) {
+    cookieList = strsplit(cookieRetrieved, split = ';')[[1]]
+    cookieNamesAndValues = strsplit(cookieList, split = '=')
+    cookieNames = gsub('^ ', '', lapply(cookieNamesAndValues, '[', 1)  )
+    cookieValues <<- gsub('^ ', '',
+                          lapply(cookieNamesAndValues, '[', 2)  )
+    names(cookieValues) = cookieNames
+    isolate ({
+      for(thisTQNumber in seq(along=TQ_contexts)) {
+        outputIdThisTQ = paste0('TQ', thisTQNumber)
+        textareaIdThisTQ = paste0('id', outputIdThisTQ)
+        currentValue = as.vector(input[[textareaIdThisTQ]])
+        cat("outputIdThisTQ", outputIdThisTQ, '==>',
+            currentValue, '<==\n')
+        #      if( !is.na(currentValue) ) {
         cat('Filling ...',
             cookieValues[outputIdThisTQ], '\n')
         updateTextAreaInput(
@@ -1730,15 +1730,15 @@ observe(x = {
           value =
             as.vector(
               cookieValues[outputIdThisTQ]) )
-#      }
-    }
-    for(thisQANumber in seq(along=QA_contexts)) {
-      outputIdThisQA = paste0('QA', thisQANumber)
-      textareaIdThisQA = paste0('id', outputIdThisQA)
-      currentValue = as.vector(input[[textareaIdThisQA]])
-      cat("outputIdThisQA", outputIdThisQA, '\n==>',
-          currentValue, '<==\n')
-#      if( !is.na(currentValue) ) {
+        #      }
+      }
+      for(thisQANumber in seq(along=QA_contexts)) {
+        outputIdThisQA = paste0('QA', thisQANumber)
+        textareaIdThisQA = paste0('id', outputIdThisQA)
+        currentValue = as.vector(input[[textareaIdThisQA]])
+        cat("outputIdThisQA", outputIdThisQA, '\n==>',
+            currentValue, '<==\n')
+        #      if( !is.na(currentValue) ) {
         cat('Filling ...\n',
             cookieValues[outputIdThisQA], '\n')
         updateTextAreaInput(
@@ -1747,11 +1747,11 @@ observe(x = {
           value =
             as.vector(
               cookieValues[outputIdThisQA]) )
-#      }
-    }
-  })
-  writingCookiesIsOK <<- TRUE
+        #      }
+      }
+    })
   }
+  writingCookiesIsOK <<- TRUE
 } )
 # Resume updating cookies from text areas.
 ```
