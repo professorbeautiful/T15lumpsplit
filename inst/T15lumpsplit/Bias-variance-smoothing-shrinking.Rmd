@@ -20,7 +20,7 @@ output:
 shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
 ```{r, context="server"}
-shinyjs::useShinyjs(rmd = TRUE)
+invisible(shinyjs::useShinyjs(rmd = TRUE))
 ```
 
 <script src="www/readCookie.js"></script>
