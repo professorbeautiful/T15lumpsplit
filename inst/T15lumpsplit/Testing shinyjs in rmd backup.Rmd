@@ -20,7 +20,7 @@ options(knitr.duplicate.label = 'allow')
 ```{r, echo=FALSE}
 shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
-```{r, context="server"}
+```{r}
   require(shinyjs);
 
 shinyjs::useShinyjs(rmd = TRUE)
