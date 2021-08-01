@@ -22,7 +22,6 @@ shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```{r, context="server"}
 shinyjs::useShinyjs(rmd = TRUE)
 ```
-<script src="shinyjs/inject.js"></script>
 
 <script src="www/readCookie.js"></script>
 
