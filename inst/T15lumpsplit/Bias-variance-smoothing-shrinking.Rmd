@@ -41,11 +41,11 @@ shinycookie::initShinyCookie(cookieID, timeout = 500)
 # I guess you could set up a listener on cookieID.
 shinycookie::updateCookie(
   shiny::getDefaultReactiveDomain(), TQ1='I am TQ1')
-# This works.
+# This works. Printing NULL?
 ```
 
 
-```{r shinyjs, echo=TRUE}
+```{r shinyjs, echo=FALSE}
 
 #shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 #library(shinyjs)
