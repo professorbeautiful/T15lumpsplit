@@ -26,7 +26,6 @@ shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 shinyjs::useShinyjs(rmd = TRUE)
 ```
 
-<script src="shinyjs/inject.js"></script>
 
 ```{r}
 actionButton("button", "Click me")
@@ -53,9 +52,10 @@ cookieCode = "shinyjs.retrieveCookie = function(params) {
 extendShinyjs(text = cookieCode, functions = c("retrieveCookie"))
 actionButton("cookieButton", "retrieveCookie")
 observeEvent(input$cookieButton, {
-  print(js$retrieveCookie())
-  #
+js$pageCol('green') # doesn't work?
+  print(js$retrieveCookie())  #NULL
 })
+
 ```
 
 ```{r}
