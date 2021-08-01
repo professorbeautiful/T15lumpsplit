@@ -17,9 +17,7 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 options(knitr.duplicate.label = 'allow')
 ```
-```{r, echo=FALSE}
-shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
-```
+
 ```{r}
   require(shinyjs);
 
