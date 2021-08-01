@@ -20,7 +20,7 @@ options(knitr.duplicate.label = 'allow')
 
 ```{r}
   require(shinyjs);
-
+#shinyjs::useShinyjs(rmd = TRUE, html=TRUE)
 shinyjs::useShinyjs(rmd = TRUE)
 ```
 
