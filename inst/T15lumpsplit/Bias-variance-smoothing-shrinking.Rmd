@@ -40,7 +40,7 @@ shinycookie::initShinyCookie(cookieID, timeout = 500)
 # timeout is The length of time (in milliseconds) to poll for changes to cookies
 # I guess you could set up a listener on cookieID.
 shinycookie::updateCookie(
-  shiny::getDefaultReactiveDomain(), TQ1='I am TQ1')
+  shiny::getDefaultReactiveDomain(), TQ2='I am TQ2')
 # This works. Printing NULL?
 ```
 
@@ -67,7 +67,7 @@ jsCode <- "shinyjs.pageCol = function(params){$('body').css('background', params
 ```
 
 ```{r}
-
+#conflict with extendShinyjs?
 tags$head(tags$script(
     HTML('
       Shiny.addCustomMessageHandler ("readCookie",function (message) {
@@ -272,6 +272,9 @@ h3("NOTE: this is a work in progress!")
 
 actionButton("button", "Click me")
 div(id = "hello", "Hello!")
+```
+
+```{r actions}
 observeEvent(input$button, {
  toggle("hello") # this is working now.
 })
@@ -1701,6 +1704,8 @@ writingCookiesIsOK = FALSE
 tags$script("Shiny.onInputChange('cookieinput', document.cookie);")
 
 observe(x = {
+  writingCookiesIsOK = FALSE
+
   print(cookieRetrieved <<- input$cookieinput)
   if (!is.null(cookieRetrieved)) {
     cookieList = strsplit(cookieRetrieved, split = ';')[[1]]
@@ -1710,39 +1715,28 @@ observe(x = {
                           lapply(cookieNamesAndValues, '[', 2)  )
     names(cookieValues) = cookieNames
     isolate ({
-      for(thisTQNumber in seq(along=TQ_contexts)) {
-        outputIdThisTQ = paste0('TQ', thisTQNumber)
-        textareaIdThisTQ = paste0('id', outputIdThisTQ)
-        currentValue = as.vector(input[[textareaIdThisTQ]])
-        cat("outputIdThisTQ", outputIdThisTQ, '==>',
+      for(context in c('TQ', 'QA') )
+      for(thisSeqNumber in
+          seq(along=get(paste0(context,'_contexts')))) {
+        outputIdThisOne = paste0(context, thisSeqNumber)
+        textareaIdThisOne = paste0('id', outputIdThisOne)
+        currentValue = as.vector(input[[textareaIdThisOne]])
+        if( currentValue != '') {
+          cat("box ", outputIdThisOne, ' has ==>',
             currentValue, '<==\n')
-        #      if( !is.na(currentValue) ) {
-        cat('Filling ...',
-            cookieValues[outputIdThisTQ], '\n')
-        updateTextAreaInput(
-          session,
-          textareaIdThisTQ,
-          value =
-            as.vector(
-              cookieValues[outputIdThisTQ]) )
-        #      }
-      }
-      for(thisQANumber in seq(along=QA_contexts)) {
-        outputIdThisQA = paste0('QA', thisQANumber)
-        textareaIdThisQA = paste0('id', outputIdThisQA)
-        currentValue = as.vector(input[[textareaIdThisQA]])
-        cat("outputIdThisQA", outputIdThisQA, '\n==>',
-            currentValue, '<==\n')
-        #      if( !is.na(currentValue) ) {
-        cat('Filling ...\n',
-            cookieValues[outputIdThisQA], '\n')
-        updateTextAreaInput(
-          session,
-          textareaIdThisQA,
-          value =
-            as.vector(
-              cookieValues[outputIdThisQA]) )
-        #      }
+        } else {
+          newValue = as.vector(
+            cookieValues[outputIdThisOne]) 
+          cat("newValue ", outputIdThisOne, ' has ==>',
+            newValue, '<==\n')
+          #if(!is.na(newValue)) if(newValue!=''){
+            cat('Filling ...', newValue, '\n')
+            updateTextAreaInput(
+              session,
+              textareaIdThisOne,
+              value = newValue )
+          #}
+        }
       }
     })
   }
