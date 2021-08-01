@@ -280,10 +280,10 @@ div(id = "hello", "Hello!")
 observeEvent(input$button, {
  toggle("hello") # this is working now.
 })
-selectInput("col", "Colour:",
+selectInput("idPageCol", "Colour:",
             c("white", "yellow", "red", "blue", "purple"))
-observeEvent(input$col, {
-  js$pageCol(input$col)
+observeEvent(input$idPageCol, {
+  js$pageCol(input$idPageCol)
 })
 #print( paste('TQ22222222', #session$sendCustomMessage(type="readCookie",
 #               message=list(name='TQ22222222')) ) )
