@@ -16,11 +16,14 @@ output:
       collapsed: no
       smooth_scroll: no
 ---
-```{r, echo=FALSE}
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+options(knitr.duplicate.label = 'allow')
 shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
+
 ```{r, context="server"}
-invisible(shinyjs::useShinyjs(rmd = TRUE))
+shinyjs::useShinyjs(rmd = TRUE)
 ```
 
 <script src="www/readCookie.js"></script>
@@ -31,10 +34,7 @@ invisible(shinyjs::useShinyjs(rmd = TRUE))
 \newcommand{\mynormal}[1] {{\normalsize{#1}}}
 \]
 
-```{r setup, include=FALSE}
-
-knitr::opts_chunk$set(echo = FALSE)
-options(knitr.duplicate.label = 'allow')
+```{r}
 cookieID = 'cookieID'
 shinycookie::initShinyCookie(cookieID, timeout = 500)
 # timeout is The length of time (in milliseconds) to poll for changes to cookies
@@ -45,14 +45,10 @@ shinycookie::updateCookie(
 ```
 
 
-```{r shinyjs, context="server", echo=FALSE}
+```{r shinyjs, echo=TRUE}
 
 #shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 #library(shinyjs)
-invisible( {
-  require(shinyjs);
-})
-shinyjs::useShinyjs(rmd=TRUE, html=FALSE)
 
 shinyjs::extendShinyjs(script = 'www/readCookie.js', functions=c('readCookie'))
 
