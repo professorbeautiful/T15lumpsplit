@@ -19,7 +19,10 @@ options(knitr.duplicate.label = 'allow')
 ```
 
 ```{r}
-  require(shinyjs);
+#  putting , results='hide' OR , include=FALSE here breaks shinyjs.  Also "invisible" is ok around require(shinyjs), but "invisible" around useShinyjs breaks it!
+invisible({
+require(shinyjs);
+})
 #shinyjs::useShinyjs(rmd = TRUE, html=TRUE)
 shinyjs::useShinyjs(rmd = TRUE)
 ```
