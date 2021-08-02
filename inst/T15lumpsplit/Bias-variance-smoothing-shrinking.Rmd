@@ -1703,8 +1703,10 @@ TextQuestion('What worked well, what worked badly, what needs improvement?')
 ```{r loadFromCookies}
 writingCookiesIsOK = FALSE
 tags$script("Shiny.onInputChange('cookieinput', document.cookie);")
+```
 
-observe(x = {
+```{r}
+observe(label = 'cookieObserver', x = {
   writingCookiesIsOK = FALSE
 
   print(cookieRetrieved <<- input$cookieinput)
@@ -1715,31 +1717,35 @@ observe(x = {
     cookieValues <<- gsub('^ ', '',
                           lapply(cookieNamesAndValues, '[', 2)  )
     names(cookieValues) = cookieNames
+    print(cookieValues)
     isolate ({
-      for(context in c('TQ', 'QA') )
+      for(context in c('TQ', 'QA') ) 
       for(thisSeqNumber in
           seq(along=get(paste0(context,'_contexts')))) {
         outputIdThisOne = paste0(context, thisSeqNumber)
         textareaIdThisOne = paste0('id', outputIdThisOne)
         currentValue = as.vector(input[[textareaIdThisOne]])
-        if( currentValue != '') {
-          cat("box ", outputIdThisOne, ' has ==>',
-            currentValue, '<==\n')
-        } else {
-          newValue = as.vector(
-            cookieValues[outputIdThisOne]) 
-          cat("newValue ", outputIdThisOne, ' has ==>',
-            newValue, '<==\n')
-          #if(!is.na(newValue)) if(newValue!=''){
-            cat('Filling ...', newValue, '\n')
-            updateTextAreaInput(
-              session,
-              textareaIdThisOne,
-              value = newValue )
-          #}
+        if( !is.null(currentValue)) {
+          if( length(grep('^ *$', currentValue))==0) {
+            cat("box ", outputIdThisOne, ' has ==>',
+                currentValue, '<==(', nchar(currentValue), '\n')
+          } else {
+            newValue = as.vector(
+              cookieValues[outputIdThisOne]) 
+            if(!is.na(newValue)) {
+              cat("newValue ", outputIdThisOne, ' has ==>',
+                  newValue, '<==\n')
+              #if(!is.na(newValue)) if(newValue!=''){
+              cat('Filling ...', newValue, '\n')
+              updateTextAreaInput(
+                session,
+                textareaIdThisOne,
+                value = newValue )
+            }
+          }
         }
       }
-    })
+    })  # end of isolate
   }
   writingCookiesIsOK <<- TRUE
 } )
