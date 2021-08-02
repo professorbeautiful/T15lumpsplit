@@ -1718,7 +1718,7 @@ observe(label = 'cookieObserver', x = {
     cookieNames = gsub('^ ', '', lapply(cookieNamesAndValues, '[', 1)  )
     cookieValues <<- gsub('^ ', '',
                           lapply(cookieNamesAndValues, '[', 2)  )
-    names(cookieValues) = cookieNames
+    names(cookieValues) <<- cookieNames
     print(cookieValues)
     isolate ({
       for(context in c('TQ', 'QA') ) 
@@ -1727,24 +1727,25 @@ observe(label = 'cookieObserver', x = {
         outputIdThisOne = paste0(context, thisSeqNumber)
         textareaIdThisOne = paste0('id', outputIdThisOne)
         currentValue = as.vector(input[[textareaIdThisOne]])
-        if( !is.null(currentValue)) {
-          if( length(grep('^ *$', currentValue))==0) {
-            cat("box ", outputIdThisOne, ' has ==>',
-                currentValue, '<==(', nchar(currentValue), '\n')
-          } else {
         newValue = as.vector(
           cookieValues[outputIdThisOne])
-            if(!is.na(newValue)) {
+        print(paste('currentValue ', textareaIdThisOne, currentValue))
         cat("newValue ", outputIdThisOne, ' has ==>',
             newValue, '<==\n')
+        #if( !is.null(currentValue)) {
+          if( length(grep('^ *$', currentValue))==0) {
+            cat("box ", outputIdThisOne, ' has ==>',
+                currentValue, '<==(', nchar(currentValue), ')\n')
+          } #else {
+            if(!is.na(newValue)) {
               #if(!is.na(newValue)) if(newValue!=''){
               cat('Filling ...', newValue, '\n')
               updateTextAreaInput(
                 session,
                 textareaIdThisOne,
                 value = newValue )
-            }
-          }
+            #}
+          #}
         }
       }
     })  # end of isolate
