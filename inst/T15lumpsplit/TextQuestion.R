@@ -14,7 +14,7 @@ TextQuestion = function(question="What do you think?") {
         outputIdThisTQ,
         '=input[["', textareaIdThisTQ, '"]] )'
       )
-      print(cookieText)
+      #print(cookieText)
       eval(parse(text= cookieText ) )
     }
   })

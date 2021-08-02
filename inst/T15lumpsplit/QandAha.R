@@ -14,7 +14,7 @@ QandAha = function(context='QA', linkLabel= "save") {
         outputIdThisQA,
         '=input[["', textareaIdThisQA, '"]] )'
       )
-      print(cookieText)
+      #print(cookieText)
       eval(parse(text= cookieText ) )
     }
   })
