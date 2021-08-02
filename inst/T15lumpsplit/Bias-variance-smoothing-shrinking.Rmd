@@ -265,6 +265,8 @@ inclRmd('www/browserAdvice.Rmd')
 ```{r loadFromCookies-Setup}
 writingCookiesIsOK <<- FALSE
 tags$head(tags$script("Shiny.onInputChange('cookieinput', document.cookie);"))
+## This only works the once. But if run from the shinyDebuggingPanel JS box, it works immediately.
+# But again, only once.
 ```
 
 
