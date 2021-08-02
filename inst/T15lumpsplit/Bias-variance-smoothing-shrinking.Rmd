@@ -34,7 +34,7 @@ shinyjs::useShinyjs(rmd = TRUE)
 \newcommand{\mynormal}[1] {{\normalsize{#1}}}
 \]
 
-```{r}
+```{r, include=FALSE}
 cookieID = 'cookieID'
 shinycookie::initShinyCookie(cookieID, timeout = 500)
 # timeout is The length of time (in milliseconds) to poll for changes to cookies
@@ -94,6 +94,7 @@ tags$head(tags$script(
 ```
 
 ```{r include = FALSE}
+#include = FALSE means knitr will run the chunk but not include the chunk in the final document
 #  options(error=utils::recover)  # I wish this helped!
 
 user = system('echo $USER', intern = TRUE) # for saving&retrieving files.
