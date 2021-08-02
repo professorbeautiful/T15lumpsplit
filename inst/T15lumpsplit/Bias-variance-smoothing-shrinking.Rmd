@@ -23,10 +23,12 @@ shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
 
 ```{r, context="server"}
+invisible(require(shinyjs) )
 shinyjs::useShinyjs(rmd = TRUE)
 ```
 
 <script src="www/readCookie.js"></script>
+<script src="shinyjs/inject.js"></script>
 
 
 \[
@@ -1704,6 +1706,12 @@ TextQuestion('What worked well, what worked badly, what needs improvement?')
 
 ```{r loadFromCookies}
 writingCookiesIsOK = FALSE
+cleanupTextAreaText = function(x)  ## "=" seems ok.
+  gsub('%20', ' ', 
+       gsub('%25', '', # will be '%',
+            gsub('EQUALS', '=',
+            gsub('%3B', ';',
+                 x=x))))
 tags$script("Shiny.onInputChange('cookieinput', document.cookie);")
 ```
 
@@ -1729,6 +1737,7 @@ observe(label = 'cookieObserver', x = {
         currentValue = as.vector(input[[textareaIdThisOne]])
         newValue = as.vector(
           cookieValues[outputIdThisOne])
+        newValue = cleanupTextAreaText(newValue)
         print(paste('currentValue ', textareaIdThisOne, currentValue))
         cat("newValue ", outputIdThisOne, ' has ==>',
             newValue, '<==\n')
