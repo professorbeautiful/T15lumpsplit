@@ -64,11 +64,13 @@ shinyjs::extendShinyjs(text = saveEntriesJScode, functions=c('saveEntriesJS'))
 shinyjs::extendShinyjs(text = helloJScode, functions=c('helloJS'))
 
 jsCode <- "shinyjs.pageCol = function(params){$('body').css('background', params);}"
-        extendShinyjs(text = jsCode, functions = c("pageCol"))
+extendShinyjs(text = jsCode, functions = c("pageCol"))
 
 ```
 
-```{r}
+
+```{r eval=FALSE}
+# This was printing NULL
 #conflict with extendShinyjs?
 tags$head(tags$script(
     HTML('
@@ -95,7 +97,8 @@ tags$head(tags$script(
 
 ```
 
-```{r include = FALSE}
+
+```{r requirements,include = FALSE}
 #include = FALSE means knitr will run the chunk but not include the chunk in the final document
 #  options(error=utils::recover)  # I wish this helped!
 
@@ -142,14 +145,16 @@ splitColor = 'blue'
 ## https://www.w3schools.com/cssref/css_colors.asp
 ```
 
-```{r onStop}
+
+```{r onStop, eval=FALSE}
 #onStop(function() {
    #cat("Doing application cleanup\n")
 #})
 # Wish it worked.
 ```
 
-```{r}
+
+```{r onbeforeunload}
 #alert('GETTINGSTARTED')  // This works!
 includeScript('www/onbeforeunload.js')   ### Not doing anything now?
 ```
@@ -168,6 +173,8 @@ ColorForLikelihood="black"
 TOCnum =  0
 ```
 
+
+
 ```{r servercode}
 DLdata = list()
 rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
@@ -185,7 +192,7 @@ rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
 ```
 
 
-```{r sessioninitialized}
+```{r sessioninitialized, eval=FALSE}
 #### This doesn't work in Rmarkdown.
 invisible(
   tags$head(tags$script(
@@ -199,7 +206,7 @@ invisible(
 ```
 
 
-```{r shiny:connected}
+```{r shiny-connected}
 ### this doesn't work either.
 invisible(
   tags$head(tags$script(
@@ -211,7 +218,6 @@ invisible(
   )) 
 )
 ```
-
 
 
 ```{r JSdoer, eval=FALSE}
@@ -257,6 +263,7 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(
 zoomRange <<- c(1200, 1400)
 ```
 
+
 ```{r zoomAdvice}
 inclRmd('www/zoomAdvice.Rmd')
 ```
@@ -264,7 +271,9 @@ inclRmd('www/zoomAdvice.Rmd')
 inclRmd('www/browserAdvice.Rmd')
 ```
 
-```{r loadFromCookies-Setup}
+
+```{r loadFromCookies-Setup, results='hide'}
+#'hide' prevents printing NULL, does not hurt cookies.
 writingCookiesIsOK <<- FALSE
 tags$head(tags$script("Shiny.onInputChange('cookieinput', document.cookie);"))
 ## This only works the once. But if run from the shinyDebuggingPanel JS box, it works immediately.
@@ -272,14 +281,15 @@ tags$head(tags$script("Shiny.onInputChange('cookieinput', document.cookie);"))
 ```
 
 
-```{r in-progress}
+```{r in-progress, eval=FALSE}
 h3("NOTE: this is a work in progress!")
 
 actionButton("button", "Click me")
 div(id = "hello", "Hello!")
 ```
 
-```{r actions}
+```{r actions, eval=FALSE}
+# No longer needed
 observeEvent(input$button, {
  toggle("hello") # this is working now.
 })
