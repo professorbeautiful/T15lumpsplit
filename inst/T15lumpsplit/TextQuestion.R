@@ -8,8 +8,8 @@ TextQuestion = function(question="What do you think?") {
   textareaIdThisTQ = paste0('id', outputIdThisTQ)
   linkIdThisTQ = paste0('id', outputIdThisTQ, "_link")
   observeEvent(eventExpr = input[[textareaIdThisTQ]], {
-    if(writingCookiesIsOK) {
-      userTyped = input[[textareaIdThisTQ]]
+    userTyped = input[[textareaIdThisTQ]]
+    if(writingCookiesIsOK & isStringOfInterest(userTyped)) {
       userTyped = gsub('=', 'EQUALS', userTyped)
       cookieText = paste0(
         'shinycookie::updateCookie(session, ',

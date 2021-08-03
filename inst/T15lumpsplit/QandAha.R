@@ -8,8 +8,8 @@ QandAha = function(context='QA', linkLabel= "save") {
   textareaIdThisQA = paste0('id', outputIdThisQA)
   linkIdThisQA = paste0('id', outputIdThisQA, "_link")
   observeEvent(eventExpr = input[[textareaIdThisQA]], {
-    if(writingCookiesIsOK) {
-      userTyped = input[[textareaIdThisQA]]
+    userTyped = input[[textareaIdThisQA]]
+    if(writingCookiesIsOK & isStringOfInterest(userTyped)) {
       userTyped = gsub('=', 'EQUALS', userTyped)
       cookieText = paste0(
         'shinycookie::updateCookie(session, ',
