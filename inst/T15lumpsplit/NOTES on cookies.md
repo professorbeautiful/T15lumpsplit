@@ -1,6 +1,18 @@
 ## Solving COMMENT and ANSWER problems with Bias,variance, ...
 
 
+2021-08-03
+All cookie stuff is working...
+except,
+if you restart by making an edit/save
+all the code runs but the boxes become entry,
+but if you hit STOP, then rerun,
+then the boxes do fill correctly.
+So, you CANNOT debug cookies and boxes with cycles of edit/save.
+(This may also be true of shinyjs::toggle)
+
+
+
 Put this in the JS code panel:
   Shiny.onInputChange("cookieinput", document.cookie);
 then put this in the R code panel:
