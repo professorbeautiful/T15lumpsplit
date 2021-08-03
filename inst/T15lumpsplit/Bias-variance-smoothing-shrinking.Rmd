@@ -1729,7 +1729,7 @@ observe(label = 'cookieObserver', x = {
     cookieValues <<- gsub('^ ', '',
                           lapply(cookieNamesAndValues, '[', 2)  )
     names(cookieValues) <<- cookieNames
-    print(cookieValues)
+    #print(cookieValues)
     isolate ({
       for(context in c('TQ', 'QA') ) 
       for(thisSeqNumber in
