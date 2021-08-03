@@ -21,25 +21,33 @@ output$contentsAdviceOutput = renderUI({
         #'display: flex; justify-content: flex-center;',
       'color:', adviceForeground, '; background: ', adviceBackground, ';
          font-size:larger'),
-    "This application page contains places for all your entries:   <br>
-    'comments' (questions and 'aha'-discoveries), and also responses to imbedded questions.
-    <br>
-    You can save these 'comments' and 'responses' to a file at any time, 
+    "This application page contains places for all your entries. There are 2 type of entry boxes for you:",
+    tags$ul(
+      tags$li(
+      "'comments' (questions and 'aha'-discoveries)"  ),
+      tags$li("responses to imbedded questions.")),
+    
+    "Your entries are instantly saved as web page 'cookies'.",
+    "To resume later in a new session (same browser),
+    ", br(), "these cookies will (usually) reload your previous work into the boxes.", 
+    br(), 
+    br(), 
+    "You can also reload your saved content file from your Downloads folder-- if you'd saved it.", 
+    br(),
+    "You can save these 'comments' and 'responses' to a file at any time, 
     with Control-Shift-S.", 
     br(), 
-    "(View your current entries at the bottom of the page)", 
-    br(), 
-    "To resume later in a new session, 
-    you can reload your saved content file from your Downloads folder.",
+    "(Or, view your current entries at the bottom of the page, and click the button there.)", 
     br(),
     "To locate and upload your saved entries, ",
     "and fill the content boxes below,", 
-    "click here", 
+    "click the button below.", 
     "(sorry-- file upload cannot be fully automated...)",
-    contentFileInput('all_entries_'), 
-    #tags$b(content_filename), 
+    br(),
     "(Only currently blank entry boxes will be filled from your file, so your current entries will NOT be clobbered by empty space.)",
-br(),
+    br(), br(),
+    "So, WHY save to a file?  Because you can send your file of saved entries to a friendly mentor or mentor-ly friend for feedback.",
+    contentFileInput('all_entries_')
   )
 })
 
