@@ -43,7 +43,7 @@ shinycookie::initShinyCookie(cookieID, timeout = 500)
 # I guess you could set up a listener on cookieID.
 #shinycookie::updateCookie(
 #  shiny::getDefaultReactiveDomain(), TQ2='I am TQ2')
-# This works. Printing NULL?
+# This works. Not printing NULL
 ```
 
 
@@ -214,7 +214,7 @@ invisible(
 
 
 
-```{r JSdoer}
+```{r JSdoer, eval=FALSE}
 ### this fails.
 output$JSdoer = renderUI({
   thisQANumber = 1
