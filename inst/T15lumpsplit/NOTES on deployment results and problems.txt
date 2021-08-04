@@ -1,0 +1,9 @@
+NOTES on deployment results and problems
+
+2021-08-03
+On Chrome, keeps crashing especially on interactions like clicking and typing,
+and the contentsAdvice and DataEditingAdvice
+do not appear on clicking the toggle
+On Safari, the TOC is overlapping the app.
+But the contentsAdvice and DataEditingAdvice are ok.
+An entry box cookie persists,   "QA2=AHA%20for%20me!" , but the textarea does not fill.
