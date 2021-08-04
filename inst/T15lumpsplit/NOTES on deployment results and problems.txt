@@ -1,5 +1,18 @@
 NOTES on deployment results and problems
 
+2021-08-04
+From branch 'master' I built
+https://trials.shinyapps.io/Bias-variance-smoothing-shrinking-development/
+And from branch '2019' I (re)built
+https://trials.shinyapps.io/Bias-variance-smoothing-shrinking/
+
+In Safari, the "advice" panels show, but TOC is out of place (overlapping) and the shinyjs chunk is showing output. For 2019, the TOC doesn'at appear at all, and the browserAdvice and zoomAdvice appear in raw html.
+In Chrome, the "advice" panels do NOT show when clicked.
+
+In Safari, javascript onsole is alt-Cmd-c.-- but doesn't work; that's for the pastebuffer list.
+
+I wonder if this "labelNode must be of length 1" error is worth fixing.  I think it's from shinyDebuggingPanel.
+
 2021-08-03
 On Chrome, keeps crashing especially on interactions like clicking and typing,
 and the contentsAdvice and DataEditingAdvice
