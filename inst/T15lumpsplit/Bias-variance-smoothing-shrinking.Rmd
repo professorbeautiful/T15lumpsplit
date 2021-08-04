@@ -69,7 +69,7 @@ extendShinyjs(text = jsCode, functions = c("pageCol"))
 ```
 
 
-```{r eval=FALSE}
+```{r addCustomMessageHandler, eval=FALSE}
 # This was printing NULL
 #conflict with extendShinyjs?
 tags$head(tags$script(

@@ -10,9 +10,14 @@ and use the blue broken circle button to Publish to shinyapps.io.
 To view logs of the shinyapps run, go to https://www.shinyapps.io/admin ,
 select the running app, and click the log tab.
 
+
+=-=-=-=-=-=-=-=-
+
 Child chunks may not have chunk names or content, not even a comment.
 Installing from github you get a warning.
 But then deploying bombs with a mysterious message, can't find the temp file path.
+
+
 
 ```{r}
 # options(repos = c(BiocInstaller::biocinstallRepos()  
