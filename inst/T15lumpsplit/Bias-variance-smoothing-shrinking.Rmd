@@ -23,6 +23,10 @@ shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
 
 ```{r, context="server", message=FALSE, warning=FALSE}
+## ok, adding message=FALSE, warning=FALSE succeeds in suppressing
+## the output at shinyapps.
+## Furthermore, all the other problems on Chrome at shinyapps
+## have disappeared!
 invisible(require(shinyjs) )
 shinyjs::useShinyjs(rmd = TRUE)
 ```
