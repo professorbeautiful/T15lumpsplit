@@ -349,7 +349,7 @@ includeCSS('lumpsplit.css')
 ```{r UI_begins}
 require(shinyBS)
 ```
-*Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')`     Author: Roger Day, University of Pittsburgh*
+*Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')`     Author: Roger Day, University of Pittsburgh.  Started on `r date()` *
 
 
 # OVERVIEW of this Module  <!-- #title -->
