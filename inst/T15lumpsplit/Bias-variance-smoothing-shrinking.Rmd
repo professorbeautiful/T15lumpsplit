@@ -1885,8 +1885,7 @@ div(
   tags$b('View and download your "Questions&Ahas" comments and "TextQuestion" answers here.'),
   div(
     #`data-display-if` = 'false',
-    downloadButton(outputId="downloadAllUserEntries", 
-                     "Download your Q&A comments and your TQ answers here."),
+
   conditionalPanelWithCheckbox(
     labelString = 'View your comments', 
     html=tableOutput('commentsToText'),
@@ -1896,8 +1895,10 @@ div(
     html=tableOutput('answersToText'),
     initialValue = FALSE  ),
   tags$b(
-    'Save these 2 files, to share & discuss with a mentor.')
-  )
+    'Save these entries, to share & discuss with a mentor.')
+  ),    downloadButton(outputId="downloadAllUserEntries", 
+                     "Download your Q&A comments and your TQ answers here."),
+  
 )
 ```
 
