@@ -47,11 +47,13 @@ shinycookie::initShinyCookie(cookieID, timeout = 500)
 ```
 
 
-```{r shinyjs, echo=FALSE}
+```{r shinyjs, echo=FALSE, message=FALSE, warning=FALSE}
 
 #shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 #library(shinyjs)
+```
 
+```{r readCookie}
 shinyjs::extendShinyjs(script = 'www/readCookie.js', functions=c('readCookie'))
 
 #  This works in JS:  shinyjs.click(document.getElementById('downloadAllUserEntries') )
