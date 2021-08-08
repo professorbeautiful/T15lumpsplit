@@ -248,7 +248,7 @@ uiOutput(outputId='JSdoer')
 ```
 
 
-```{r makeDebuggingPanelOutput, eval=FALSE}
+```{r makeDebuggingPanelOutput, eval=TRUE}
 observeEvent(input$ctrlDpressed, {}) # just to flush the ctrl-D press.
 
 shinyDebuggingPanel::makeDebuggingPanelOutput(
@@ -318,7 +318,7 @@ observeEvent(input$idPageCol, {
 
 <a name='section-debugging'> </a>
 
-```{r withDebuggingPanel, eval=FALSE}
+```{r withDebuggingPanel, eval=TRUE}
 
 fluidRow(
 shinyDebuggingPanel::withDebuggingPanel()
