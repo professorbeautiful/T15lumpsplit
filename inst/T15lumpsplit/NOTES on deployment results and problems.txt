@@ -4,6 +4,9 @@ NOTES on deployment results and problems
 
 The labelNode problem, with shinyDebuggingPanel, was causing problems with shinyapps.io.  Removing from the app solved ALL of the problems.
 And, the QA 1 cookie survived closing Chrome and re-starting.
+NEXT: get Harry to update the page for T15.
+and figure out how to 'publish' this thing.
+And, fix shinyDebuggingPanel!
 
 
 2021-08-04
