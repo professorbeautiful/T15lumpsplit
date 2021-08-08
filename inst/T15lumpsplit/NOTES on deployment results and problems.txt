@@ -1,5 +1,11 @@
 NOTES on deployment results and problems
 
+2021-08-05
+
+The labelNode problem, with shinyDebuggingPanel, was causing problems with shinyapps.io.  Removing from the app solved ALL of the problems.
+And, the QA 1 cookie survived closing Chrome and re-starting.
+
+
 2021-08-04
 From branch 'master' I built
 https://trials.shinyapps.io/Bias-variance-smoothing-shrinking-development/
