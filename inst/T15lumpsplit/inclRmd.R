@@ -21,7 +21,10 @@ inclRmd <- function(path, wd, openMe=FALSE) {
       return(paste("inclRmd: file ", path, " not found in ", getwd()))
   knitrOutput = paste(readLines(path, warn = FALSE), collapse = '\n') %>%
     knitr::knit2html(quiet=TRUE,
-                     text = ., fragment.only = TRUE, options = ""
+                     text = ., #fragment.only = TRUE, unused argument?
+                     #we should use knit2html(..., template = FALSE) instead of fragment.only = TRUE now. I just adjusted the shiny example.
+                     template=FALSE,
+                     options = ""
                      #,stylesheet=file.path(r_path,"../www/empty.css"
         # rmarkdown::render(quiet=TRUE,output_format = 'html_document',
                       # input = path, runtime='shiny'
