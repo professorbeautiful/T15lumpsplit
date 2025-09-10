@@ -423,7 +423,10 @@ Other advances proceed by "lumping":  identifying things that seem different but
 
 So, we split birds and bats, but we lump bats and whales because they are both mammals. At least in this case, for some purposes, lumping supercedes splitting.
 (But if studying modes of locomotion, the lumping will be different.
+
 And... a surprisingly cogent argument concludes that [bats and whales.. and humans... are fish!](https://www.youtube.com/watch?v=ElpRJQ2FZiM)  )
+
+And... an equally cogent argument concludes that [ fish don't exist!](https://www.goodreads.com/book/show/50887097-why-fish-don-t-exist)  )
 
 In medicine both splitting and lumping are important.
 
