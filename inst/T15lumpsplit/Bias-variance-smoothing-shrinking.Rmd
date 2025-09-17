@@ -121,7 +121,7 @@ if(!require(T15lumpsplit))
 if(!require(shinyDebuggingPanel))
   devtools::install_github('professorbeautiful/shinyDebuggingPanel')
 require(magrittr);require(shinyBS)
-require(knitr);require(rmarkdown);
+require(knitr);require(rmarkdown);require(markdown);
 
 if(interactive()) {  ### Running out of RStudio locally
   analysisReactiveSetup_DTC = paste0('inst/T15lumpsplit/', 'analysisReactiveSetup_DTC.R')
