@@ -32,7 +32,7 @@ inclRmd <- function(path, wd, openMe=FALSE) {
     gsub("&lt;!--/html_preserve--&gt;","",.) %>%
     gsub("&lt;!--html_preserve--&gt;","",.) %>%
     HTML %>%
-    withMathJax %>%
+    #  withMathJax %>%
     tee(., paste0(path, '.inclOutput.Rmd'))
   #if(openMe)
   #  browseURL(paste0(path, '.inclOutput.Rmd'))
