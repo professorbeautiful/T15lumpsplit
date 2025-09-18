@@ -419,22 +419,50 @@ conditionalPanelWithCheckbox(
 # "Lumping" versus "splitting" in science. <!-- #title -->
 
 
-In science, advances often proceed by "splitting": things that seem initially the same are classified as different. The classification may be tentativedistinction, until it proves to be useful. 
-Other advances proceed by "lumping":  identifying things that seem different but have a deep connection.
+In science, advances often proceed by "splitting":  
+things that seem initially the same are classified as different.  
+The classification may be a tentative distinction,  
+until it proves to be useful. 
 
-So, we split birds and bats, but we lump bats and whales because they are both mammals. At least in this case, for some purposes, lumping supercedes splitting.
-(But if studying modes of locomotion, the lumping will be different.
-And... a surprisingly cogent argument concludes that [bats and whales.. and humans... are fish!](https://www.youtube.com/watch?v=ElpRJQ2FZiM)  )
+
+Other advances proceed by "lumping":  
+identifying things that seem different  
+but have a deep connection.
+
+So, we split birds and bats,  
+but we lump bats and whales because they are both mammals.  
+At least in this case, for some purposes,  
+lumping supercedes splitting.
+
+<blockquote style="font-size:80%;">
+(But if studying modes of locomotion, the lumping will be different.  
+And... a surprisingly cogent argument concludes that  
+[bats and whales.. and humans... are fish!](https://www.youtube.com/watch?v=ElpRJQ2FZiM)  
+And another, that [Fish Don't Exist](https://en.wikipedia.org/wiki/Why_Fish_Don%27t_Exist)
+)
+</blockquote>
 
 In medicine both splitting and lumping are important.
 
-Cancer was just "cancer" before it was learned through clinical trials that some medicines work well on cancer in one organ but not another--- and vice versa for another medicine.
+Cancer was just "cancer" before it was learned  
+through clinical trials that some medicines work well on cancer  
+in one organ but not another---   
+and vice versa for another medicine.
 
-In recent years, however, specific molecular defects in cancer cells have "lumped" together types of cancer that we would not have dreamed of connecting.
-The drug gleevec is a miracle drug for patients with chronic myelogenous leukemia (CML). But not for other leukemias. Deep insight into molecular biology of cancer showed that a radically different kind, gastrointestinal stromal tumor (GIST). 
+In recent years, however, specific molecular defects in cancer cells  
+have "lumped" together types of cancer  
+that we would not have dreamed of connecting.
+The drug gleevec is a miracle drug   
+for patients with chronic myelogenous leukemia (CML).  
+But not for other leukemias.  
+Deep insight into molecular biology of cancer  
+showed that a radically different kind,  
+gastrointestinal stromal tumor (GIST). 
 Better lumping together with better splitting can cure cancer patients.
 
-We will explore a simple lumping and splitting conundrum as a jumping off point for introducing a collection of important statistical ideas that connect to each other.
+We will explore a simple lumping and splitting conundrum  
+as a jumping off point for introducing a collection  
+of important statistical ideas that connect to each other.
 
 ```{r QA-intro-lump-split}
 QandAha(context='QA-intro-lump-split')
@@ -460,12 +488,28 @@ Of them, only `r sum(DLdataOriginal["R", ])` respond.  The outcome we call $Y$. 
 
 That is discouraging. 
 
-But there is a subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r sum(DLdataOriginal["R","D"])` patients respond, yielding a response rate of `r round(100*sum(DLdataOriginal["R","D"])/sum(DLdataOriginal[ , "D"]) )`%. For now we call them "$D$ patients", and the others "$L$ patients". Which subgroup a patient belongs to is a "feature" we call $X_{DL}$, with possible values $D$ or $L$. 
+But there is a subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r sum(DLdataOriginal["R","D"])` patients respond,  
+yielding a response rate of `r round(100*sum(DLdataOriginal["R","D"])/sum(DLdataOriginal[ , "D"]) )`%.  
+For now we call them "$D$ patients",  
+and the others "$L$ patients".  
+Which subgroup a patient belongs to is a *"feature"*  we call  
+$X_{DL}$, with possible values $D$ or $L$. 
 
-This feature $X_{DL}$ might be a valuable biomarker. Or it might be nonsense.
+This feature $X_{DL}$ might be a valuable biomarker.  
+Or it might be nonsense.
 Possibilities for the actual identity of $X_{DL}$ will be explored later.
 
-**The Challenge**: decide whether to treat the "$D$ patients" -- or more modestly, to decide whether to put resources into studying the treatment further for "$D$ patients". To guide the decision, we need to assess what we know about the **conditional probability**, probability that the patient responds to treatment given that the patient is a $D$ patient. We can see this conditional probability written different ways, some long, some short, using the vertical bar or the dot to say *"conditional on"*:
+**The Challenge**:  
+decide whether to treat the "$D$ patients"  
+-- or more modestly, to decide whether to put resources  
+into studying the treatment further for "$D$ patients".  
+To guide the decision, we need to assess what we know about the  
+**conditional probability**,  
+probability that the patient responds to treatment  
+given that the patient is a $D$ patient.  
+We can see this conditional probability written different ways,  
+some long, some short,  
+using the vertical bar or the dot to say *"conditional on"*:
 
 * Probability of response given a $D$ patient
 * $Pr(Y~=~R ~|~ X_{DL} ~=~ D)$
@@ -559,20 +603,40 @@ output$plotLumpSplitPoints = renderPlot(
 
 Two colleagues on the study hold some strong but opposite opinions.
 
-**Dr. Split** speaks:  “I believe that $X_{DL}$  is an important *biomarker*-- so imporant that the $D$ people and the $L$ people are fundamentally different. Since the question is what to do with $D$ people, I will only look at their data.”  
+**Dr. Split** speaks:  
+“I believe that $X_{DL}$  is an important *biomarker*  
+-- so imporant that the $D$ people and the $L$ people  
+are fundamentally different.   Since the question is what to do with $D$ people,  
+I will only look at their data.”  
 
-**Dr. Lump**   disagrees!   “No no, I am sure that this so-called *'biomarker'* $X_{DL}$  is irrelevant! I will ignore it, and look at the data for *all* the patients. My estimate will be more accurate.” 
+**Dr. Lump**   disagrees!   
+“No no, I am sure that this so-called *'biomarker'* $X_{DL}$  
+is *irrelevant!*  
+I will ignore it, and look at the data  
+for *all* the patients.  
+My estimate will be more accurate.” 
 
 Examine the data table below. 
 
-(Throughout this module, you can change the numbers in the table and observe the results. Be sure to press "reset" when done.)
+(Throughout this module,  
+you can change the numbers in the table and observe the results.  
+Be sure to press "reset" when done.)
 
-*Dr. Split* will *"split"* the sample of patients into the two groups, estimating the response rate `Pr(R | D)` by utilizing the D patients only, is 
+*Dr. Split* will *"split"* the sample of patients into the two groups,  
+estimating the response rate `Pr(R | D)` by utilizing the D patients only,  
+is 
 `r reactive(round(100*rValues$estimates_Lump_Split$split))`*%*. 
 
-*Dr. Lump* will  *"lump"* together all the patients, estimating that the response rate `Pr(R | D)` for $D$ patients is the same as `Pr(R)`, utilizing the whole set of patients, which is `r reactive(round(100*rValues$estimates_Lump_Split$lump))`*%*. 
+*Dr. Lump* will  *"lump"* together all the patients,  
+estimating that the response rate `Pr(R | D)`  
+for $D$ patients is the same as `Pr(R)`,  
+utilizing the whole set of patients,  
+which is `r reactive(round(100*rValues$estimates_Lump_Split$lump))`*%*. 
   
-In the following plot, we see the estimate and the confidence interval for `Pr(R | D)`, depending on whether the *"Lump"* or *"Split"* approach is taken. The confidence interval for *"Split"* is much wider.
+In the following plot, we see the estimate and the confidence interval  
+for `Pr(R | D)`, depending on whether  
+the *"Lump"* or *"Split"* approach is taken.  
+The confidence interval for *"Split"* is much wider.
 
 
 ```{r plotLumpSplit-UI}
@@ -596,9 +660,21 @@ fluidRow(
 )
 ```
 
-Lumping gives an answer with low variance ($N$=100 initially; the sample size is fairly high) but high bias-- because the answer reflects far more $L$ patients than $D$ patients. So we get a precise answer to what might be the wrong question. The confidence interval follows the diagonal of the plot on the left above, where $Pr(R~|~D)=Pr(R~|~L)$.
+Lumping gives an answer with *low variance*  
+($N$=100 initially; the sample size is fairly high)  
+but *high bias* --  
+because the answer reflects far more $L$ patients than $D$ patients.  
+So we get a precise answer to what might be the wrong question.  
+The confidence interval follows the diagonal of the plot  
+on the left above, where $Pr(R~|~D)=Pr(R~|~L)$.
 
-Splitting gives an answer with high variance ($N$=6 initially) but low bias-- because it is including only patients who ARE in the $D$ group:  it is directly asking the right question, but with little precision. The very wide horizontal confidence interval reflects this high variance.
+Splitting gives an answer with high variance ($N$=6 initially)  
+but *low bias*--  
+because it is including only patients who ARE in the $D$ group:  
+it is directly asking the right question,  
+but with little precision.  
+The very wide horizontal confidence interval  
+reflects this *high variance*.
 
 ### <a name='section-ClassicalTest'> Classical estimation bifurcating on a hypothesis test</a> <!-- #title -->
 
@@ -628,17 +704,30 @@ output$fisherResultOriginal = renderText({
 
 ```
 
-A time-honored but fading technique is to use a classical hypothesis test, to guide which of two analyses "Lump" or "Split", to present.
-Here the hypothesis to be tested is " $X_{DL}$ is independent of Y";  the response rate of D patients does not differ from L patients.  Then, depending on the hypothesis test result, Dr.Lump's answer or Dr. Split's answer is selected. 
+A time-honored but fading technique is  
+to use a classical hypothesis test,  
+to guide which of two analyses "Lump" or "Split", to present.  
+Here the hypothesis to be tested is 
+"$X_{DL}$ is independent of Y";  
+the response rate of D patients does not differ from L patients.  
+Then, depending on the hypothesis test result,  
+Dr.Lump's answer or Dr. Split's answer is selected. 
 
-One test frequently performed to test independence in a 2x2 table like this one is the *Fisher exact test*. On the original data, the P value is 
+One test frequently performed to test independence  
+in a 2x2 table like this one is the *Fisher exact test*.  
+On the original data, the P value is 
 **`r textOutput('fisherResultOriginal', inline=TRUE)`.** 
 
  `r uiOutput('fisherResult')`
 `r br()`
 
 
-If the P-value is "significant" (which "by tradition" means "less than 5%"), the "null hypothesis" (that "Dr. Lump" is correct) is rejected. With the original data, the traditional consequence is that we use Dr. Split's estimate:  60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!
+If the P-value is "significant"  
+(which "by tradition" means "less than 5%"),  
+the "null hypothesis" (that "Dr. Lump" is correct) is rejected.  
+With the original data,  
+the traditional consequence is that we use Dr. Split's estimate:  
+60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!
 
 ```{r QA-fisher}
 QandAha('QA-fisher')
@@ -683,9 +772,25 @@ QandAha('QA-DrWho')
 
 ###  Approach: Optimizing the mixture with cross-validation <!-- #title -->
 
-Cross-validation is a technique in which the performance of a model can be checked as if on an independent dataset, without actually having a separate dataset. *$K$-fold cross-validation* divides the dataset into K disjoint subsets of observations, and loops over these sets. Each subset is, in turn, used as a `test set`. We remove it from the full dataset, re-build the model on the reduced dataset (the `training set`), and evaluate predictions of that model on the removed observations in the test set. Performance metrics are usually averaged across the $K$ repetitions. When $K=N$, the size of the full dataset, the procedure is called `leave-one-out cross-validation`, since each test set is of size one.
+Cross-validation is a technique in which  
+the performance of a model can be checked  
+as if on an independent dataset,  
+without actually having a separate dataset.  
+*$K$-fold cross-validation* divides the dataset into  
+K disjoint subsets of observations,  
+and loops over these sets.  
+Each subset is, in turn, used as a `test set`. 
+We remove it from the full dataset,  
+re-build the model on the reduced dataset (the `training set`),  
+and evaluate predictions of that model  
+on the removed observations in the test set.  
+Performance metrics are usually averaged across the $K$ repetitions.  
+When $K=N$, the size of the full dataset,  
+the procedure is called `leave-one-out cross-validation`,  
+since each test set is of size one.
 
-For this example dataset, we perform leave-one-out cross-validation as follows:
+For this example dataset,  
+we perform leave-one-out cross-validation as follows:
 
 ```{r Lump-Split-crossvalidation.R}
 jumpList_DTC = c(jumpList_DTC, crossvalidationPlot='Cross-validation plot')
@@ -709,13 +814,21 @@ QandAha('QA-for-crossvalidation')
 
 ### <a name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a> <!-- #title -->
 
-Another Bayesian approach is to set a Bayesian prior on the joint distribution of the two conditional probabilities Pr(R | D) and Pr(R | L). This allows data on the two probabilities to be shared between them, smoothly instead of a crude mixture of the two extreme views of   "Dr. Lump" and "Dr. Split".
+Another Bayesian approach is to set a Bayesian prior  
+on the joint distribution of the two conditional probabilities  
+Pr(R | D) and Pr(R | L).  
+This allows data on the two probabilities to be shared between them,  
+smoothly instead of a crude mixture of the two extreme views of   
+"Dr. Lump" and "Dr. Split".
 ```{r QA-smooth-joint-prior}
 QandAha('QA-smooth-joint-prior')
 ```
-Once we have this joint prior distribution, we compute the joint posterior.
+Once we have this joint prior distribution,  
+we compute the joint posterior.
 
-To set the prior on the joint distribution of Pr(R | D) and Pr(R | L), we first convert them to logits ("logit" means "log(odds)").
+To set the prior on the joint distribution of  
+Pr(R | D) and Pr(R | L), we first convert them to  
+logits ("logit" means "log(odds)").
 ```{r Details about the logit}
 conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rmd')
 ```
@@ -723,7 +836,9 @@ conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rm
 
 Then we set a bivariate normal distribution on the logits.
 
-We also convert the observed proportions to logits. We estimate the variances using the delta method. Details are here:
+We also convert the observed proportions to logits.  
+We estimate the variances using the delta method.  
+Details are here:
 ```{r}
 conditionalPanelWithCheckboxPDF(
   labelString="The delta method", 
@@ -731,9 +846,13 @@ conditionalPanelWithCheckboxPDF(
   cbStringId='delta_method')
 ```
 
-We can apply the delta method to the Poisson distribution, useful for count data like the data in our table. The variance of the logarithm of a count is roughly the reciprocal of the count.
+We can apply the delta method to the Poisson distribution,  
+useful for count data like the data in our table.  
+The variance of the logarithm of a count is roughly  
+the reciprocal of the count.
 
-(This doesn't work well if the count is near zero, and not at all at zero.
+(This doesn't work well if the count is near zero,  
+and not at all at zero.
 For this reason a "continuity fudge" is applied, if necessary.)
 
 ```{r}
@@ -814,7 +933,8 @@ div(
 
 ### Summary table of estimates  <!-- #title -->
 
-Assembling the results of the approaches to estimating Pr(R | D):
+Assembling the results of the approaches to estimating  
+Pr(R | D):
 
 ```{r tableOfEstimates}
 jumpList_DTC = c(jumpList_DTC, estimateTable='Table of estimates')
@@ -929,7 +1049,15 @@ div(style='fontsize:large;',
 )
 ```
 
-As you change Dr. Who's prior probability or the data values, observe the changes in this summary table. Raw (Lump) & Raw (Split)	are the table proportions taken at face value  by Dr. Lump and Dr. Split. Bayes Mean (Lump)	and Bayes Mean (Split) and Bayes Mean (Who) are Bayesian posterior means that we calculated above. Bayes Pr(Lump) and	Bayes Pr(Split) are Dr. Who's posterior probabilities that Dr. Lump or Dr. Split (respectively) is correct.
+As you change Dr. Who's prior probability or the data values,  
+observe the changes in this summary table.  
+Raw (Lump) & Raw (Split)	are the table proportions  
+taken at face value  by Dr. Lump and Dr. Split.  
+Bayes Mean (Lump)	and Bayes Mean (Split) and Bayes Mean (Who)  
+are Bayesian posterior means that we calculated above.  
+Bayes Pr(Lump) and	Bayes Pr(Split) are  
+Dr. Who's posterior probabilities that  
+Dr. Lump or Dr. Split (respectively) is correct.
 
 ```{r QA-Who-prior-probability}
 QandAha('QA-Who-prior-probability')
@@ -938,18 +1066,31 @@ QandAha('QA-Who-prior-probability')
 
 # The role of external information, explored by introducing different identities for "D" and "L". <!-- #title -->
 
-So, when should we lump? When should we split? Should we aim to compromise, and if so, how should we strike the balance?  
+So, when should we lump? When should we split?  
+Should we aim to compromise, and if so,  
+how should we strike the balance?  
 
-In this section we explore different scenarios of external information, to see how they affect the estimation of ${Pr(R|D}$.
+In this section we explore different scenarios  
+of external information, to see how they affect the estimation of ${Pr(R|D}$.
 
 ##	Strong prior belief that feature $X_{DL}$ is *un*important <!-- #title -->
 
-What if D and L represent dark hair color and light hair color? "Dr. Who" may be highly skeptical that this $X_{DL}$ really affects response, and express this by choosing a prior odds that favors Dr. Lump  over Dr. Split. 
+What if D and L represent dark hair color and light hair color?  
+"Dr. Who" may be highly skeptical that this $X_{DL}$  
+really affects response,  
+and express this by choosing a prior odds that favors Dr. Lump  over Dr. Split. 
 ##	Strong prior belief that the feature $X_{DL}$ is important <!-- #title -->
 
-What if D and L represent two alleles of a gene believed to affect this drug's pharmacodynamics? Or perhaps, $X_{DL} = D = dark hair$, $X_{DL} = L = light hair$, but hair color is strongly tied to ethnicity in this sample … which is strongly tied to a key genetic variant."Dr. Who" can express choosing a prior odds that favors  Dr. Split over Dr. Lump. 
+What if D and L represent two alleles of a  
+gene believed to affect this drug's pharmacodynamics?  
+Or perhaps, $X_{DL} = D = dark hair$, $X_{DL} = L = light hair$,  
+but hair color is strongly tied to ethnicity in this sample 
+… which is strongly tied to a key genetic variant. 
+"Dr. Who" can express choosing a prior odds  
+that favors  Dr. Split over Dr. Lump. 
 
-You can experiment with the effects of prior belief by choosing such a value here: 
+You can experiment with the effects of prior belief  
+by choosing such a value here: 
 
 ```{r WhoPriorProbNumericInput2}
 WhoPriorProbNumericInput()
@@ -962,11 +1103,16 @@ inclRmd('jumpBack_DTC.Rmd')
 QandAha('QA-Strong-prior-belief-about-X_DL')
 ```
 
-Which of the previous analyses allow you to interject prior belief on the Lump-versus-Split axis?
+Which of the previous analyses allow you to  
+interject prior belief on the Lump-versus-Split axis?
 
 ##	Multiple features, with some prior belief <!-- #title -->
 
-Suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. Our feature $X_{DL}$ happens to be one of them; otherwise unselected.
+Suppose that we have features for a *hundred genes*  
+which were *previously* identified as known to affect the  
+pharmacodynamics of the drug being tested.  
+Our feature $X_{DL}$ happens to be one of them;  
+otherwise unselected.
 
 ```{r modify the "classical" approach}
 TextQuestion(' How would you modify the "classical" approach that chooses Lump or Split based on a hypothesis test?')
@@ -979,9 +1125,17 @@ TextQuestion(' How would you account for this knowledge in one of the two Bayesi
 
 ##	Best feature of 100, with some prior belief <!-- #title -->
 
-As before, suppose that we have features for a hundred genes which were *previously* identified as known to affect the pharmacodynamics of the drug being tested. But this time, our feature $X_{DL}$ is selected to be the best of the one hundred features.
+As before, suppose that we have features for a hundred genes  
+which were *previously* identified as known to affect  
+the pharmacodynamics of the drug being tested.  
+But this time, our feature $X_{DL}$ is selected  
+to be the best of the one hundred features.
 
-This situation entails dealing with *"multiple comparisons"*. Pure chance can make a feature seem strongly associated with the response outcome when in reality it is not associated. When the best-appearing relationship is selected out of a large number, we can be fooled into thinking the strength of evidence is stronger than it really is.
+This situation entails dealing with *"multiple comparisons"*.  
+Pure chance can make a feature seem strongly associated with the response outcome when in reality it is not associated.  
+When the best-appearing relationship is selected out of a large number,  
+we can be fooled into thinking the strength of evidence  
+is stronger than it really is.
 
 *"The more questions you ask, the more wrong answers you are likely to get."*
 ```{r Intro to multiple comparisons}
@@ -992,7 +1146,13 @@ conditionalPanelWithCheckboxPDF(
 ```
 
 
-One way to handle multiple comparisons is through a classical frequentist multiple testing adjustment. This evaluates the chance of getting a P-value as low as (or lower than) the minimum of the P-values for the features. The best-known of these methods are the Bonferroni, Sidak, and permutation /randomization tests. Here are some details on these approaches: 
+One way to handle multiple comparisons is through a  
+classical frequentist *multiple testing adjustment*.  
+This evaluates the chance of getting a P-value as low as  
+(or lower than) the minimum of the P-values for the features.  
+The best-known of these methods are the  
+Bonferroni, Sidak, and permutation /randomization tests.  
+Here are some details on these approaches: 
 ```{r Multiple comparisons- classic methods}
 conditionalPanelWithCheckboxPDF(
   labelString="Multiple comparisons- classic methods", 
@@ -1000,7 +1160,8 @@ conditionalPanelWithCheckboxPDF(
   cbStringId='Multiple_comparisons_classic')
 ```
 
-and here are some examples that highlight some strange and unsettling aspects of the classical methods:
+and here are some examples that highlight some  
+strange and unsettling aspects of the classical methods:
 
 ```{r Multiple comparisons- disturbing examples}
 conditionalPanelWithCheckboxPDF(
@@ -1011,8 +1172,12 @@ conditionalPanelWithCheckboxPDF(
 
 Let's put those worries aside for now.
 
-What if we add lots of features to the feature ($X_{DL}$) of our little data set? How will the methods we have used behave when applied in this "big" data set.
-Let's refer to $X_{DL}$ as $X_1$, and let's generate 99 extra features $X_2 ... X_{100}$ (each with only two possible values, 0 or 1).
+What if we add lots of features to the feature  
+($X_{DL}$) of our little data set?  
+How will the methods we have used behave when applied in this "big" data set.
+Let's refer to $X_{DL}$ as $X_1$,  
+and let's generate 99 extra features $X_2 ... X_{100}$ ( 
+each with only two possible values, 0 or 1).
 <!-- You can use either the original data or the data as you may have modified it. -->
 
 
@@ -1172,7 +1337,11 @@ allChisqPs_original = allPvalues$allChisqPs
 
 ```
 
-Now that we have a data set with lots of features, let's do Fisher exact tests and chisquare tests to all the features. The red "X" is of course our original data feature, with $X_{DL}$ = D or L.
+Now that we have a data set with lots of features,  
+let's do Fisher exact tests and chisquare tests  
+to all the features.  
+The red "X" is of course our original data feature,  
+with $X_{DL}$ = D or L.
 
 
 
@@ -1201,21 +1370,39 @@ fun.pvaluesPlots = function() {
 plotOutput('pvaluesPlots')
 ```
 
-For each of these features $X_2 ... X_{100}$, the disparity between the two groups $X_j = 0$ and $X_j = 1$ can be represented as the odds ratio:
+For each of these features $X_2 ... X_{100}$,  
+the disparity between the two groups $X_j = 0$ and $X_j = 1$  
+can be represented as the odds ratio:
 
 \[\frac{{odds(Y = R|{X_j} = 0)}}{{odds(Y = R|{X_j} = 1)}} = \frac{{\Pr (Y = R|{X_j} = 0)/\Pr (Y = N|{X_j} = 0)}}{{\Pr (Y = R|{X_j} = 1)/\Pr (Y = N|{X_j} = 1)}}\]
 
-Initially the extra 99 feature are all "null hypotheses". The odds ratios all equal 1, so the odds that $Y=R$ does not change with $X_j$. But we can explore what happens if they do not all equal 1.
-You can control Omega, the variance of logs of the odds ratios below. When Omega equals zero, the odds ratios all equal 1. Otherwise, they will spread out, some bigger than 1 and some smaller.
+Initially the extra 99 feature are all "null hypotheses".  
+The odds ratios all equal 1,  
+so the odds that $Y=R$ does not change with $X_j$.  
+But we can explore what happens if they do not all equal 1.
+You can control Omega, the variance of logs of the odds ratios below.  
+When Omega equals zero, the odds ratios all equal 1.  
+Otherwise, they will spread out, some bigger than 1 and some smaller.
 
 
 ```{r }
 bigDataComponent(analysisName=analysisName)
 ```
 
-Applying the *"Bonferroni correction"* to the Fisher P value for our feature $X_{DL}$ means multiplying the P value `r signif(digits=4, allFisherPs_original[1])` by 100, to get P=`r signif(digits=4, 100* allFisherPs_original[1])`. So the evidence that the `D` people really are different is minimal at best. (To say it carefully, if a 'cutoff' for defining 'statistically significant' happened to be chosen at `r signif(digits=4, 100* allFisherPs_original[1])`, then our result for $X_{DL}$ would be just on the edge of 'significance'. That's not a compelling cutoff!) 
+Applying the *"Bonferroni correction"* to the Fisher P value  
+for our feature $X_{DL}$ means multiplying the  
+P value `r signif(digits=4, allFisherPs_original[1])`  
+by 100, to get P=`r signif(digits=4, 100* allFisherPs_original[1])`.  
+So the evidence that the `D` people really are different is minimal at best.  
+(To say it carefully, if a 'cutoff' for defining 'statistically significant'  
+happened to be chosen at `r signif(digits=4, 100* allFisherPs_original[1])`,  
+then our result for $X_{DL}$ would be just on the  
+edge of 'significance'.  
+That's not a compelling cutoff!) 
 
-In the classical statistics spirit, we would now go with Dr. Lump instead of Dr. Split. (Choosing instead the chisquare test, the Bonferroni correction gives us P=`r signif(digits=4, 100* allChisqPs_original[1])`).
+In the classical statistics spirit,  
+we would now go with Dr. Lump instead of Dr. Split.  
+(Choosing instead the chisquare test, the Bonferroni correction gives us P=`r signif(digits=4, 100* allChisqPs_original[1])`).
 
 
 ```{r}
