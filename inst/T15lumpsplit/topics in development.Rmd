@@ -1,0 +1,11 @@
+
+
+The list of topics in development is here:
+
+
+```{r topics}
+
+conditionalPanelWithCheckbox(
+  labelString = 'Topics in development', filename = 'topics.Rmd',
+  initialValue=FALSE)
+```

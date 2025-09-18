@@ -6,11 +6,14 @@ Maybe one’s right ($\phi  = Split$ ),
 maybe the other ( $\phi  = Lump$).  
 Here is a prior that might represent this view:
 
+
+
+
 $$
-\begin{align}
-\pi _{Who}^{}({\bf{p}}) = & \pi _{Who}^{}(\phi  = Split)\pi _{Split}^{}({\bf{p}}) 
-& + \pi _{Who}^{}(\phi  = Lump)\pi _{Lump}^{}({\bf{p}}).
- \end{align}
+\begin{aligned}
+\pi _{Who}^{}({\bf{p}}) = & ~~~~~\pi _{Who}^{}(\phi  = Split)~~~\pi _{Split}^{}({\bf{p}}) \\
+    & + \pi _{Who}^{}(\phi  = Lump)~~\pi _{Lump}^{}({\bf{p}}).
+\end{aligned}
 $$
  
 NOTE: This marginalizes out (sums over)  

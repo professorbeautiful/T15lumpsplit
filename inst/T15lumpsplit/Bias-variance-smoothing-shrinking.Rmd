@@ -365,7 +365,9 @@ conditionalPanelWithCheckbox(
   initialValue = TRUE)
 ```
 
-For a refresher on the concepts of bias, variance, and mean squared error in estimation, open this panel.
+For a refresher on the concepts of  
+**bias, variance, and mean squared error** in estimation,  
+open this panel.
 
 ```{r bias-variance-meansquarederror-MSE.pdf}
 conditionalPanelWithCheckboxPDF(labelString='Concepts: bias, variance, and mean squared error in estimation',
@@ -373,7 +375,7 @@ conditionalPanelWithCheckboxPDF(labelString='Concepts: bias, variance, and mean 
      cbStringId='cbStringIdBiasVariance')
 ```
 
-The general scope of the bias-variance axis in many settings is here:
+The bias-variance axis has many disguises:
 
 ```{r biasVariancePicture}
 #### THIS WORKS. In the Preview window, iframe is turned into external to Preview  app. but not from the browser, that's OK. ####
@@ -451,14 +453,16 @@ and vice versa for another medicine.
 
 In recent years, however, specific molecular defects in cancer cells  
 have "lumped" together types of cancer  
-that we would not have dreamed of connecting.
+that we would not have dreamed of connecting.  
 The drug gleevec is a miracle drug   
 for patients with chronic myelogenous leukemia (CML).  
 But not for other leukemias.  
 Deep insight into molecular biology of cancer  
 showed that a radically different kind,  
 gastrointestinal stromal tumor (GIST). 
-Better lumping together with better splitting can cure cancer patients.
+Better lumping together with  
+better splitting  
+can cure cancer patients.
 
 We will explore a simple lumping and splitting conundrum  
 as a jumping off point for introducing a collection  
@@ -484,7 +488,9 @@ getBDCnumber = function(analysisName) {
 ## Description of the challenge <!-- #title -->
 
 **The Problem**:  A new treatment is given to `r sum(DLdataOriginal)` patients.  
-Of them, only `r sum(DLdataOriginal["R", ])` respond.  The outcome we call $Y$.  A responding patient has $Y=R$; non-reponding, $Y=N$.
+Of them, only `r sum(DLdataOriginal["R", ])` respond.  
+The outcome we call $Y$.  
+A responding patient has $Y=R$; non-reponding, $Y=N$.
 
 That is discouraging. 
 
@@ -495,9 +501,9 @@ and the others "$L$ patients".
 Which subgroup a patient belongs to is a *"feature"*  we call  
 $X_{DL}$, with possible values $D$ or $L$. 
 
-This feature $X_{DL}$ might be a valuable biomarker.  
-Or it might be nonsense.
-Possibilities for the actual identity of $X_{DL}$ will be explored later.
+This feature $X_{DL}$ might be a valuable biomarker.   
+Or it might be nonsense.  
+Possibilities for the actual identity of $X_{DL}$ will be explored later.  
 
 **The Challenge**:  
 decide whether to treat the "$D$ patients"  
@@ -606,7 +612,8 @@ Two colleagues on the study hold some strong but opposite opinions.
 **Dr. Split** speaks:  
 “I believe that $X_{DL}$  is an important *biomarker*  
 -- so imporant that the $D$ people and the $L$ people  
-are fundamentally different.   Since the question is what to do with $D$ people,  
+are fundamentally different.   
+Since the question is what to do with $D$ people,  
 I will only look at their data.”  
 
 **Dr. Lump**   disagrees!   
@@ -660,16 +667,18 @@ fluidRow(
 )
 ```
 
-Lumping gives an answer with *low variance*  
+Lumping gives an answer with  
+**low variance**  
 ($N$=100 initially; the sample size is fairly high)  
-but *high bias* --  
+but **high bias** --  
 because the answer reflects far more $L$ patients than $D$ patients.  
 So we get a precise answer to what might be the wrong question.  
 The confidence interval follows the diagonal of the plot  
 on the left above, where $Pr(R~|~D)=Pr(R~|~L)$.
 
-Splitting gives an answer with high variance ($N$=6 initially)  
-but *low bias*--  
+Splitting gives an answer with  
+**high variance**  ($N$=6 initially)  
+but **low bias**  
 because it is including only patients who ARE in the $D$ group:  
 it is directly asking the right question,  
 but with little precision.  

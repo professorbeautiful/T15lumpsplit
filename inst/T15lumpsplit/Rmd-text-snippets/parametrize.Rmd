@@ -29,10 +29,14 @@ different possible values of the probability vector ${\bf{p}}$.
 Different sampling plans have different distributions   
 but do not affect the likelihood function.  
 Multiplying a likelihood function with a number  
-$K(\mylarge{\bf{n}})$  
-that depends only on the observed data $\mylarge{\bf{n}}$  
+$$
+K(\mylarge{\bf{n}})
+$$  
+that depends only onx the observed data $\mylarge{\bf{n}}$  
 and does not depend on the unknown "explanation"  
-$\mylarge{\bf{p}}$  
+$$
+\mylarge{\bf{p}}
+$$  
 does NOT change the likelihood function.   
 In every use of the likelihood function,  that number $K$ washes out.
 
