@@ -354,10 +354,10 @@ require(shinyBS)
 *Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')`     Author: Roger Day, University of Pittsburgh.  Started on `r date()` *
 
 
-# OVERVIEW of this Module  <!-- #title -->
+# OVERVIEW   <!-- #title -->
 
 
-## Contents of this Module  <!-- #title -->
+## Contents  <!-- #title -->
 
 ```{r Overview-topic}
 conditionalPanelWithCheckbox(
@@ -388,7 +388,7 @@ conditionalPanelWithCheckboxPDF(labelString='The bias-variance axis',
 
 ```
 
-## Tips on using this Module  <!-- #title -->
+## Tips for the user  <!-- #title -->
 
 
 ```{r Overview-editing}
@@ -419,8 +419,11 @@ conditionalPanelWithCheckbox(
 
 
 
-# "Lumping" versus "splitting" in science. <!-- #title -->
+# "Lumping" versus "splitting" in science and medicine. <!-- #title -->
 
+You are YOU! Right!  Nobody else like you.  
+But other people are kind of like you.  
+We'll get back to that in a moment.
 
 In science, advances often proceed by "splitting":  
 things that seem initially the same are classified as different.  
@@ -432,12 +435,13 @@ Other advances proceed by "lumping":
 identifying things that seem different  
 but have a deep connection.
 
+<blockquote style="font-size:80%;">
 So, we split birds and bats,  
 but we lump bats and whales because they are both mammals.  
 At least in this case, for some purposes,  
 lumping supercedes splitting.
 
-<blockquote style="font-size:80%;">
+
 (But if studying modes of locomotion, the lumping will be different.  
 And... a surprisingly cogent argument concludes that  
 [bats and whales.. and humans... are fish!](https://www.youtube.com/watch?v=ElpRJQ2FZiM)  
@@ -445,7 +449,10 @@ And another, that [Fish Don't Exist](https://en.wikipedia.org/wiki/Why_Fish_Don%
 )
 </blockquote>
 
-In medicine both splitting and lumping are important.
+**In medicine** both splitting and lumping are important.
+
+If you need information about some, say, medicine,  
+what's more important:  info about people exactly like you, or... everybody? 
 
 Cancer was just "cancer" before it was learned  
 through clinical trials that some medicines work well on cancer  
@@ -459,11 +466,18 @@ The drug gleevec is a miracle drug
 for patients with chronic myelogenous leukemia (CML).  
 But not for other leukemias.  
 Deep insight into molecular biology of cancer  
-showed that a radically different kind,  
-gastrointestinal stromal tumor (GIST). 
+showed that a radically different kind of cancer,  
+gastrointestinal stromal tumor (GIST),  
+shares the molecular defect that makes gleevec work. Bingo!
+
 Better lumping together with  
 better splitting  
 can cure cancer patients.
+
+AND... sometimes you don't have to choose.  
+You can do better than noth.
+
+
 
 We will explore a simple lumping and splitting conundrum  
 as a jumping off point for introducing a collection  
