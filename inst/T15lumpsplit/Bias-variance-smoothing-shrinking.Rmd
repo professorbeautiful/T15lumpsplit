@@ -1,5 +1,5 @@
 ---
-title: "Lumping and splitting.  <br>Bias and variance. <br>Individuals and groups."
+title: "Lumping and splitting.  <br>Bias and variance. <br>Individuals and groups-- --\"Borrowing strength\""
 resource_files:
 - www/zoomAdvice.Rmd
 - www/zoom_triggers.js
