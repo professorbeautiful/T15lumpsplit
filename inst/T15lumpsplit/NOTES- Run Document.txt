@@ -1,0 +1,19 @@
+NOTES about what "Run Document" does
+
+In the file TextEditingTargetWidget, the method setIsShinyFormat() creates the button label.
+
+Looks like the button is knitDocumentButton_
+
+In Source.java,
+  dynamicCommands_.add(commands.knitDocument());
+But there is also commands_.knitDocument()
+
+Also, in TextFileType.java,
+  results.add(commands.knitDocument())
+
+Looking for pandoc:
+
+See SessionRMarkdown.R
+
+SessionOptions.R:
+const char* const kDefaultPandocPath = "bin/pandoc";
