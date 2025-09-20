@@ -1,21 +1,24 @@
 
-This module *"Bias, variance, smoothing, and shrinking"*  
-begins with the *"lump versus split dilemma"* sub-module,  
-in the context of a study treating patients and recording responses.  
+*"Bias, variance, smoothing, and shrinking"*  
+We're going to begin with the *"lump versus split dilemma"* ,  
+*The context*: a study treating patients and recording clinical responses.  
 <b>The dilemma: </b> 
-in deciding whether to pursue "personalized medicine"  
+in making a good *"personalized medicine"* decision    
 for one small group of patients,  
-how should we use the data from patients in other groups (if at all)? 
+how should we use the data from patients in other larger groups (if at all)? 
 
-This example is used as a jumping off point for individual explorations  
+Do we want low bias or low variance? Or, do we have to choose?  
+
+This example gives us a jumping off point for individual explorations  
 into a web of connected statistical topics important for data scientists.  
-We examine both frequentist and Bayesian approaches.  
+We examine both classical *"frequentist"* and *Bayesian* approaches.  
 We touch on the role of prior information  
-and the effects of having many additional features.
+and the effects of having many additional features to split (classify) on.
 
-Along the way, students are asked a few thought questions,  
-and to report on any "Questions" and "Aha's"  
+Along the way, you get a few  questions to ponder,  
+and to record  "Questions" and "Aha's"  
 (observations, discoveries, delightful connections) that arise.  
 
-Those students interested in technical details of derivations  
-or coding can follow links provided to some relevant documents.
+Interested in technical details of derivations? 
+or the coding?  
+Some links are provided along the way.
