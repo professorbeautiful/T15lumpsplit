@@ -419,7 +419,7 @@ conditionalPanelWithCheckbox(
 
 
 
-# "Lumping" versus "splitting" in science and medicine. <!-- #title -->
+# "Lumping" versus "splitting" <br>in science and medicine. <!-- #title -->
 
 You are YOU! Right!  Nobody else like you.  
 But other people are kind of like you.  
@@ -539,7 +539,7 @@ using the vertical bar or the dot to say *"conditional on"*:
 
 
 
-## Simple "Lump" and "Split" estimates of $Pr(R ~|~ D)$ <!-- #title -->
+## Simple "Lump" and "Split" <br>estimates of $Pr(R ~|~ D)$ <!-- #title -->
 ```{r analysis-plotLumpSplitPoints}
 jumpList_DTC = c(jumpList_DTC, plotLumpSplitPoints='Plot of lump & split points')
 source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
