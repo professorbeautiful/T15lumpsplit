@@ -1,4 +1,6 @@
-/* can only have one file in the YAML css clause */
+/* "can only have one file in the YAML css clause"? */
+/* Not used.  see lumpsplit.css */
+
 #TOC {
   position: fixed;
   left: 0;
@@ -6,9 +8,13 @@
   width: 200px;
   height: 100%;
   overflow:auto;
+  color: red;
 }
-/*
-h3 {
+
+#h1 {
+  color: green;
+}
+#h2 {
   color: red;
 }
 */
