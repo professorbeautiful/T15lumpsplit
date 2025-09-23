@@ -1,5 +1,5 @@
 ---
-title: "Lumping and splitting.  <br>Bias and variance. <br>Individuals and groups-- --\"Borrowing strength\""
+title: "Lumping and splitting.  <br>Bias and variance. <br>Individuals and groups. <br> \"Borrowing strength\""
 resource_files:
 - www/zoomAdvice.Rmd
 - www/zoom_triggers.js
@@ -421,28 +421,30 @@ conditionalPanelWithCheckbox(
 
 # "Lumping" versus "splitting" <br>in science and medicine. <!-- #title -->
 
-You are YOU! Right!  Nobody else like you.  
-But other people are kind of like you.  
-We'll get back to that in a moment.
+You are a unique individual.  
+**Nobody** else is like you.  
+You are part of humanity.  
+**Everybody** else is like you.  
+ You are split off from humanity,  
+ but also lumped with all humanity.
 
-In science, advances often proceed by "splitting":  
+So here's our dilemma.  
+**Lump you, or split you**?   
+Or can we do something **better than both**?
+
+In science, advances often proceed by **"splitting"**:  
 things that seem initially the same are classified as different.  
-The classification may be a tentative distinction,  
-until it proves to be useful. 
+The classification may prove to be useful. 
 
 
-Other advances proceed by "lumping":  
+Other advances proceed by **"lumping"**:  
 identifying things that seem different  
 but have a deep connection.
 
 <blockquote style="font-size:80%;">
-So, we split birds and bats,  
-but we lump bats and whales because they are both mammals.  
-At least in this case, for some purposes,  
-lumping supercedes splitting.
-
-
-(But if studying modes of locomotion, the lumping will be different.  
+So, we split birds and bats, although they both fly.
+But we lump bats and whales because they are both mammals.  
+(Or vice versa if studying modes of locomotion.)  
 And... a surprisingly cogent argument concludes that  
 [bats and whales.. and humans... are fish!](https://www.youtube.com/watch?v=ElpRJQ2FZiM)  
 And another, that [Fish Don't Exist](https://en.wikipedia.org/wiki/Why_Fish_Don%27t_Exist)
@@ -472,10 +474,10 @@ shares the molecular defect that makes gleevec work. Bingo!
 
 Better lumping together with  
 better splitting  
-can cure cancer patients.
+can help patients, even cure some cancer patients.
 
 AND... sometimes you don't have to choose.  
-You can do better than noth.
+You can do better than either.
 
 
 
@@ -502,14 +504,16 @@ getBDCnumber = function(analysisName) {
 
 ## Description of the challenge <!-- #title -->
 
-**The Problem**:  A new treatment is given to `r sum(DLdataOriginal)` patients.  
-Of them, only `r sum(DLdataOriginal["R", ])` respond.  
-The outcome we call $Y$.  
-A responding patient has $Y=R$; non-reponding, $Y=N$.
+**The Problem**:  A new treatment is given to some patients.  
 
+The outcome we call $Y$.  
+A  patient who gets a good response has $Y=R$;  
+if it's a bad response, that's  $Y=N$,  $N$ for non-responding.
+
+Of `r sum(DLdataOriginal)` patients, only `r sum(DLdataOriginal["R", ])` respond.    
 That is discouraging. 
 
-But there is a subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r sum(DLdataOriginal["R","D"])` patients respond,  
+But there is a tiny subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r sum(DLdataOriginal["R","D"])` patients respond,  
 yielding a response rate of `r round(100*sum(DLdataOriginal["R","D"])/sum(DLdataOriginal[ , "D"]) )`%.  
 For now we call them "$D$ patients",  
 and the others "$L$ patients".  
@@ -521,7 +525,7 @@ Or it might be nonsense.
 Possibilities for the actual identity of $X_{DL}$ will be explored later.  
 
 **The Challenge**:  
-decide whether to treat the "$D$ patients"  
+Decide whether to treat the "$D$ patients"  
 -- or more modestly, to decide whether to put resources  
 into studying the treatment further for "$D$ patients".  
 To guide the decision, we need to assess what we know about the  
@@ -626,7 +630,7 @@ Two colleagues on the study hold some strong but opposite opinions.
 
 **Dr. Split** speaks:  
 “I believe that $X_{DL}$  is an important *biomarker*  
--- so imporant that the $D$ people and the $L$ people  
+-- so important that the $D$ people and the $L$ people  
 are fundamentally different.   
 Since the question is what to do with $D$ people,  
 I will only look at their data.”  
