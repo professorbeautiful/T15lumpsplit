@@ -41,15 +41,15 @@ does NOT change the likelihood function.
 In every use of the likelihood function,  that number $K$ washes out.
 
 
-## Three cases:  
+## Three sampling plans same likelihoods:  
 
-•	If **the sample size is fixed by design** at 100,  
+###	If **the sample size is fixed by the study's design** at 100,  
 then the model is *multinomial*,  
 and the parametrization ${\bf{p}}$ given above is quite natural.
 \[Pr(\mylarge{\bf{n}}~|~\mylarge{\bf{p}})~=~K(\mylarge{\bf{n}})~\mylarge{\ell} ({\bf{p}})\]
 where $K~=~(100)!/({\mylarge{n}_{RD}}! ~{\mylarge{n}_{RL}}! ~{\mylarge{n}_{ND}}! ~{\mylarge{n}_{NL}}!)$.
 
-•	If the **two bottom margins are fixed by design**,  
+###	If the **two bottom margins are fixed by the study's design**,  
 the model is *a product of independent binomials*,  
 and the natural parametrization is   
 $({\mylarge{p}_{R~.~D}},{\mylarge{p}_{R~.~L}})$,  
@@ -61,7 +61,7 @@ is the conditional probability
   
   \[K~=~(\mylarge{n}_{RD}+ ~{\mylarge{n}_{ND}})!/({\mylarge{n}_{RD}}! ~{\mylarge{n}_{ND}}!) ~~~ (\mylarge{n}_{RL}+ ~{\mylarge{n}_{NL}})!/ ({\mylarge{n}_{RL}}! ~{\mylarge{n}_{NL}}!)\]
   
-•	If both margin counts are fixed by design,  
+###	If **both margin counts are fixed** by the study's design,  
 then the model is *hypergeometric*,  
 and the natural parametrization is  
 $({\mylarge{p}_D},{\mylarge{p}_R},~\mylarge{\phi} )$  
