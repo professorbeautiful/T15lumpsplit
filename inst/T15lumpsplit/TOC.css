@@ -1,7 +1,7 @@
 /* "can only have one file in the YAML css clause"? */
 /* Not used.  see lumpsplit.css */
 
-#TOC {
+#TOC #tocify-item {
   position: fixed;
   left: 0;
   top: 0;

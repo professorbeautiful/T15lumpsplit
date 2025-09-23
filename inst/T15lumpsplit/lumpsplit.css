@@ -16,15 +16,23 @@ h4,h5,h6{
 #title{
   font-size: 14pt;
 }
-.TOC {
+a{
+  color:blue;
+}
+.tocify{
+  color:blue;
+}
+/*
+.TOC{
   position: fixed;
   left: 0;
   top: 0;
   width: 200px;
   height: 100%;
   overflow:auto;
-  color: red;
+  color: blue;
 }
+*/
 .disabled {
   border: gray;
   background: gray;
