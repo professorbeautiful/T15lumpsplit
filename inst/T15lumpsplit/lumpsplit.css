@@ -7,8 +7,9 @@ h1,h2{
 }
 h3{  /* affects only the number in the body, not the TOC.
   The <a> makes it blue in the TOC.*/
-  font-size: 18pt;
-  color:red;
+  font-size: 16pt;
+  font-style: italic;
+  color:green;
 }
 h4,h5,h6{
   font-size: 16pt;
