@@ -993,8 +993,10 @@ output$estimateTable =
     nR=sum(thisData['R', ])
     nN=sum(thisData['N', ])
     ## Raw results
-    LumpRawMean=(nR)/(nN)
+    LumpRawMean=(nR)/(nR+nN)
     SplitRawMean=(nRD)/(nRD+nND)
+    #print(thisData)
+    #cat(nN, ' ', nR, ' ', LumpRawMean, '\n')
     
     ### Dr. Who's results.
     ###  Only for the flat priors. We don't allow Split and Lump priors to change.
