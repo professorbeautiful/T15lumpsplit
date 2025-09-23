@@ -530,11 +530,11 @@ Decide whether to treat the "$D$ patients"
 into studying the treatment further for "$D$ patients".  
 To guide the decision, we need to assess what we know about the  
 **conditional probability**,  
-probability that the patient responds to treatment  
+the probability that the patient responds to treatment  
 given that the patient is a $D$ patient.  
-We can see this conditional probability written different ways,  
-some long, some short,  
-using the vertical bar or the dot to say *"conditional on"*:
+We  see this conditional probability written different ways,  
+in words, some long, some short,  
+using the vertical bar, or the dot to say *"conditional on"* or *given*:
 
 * Probability of response given a $D$ patient
 * $Pr(Y~=~R ~|~ X_{DL} ~=~ D)$
