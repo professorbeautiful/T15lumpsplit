@@ -9,6 +9,9 @@ QandAha = function(context='QA', linkLabel= "save") {
   linkIdThisQA = paste0('id', outputIdThisQA, "_link")
   observeEvent(eventExpr = input[[textareaIdThisQA]], {
     userTyped = input[[textareaIdThisQA]]
+    userTyped = gsub('=', 'EQUALS', userTyped)
+    userTyped = gsub('"', '\'', userTyped)
+
     if(writingCookiesIsOK & isStringOfInterest(userTyped)) {
       userTyped = gsub('=', 'EQUALS', userTyped)
       cookieText = paste0(

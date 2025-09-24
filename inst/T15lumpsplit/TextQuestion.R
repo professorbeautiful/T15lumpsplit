@@ -11,6 +11,7 @@ TextQuestion = function(question="What do you think?") {
     userTyped = input[[textareaIdThisTQ]]
     if(writingCookiesIsOK & isStringOfInterest(userTyped)) {
       userTyped = gsub('=', 'EQUALS', userTyped)
+      userTyped = gsub('"', '\'', userTyped)
       cookieText = paste0(
         'shinycookie::updateCookie(session, ',
         outputIdThisTQ,
