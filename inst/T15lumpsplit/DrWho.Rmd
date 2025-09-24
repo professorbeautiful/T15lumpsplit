@@ -10,9 +10,10 @@ Here is a prior that might represent this view:
 
 
 $$
+\def\Who{\mathbf{Who}}
 \begin{aligned}
-\pi _{Who}^{}({\bf{p}}) = & ~~~~~\pi _{Who}^{}(\phi  = Split)~~~\pi _{Split}^{}({\bf{p}}) \\
-    & + \pi _{Who}^{}(\phi  = Lump)~~\pi _{Lump}^{}({\bf{p}}).
+\pi _{\Who}^{}({\bf{p}}) = & ~~~~~\pi _{\Who}^{}(\phi  = Split)~~~\pi _{Split}^{}({\bf{p}}) \\
+    & + \pi _{\Who}^{}(\phi  = Lump)~~\pi _{Lump}^{}({\bf{p}}).
 \end{aligned}
 $$
  
@@ -54,11 +55,11 @@ To apply the Bayes theorem principles:
 * All that's left is $\bf{p}$, what we care about.
 
 Then,  Dr. Who’s posterior distribution for ${\bf{p}}$ is:
- \[\pi _{Who}^*({p_{R.D}}) = \pi _{Who}^*(\phi  = Split)\pi _{Split}^*({p_{R.D}})  
- + \pi _{Who}^*(\phi  = Lump)\pi _{Lump}^*({p_{R.D}}),\]
+ \[\pi _{\Who}^*({p_{R.D}}) = \pi _{\Who}^*(\phi  = Split)\pi _{Split}^*({p_{R.D}})  
+ + \pi _{\Who}^*(\phi  = Lump)\pi _{Lump}^*({p_{R.D}}),\]
 
 where
- \[\pi _{Who}^*(\phi  = Split) = \frac{{\pi (Split){m_{Split}}}}{{\pi (Split){m_{Split}} + \pi (Lump){m_{Lump}}}},\]
+ \[\pi _{\Who}^*(\phi  = Split) = \frac{{\pi (Split){m_{Split}}}}{{\pi (Split){m_{Split}} + \pi (Lump){m_{Lump}}}},\]
 and the $m$ values are the respective marginal distributions of the data   $({n_{RD}},{n_{RL}},{n_{ND}},{n_{NL}})$  
 
 if you knew $\phi$ but not the parameters   
