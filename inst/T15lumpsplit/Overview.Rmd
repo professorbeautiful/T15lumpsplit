@@ -1,5 +1,4 @@
 
-[You can play with this app here. *"Bias, variance, smoothing, and shrinking"*](https://trials.shinyapps.io/Bias-variance-smoothing-shrinking/)
 
 We're going to begin with the *"lump versus split dilemma"* ,  
 *The context*: a study treating patients and recording clinical responses.  
