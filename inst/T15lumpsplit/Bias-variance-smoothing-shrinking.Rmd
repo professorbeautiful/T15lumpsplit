@@ -22,7 +22,7 @@ options(knitr.duplicate.label = 'allow')
 shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
 
-```{r, context="server", message=FALSE, warning=FALSE}
+```{r invisible packages, context="server", message=FALSE, warning=FALSE}
 ## ok, adding message=FALSE, warning=FALSE succeeds in suppressing
 ## the output at shinyapps.
 ## Furthermore, all the other problems on Chrome at shinyapps
@@ -41,7 +41,7 @@ shinyjs::useShinyjs(rmd = TRUE)
 \newcommand{\mynormal}[1] {{\normalsize{#1}}}
 \]
 
-```{r, include=FALSE}
+```{r cookie, include=FALSE}
 cookieID = 'cookieID'
 shinycookie::initShinyCookie(cookieID, timeout = 500)
 # timeout is The length of time (in milliseconds) to poll for changes to cookies
@@ -351,7 +351,7 @@ includeCSS('lumpsplit.css')
 ```{r UI_begins}
 require(shinyBS)
 ```
-*Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')`     Author: Roger Day, University of Pittsburgh.  Started on `r date()` *
+*Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')`   <br>  Author: Roger Day <br> A "shiny" app. Visit [statisticsbeautiful](https://www.youtube.com/@statisticsbeautiful)*
 
 
 # OVERVIEW   <!-- #title -->
@@ -432,14 +432,16 @@ So here's our dilemma.
 **Lump you, or split you**?   
 Or can we do something **better than both**?
 
-In science, advances often proceed by **"splitting"**:  
-things that seem initially the same are classified as different.  
-The classification may prove to be useful. 
+Science splits and lumps. 
+**"splitting"**:  
+things that seem the same turn out to be different.  
+That may prove to be useful. 
 
 
 Other advances proceed by **"lumping"**:  
 identifying things that seem different  
 but have a deep connection.
+That may prove to be useful. 
 
 <blockquote style="font-size:80%;">
 So, we split birds and bats, although they both fly.
@@ -454,7 +456,7 @@ And another, that [Fish Don't Exist](https://en.wikipedia.org/wiki/Why_Fish_Don%
 **In medicine** both splitting and lumping are important.
 
 If you need information about some, say, medicine,  
-what's more important:  info about people exactly like you, or... everybody? 
+what's more important:  info about people exactly like you, or... info about everybody? 
 
 Cancer was just "cancer" before it was learned  
 through clinical trials that some medicines work well on cancer  
@@ -766,7 +768,7 @@ QandAha('QA-fisher')
 To proceed to deeper approaches, we need some notation.
 
 <!-- #### parametrize.Rmd #### -->
-```{r child = 'Rmd-text-snippets/parametrize.Rmd'}
+```{r parametrize.Rmd, child = 'Rmd-text-snippets/parametrize.Rmd'}
 ```
 
 ```{r Why focus on this parameter}
@@ -791,7 +793,7 @@ QandAha(context='QA-parametrization')
 Dr. Who doesn't know *who* to believe.
 
 
-```{r child = 'DrWho.Rmd'}
+```{r DrWho, child = 'DrWho.Rmd'}
 ```
 
 ```{r QA-DrWho}
@@ -1336,7 +1338,7 @@ makeSureOmegaIsGood = function(Omega) {
 }
 ```
 
-```{r}
+```{r BigDataOriginal}
 
 BigDataOriginal = makeBigDataWithFeatures(DLdataOriginal, seed=45)
 #print(summary(DLdataDFwithFeatures_original))
@@ -1415,7 +1417,7 @@ When Omega equals zero, the odds ratios all equal 1.
 Otherwise, they will spread out, some bigger than 1 and some smaller.
 
 
-```{r }
+```{r bigDataComponent}
 bigDataComponent(analysisName=analysisName)
 ```
 
@@ -1435,7 +1437,7 @@ we would now go with Dr. Lump instead of Dr. Split.
 (Choosing instead the chisquare test, the Bonferroni correction gives us P=`r signif(digits=4, 100* allChisqPs_original[1])`).
 
 
-```{r}
+```{r just a comment}
 # As before, you have the opportunity to play around with changing the data, or reverting to the original data set.
 # dataTableComponent(showhide='hide', analysisName='pvaluesPlots')
 # We probably will not put dataTableComponent in the K=100 portion.
@@ -1757,7 +1759,7 @@ Initially, all the features are generated with an odds ratio = 1:  no relationsh
 
 What happens if the collection of 100 odds ratios deviates from 1? You can control the variance of the log odds ratio here. 
 
-```{r}
+```{r bigDataComponent analysisName}
 bigDataComponent(analysisName=analysisName)
 ```
 
@@ -1899,7 +1901,7 @@ For our original D/L feature, with P value  `r reactive({rValues$P_Q_for_X_DL_or
 
 As before, you can modify the spread of the true odds ratios here to see how the Q-value changes. 
 
-```{r}
+```{r bigDataComponent qValue}
 bigDataComponent(analysisName='qValue')
 
 ```
