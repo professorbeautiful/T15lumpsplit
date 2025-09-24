@@ -351,7 +351,7 @@ includeCSS('lumpsplit.css')
 ```{r UI_begins}
 require(shinyBS)
 ```
-*Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')`   <br>  Author: Roger Day <br> A "shiny" app. Visit [statisticsbeautiful](https://www.youtube.com/@statisticsbeautiful) for videos.*
+*Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')`   <br>  Author: Roger Day <br> An interactive "shiny" app. Visit [statisticsbeautiful](https://www.youtube.com/@statisticsbeautiful) for videos.*
 
 
 # OVERVIEW   <!-- #title -->
