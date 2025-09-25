@@ -100,7 +100,8 @@ dataTableComponent = function(showhide='show', analysisName) {
   lumpMarginIdThisDTC = paste0('idLumpMarginDTC', thisDTCNumber)
 
   output[[splitMarginIdThisDTC]] = renderUI({
-    thisDLdata = getDLdata(analysisName, myChoice=TRUE)
+    thisDLdata = getDLdata(analysisName, myChoice=FALSE)
+              #temporary for testing-- but it works!
     div(style=paste0('color:', splitColor,
                      '; text-align:center;'),
       paste0('', thisDLdata[1,1], '/', sum(thisDLdata[ ,1]),
@@ -109,7 +110,8 @@ dataTableComponent = function(showhide='show', analysisName) {
     )
   })
   output[[lumpMarginIdThisDTC]] = renderUI({
-    thisDLdata = getDLdata(analysisName, myChoice=TRUE)
+    thisDLdata = getDLdata(analysisName, myChoice=FALSE)
+    thisDLdata = thisData ##  global! set in analysisReactiveSetup_DTC.
     div(
       style=paste0('color:', lumpColor,
                    '; text-align:center;'),
