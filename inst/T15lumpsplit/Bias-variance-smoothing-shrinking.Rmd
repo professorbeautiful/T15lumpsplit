@@ -444,7 +444,7 @@ but have a deep connection.
 That may prove to be useful. 
 
 <blockquote style="font-size:80%;">
-So, we split birds and bats, although they both fly.
+So, we split birds and bats, although they both fly.  
 But we lump bats and whales because they are both mammals.  
 (Or vice versa if studying modes of locomotion.)  
 And... a surprisingly cogent argument concludes that  
@@ -456,7 +456,10 @@ And another, that [Fish Don't Exist](https://en.wikipedia.org/wiki/Why_Fish_Don%
 **In medicine** both splitting and lumping are important.
 
 If you need information about some, say, medicine,  
-what's more important:  info about people exactly like you, or... info about everybody? 
+what's more important:  
+* info about people **exactly like you**,  
+or  
+* info about **everybody**? 
 
 Cancer was just "cancer" before it was learned  
 through clinical trials that some medicines work well on cancer  
@@ -763,9 +766,10 @@ the traditional consequence is that we use Dr. Split's estimate:
 QandAha('QA-fisher')
 ```
 
-## Parametrizations of the probabilities: notation <!-- #title -->
+## Parametrizing the probabilities <!-- #title -->
 
-To proceed to deeper approaches, we need some notation.
+We must dive deeper. We need some notation.  
+"\*Yawn\*"?   NO!  Exciting. Good notation is POWERFUL.
 
 <!-- #### parametrize.Rmd #### -->
 ```{r parametrize.Rmd, child = 'Rmd-text-snippets/parametrize.Rmd'}
@@ -780,7 +784,7 @@ TextQuestion('Why focus on this parameter?')
 QandAha(context='QA-parametrization')
 ```
 
-## Approaches to estimating Pr(R | D) <!-- #title -->
+## Estimating Pr(R | D) 4 ways <!-- #title -->
 
 * [Classical test: is $X_{DL}$ independent of the outcome Y?](#ClassicalTest)
 * [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
@@ -788,7 +792,7 @@ QandAha(context='QA-parametrization')
 * Approaches used in the famous ECMO data set. (ToDo)
 
 
-### <a name='section-Bayes_mixture'> Approach: Dr. Who's Bayes mixture of "Lump" and "Split"</a> <!-- #title -->
+### <a name='section-Bayes_mixture'> Dr. Who's Bayes mixture of "Lump" and "Split"</a> <!-- #title -->
 
 Dr. Who doesn't know *who* to believe.
 
@@ -800,7 +804,7 @@ Dr. Who doesn't know *who* to believe.
 QandAha('QA-DrWho')
 ```
 
-###  Approach: Optimizing the mixture with cross-validation <!-- #title -->
+###  Optimizing the mixture with cross-validation <!-- #title -->
 
 Cross-validation is a technique in which  
 the performance of a model can be checked  
