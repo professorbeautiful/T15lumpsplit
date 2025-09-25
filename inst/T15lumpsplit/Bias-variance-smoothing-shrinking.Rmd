@@ -833,9 +833,9 @@ source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', an
 source('Lump-Split-crossvalidation.R', local=TRUE)  # , echo = FALSE)
 
 fluidRow(
-  column(4, 
+  column(5, 
          plotOutput('crossvalidationPlot')),
-  column(8,
+  column(7,
          br(),
          dataTableComponent(analysisName='crossvalidationPlot'))
 )
