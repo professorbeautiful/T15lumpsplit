@@ -1,5 +1,5 @@
 ---
-title: "Lumping versus splitting.  <br>Individuals versus groups. <br>Bias versus variance. <br><br> \"Borrowing strength\""
+title: "The group  vs &nbsp;&nbsp; the individual.<br>Lumping &nbsp;&nbsp;&nbsp;vs &nbsp;&nbsp;splitting.  <br>Bias &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs &nbsp;&nbsp;variance."
 resource_files:
 - www/zoomAdvice.Rmd
 - www/zoom_triggers.js
