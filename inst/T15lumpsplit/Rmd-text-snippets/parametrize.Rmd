@@ -44,13 +44,13 @@ In every use of the likelihood function,  that number $K$ washes out.
 
 ### Three sampling plans same likelihoods:  
 
-####	If **the sample size is fixed <br> by the study's design** at 100,  
+####	If the study's **sample size is fixed** <br>at 100,  
 then the model is *multinomial*,  
 and the parametrization ${\bf{p}}$ given above is quite natural.
 \[Pr(\mylarge{\bf{n}}~|~\mylarge{\bf{p}})~=~K(\mylarge{\bf{n}})~\mylarge{\ell} ({\bf{p}})\]
 where $K~=~(100)!/({\mylarge{n}_{RD}}! ~{\mylarge{n}_{RL}}! ~{\mylarge{n}_{ND}}! ~{\mylarge{n}_{NL}}!)$.
 
-####	If the **two bottom margins are fixed  <br> by the study's design**,  
+####	If the **two bottom margins are fixed** <br>(6 and 94),  
 the model is *a product of independent binomials*,  
 and the natural parametrization is   
 $({\mylarge{p}_{R~.~D}},{\mylarge{p}_{R~.~L}})$,  
@@ -62,18 +62,17 @@ is the conditional probability
   
   \[K~=~(\mylarge{n}_{RD}+ ~{\mylarge{n}_{ND}})!/({\mylarge{n}_{RD}}! ~{\mylarge{n}_{ND}}!) ~~~ (\mylarge{n}_{RL}+ ~{\mylarge{n}_{NL}})!/ ({\mylarge{n}_{RL}}! ~{\mylarge{n}_{NL}}!)\]
   
-####	If **both margin counts are fixed**  <br> by the study's design,  
+####	If **BOTH margin counts are fixed**  <br>(6 and 94, & 7 and 93),  
 then the model is *hypergeometric*,  
-and the natural parametrization is  
+and a natural parametrization is  
 $({\mylarge{p}_D},{\mylarge{p}_R},~\mylarge{\phi} )$  
 where $\phi$ is the odds ratio.  (Details are omitted.)  
-But that sampling model is impossible to implement  
-in a clinical study design,  
-even though when one uses the Fisher "exact" test  
-one is pretending that it is the sampling model.  
+We pretend that it is the sampling model is impossible to implement  
+when we use the Fisher "exact" test.  
+Never is true (& never exact) in a clinical study. 
 
 **SURPRISE!** 
-they all have the same likelihood function!  
+All 3 sampling plans have the same **likelihood function**!  
 The differences in sampling correspond to putting constraints on ${\bf{p}}$,  
 and  different sample spaces for the data ${\bf{n}}$.
 
