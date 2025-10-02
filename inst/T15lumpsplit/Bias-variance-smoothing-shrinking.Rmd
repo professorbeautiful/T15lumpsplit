@@ -437,45 +437,24 @@ Science splits and lumps.
 things that seem the same turn out to be different.  
 That may prove to be useful. 
 
-
 Other advances proceed by **"lumping"**:  
 identifying things that seem different  
 but have a deep connection.
 That may prove to be useful. 
 
-<blockquote style="font-size:80%;">
-So, we split birds and bats, although they both fly.  
-But we lump bats and whales because they are both mammals.  
-(Or vice versa if studying modes of locomotion.)  
-And... a surprisingly cogent argument concludes that  
-[bats and whales.. and humans... are fish!](https://www.youtube.com/watch?v=ElpRJQ2FZiM)  
-And another, that [Fish Don't Exist](https://en.wikipedia.org/wiki/Why_Fish_Don%27t_Exist)
-)
-</blockquote>
+Here is a deeper dive into lumping and splitting.
 
-**In medicine** both splitting and lumping are important.
 
-If you need information about some, say, medicine,  
-what's more important:  
-* info about people **exactly like you**,  
-or  
-* info about **everybody**? 
 
-Cancer was just "cancer" before it was learned  
-through clinical trials that some medicines work well on cancer  
-in one organ but not another---   
-and vice versa for another medicine.
+```{r}
 
-In recent years, however, specific molecular defects in cancer cells  
-have "lumped" together types of cancer  
-that we would not have dreamed of connecting.  
-The drug gleevec is a miracle drug   
-for patients with chronic myelogenous leukemia (CML).  
-But not for other leukemias.  
-Deep insight into molecular biology of cancer  
-showed that a radically different kind of cancer,  
-gastrointestinal stromal tumor (GIST),  
-shares the molecular defect that makes gleevec work. Bingo!
+conditionalPanelWithCheckbox(
+  labelString = 'deeper dive into lumping and splitting', 
+html=shiny::includeMarkdown(path = 'LumpSplitSidebar.Rmd'),
+  
+  initialValue = FALSE) 
+```
+
 
 Better lumping together with  
 better splitting  
@@ -483,8 +462,6 @@ can help patients, even cure some cancer patients.
 
 AND... sometimes you don't have to choose.  
 You can do better than either.
-
-
 
 We will explore a simple lumping and splitting conundrum  
 as a jumping off point for introducing a collection  
