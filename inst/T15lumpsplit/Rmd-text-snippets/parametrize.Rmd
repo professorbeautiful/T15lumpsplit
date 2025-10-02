@@ -3,7 +3,11 @@
   <!-- \raisebox{0.2ex} -->
   
 **Setup**:  
-The data from the table are the four numbers \[\mylarge{\bf{n}} = ({\mylarge{n}_{RD}},{\mylarge{n}_{RL}},{\mylarge{n}_{ND}},{\mylarge{n}_{NL}}).\]
+The data from the table are the four numbers \[\mylarge{\bf{n}} = ({\mylarge{n}_{RD}},{\mylarge{n}_{RL}},{\mylarge{n}_{ND}},{\mylarge{n}_{NL}}).\]  
+
+The outcome we call $Y$.  
+The feature we call $X_{DL}$, or just $X$, 
+with possible values $D$ or $L$. 
 For example ${\mylarge{n}_{RD}}$  is shorthand for the number of patients  
 for which the outcome $Y=R$ AND the feature $X=D$.
 
@@ -33,7 +37,7 @@ Multiplying a likelihood function with a number
 $$
 K(\mylarge{\bf{n}})
 $$  
-that depends only onx the observed data $\mylarge{\bf{n}}$  
+that depends only on the observed data $\mylarge{\bf{n}}$  
 and does not depend on the unknown "explanation"  
 $$
 \mylarge{\bf{p}}

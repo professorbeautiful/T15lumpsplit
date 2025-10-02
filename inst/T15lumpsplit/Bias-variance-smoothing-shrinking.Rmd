@@ -488,9 +488,20 @@ getBDCnumber = function(analysisName) {
 
 **The Problem**:  A new treatment is given to some patients.  
 
-The outcome we call $Y$.  
-A  patient who gets a good response has $Y=R$;  
-if it's a bad response, that's  $Y=N$,  $N$ for non-responding.
+```{r jumpList_DTC}
+jumpList_DTC = c(jumpList_DTC, plotLumpSplitPoints='Plot of lump & split points')
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+#cat("After first analysisInitialSetup_DTC.R, getDTCnumber('plotLumpSplitPoints') =",
+#    getDTCnumber('plotLumpSplitPoints'), '\n' )
+```
+
+```{r firstLookAtTable}
+div(dataTableComponent(showhide='show', analysisName='firstLookAtTable'))
+```
+
+
+A  patient who gets a good response has $Outcome=R$;  
+if it's a bad response, that's  $Outcome=N$,  $N$ for non-responding.
 
 Of `r sum(DLdataOriginal)` patients, only `r sum(DLdataOriginal["R", ])` respond.    
 That is discouraging. 
@@ -499,12 +510,11 @@ But there is a tiny subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r
 yielding a response rate of `r round(100*sum(DLdataOriginal["R","D"])/sum(DLdataOriginal[ , "D"]) )`%.  
 For now we call them "$D$ patients",  
 and the others "$L$ patients".  
-Which subgroup a patient belongs to is a *"feature"*  we call  
-$X_{DL}$, with possible values $D$ or $L$. 
+Which group a patient belongs to is a *"feature" ("predictor", "covariate")*  
 
-This feature $X_{DL}$ might be a valuable biomarker.   
+This feature might be a valuable biomarker.   
 Or it might be nonsense.  
-Possibilities for the actual identity of $X_{DL}$ will be explored later.  
+Possibilities for its actual identity  will be explored later.  
 
 **The Challenge**:  
 Decide whether to treat the "$D$ patients"  
@@ -527,10 +537,6 @@ using the vertical bar, or the dot to say *"conditional on"* or *given*:
 
 ## Simple "Lump" and "Split" <br>estimates of $Pr(R ~|~ D)$ <!-- #title -->
 ```{r analysis-plotLumpSplitPoints}
-jumpList_DTC = c(jumpList_DTC, plotLumpSplitPoints='Plot of lump & split points')
-source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
-#cat("After first analysisInitialSetup_DTC.R, getDTCnumber('plotLumpSplitPoints') =",
-#    getDTCnumber('plotLumpSplitPoints'), '\n' )
 estimates_Lump_Split = observeEvent( 
   eventExpr = getDLdata('plotLumpSplitPoints'),
   {
