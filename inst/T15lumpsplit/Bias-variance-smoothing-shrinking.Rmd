@@ -812,7 +812,11 @@ the procedure is called `leave-one-out cross-validation`,
 since each test set is of size one.
 
 For this example dataset,  
-we perform leave-one-out cross-validation as follows:
+we perform leave-one-out cross-validation, with a "least squares" penalty:  
+* If the one left out is a responder, $penalty$ =  $(1-prediction)^2$.  
+* If the one left out is a non-responder, $penalty$ =  $prediction^2$.  
+
+where the $prediction$ is based on the rest of the sample.
 
 ```{r Lump-Split-crossvalidation.R}
 jumpList_DTC = c(jumpList_DTC, crossvalidationPlot='Cross-validation plot')
@@ -828,6 +832,13 @@ fluidRow(
          dataTableComponent(analysisName='crossvalidationPlot'))
 )
 ```
+
+
+The optimal weighting is at 0.73 for Split 0.27 for Lump. 
+This achieves the lowest average penalty.  
+The predicted probability of response Pr(R|D)  is 38%.  
+Not as good as 50%, but a lot better than 7%.
+
 
 ```{r TQ and QA for crossvalidation}
 TextQuestion("What advantage does the cross-validation approach here have, relative to the approaches of Drs. Split, Lump and Who?")
