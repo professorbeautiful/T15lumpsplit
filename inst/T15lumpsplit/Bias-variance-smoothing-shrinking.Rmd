@@ -401,7 +401,7 @@ conditionalPanelWithCheckbox(
 
 ```{r Overview-saving-retrieving}
 inclRmd('contentsAdvice.Rmd')
-conditionalPanelWithCheckbox(
+conditionalPanelWithCheckbox( #ADVICE
   labelString = 'ADVICE on saving and retrieving your answers questions and comments', 
   html =  uiOutput('contentsAdviceOutput'),
   initialValue = FALSE) 
@@ -448,9 +448,9 @@ Here is a deeper dive into lumping and splitting.
 
 ```{r}
 
-conditionalPanelWithCheckbox(
+conditionalPanelWithCheckbox(  #DEEPER DIVE
   labelString = 'deeper dive into lumping and splitting', 
-html=shiny::includeMarkdown(path = 'LumpSplitSidebar.Rmd'),
+html=(shiny::includeMarkdown(path = 'LumpSplitSidebar.Rmd')),
   
   initialValue = FALSE) 
 ```
@@ -496,47 +496,6 @@ source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', an
 ```
 
 ```{r firstLookAtTable}
-div(dataTableComponent(showhide='show', analysisName='firstLookAtTable'))
-```
-
-
-A  patient who gets a good response has $Outcome=R$;  
-if it's a bad response, that's  $Outcome=N$,  $N$ for non-responding.
-
-Of `r sum(DLdataOriginal)` patients, only `r sum(DLdataOriginal["R", ])` respond.    
-That is discouraging. 
-
-But there is a tiny subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r sum(DLdataOriginal["R","D"])` patients respond,  
-yielding a response rate of `r round(100*sum(DLdataOriginal["R","D"])/sum(DLdataOriginal[ , "D"]) )`%.  
-For now we call them "$D$ patients",  
-and the others "$L$ patients".  
-Which group a patient belongs to is a *"feature" ("predictor", "covariate")*  
-
-This feature might be a valuable biomarker.   
-Or it might be nonsense.  
-Possibilities for its actual identity  will be explored later.  
-
-**The Challenge**:  
-Decide whether to treat the "$D$ patients"  
--- or more modestly, to decide whether to put resources  
-into studying the treatment further for "$D$ patients".  
-To guide the decision, we need to assess what we know about the  
-**conditional probability**,  
-the probability that the patient responds to treatment  
-given that the patient is a $D$ patient.  
-We  see this conditional probability written different ways,  
-in words, some long, some short,  
-using the vertical bar, or the dot to say *"conditional on"* or *given*:
-
-* Probability of response given a $D$ patient
-* $Pr(Y~=~R ~|~ X_{DL} ~=~ D)$
-* $Pr(R ~|~ D)$
-* $P_{R~.~D}$
-
-
-
-## Simple "Lump" and "Split" <br>estimates of $Pr(R ~|~ D)$ <!-- #title -->
-```{r analysis-plotLumpSplitPoints}
 estimates_Lump_Split = observeEvent( 
   eventExpr = getDLdata('plotLumpSplitPoints'),
   {
@@ -585,6 +544,49 @@ output$confInterval_Split = renderText(
           ")"
     ) )
   }) 
+#dataTableComponent(showhide='show', analysisName='')
+# nice try but messes up everything else.
+```
+
+
+A  patient who gets a good response has $Outcome=R$;  
+if it's a bad response, that's  $Outcome=N$,  $N$ for non-responding.
+
+Of `r sum(DLdataOriginal)` patients, only `r sum(DLdataOriginal["R", ])` respond.    
+That is discouraging. 
+
+But there is a tiny subgroup of just `r sum(DLdataOriginal[ , "D"])` in which `r sum(DLdataOriginal["R","D"])` patients respond,  
+yielding a response rate of `r round(100*sum(DLdataOriginal["R","D"])/sum(DLdataOriginal[ , "D"]) )`%.  
+For now we call them "$D$ patients",  
+and the others "$L$ patients".  
+Which group a patient belongs to is a *"feature" ("predictor", "covariate")*  
+
+This feature might be a valuable biomarker.   
+Or it might be nonsense.  
+Possibilities for its actual identity  will be explored later.  
+
+**The Challenge**:  
+Decide whether to treat the "$D$ patients"  
+-- or more modestly, to decide whether to put resources  
+into studying the treatment further for "$D$ patients".  
+To guide the decision, we need to assess what we know about the  
+**conditional probability**,  
+the probability that the patient responds to treatment  
+given that the patient is a $D$ patient.  
+We  see this conditional probability written different ways,  
+in words, some long, some short,  
+using the vertical bar, or the dot to say *"conditional on"* or *given*:
+
+* Probability of response given a $D$ patient
+* $Pr(Y~=~R ~|~ X_{DL} ~=~ D)$
+* $Pr(R ~|~ D)$
+* $P_{R~.~D}$
+
+
+
+## Simple "Lump" and "Split" <br>estimates of $Pr(R ~|~ D)$ <!-- #title -->
+```{r analysis-plotLumpSplitPoints}
+
 
 output$plotLumpSplitPoints = renderPlot(
   height = 300, 
