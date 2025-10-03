@@ -552,6 +552,9 @@ output$confInterval_Split = renderText(
 A  patient who gets a good response has $Outcome=R$;  
 if it's a bad response, that's  $Outcome=N$,  $N$ for non-responding.
 
+
+<img src="3 4 3 90 table fixed.png" width="50%">
+
 Of `r sum(DLdataOriginal)` patients, only `r sum(DLdataOriginal["R", ])` respond.    
 That is discouraging. 
 
