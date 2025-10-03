@@ -87,11 +87,13 @@ If *Split* is correct, then the (marginal) probability of getting the data we ob
 
 For the technical details, take a look here:
 ```{r}
-conditionalPanelWithCheckbox(
+conditionalPanelWithCheckboxPDF(
   labelString = 'Equations for Dr. Split\'s marginal probability', 
-  filename = 'DrSplitEquation.Rmd',
-  html='',
-  initialValue=FALSE
+  #html=withMathJax(shiny::includeMarkdown(path = 'DrSplitEquation.Rmd')),
+  filename='DrSplitEquation.pdf',
+  #filename = 'DrSplitEquation.Rmd',
+  #html='',
+  cbStringId='DrSplitEquation'
 )
 ```
 
@@ -109,11 +111,11 @@ then the (marginal) probability of getting the data we observed is:
 
 For the technical details, take a look here:
 ```{r}
-conditionalPanelWithCheckbox(
+conditionalPanelWithCheckboxPDF(
   labelString = 'Equations for Dr. Lump\'s marginal probability', 
-  filename = 'DrLumpEquation.Rmd',
-  html='',
-  initialValue=FALSE
+  filename='DrLumpEquation.pdf',
+#    html=withMathJax(shiny::includeMarkdown(path = 'DrLumpEquation.Rmd')),
+  cbStringId='DrLumpEquation'
 )
 ```
 
