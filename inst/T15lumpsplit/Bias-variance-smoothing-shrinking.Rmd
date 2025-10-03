@@ -1037,6 +1037,8 @@ output$estimateTable =
     ### Bivariate logit method results.
     #setDLdata(value=thisData, analysisName='bivariateContourPlot')
     
+    # if n_RD is zero, anomalous weights. Possible delta method failure.
+    
     bivariateNormResults = isolate({
       calculatePlightPdarkPosterior(
         thisData, 
