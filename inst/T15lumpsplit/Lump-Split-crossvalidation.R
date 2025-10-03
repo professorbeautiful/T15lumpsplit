@@ -1,19 +1,24 @@
 ####   Lump-Split-crossvalidation
 ####    Illustrating cross-validation with the Dark-Light dataset
 
-penaltyFunction = function(outcome, prediction)
-  switch(outcome, R=(1-prediction)^2, N=prediction^2)
-# LOSS: LEAST SQUARES
-# penaltyFunction = function(outcome, prediction)
-#                          switch(outcome, R=(1-prediction)^2, N=prediction^2))
-# LOSS: EXPONENTIAL
-# penaltyFunction =  function(outcome, prediction)
-#                          exp(-switch(outcome, R=1, N=-1)*prediction))
-# LOSS: LOG LIKELIHOOD X (-1)
-# penaltyFunction = function(outcome, prediction)
-#   -log(dbinom((outcome=='R'), size = 1, prob=prediction))
+penaltyFunction = function(outcome, prediction) {
+
+}
 
 doCVanalysis <- function(thisData ) {
+   penaltychoice = 'LEAST SQUARES'
+  # LOSS: LEAST SQUARES
+  if(penaltychoice == 'LEAST SQUARES')
+    penaltyFunction =  function(outcome, prediction)
+      switch(outcome, R=(1-prediction)^2, N=prediction^2)
+  # LOSS: EXPONENTIAL
+  if(penaltychoice == 'EXPONENTIAL')
+    penaltyFunction =  function(outcome, prediction)
+      exp(-switch(outcome, R=1, N=-1)*prediction)
+  # LOSS: LOG LIKELIHOOD X (-1)
+  if(penaltychoice == 'LOG LIKELIHOOD X (-1)')
+    penaltyFunction = function(outcome, prediction)
+      -log(dbinom((outcome=='R'), size = 1, prob=prediction))
 
   #cat("mychoice data", paste(getDLdata(myChoice=TRUE, analysisName) ), '\n')
   #cat("thisData", paste(thisData ), '\n')
