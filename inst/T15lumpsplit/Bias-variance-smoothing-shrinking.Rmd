@@ -6,9 +6,11 @@ resource_files:
 - www/readInnerWindow.js
 - www/the-delta-method.pdf
 - www/BayesEquation.Rmd
+- www/MathJax.js
 runtime: shiny
 output:
   html_document:
+    mathjax: local
     number_sections: yes
     toc: yes
     toc_depth: 6
@@ -30,11 +32,12 @@ shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 invisible(require(shinyjs) )
 invisible(require(knitr) )
 shinyjs::useShinyjs(rmd = TRUE)
+
 ```
 
 <script src="www/readCookie.js"></script>
 <script src="shinyjs/inject.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML.js"></script> 
 
 \[
 \newcommand{\mylarge}[1] {\large{#1}\normalsize}
@@ -863,8 +866,19 @@ To set the prior on the joint distribution of
 Pr(R | D) and Pr(R | L), we first convert them to  
 logits ("logit" means "log(odds)").
 ```{r Details about the logit}
-conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rmd')
+### conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rmd')
+### can't render with mathjax
+###
 ```
+
+The function ${odds:[0,1] \to {\Re ^ + }}$ represents a probability $p \in [0,1]$ as a non-negative number: $\left( {\frac{p}{{1 - p}}} \right)$. 
+
+The word  “logit”  means log odds: ${{\mathop{\rm logit}\nolimits}:[0,1] \to {\Re }}$, 
+
+defined by 
+${\mathop{\rm logit}\nolimits} (p) = \log \left( {\frac{p}{{1 - p}}} \right)$. 
+The inverse of the logit function is 
+${\mathop{\rm logit ^ {-1}}\nolimits} (z) = {\frac{\exp(z)}{{1 + \exp(z)}}}$.
 
 
 Then we set a bivariate normal distribution on the logits.
