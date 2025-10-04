@@ -6,11 +6,9 @@ resource_files:
 - www/readInnerWindow.js
 - www/the-delta-method.pdf
 - www/BayesEquation.Rmd
-- www/MathJax.js
 runtime: shiny
 output:
   html_document:
-    mathjax: local
     number_sections: yes
     toc: yes
     toc_depth: 6
@@ -37,7 +35,7 @@ shinyjs::useShinyjs(rmd = TRUE)
 
 <script src="www/readCookie.js"></script>
 <script src="shinyjs/inject.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML.js"></script> 
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML.js"></script> -->
 
 \[
 \newcommand{\mylarge}[1] {\large{#1}\normalsize}
