@@ -66,11 +66,15 @@ is the conditional probability
   
   \[K~=~(\mylarge{n}_{RD}+ ~{\mylarge{n}_{ND}})!/({\mylarge{n}_{RD}}! ~{\mylarge{n}_{ND}}!) ~~~ (\mylarge{n}_{RL}+ ~{\mylarge{n}_{NL}})!/ ({\mylarge{n}_{RL}}! ~{\mylarge{n}_{NL}}!)\]
   
-####	If **BOTH margin counts are fixed**  <br>(6 and 94, & 7 and 93),  
+####	If **BOTH margin counts are fixed**  <br>(6 and 94, & 7 and 93), 
+<img src='table fixed margins.png'>  
+
 then the model is *hypergeometric*,  
 and a natural parametrization is  
 $({\mylarge{p}_D},{\mylarge{p}_R},~\mylarge{\phi} )$  
-where $\phi$ is the odds ratio.  (Details are omitted.)  
+where $\phi$ is the odds ratio, and ${\mylarge{p}_D}$ and   ${\mylarge{p}_R}$  
+are the
+marginal probabilities.  (Details are omitted.)  
 We pretend that it is the sampling model is impossible to implement  
 when we use the Fisher "exact" test.  
 Never is true (& never exact) in a clinical study. 
