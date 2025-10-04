@@ -6,6 +6,8 @@ resource_files:
 - www/readInnerWindow.js
 - www/the-delta-method.pdf
 - www/BayesEquation.Rmd
+- 3 4 3 90 table fixed.png
+- table fixed margins.png
 runtime: shiny
 output:
   html_document:
