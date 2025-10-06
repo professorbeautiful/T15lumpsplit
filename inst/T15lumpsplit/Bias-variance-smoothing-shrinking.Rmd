@@ -498,7 +498,7 @@ source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', an
 #    getDTCnumber('plotLumpSplitPoints'), '\n' )
 ```
 
-```{r firstLookAtTable}
+```{r confidence interval calculations}
 estimates_Lump_Split = observeEvent( 
   eventExpr = getDLdata('plotLumpSplitPoints'),
   {
