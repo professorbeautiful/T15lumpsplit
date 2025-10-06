@@ -502,8 +502,8 @@ source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', an
 estimates_Lump_Split = observeEvent( 
   eventExpr = getDLdata('plotLumpSplitPoints'),
   {
-    analysisName = 'plotLumpSplitPoints'
-  source(analysisReactiveSetup_DTC, local=TRUE)
+  #   analysisName = 'plotLumpSplitPoints'
+  # source(analysisReactiveSetup_DTC, local=TRUE)
   #thisData = getDLdata('plotLumpSplitPoints')
   rValues$estimates_Lump_Split = list(
     lump = round(digits=2, sum(thisData['R', ])/
