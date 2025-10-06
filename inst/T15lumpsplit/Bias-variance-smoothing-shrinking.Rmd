@@ -491,66 +491,6 @@ getBDCnumber = function(analysisName) {
 
 **The Problem**:  A new treatment is given to some patients.  
 
-```{r jumpList_DTC}
-jumpList_DTC = c(jumpList_DTC, plotLumpSplitPoints='Plot of lump & split points')
-source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
-#cat("After first analysisInitialSetup_DTC.R, getDTCnumber('plotLumpSplitPoints') =",
-#    getDTCnumber('plotLumpSplitPoints'), '\n' )
-```
-
-```{r confidence interval calculations}
-estimates_Lump_Split = observeEvent( 
-  eventExpr = getDLdata('plotLumpSplitPoints'),
-  {
-  #   analysisName = 'plotLumpSplitPoints'
-  # source(analysisReactiveSetup_DTC, local=TRUE)
-  #thisData = getDLdata('plotLumpSplitPoints')
-  rValues$estimates_Lump_Split = list(
-    lump = round(digits=2, sum(thisData['R', ])/
-      sum(thisData[ , ])),
-    split =  round(digits=2, (thisData['R', 'D'])/
-      sum(thisData[ , 'D'])),
-    confInterval_Split = binom.test(x = thisData['R', 'D'],
-                                    n = sum(thisData[ , 'D']) )$conf.int,
-    confInterval_Lump = binom.test(x = sum(thisData['R', ]),
-                                   n = sum(thisData[ , ]) )$conf.int
-  )
-})
- 
-output$confInterval_Lump = renderText(
-  {
-  analysisName = 'plotLumpSplitPoints'
-  source(analysisReactiveSetup_DTC, local=TRUE)
-    try(silent = TRUE,
-        paste("Dr. Lump:  ", rValues$estimates_Lump_Split[['lump']],
-              "  (", 
-          signif(digits=2,
-              rValues$estimates_Lump_Split[['confInterval_Lump']][1]),
-          "-",
-          signif(digits=2,
-              rValues$estimates_Lump_Split[['confInterval_Lump']][2]),
-          ")"
-    ) )
-  })
-output$confInterval_Split = renderText(
-  {
-      analysisName = 'plotLumpSplitPoints'
-      source(analysisReactiveSetup_DTC, local=TRUE)
-      try(silent = TRUE,
-          paste("Dr. Split: ", rValues$estimates_Lump_Split[['split']],
-              "  (", 
-                signif(digits=2,
-                       rValues$estimates_Lump_Split[['confInterval_Split']][1]),
-                "-",
-                signif(digits=2,
-                       rValues$estimates_Lump_Split[['confInterval_Split']][2]),
-          ")"
-    ) )
-  }) 
-#dataTableComponent(showhide='show', analysisName='')
-# nice try but messes up everything else.
-```
-
 
 A  patient who gets a good response has $Outcome=R$;  
 if it's a bad response, that's  $Outcome=N$,  $N$ for non-responding.
@@ -638,11 +578,6 @@ I will ignore it, and look at the data
 for *all* the patients.  
 My estimate will be more accurate.” 
 
-Examine the data table below. 
-
-(Throughout this module,  
-you can change the numbers in the table and observe the results.  
-Be sure to press "reset" when done.)
 
 *Dr. Split* will *"split"* the sample of patients into the two groups,  
 estimating the response rate `Pr(R | D)` by utilizing the D patients only,  
@@ -655,17 +590,89 @@ for $D$ patients is the same as `Pr(R)`,
 utilizing the whole set of patients,  
 which is `r reactive(round(100*rValues$estimates_Lump_Split$lump))`*%*. 
   
+
+### <a name='section-Lump-or-Split'> Interactive data table</a> <!-- #title -->
+
 In the following plot, we see the estimate and the confidence interval  
 for `Pr(R | D)`, depending on whether  
 the *"Lump"* or *"Split"* approach is taken.  
 The confidence interval for *"Split"* is much wider.
+Examine the data table below. 
+
+
+
+```{r jumpList_DTC}
+jumpList_DTC = c(jumpList_DTC, plotLumpSplitPoints='Plot of lump & split points')
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+#cat("After first analysisInitialSetup_DTC.R, getDTCnumber('plotLumpSplitPoints') =",
+#    getDTCnumber('plotLumpSplitPoints'), '\n' )
+```
+
+```{r confidence interval calculations}
+estimates_Lump_Split = observeEvent( 
+  eventExpr = getDLdata('plotLumpSplitPoints'),
+  {
+  #   analysisName = 'plotLumpSplitPoints'
+  # source(analysisReactiveSetup_DTC, local=TRUE)
+  #thisData = getDLdata('plotLumpSplitPoints')
+  rValues$estimates_Lump_Split = list(
+    lump = round(digits=2, sum(thisData['R', ])/
+      sum(thisData[ , ])),
+    split =  round(digits=2, (thisData['R', 'D'])/
+      sum(thisData[ , 'D'])),
+    confInterval_Split = binom.test(x = thisData['R', 'D'],
+                                    n = sum(thisData[ , 'D']) )$conf.int,
+    confInterval_Lump = binom.test(x = sum(thisData['R', ]),
+                                   n = sum(thisData[ , ]) )$conf.int
+  )
+})
+ 
+output$confInterval_Lump = renderText(
+  {
+  analysisName = 'plotLumpSplitPoints'
+  source(analysisReactiveSetup_DTC, local=TRUE)
+    try(silent = TRUE,
+        paste("Dr. Lump:  ", rValues$estimates_Lump_Split[['lump']],
+              "  (", 
+          signif(digits=2,
+              rValues$estimates_Lump_Split[['confInterval_Lump']][1]),
+          "-",
+          signif(digits=2,
+              rValues$estimates_Lump_Split[['confInterval_Lump']][2]),
+          ")"
+    ) )
+  })
+output$confInterval_Split = renderText(
+  {
+      analysisName = 'plotLumpSplitPoints'
+      source(analysisReactiveSetup_DTC, local=TRUE)
+      try(silent = TRUE,
+          paste("Dr. Split: ", rValues$estimates_Lump_Split[['split']],
+              "  (", 
+                signif(digits=2,
+                       rValues$estimates_Lump_Split[['confInterval_Split']][1]),
+                "-",
+                signif(digits=2,
+                       rValues$estimates_Lump_Split[['confInterval_Split']][2]),
+          ")"
+    ) )
+  }) 
+#dataTableComponent(showhide='show', analysisName='')
+# nice try but messes up everything else.
+```
+
+(Throughout this module,  
+you can change the numbers in the table and observe the results.  
+Be sure to press "reset" when done.)
 
 
 ```{r plotLumpSplit-UI}
-fluidRow(
-  column(4, 
-         br(),
+div(fluidRow(
+  column(6,
+         dataTableComponent(showhide='show', analysisName=analysisName)),
+  column(6, 
          div(style='text-align:center;font-weight: bold', 
+             br(),br(),br(),
              "Two estimates for Pr(R | D),",
              br(),
              "with confidence intervals :"),
@@ -676,11 +683,12 @@ fluidRow(
                                           "; text-align:center"),
                              textOutput('confInterval_Lump')),
          plotOutput('plotLumpSplitPoints')
-  ),
-  column(8,
-         dataTableComponent(showhide='show', analysisName=analysisName))
+  )),
+  br()
 )
 ```
+
+
 
 Lumping gives an answer with  
 **low variance**  

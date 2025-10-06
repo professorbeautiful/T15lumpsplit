@@ -202,8 +202,9 @@ dataTableComponent = function(showhide='show', analysisName) {
   if(printDTCProgress )
       cat('dataTableComponent for ', analysisName, ' ', thisDTCNumber, '\n')
   output[[outputIdThisDTC]] = renderUI({
-    fluidRow(
-      column(6,
+    div(
+      fluidRow(
+      column(12,
              br(),
              panelOfData(panelIdThisDTC=panelIdThisDTC,
                          resetIdThisDTC=resetIdThisDTC,
@@ -211,8 +212,9 @@ dataTableComponent = function(showhide='show', analysisName) {
                          splitMarginIdThisDTC=splitMarginIdThisDTC,
                          lumpMarginIdThisDTC=lumpMarginIdThisDTC,
                          showhide=showhide)
-      ),
-      column(6, br(), br(),
+      )),
+    fluidRow(
+      column(12, #br(), br(),
              #disabled(  #Start disabled. Doesn't seem to work.
              actionButton(inputId = resetIdThisDTC,
                             label = "Reset data to original") ,
@@ -221,7 +223,7 @@ dataTableComponent = function(showhide='show', analysisName) {
              br(),
              jumpBackWithPanel_DTC(analysisNumber, thisDTCNumber)
       )
-    )
+    ))
   })
   uiOutput(outputId = outputIdThisDTC)
 }
