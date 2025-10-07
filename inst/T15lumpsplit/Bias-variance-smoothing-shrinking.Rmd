@@ -1071,7 +1071,8 @@ output$estimateTable =
       (SplitRawMean - LumpRawMean)
     implicitWeights_ForLogit = 
       c(implicitWeight1_ForLogit, 1-implicitWeight1_ForLogit)
-    
+    print('implicitWeight1_ForLogit')
+    print(implicitWeight1_ForLogit)
     niceColHeader = c(
       'Probability estimate Pr(R | D)', 'Weight (Lump)', 'Weight (Split)')
     
