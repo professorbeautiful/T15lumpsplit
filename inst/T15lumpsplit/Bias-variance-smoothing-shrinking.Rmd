@@ -539,6 +539,8 @@ using the vertical bar, or the dot to say *"conditional on"* or *given*:
 output$plotLumpSplitPoints = renderPlot(
   height = 300, 
   {
+    #  NOTE!   To get this plotLumpSplitPoints, 
+    #we use calculatePlightPdarkPosterior with options to hide W and contours.
     analysisName = 'plotLumpSplitPoints'
     source(analysisReactiveSetup_DTC, local=TRUE)
     #cat('plotLumpSplitPoints: renderPlot', paste(thisData), '\n')
