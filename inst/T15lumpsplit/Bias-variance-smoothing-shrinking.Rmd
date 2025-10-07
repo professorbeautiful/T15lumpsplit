@@ -957,7 +957,7 @@ source('bivariateContourPlotReactive.R', local=TRUE)
 
 div(
   fluidRow(
-    column(4, 
+    column(7, 
            tagAppendAttributes(
              div(
                uiOutput(outputId="title_1_ID"),
@@ -967,19 +967,13 @@ div(
              style=
                'text-align:center; font-size:small;
                     font-weight:bold'),
-           plotOutput(outputId = 'thePlot', height=260)
+           plotOutput(outputId = 'thePlot', height=260),
+           ContoursPanelLegend,
+           panelOfInputs
     ),
-    column(8,
+    column(5,
            br(),
            dataTableComponent(analysisName='bivariateContourPlot')
-    )
-  ),
-  fluidRow(
-    column(4, 
-           ContoursPanelLegend
-    ),
-    column(8,
-           panelOfInputs
     )
   )
 )

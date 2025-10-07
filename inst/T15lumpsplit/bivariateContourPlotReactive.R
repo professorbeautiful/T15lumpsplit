@@ -1,26 +1,24 @@
 ### bivariateContourPlotReactive
 
 ###{r panelOfInputs}
-panelOfInputs =
+panelOfInputs = div(
   wellPanel(
     #checkboxInput(inputId= 'togglePanelOfInputs', label =
     strong(em(
-      "Prior Distribution Inputs")),
+      "Which prior to use?")),
     #value = TRUE),
     #conditionalPanel(
     #  "input.togglePanelOfInputs",
     fluidRow(
-      column(3, actionButton("lumpID", label = "Lump")),
-      column(3, actionButton("splitID", label = "Split")),
-      column(3, actionButton("mixedID", label = "Mixed")),
-      column(3, numericInput(inputId = 'fudgeFactor',
-                             label = 'continuity fudge factor',
-                             value=0.001))
-    ),
+      column(4, actionButton(style='color:red', "lumpID", label = "Lump")),
+      column(4, actionButton(style='color:blue', "splitID", label = "Split")),
+      column(4, actionButton(style='color:green', "mixedID", label = "Who (mixure)"))
+    )),
+  wellPanel(
     fluidRow(
       column(4,
              numericInput("phiInput",
-                          "prior variance | group (phi)",
+                          "prior variance within group (phi)",
                           value=0, min = 0.00, step=0.1)),
       column(4,
              numericInput("tauInput",
@@ -30,31 +28,42 @@ panelOfInputs =
       column(4,
              numericInput("mu0Input", "shared prior mean (mu)",
                           value=0.5, min = 0.001, step=0.1, max=0.999))
+    ),
+    fluidRow( numericInput(inputId = 'fudgeFactor',
+                                        label = 'continuity fudge factor',
+                                        value=0.001)
     )
   )
+)
 ###
 
 
 ###{r show-hide-contours}
 ContoursPanelLegend = list(
-  div(style="color:orange",
-      checkboxInput("checkPrior",
-                    "Orange = prior distribution",
-                    TRUE)),
-  div(style="color:blue",
-      checkboxInput("checkPosterior",
-                    "Blue = posterior distribution",
-                    TRUE)),
-  "Shaded: 50% highest posterior region",
+  "Estimates of  mean posterior (MP)",
+  fluidRow(
+    column(4, div(style='color:red',
+                  "L:  Dr.Lump")),
+    column(4, div(style='color:blue',
+                  "S:  Dr.Split")),
+    column(4, div(style='color:green',
+                  "W:  Dr.Who"))
+  ),
+  textOutput('posteriorMeans'),
+  hr(),
+  "Shaded: 50% region of highest density ",
+  fluidRow(
+    column(6, div(style="color:orange",
+                  checkboxInput("checkPrior",
+                                "Orange = prior distribution",
+                                TRUE))),
+    column(6, div(style="color:blue",
+                  checkboxInput("checkPosterior",
+                                "Blue = posterior distribution",
+                                TRUE))
+    )
+  )
   #  "X:   observed data", br(),
-  div(style='color:red',
-      "L:  Dr.Lump's MP estimate"),
-  div(style='color:blue',
-      "S:  Dr.Split's MP estimate"),
-  div(style='color:green',
-      "W:  Dr.Who's MP estimate"),
-  br(),
-  "(MP = mean posterior)"
 )
 ###
 
@@ -102,6 +111,14 @@ lumpReact = observe({
 })
 ###
 
+
+output$posteriorMeans = renderText(
+  {
+    paste("posterior mean for Pr(R | D) = ",
+          signif(digits=2,  rValues$bivariateNormResults$postmean.p[1]))
+  #ColorForPosterior)
+  }
+)
 
 ###{r splitReact}
 splitReact = observe({
