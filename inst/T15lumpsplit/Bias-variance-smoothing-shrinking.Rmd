@@ -995,7 +995,8 @@ QandAha('QA-joint-posterior')
 
 ### Summary table of estimates  <!-- #title -->
 
-Assembling the results of the approaches to estimating  
+Assembling the Posterior probabilities and weights  
+for the approaches to estimating  
 Pr(R | D):
 
 ```{r tableOfEstimates}
@@ -1109,7 +1110,6 @@ output$estimateTable =
 
 
 div(style='fontsize:large;', 
-    h4("Posterior probabilities and weights"),
     tableOutput('estimateTable'),
     dataTableComponent(analysisName = 'estimateTable')
 )
