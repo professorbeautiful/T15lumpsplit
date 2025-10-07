@@ -152,6 +152,8 @@ adviceForeground = 'darkred'
 adviceBackground = 'snow'
 lumpColor = 'red'
 splitColor = 'blue'
+whoColor = 'green'
+colorsForDoctors = c(lump=lumpColor, split=splitColor, who=whoColor)
 
 ## https://www.w3schools.com/cssref/css_colors.asp
 ```
@@ -949,7 +951,8 @@ QandAha('QA-joint-posterior')
 ```
 
 
-```{r BayesLogitPlot}
+```{r Bivariate contour plot}
+analysisName = 'Bivariate contour plot'
 jumpList_DTC = c(jumpList_DTC, bivariateContourPlot='Bivariate contour plot')
 source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
@@ -958,6 +961,7 @@ source('bivariateContourPlotReactive.R', local=TRUE)
 div(
   fluidRow(
     column(7, 
+           panelOfInputs,
            tagAppendAttributes(
              div(
                uiOutput(outputId="title_1_ID"),
@@ -965,11 +969,13 @@ div(
                uiOutput(outputId="title_3_ID")
              ),
              style=
-               'text-align:center; font-size:small;
-                    font-weight:bold'),
+               paste0('text-align:center; font-size:small;
+                    font-weight:bold; color:green;'
+                    #, textOutput('colorForDoctorSelected')
+                    )),
            plotOutput(outputId = 'thePlot', height=260),
-           ContoursPanelLegend,
-           panelOfInputs
+           ContoursPanelLegend
+           
     ),
     column(5,
            br(),

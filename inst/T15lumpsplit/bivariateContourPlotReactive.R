@@ -1,5 +1,6 @@
 ### bivariateContourPlotReactive
 
+
 ###{r panelOfInputs}
 panelOfInputs = div(
   wellPanel(
@@ -12,9 +13,10 @@ panelOfInputs = div(
     fluidRow(
       column(4, actionButton(style='color:red', "lumpID", label = "Lump")),
       column(4, actionButton(style='color:blue', "splitID", label = "Split")),
-      column(4, actionButton(style='color:green', "mixedID", label = "Who (mixure)"))
+      column(4, actionButton(style='color:green', "whoID", label = "Who (mixture)"))
     )),
-  wellPanel(
+  conditionalPanelWithCheckbox('parameters',
+                               html=wellPanel(
     fluidRow(
       column(4,
              numericInput("phiInput",
@@ -33,14 +35,13 @@ panelOfInputs = div(
                                         label = 'continuity fudge factor',
                                         value=0.001)
     )
-  )
+  ))
 )
 ###
 
 
 ###{r show-hide-contours}
 ContoursPanelLegend = list(
-  "Estimates of  mean posterior (MP)",
   fluidRow(
     column(4, div(style='color:red',
                   "L:  Dr.Lump")),
@@ -107,15 +108,21 @@ lumpReact = observe({
     ### Lump:  no individual variation:   D is same as L.
     rValues$title_1 <- "Dr. Lump"
     rValues$title_2 <- HTML("Prior belief: <br>Pr(R|D) = Pr(R|L)")
+    doctorSelected = 'lump'
   }
 })
 ###
 
+output$colorForDoctorSelected = renderText(
+  colorsForDoctors[rValues$doctorSelected]
+)
 
-output$posteriorMeans = renderText(
+output$posteriorMean = renderUI(
   {
-    paste("posterior mean for Pr(R | D) = ",
-          signif(digits=2,  rValues$bivariateNormResults$postmean.p[1]))
+    div(style=paste0('color:', colorsForDoctors[rValues$doctorSelected]),
+        paste("posterior mean for Pr(R | D) = ",
+              signif(digits=2,  rValues$bivariateNormResults$postmean.p[1]))
+    )
   #ColorForPosterior)
   }
 )
@@ -133,25 +140,27 @@ splitReact = observe({
 ###
 
 ###{r whoReact}
-whoReact = observe({
-  if(length(input$whoID) > 0) {
-    #cat("whoID\n")
-    ### Who:  discrete mixture of Lump and Split.
-    rValues$title_1 <<- "Dr. Who: \ndiscrete mixture of Lump and Split."
-    rValues$title_2 <<- HTML(paste0("Prior belief: <BR> Pr(Split)=",
-                                    rValues$WhoPriorProb))
-  }
-})
+# whoReact = observe({
+#   if(length(input$whoID) > 0) {
+#     #cat("whoID\n")
+#     ### Who:  discrete mixture of Lump and Split.
+#     rValues$title_1 <<- "Dr. Who: \ndiscrete mixture of Lump and Split."
+#     rValues$title_2 <<- HTML(paste0("Prior belief: <BR> Pr(Split)=",
+#                                     rValues$WhoPriorProb))
+#     doctorSelected = 'who'
+#   }
+# })
 ###
 
-###{r mixedReact}
-mixedReact = observe({
-  if(length(input$mixedID) > 0) {
+###{r whoReact}
+whoReact = observe({
+  if(length(input$whoID) > 0) {
     #cat("mixedID\n")
     rValues$tau <<- 1/2; rValues$phi <<- 1/2
-    rValues$title_1 <<- HTML("Compromise: <br>lump some, split some")
-    rValues$title_2 <<- HTML("Prior belief: <br> Pr(R|D) is somewhat related to Pr(R|L). ")
+    rValues$title_1 <<- HTML("Bayesian Compromise: <br>a mixture of priors for Dr.Lump and Dr. Split")
+    rValues$title_2 <<- HTML("Dr.Who's prior belief: <br> Pr(R|D) is somewhat related to Pr(R|L). ")
   }
+  doctorSelected = 'who'
 })
 ###
 
