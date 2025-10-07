@@ -6,37 +6,37 @@ panelOfInputs = div(
   wellPanel(
     #checkboxInput(inputId= 'togglePanelOfInputs', label =
     strong(em(
-      "Which prior to use?")),
+      "Whose prior to use?")),
     #value = TRUE),
     #conditionalPanel(
     #  "input.togglePanelOfInputs",
     fluidRow(
       column(4, actionButton(style='color:red', "lumpID", label = "Lump")),
       column(4, actionButton(style='color:blue', "splitID", label = "Split")),
-      column(4, actionButton(style='color:green', "whoID", label = "Who (mixture)"))
-    )),
-  conditionalPanelWithCheckbox('parameters',
-                               html=wellPanel(
-    fluidRow(
-      column(4,
-             numericInput("phiInput",
-                          "prior variance within group (phi)",
-                          value=0, min = 0.00, step=0.1)),
-      column(4,
-             numericInput("tauInput",
-                          "shared additional variance (tau)",
-                          value=1, min = 0.00, step=0.1)
-      ),
-      column(4,
-             numericInput("mu0Input", "shared prior mean (mu)",
-                          value=0.5, min = 0.001, step=0.1, max=0.999))
+      column(4, actionButton(style='color:green', "whoID", label = "Who"))
     ),
-    fluidRow( numericInput(inputId = 'fudgeFactor',
-                                        label = 'continuity fudge factor',
-                                        value=0.001)
-    )
+  conditionalPanelWithCheckbox('parameters',
+                               html=div(
+                                 # fluidRow(
+                                 #   column(4,
+                                 numericInput("phiInput",
+                                              "prior variance within group (phi)",
+                                              value=0, min = 0.00, step=0.1),
+                                 # column(4,
+                                 numericInput("tauInput",
+                                              "shared additional variance (tau)",
+                                              value=1, min = 0.00, step=0.1),
+                                 # column(4,
+                                 numericInput("mu0Input", "shared prior mean (mu)",
+                                              value=0.5, min = 0.001, step=0.1, max=0.999),
+                                 # ),
+                                 numericInput(inputId = 'fudgeFactor',
+                                              label = 'continuity fudge factor',
+                                              value=0.001)
+                               )
   ))
 )
+
 ###
 
 
@@ -108,18 +108,19 @@ lumpReact = observe({
     ### Lump:  no individual variation:   D is same as L.
     rValues$title_1 <- "Dr. Lump"
     rValues$title_2 <- HTML("Prior belief: <br>Pr(R|D) = Pr(R|L)")
-    doctorSelected = 'lump'
+    rValues$doctorSelected = 'lump'
+
   }
 })
 ###
 
 output$colorForDoctorSelected = renderText(
-  colorsForDoctors[rValues$doctorSelected]
+  paste0('COLOR:', colorsForDoctors[rValues$doctorSelected])
 )
 
 output$posteriorMean = renderUI(
   {
-    div(style=paste0('color:', colorsForDoctors[rValues$doctorSelected]),
+    div(style=paste0('text-align:center; color:', colorsForDoctors[rValues$doctorSelected]),
         paste("posterior mean for Pr(R | D) = ",
               signif(digits=2,  rValues$bivariateNormResults$postmean.p[1]))
     )
@@ -136,6 +137,7 @@ splitReact = observe({
     rValues$title_1 <<- "Dr. Split"
     rValues$title_2 <<- HTML("Prior belief:<br> Pr(R|D) is unrelated to Pr(R|L).")
   }
+  rValues$doctorSelected = 'split'
 })
 ###
 
@@ -160,7 +162,7 @@ whoReact = observe({
     rValues$title_1 <<- HTML("Bayesian Compromise: <br>a mixture of priors for Dr.Lump and Dr. Split")
     rValues$title_2 <<- HTML("Dr.Who's prior belief: <br> Pr(R|D) is somewhat related to Pr(R|L). ")
   }
-  doctorSelected = 'who'
+  rValues$doctorSelected = 'who'
 })
 ###
 

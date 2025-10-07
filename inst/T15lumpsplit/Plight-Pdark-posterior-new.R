@@ -179,10 +179,10 @@ plotPlightPdarkPosterior = function(
       c(postmean.logit[1,1], postmean.logit[2,1]))
     addCircledLetter(pointLocation, pointLocation, bg='lightgrey',
                      pch = "M", cex=1, col=ColorForPosterior)
-    mtext(text = paste("posterior mean for Pr(R | D) = ",
-                       signif(digits=2, postmean.p[1])),
-          side=3, cex=1, line = 1,
-          col = ColorForPosterior)
+    # mtext(text = paste("posterior mean for Pr(R | D) = ",
+    #                    signif(digits=2, postmean.p[1])),
+    #       side=3, cex=1, line = 1,
+    #       col = ColorForPosterior)
     text(x = postmean.p[1], y = 1, pos = 3,
          labels = expression("\u2193"),   ### only \u2193 works.
          # HTML('<pre class="r"><code>cat(&quot;\U2660   \U2665  \U2666  \U2663&quot;)</code></pre>
