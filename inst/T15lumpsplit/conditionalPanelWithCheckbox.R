@@ -12,7 +12,7 @@ conditionalPanelWithCheckboxPDF = function(labelString, filename, cbStringId) {
         label=fullString)
     }
   )
-  wellPanel(
+  wellPanel(style="padding: 5px;",
     checkboxInput(cbStringId,
                   strong(em(showhideString(labelString, FALSE)
                   )),
@@ -59,7 +59,7 @@ conditionalPanelWithCheckbox = function(
     }
   )
   output[[labelStringId]] <- renderUI({
-    wellPanel(
+    wellPanel(style="padding: 5px;",
       checkboxInput(cbStringId,
                     strong(em(showhideString(labelString, initialValue)
                     )),

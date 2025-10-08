@@ -3,10 +3,10 @@
 
 ###{r panelOfInputs}
 panelOfInputs = div(
-  wellPanel(
+  wellPanel(style="padding: 1px;",
     #checkboxInput(inputId= 'togglePanelOfInputs', label =
-    strong(em(
-      "Whose prior to use?")),
+    div(style='text-align:center', strong(em(
+      "Whose prior to use??"))),
     #value = TRUE),
     #conditionalPanel(
     #  "input.togglePanelOfInputs",
