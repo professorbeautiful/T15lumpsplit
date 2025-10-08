@@ -32,6 +32,10 @@ shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 invisible(require(shinyjs) )
 invisible(require(knitr) )
 shinyjs::useShinyjs(rmd = TRUE)
+options(shiny.error = browser)
+options(shiny.error = recover) 
+options(error = browser)
+options(error = recover) 
 
 ```
 
