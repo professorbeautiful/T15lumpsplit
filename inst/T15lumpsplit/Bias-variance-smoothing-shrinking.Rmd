@@ -740,6 +740,7 @@ If the P-value is "significant"
 the "null hypothesis" (that "Dr. Lump" is correct) is rejected.    
 With the original data,  
 the traditional consequence is that we use Dr. Split's estimate:   
+
 50%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!  
 
 
@@ -751,16 +752,7 @@ output$fisherResult = renderUI({
   source(analysisReactiveSetup_DTC, local=TRUE)
 
   Pvalue = fisher.test(thisData)$p.value
-  rValues$estimates_choose_Lump_or_Split = list(
-    lump = round(digits=2, sum(thisData['R', ])/
-      sum(thisData[ , ])),
-    split =  round(digits=2, (thisData['R', 'D'])/
-      sum(thisData[ , 'D'])),
-    confInterval_Split = binom.test(x = thisData['R', 'D'],
-                                    n = sum(thisData[ , 'D']) )$conf.int,
-    confInterval_Lump = binom.test(x = sum(thisData['R', ]),
-                                   n = sum(thisData[ , ]) )$conf.int
-  )
+
   theText = paste(
     "If you change the data, <br>then the P value changes.<br>
       With Fisher\'s test, the P value is  P = " ,
@@ -788,6 +780,7 @@ output$fisherResult = renderUI({
       '</em></strong>')
         rValues$whosRight = 'split'
   }
+
   div(HTML(theText))
 })
 output$fisherResultOriginal = renderText({
