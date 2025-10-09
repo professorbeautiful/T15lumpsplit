@@ -719,7 +719,6 @@ reflects this *high variance*.
 
 ### <a name='section-ClassicalTest'> Who's right? Choose! Classical test</a> <!-- #title -->
 
-
 A time-honored but fading technique is  
 to use a classical hypothesis test,  
 to guide which of two analyses "Lump" or "Split", to present.  
@@ -729,8 +728,10 @@ the response rate of D patients does not differ from L patients.
 Then, depending on the hypothesis test result,  
 Dr.Lump's answer or Dr. Split's answer is selected. 
 
-One test frequently performed to test independence  
-in a 2x2 table like this one is the *Fisher exact test*.  
+In a 2x2 table like this one,
+one test frequently performed to test whether a feature like  $X_{DL}$  is
+independent of an outcome like $R$ or $N$
+is the *Fisher exact test*.  
 On the original data, the P value is 
 **`r textOutput('fisherResultOriginal', inline=TRUE)`.** 
 
@@ -739,7 +740,7 @@ If the P-value is "significant"
 the "null hypothesis" (that "Dr. Lump" is correct) is rejected.    
 With the original data,  
 the traditional consequence is that we use Dr. Split's estimate:   
-60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!  
+50%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!  
 
 
 
@@ -750,25 +751,43 @@ output$fisherResult = renderUI({
   source(analysisReactiveSetup_DTC, local=TRUE)
 
   Pvalue = fisher.test(thisData)$p.value
+  rValues$estimates_choose_Lump_or_Split = list(
+    lump = round(digits=2, sum(thisData['R', ])/
+      sum(thisData[ , ])),
+    split =  round(digits=2, (thisData['R', 'D'])/
+      sum(thisData[ , 'D'])),
+    confInterval_Split = binom.test(x = thisData['R', 'D'],
+                                    n = sum(thisData[ , 'D']) )$conf.int,
+    confInterval_Lump = binom.test(x = sum(thisData['R', ]),
+                                   n = sum(thisData[ , ]) )$conf.int
+  )
   theText = paste(
     "If you change the data, <br>then the P value changes.<br>
       With Fisher\'s test, the P value is  P = " ,
     strong(em(signif(digits=3, Pvalue))),
     ". <br>")
   if(Pvalue < 0.05) # pick Split
-    theText = paste(theText,
-      "That's less than 0.05. <br> So the test concludes 'Dr. Split is right'. <br> 
+    {theText = paste(theText,
+      "That's less than 0.05. <br> So the test concludes 
+      <em><strong><font color='", splitColor, 
+      "'>'Dr. Split is right'.  </em></strong></font><br> 
       We go with the Dr. Split estimate:<br><br>
       Our guess:  <em><strong>Pr(R|D) =  ", 
-      rValues$estimates_Lump_Split[['split']],
+      rValues$estimates_choose_Lump_or_Split[['split']],
       '</em></strong>')
-  else
+    rValues$whosRight = 'split'
+    }
+  else{
     theText = paste(theText,
-      "That's greater than 0.05. <br>So the test concludes 'Dr. Lump is right'. <br> 
-            We go with the Dr. Lump estimate:<br><br>
+      "That's greater than 0.05. <br>So the test concludes 
+      <em><strong><font color='", lumpColor, 
+      "'>'Dr. Lump is right'. </em></strong></font><br> 
+      We go with the Dr. Lump estimate:<br><br>
       Our guess:  <em><strong>Pr(R|D) =  ", 
-      rValues$estimates_Lump_Split[['lump']],
+      rValues$estimates_choose_Lump_or_Split[['lump']],
       '</em></strong>')
+        rValues$whosRight = 'split'
+  }
   div(HTML(theText))
 })
 output$fisherResultOriginal = renderText({
@@ -1166,9 +1185,9 @@ output$tableOfEstimates =
       )
       
       #if(debuggingWithModals) 
-        showModal(modalDialog(title = 'data frame',
-                               means)   
-          )
+        # showModal(modalDialog(title = 'data frame',
+        #                        means)   
+        #   )
 
   tryCatch.W.E = function(expr)
   {
