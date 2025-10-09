@@ -1068,6 +1068,8 @@ output$tableOfEstimates =
     
     # if n_RD is zero, anomalous weights. Possible delta method failure.
     
+    paste(   'after bivariateNormResults',
+                   input$tauInput, input$phiInput, input$mu0Input ) 
     bivariateNormResults = 
       try({
         isolate({
@@ -1078,22 +1080,22 @@ output$tableOfEstimates =
             mu0=input$mu0Input
           )
         })})
-    ##### goofy fix for initial "non-conformable arrays" error.
-    if(class(bivariateNormResults) == "try-error") {
-      #if(debuggingWithModals) 
-        #showModal(modalDialog(   ### we need this one!
-          paste(   'after bivariateNormResults',
-                   input$tauInput, input$phiInput, input$mu0Input )    #))
-      #updateNumericInput(inputId="mRDidPanelDTC5",value=6)
-          bivariateNormResults = isolate({
-          calculatePlightPdarkPosterior(
-            thisData, 
-            tau=input$tauInput,
-            phi=input$phiInput,
-            mu0=input$mu0Input
-          )
-        })
-    }
+    # ##### goofy fix for initial "non-conformable arrays" error.
+    # if(class(bivariateNormResults) == "try-error") {
+    #   #if(debuggingWithModals) 
+    #     #showModal(modalDialog(   ### we need this one!
+    #       paste(   'after bivariateNormResults',
+    #                input$tauInput, input$phiInput, input$mu0Input )    #))
+    #   #updateNumericInput(inputId="mRDidPanelDTC5",value=6)
+    #       bivariateNormResults = isolate({
+    #       calculatePlightPdarkPosterior(
+    #         thisData, 
+    #         tau=input$tauInput,
+    #         phi=input$phiInput,
+    #         mu0=input$mu0Input
+    #       )
+    #     })
+    # }
     
     rValues$bivariateNormResults_bivPlot = bivariateNormResults
     #cat("table of estimates: names(bivariateNormResults) ",
