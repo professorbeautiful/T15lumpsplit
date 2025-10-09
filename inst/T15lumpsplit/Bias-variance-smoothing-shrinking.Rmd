@@ -743,7 +743,7 @@ the traditional consequence is that we use Dr. Split's estimate:
 ```{r panelOfBifurcation}
 
 output$fisherResult = renderUI({
-  analysisName = 'plotLumpSplitPoints'
+  analysisName = 'panelOfBifurcation'
   source(analysisReactiveSetup_DTC, local=TRUE)
 
   Pvalue = fisher.test(thisData)$p.value
@@ -778,7 +778,7 @@ output$fisherResultOriginal = renderText({
 
 
 ```{r fisherResult}
-jumpList_DTC = c(jumpList_DTC, crossvalidationPlot='Cross-validation plot')
+jumpList_DTC = c(jumpList_DTC, panelOfBifurcation='panelOfBifurcation')
 source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 fluidRow(
