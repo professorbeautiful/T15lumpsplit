@@ -747,15 +747,26 @@ output$fisherResult = renderUI({
   source(analysisReactiveSetup_DTC, local=TRUE)
 
   Pvalue = fisher.test(thisData)$p.value
-  #print(thisData)
-  #print(DLdataOriginal)
-  #print(identical(DLdataOriginal, thisData))
-  if(identical(DLdataOriginal, thisData))
-     "" ### output nothing
-     else
-       span(
-    'Since  you have changed the data in the table above, the P value is now P = ' ,
-    strong(em(signif(digits=3, Pvalue))), ".")
+  theText = paste(
+    "If you change the data, <br>then the P value changes.<br>
+      With Fisher\'s test, the P value is  P = " ,
+    strong(em(signif(digits=3, Pvalue))),
+    ". <br>")
+  if(Pvalue < 0.05) # pick Split
+    theText = paste(theText,
+      "That's less than 0.05. <br> So the test concludes 'Dr. Split is right'. <br> 
+      We go with the Dr. Split estimate:<br><br>
+      Our guess:  <em><strong>Pr(R|D) =  ", 
+      rValues$estimates_Lump_Split[['split']],
+      '</em></strong>')
+  else
+    theText = paste(theText,
+      "That's greater than 0.05. <br>So the test concludes 'Dr. Lump is right'. <br> 
+            We go with the Dr. Lump estimate:<br><br>
+      Our guess:  <em><strong>Pr(R|D) =  ", 
+      rValues$estimates_Lump_Split[['lump']],
+      '</em></strong>')
+  div(HTML(theText))
 })
 output$fisherResultOriginal = renderText({
   Pvalue = fisher.test(DLdataOriginal)$p.value
@@ -765,30 +776,20 @@ output$fisherResultOriginal = renderText({
 
 ```
 
-A time-honored but fading technique is  
-to use a classical hypothesis test,  
-to guide which of two analyses "Lump" or "Split", to present.  
-Here the hypothesis to be tested is 
-"$X_{DL}$ is independent of Y";  
-the response rate of D patients does not differ from L patients.  
-Then, depending on the hypothesis test result,  
-Dr.Lump's answer or Dr. Split's answer is selected. 
 
-One test frequently performed to test independence  
-in a 2x2 table like this one is the *Fisher exact test*.  
-On the original data, the P value is 
-**`r textOutput('fisherResultOriginal', inline=TRUE)`.** 
+```{r fisherResult}
+jumpList_DTC = c(jumpList_DTC, crossvalidationPlot='Cross-validation plot')
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
- `r uiOutput('fisherResult')`
-`r br()`
+fluidRow(
+  column(7, br(),br(),br(),br(),br(),
+         uiOutput('fisherResult')),
+  column(5,
+         br(),
+         dataTableComponent(analysisName='panelOfBifurcation')
+))
 
-
-If the P-value is "significant"  
-(which "by tradition" means "less than 5%"),  
-the "null hypothesis" (that "Dr. Lump" is correct) is rejected.  
-With the original data,  
-the traditional consequence is that we use Dr. Split's estimate:  
-60%...  and WE COMPLETELY IGNORE THE DATA FOR THE "L" PATIENTS!
+```
 
 ```{r QA-fisher}
 QandAha('QA-fisher')
