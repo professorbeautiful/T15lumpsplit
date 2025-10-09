@@ -58,9 +58,9 @@ ContoursPanelLegend = list(
                   checkboxInput("checkPrior",
                                 "Orange = prior distribution",
                                 TRUE))),
-    column(6, div(style="color:blue",
+    column(6, div(style="color:darkgrey",
                   checkboxInput("checkPosterior",
-                                "Blue = posterior distribution",
+                                "Grey = posterior distribution",
                                 TRUE))
     )
   )

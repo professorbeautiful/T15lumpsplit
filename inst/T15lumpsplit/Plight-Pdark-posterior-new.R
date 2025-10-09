@@ -55,7 +55,7 @@ plotPlightPdarkPosterior = function(
   fudgeFactor = 0.001,
   addFudge = TRUE,
   ColorForPrior="orange",
-  ColorForPosterior="blue",
+  ColorForPosterior="darkgrey",
   ColorForLikelihood="black") {
 
   ### unpack the calculations.
