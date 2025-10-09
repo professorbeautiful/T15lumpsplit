@@ -1082,8 +1082,8 @@ output$tableOfEstimates =
     if(class(bivariateNormResults) == "try-error") {
       #if(debuggingWithModals) 
       {
-        showModal(modalDialog(      'after bivariateNormResults'    ))
-        showModal(modalDialog(  paste(input$tauInput, input$phiInput, input$mu0Input )    ))
+        showModal(modalDialog(   paste(   'after bivariateNormResults',
+                                          input$tauInput, input$phiInput, input$mu0Input )    ))
       }
       updateNumericInput(inputId="mRDidPanelDTC5",value=6)
           bivariateNormResults = isolate({
