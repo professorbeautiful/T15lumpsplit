@@ -94,40 +94,40 @@ output$crossvalidationPlot = renderPlot({
          xlab='weights',
          ylab="",
          #     ylim=range(penaltyVector)),
-         type='l', col='orange', axes=F)
+         type='l', col='purple', axes=F)
     axis(1)
-    axis(2, col='orange', col.axis='orange')
-    mtext(text = 'penalty', side = 2, col='orange',line=2)
+    axis(2, col='purple', col.axis='purple')
+    mtext(text = 'penalty', side = 2, col='purple',line=2)
 
     points(optimalWeight,
            penaltyAtOpt,
-           col='orange', pch=17, cex=2)
+           col='purple', pch=17, cex=2)
     text(optimalWeight,
          penaltyAtOpt,
-         col='orange', pos=3,
+         col='purple', pos=3,
          labels = round(digits=2, optimalWeight))
-    abline(h=min(penaltyVector),col='orange')
+    abline(h=min(penaltyVector),col='purple')
     title(paste('cross-validation optimization'),
           'lump <-------------------------------------------> split')
 
     #####  adding a right-hand-side vertical axis #####
     par(new=T)  ## Which of course means "new=F"!
     plot(weights, estimators, axes=F, type='l', lty=2,
-         col='blue', ylab='', ylim=c(0.0, proportionThisGroup*1.05))
-    axis(4, col='blue', col.axis='blue')
-    mtext('estimate Pr(R|D)', side = 4, col='blue', line = 2)
+         col='black', ylab='', ylim=c(0.0, proportionThisGroup*1.05))
+    axis(4, col='black', col.axis='black')
+    mtext('estimate Pr(R|D)', side = 4, col='black', line = 2)
     points(optimalWeight, CVoptimalEstimate,
-           col='blue', pch=17, cex=2)
+           col='black', pch=17, cex=2)
     text(0, proportionOverall,
          as.character(round(digits=2, proportionOverall)),
-         col='blue', adj=0)
+         col='black', adj=0)
     text(1, proportionThisGroup,
          as.character(round(digits=2, proportionThisGroup)),
-         col='blue', adj=1)
+         col='black', adj=1)
     text(x = optimalWeight,
          y = estimators[which(weights==optimalWeight)],
          labels = round(digits=2, CVoptimalEstimate),
-         col='blue', pos = 3)
+         col='black', pos = 3)
     mtext(summaryText, side = 1, line=5)
     par(savedPar)  # restore original plot settings
   }
