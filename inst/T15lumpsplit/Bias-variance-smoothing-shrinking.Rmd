@@ -1084,7 +1084,7 @@ output$tableOfEstimates =
         #showModal(modalDialog(   ### we need this one!
           paste(   'after bivariateNormResults',
                    input$tauInput, input$phiInput, input$mu0Input )    #))
-      updateNumericInput(inputId="mRDidPanelDTC5",value=6)
+      #updateNumericInput(inputId="mRDidPanelDTC5",value=6)
           bivariateNormResults = isolate({
           calculatePlightPdarkPosterior(
             thisData, 
