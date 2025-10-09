@@ -1009,13 +1009,15 @@ Pr(R | D):
 jumpList_DTC = c(jumpList_DTC, estimateTable='Table of estimates')
 source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
-output$estimateTable = 
+output$tableOfEstimates = 
   renderTable(rownames = TRUE, {
     analysisName = 'estimateTable'
     
     source(analysisReactiveSetup_DTC, local=TRUE);
       ###  Use the last-data for everything.
-    
+
+    debuggingWithModals = FALSE
+       
     isolate( {
       #cat(paste(thisData), '\n')
       #cat(paste(DLdataLastUsed), '\n')
@@ -1029,6 +1031,7 @@ output$estimateTable =
         #), '\n' )
       }
     })
+
     nRD=thisData['R','D']
     nND=thisData['N','D']
     nR=sum(thisData['R', ])
@@ -1038,7 +1041,7 @@ output$estimateTable =
     SplitRawMean=(nRD)/(nRD+nND)
     #print(thisData)
     #cat(nN, ' ', nR, ' ', LumpRawMean, '\n')
-    
+
     ### Dr. Who's results.
     ###  Only for the flat priors. We don't allow Split and Lump priors to change.
     posterior.mean.s = (1+nRD)/(2+nRD+nND)
@@ -1050,25 +1053,49 @@ output$estimateTable =
       pProbSplit * posterior.mean.s +
       pProbLump * posterior.mean.l
     
+
     ## CV results
     setDLdata(value=thisData, analysisName='crossvalidationPlot')
     CVanalysisResult = doCVanalysis(thisData)
     CVoptimalEstimate = CVanalysisResult$CVoptimalEstimate
     CVoptimalWeight = CVanalysisResult$optimalWeight
 
+    if(debuggingWithModals) 
+      showModal(modalDialog(      'after CV'    ))
+
     ### Bivariate logit method results.
     #setDLdata(value=thisData, analysisName='bivariateContourPlot')
     
     # if n_RD is zero, anomalous weights. Possible delta method failure.
     
-    bivariateNormResults = isolate({
-      calculatePlightPdarkPosterior(
-        thisData, 
-        tau=input$tauInput,
-        phi=input$phiInput,
-        mu0=input$mu0Input
-      )
-    })
+    bivariateNormResults = 
+      try({
+        isolate({
+          calculatePlightPdarkPosterior(
+            thisData, 
+            tau=input$tauInput,
+            phi=input$phiInput,
+            mu0=input$mu0Input
+          )
+        })})
+    ##### goofy fix for initial "non-conformable arrays" error.
+    if(class(bivariateNormResults) == "try-error") {
+      #if(debuggingWithModals) 
+      {
+        showModal(modalDialog(      'after bivariateNormResults'    ))
+        showModal(modalDialog(  paste(input$tauInput, input$phiInput, input$mu0Input )    ))
+      }
+      updateNumericInput(inputId="mRDidPanelDTC5",value=6)
+          bivariateNormResults = isolate({
+          calculatePlightPdarkPosterior(
+            thisData, 
+            tau=input$tauInput,
+            phi=input$phiInput,
+            mu0=input$mu0Input
+          )
+        })
+    }
+    
     rValues$bivariateNormResults_bivPlot = bivariateNormResults
     #cat("table of estimates: names(bivariateNormResults) ",
     #    paste(names(bivariateNormResults)), '\n')
@@ -1079,24 +1106,28 @@ output$estimateTable =
       c(implicitWeight1_ForLogit, 1-implicitWeight1_ForLogit)
     print('implicitWeight1_ForLogit')
     print(implicitWeight1_ForLogit)
+    
+    
+
     niceColHeader = c(
       'Probability estimate Pr(R | D)', 'Weight (Lump)', 'Weight (Split)')
-    
-    result = data.frame(
+
+
+
       means = c(
         LumpRawMean,
         SplitRawMean,
         posterior.mean.w,
         CVoptimalEstimate,
         bivariateNormResults$postmean.p[1]
-      ),
+      )
       weightsForLump = c(
         1,
         0,
         pProbLump,
         1-CVoptimalWeight,
         implicitWeights_ForLogit[2]
-      ),
+      )
       weightsForSplit = c(
         0,
         1,
@@ -1104,7 +1135,22 @@ output$estimateTable =
         CVoptimalWeight,
         implicitWeights_ForLogit[1]
       )
-    )
+      
+      if(debuggingWithModals) showModal(modalDialog(      'after vectors'    ))
+
+  tryCatch.W.E = function(expr)
+  {
+    W <- NULL
+    w.handler <- function(w) { # warning handler
+      W <<- w
+      invokeRestart("muffleWarning")
+    }
+    list(value = withCallingHandlers(tryCatch(expr, error = function(e) e),
+                                     warning = w.handler),
+         warning = W)
+  }
+  #result = tryCatch.W.E({
+    result = data.frame(means, weightsForLump, weightsForSplit)
     result = as.data.frame(lapply(result, round, digits=2) )
     rownames(result) = c(
       'Raw proportion (Lump)',
@@ -1112,12 +1158,15 @@ output$estimateTable =
       "Dr.Who mixture posterior mean", 
       "Cross-validation optimal",
       'Bivariate inverse logit of logit posterior mean')
-    return( (result) )
+    result
+  #})
+
+  return( (result) )
   })
 
 
 div(style='fontsize:large;', 
-    tableOutput('estimateTable'),
+    tableOutput('tableOfEstimates'),
     dataTableComponent(analysisName = 'estimateTable')
 )
 ```
