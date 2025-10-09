@@ -717,6 +717,8 @@ The very wide horizontal confidence interval
 reflects this *high variance*.
 
 ### <a name='section-ClassicalTest'> Who's right? Choose! Classical test</a> <!-- #title -->
+
+
 A time-honored but fading technique is  
 to use a classical hypothesis test,  
 to guide which of two analyses "Lump" or "Split", to present.  
@@ -777,9 +779,9 @@ output$fisherResultOriginal = renderText({
 ```
 
 
-```{r fisherResult}
+```{r fisherResultDTC}
 jumpList_DTC = c(jumpList_DTC, panelOfBifurcation='panelOfBifurcation')
-source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', 'panelOfBifurcation') )
 
 fluidRow(
   column(7, br(),br(),br(),br(),br(),
