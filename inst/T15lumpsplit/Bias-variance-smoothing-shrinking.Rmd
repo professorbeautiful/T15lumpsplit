@@ -1081,10 +1081,9 @@ output$tableOfEstimates =
     ##### goofy fix for initial "non-conformable arrays" error.
     if(class(bivariateNormResults) == "try-error") {
       #if(debuggingWithModals) 
-      {
-        showModal(modalDialog(   paste(   'after bivariateNormResults',
-                                          input$tauInput, input$phiInput, input$mu0Input )    ))
-      }
+        #showModal(modalDialog(   ### we need this one!
+          paste(   'after bivariateNormResults',
+                   input$tauInput, input$phiInput, input$mu0Input )    #))
       updateNumericInput(inputId="mRDidPanelDTC5",value=6)
           bivariateNormResults = isolate({
           calculatePlightPdarkPosterior(
