@@ -669,9 +669,10 @@ output$confInterval_Split = renderText(
 # nice try but messes up everything else.
 ```
 
-(Throughout this module,  
-you can change the numbers in the table and observe the results.  
-Be sure to press "reset" when done.)
+(Throughout this Lump/Split "app",  
+you can change the numbers in the table and observe the results
+changing in all the sections.
+You can also press "reset" .)
 
 
 ```{r plotLumpSplit-UI}
@@ -1139,29 +1140,35 @@ output$tableOfEstimates =
 
 
 
-      means = c(
-        LumpRawMean,
-        SplitRawMean,
+      means = rValues$means = c(
+        rValues$estimates_choose_Lump_or_Split[['lump']],
+        rValues$estimates_choose_Lump_or_Split[['split']],
+        rValues$estimates_choose_Lump_or_Split[[rValues$whosRight]],
         posterior.mean.w,
         CVoptimalEstimate,
         bivariateNormResults$postmean.p[1]
       )
-      weightsForLump = c(
+      weightsForLump = rValues$weightsForLump = c(
         1,
         0,
+        c(lump=1, split=0)[rValues$whosRight],
         pProbLump,
         1-CVoptimalWeight,
         implicitWeights_ForLogit[2]
       )
-      weightsForSplit = c(
+      weightsForSplit = rValues$weightsForLump = c(
         0,
         1,
+        c(lump=0, split=1)[rValues$whosRight],
         pProbSplit,
         CVoptimalWeight,
         implicitWeights_ForLogit[1]
       )
       
-      if(debuggingWithModals) showModal(modalDialog(      'after vectors'    ))
+      #if(debuggingWithModals) 
+        showModal(modalDialog(title = 'data frame',
+                               means)   
+          )
 
   tryCatch.W.E = function(expr)
   {
@@ -1180,6 +1187,7 @@ output$tableOfEstimates =
     rownames(result) = c(
       'Raw proportion (Lump)',
       'Raw proportion (Split)',
+      'Choose Lump or Split...',
       "Dr.Who mixture posterior mean", 
       "Cross-validation optimal",
       'Bivariate inverse logit of logit posterior mean')
