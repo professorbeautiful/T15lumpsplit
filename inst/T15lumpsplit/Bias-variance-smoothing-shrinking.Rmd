@@ -267,7 +267,7 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(
    condition='ctrlDpressed === true')
 
 
-#options(shiny.trace=TRUE)
+options(shiny.trace=TRUE)
 ```
 
 ```{r fat arrow, results='asis'}
@@ -778,7 +778,7 @@ output$fisherResult = renderUI({
       '</em></strong>')
     rValues$whosRight = 'split'
     }
-  else{
+  else{  # pick Lump
     theText = paste(theText,
       "That's greater than 0.05. <br>So the test concludes 
       <em><strong><font color='", lumpColor, 
@@ -787,7 +787,7 @@ output$fisherResult = renderUI({
       Our guess:  <em><strong>Pr(R|D) =  ", 
       rValues$estimates_choose_Lump_or_Split[['lump']],
       '</em></strong>')
-        rValues$whosRight = 'split'
+    rValues$whosRight = 'lump'
   }
 
   div(HTML(theText))
@@ -1064,7 +1064,8 @@ output$tableOfEstimates =
 
     debuggingWithModals = FALSE
        
-    isolate( {
+    #isolate  # removing this isolate call doesn't help.
+    ( {
       #cat(paste(thisData), '\n')
       #cat(paste(DLdataLastUsed), '\n')
       #cat('Copying thisData to other analyses:\n')
@@ -1072,6 +1073,7 @@ output$tableOfEstimates =
         #cat('  =>',  names(mapAnalysisToDTCnumber) [aN], ':  ')
         setDLdata(value=thisData, myChoice=TRUE,
                   names(mapAnalysisToDTCnumber) [aN] )
+        click(paste0('idMyChoiceDTC', aN))
         #cat(paste(getDLdata(myChoice=TRUE, 
         #                    names(mapAnalysisToDTCnumber) [aN]) 
         #), '\n' )
@@ -1202,18 +1204,18 @@ output$tableOfEstimates =
                                      warning = w.handler),
          warning = W)
   }
-  #result = tryCatch.W.E({
+  whosRightCapitalized <<- c(lump="Lump", split="Split", who="Who")
+
     result = data.frame(means, weightsForLump, weightsForSplit)
     result = as.data.frame(lapply(result, round, digits=2) )
     rownames(result) = c(
       'Raw proportion (Lump)',
       'Raw proportion (Split)',
-      'Choose Lump or Split...',
+      paste('Test chooses ', whosRightCapitalized[rValues$whosRight]),
+#      paste('Test chooses ', rValues$whosRight),
       "Dr.Who mixture posterior mean", 
       "Cross-validation optimal",
       'Bivariate inverse logit of logit posterior mean')
-    result
-  #})
 
   return( (result) )
   })
