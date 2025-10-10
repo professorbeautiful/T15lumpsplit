@@ -73,7 +73,7 @@ TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing
 
 #### Marginal probability for each hypothesis Split and Lump <!-- #title -->
 
-```{r}
+```{r, echo=FALSE}
 output$mSplit = renderText({
   analysisName = 'whoMixturePlot'
   source(analysisReactiveSetup_DTC, local=TRUE)
@@ -87,9 +87,30 @@ If *Split* is correct, then the (marginal) probability of getting the data we ob
 
 For the technical details, take a look here:
 
+```{r sidebars, echo =F}
+## nice try, doesn't work, the input name not found..
+sidebar = function(RmdFileName){
+  h4content = paste0("Sidebar:  `r actionButton(class='sidebar', inputId=",
+            RmdFileName,
+           "', label =  ", RmdFileName, " )`  <!-- #title -->"
+  )
+  print(h4content)
+  h4(h4content) 
+  observe( {
+    if(!is.null(input[[RmdFileName]]) ) {
+      if(input[[RmdFileName]] > 0) {
+        showModal(modalDialog(size='xl', title=RmdFileName, easyClose = T,
+                              footer=modalButton('OK'),
+                              inclRmd(RmdFileName)))
+      }
+    }
+  })
+}
+```
+
 #### : Sidebar:  `r actionButton(class='sidebar', inputId='DrSplitEquation.Rmd', label =  'DrSplitEquation.Rmd' )`  <!-- #title -->
 ```{r}
-          
+#### this works!
 observe( {
   if(!is.null(input$DrSplitEquation.Rmd) ) {
     if(input$DrSplitEquation.Rmd > 0) {
@@ -102,16 +123,7 @@ observe( {
 )
 ```
 
-```{r}
-conditionalPanelWithCheckboxPDF(
-  labelString = 'Equations for Dr. Split\'s marginal probability', 
-#html=withMathJax(shiny::includeMarkdown(path = 'DrSplitEquation.Rmd')),
-filename='DrSplitEquation.pdf',
-#filename = 'DrSplitEquation.Rmd',
-#html='',
-cbStringId='DrSplitEquation'
-)
-```
+
 
 ```{r}
 output$mLump = renderText({
@@ -126,12 +138,20 @@ then the (marginal) probability of getting the data we observed is:
   **`r   textOutput('mLump', inline=TRUE)`**.
 
 For the technical details, take a look here:
+#### : Sidebar:  `r actionButton(class='sidebar', inputId='DrLumpEquation.Rmd', label =  'DrLumpEquation.Rmd' )`  <!-- #title -->
 ```{r}
-conditionalPanelWithCheckboxPDF(
-  labelString = 'Equations for Dr. Lump\'s marginal probability', 
-  filename='DrLumpEquation.pdf',
-  #    html=withMathJax(shiny::includeMarkdown(path = 'DrLumpEquation.Rmd')),
-  cbStringId='DrLumpEquation'
+#sidebar('DrLumpEquation.Rmd') ### too bad doesn't work.
+
+#### this works!
+observe( {
+  if(!is.null(input$DrLumpEquation.Rmd) ) {
+    if(input$DrLumpEquation.Rmd > 0) {
+        showModal(modalDialog(size='xl', title="DrLumpEquation.Rmd", easyClose = T,
+                               footer=modalButton('OK'),
+                              inclRmd('DrLumpEquation.Rmd')))
+    }
+  }
+}
 )
 ```
 

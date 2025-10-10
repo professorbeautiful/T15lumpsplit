@@ -3,49 +3,66 @@ output:
   pdf_document: default
   html_document: default
 ---
-We borrow some function names from R to indicate the corresponding probability functions ***dbinom*** (for the binomial distribution) and ***dhyper*** (for the hypergeometric distribution), and a density function ***dbeta*** (for the beta distribution).
+We borrow some function names from R to indicate  
+the corresponding probability functions   
+***dbinom*** (for the binomial distribution) and  
+***dhyper*** (for the hypergeometric distribution),  
+and a density function ***dbeta*** (for the beta distribution).  
 
-The prior distribution for the probabilities ${\bf{p}}$ is dirichlet with parameter $\bf{a}$ = $(a_1,a_2,a_3,a_4)$ . We take $a_1=a_2=a_3=a_4=1$, a "non-informative" (or flat, or "non-opinionated") prior distribution.
-Here the dirichlet will factor into a beta distribution for $(p_D,P_L)$ and another  beta distribution for $(p_R,P_N)$. This is handy here,because the data distribution factors into a binomial distribution for $(n_D,n_L)$,  another binomial distribution for $(n_R,n_N)$, and a hypergeometric distribution for $n_RD$.
+The prior distribution for the probabilities ${\bf{p}}$  
+is dirichlet with parameter $\bf{a}$ = $(a_1,a_2,a_3,a_4)$ .   
+We take $a_1=a_2=a_3=a_4=1$, a "non-informative"  
+(or flat, or "non-opinionated") prior distribution.  
+  
+Here the dirichlet will factor into a beta distribution  
+for $(p_D,P_L)$ and another  beta distribution for $(p_R,P_N)$.  
+This is handy here,because the data distribution factors  
+into a binomial distribution for $(n_D,n_L)$,   
+another binomial distribution for $(n_R,n_N)$,  
+and a hypergeometric distribution for $n_RD$.
 
-We let $Beta$ denote the beta distribution normalizer constant, defined by
+We let $Beta$ denote the beta distribution normalizer constant,  
+defined by
 
 $$
-Beta({a_1},{a_2}) = \frac{{Gamma{(a_1)}Gamma{(a_2)}}}{{Gamma\left( {\sum\limits_i {{a_i}} } \right)}} \\
+Beta({a_1},{a_2}) = \frac{{Gamma{(a_1)}Gamma{(a_2)}}}{{Gamma\left( {\sum\limits_i {{a_i}} } \right)}} \\\\
 =\frac{{{(a_1-1)}!{(a_2-1)}!}}{{\left( {\sum\limits_i {{a_i}}-1 } \right)!}},
 $$
 
-where $Gamma$ is the standard gamma function, with the convenient property $Gamma(n) = (n-1)!$.
+where $Gamma$ is the standard gamma function,  
+with the convenient property $Gamma(n) = (n-1)!$.
 
 <!-- notice the trick with Beta inverse -->
 
 
 $$
 \begin{array}{*{20}{l}}
-{{m_{Lump}} = \Pr ({\bf{n}}|\phi  = Lump) = \int\limits_{\bf{p}} {} \Pr ({\bf{n}}|{\bf{p}},\phi  = Lump)\Pr ({\bf{p}})}\\
+{{m_{Lump}} = \Pr ({\bf{n}}|\phi  = Lump) = \int\limits_{\bf{p}} {} \Pr ({\bf{n}}|{\bf{p}},\phi  = Lump)\Pr ({\bf{p}})}\\\\
+\end{array}
 \begin{array}{l}
-{\rm{ = }}\int\limits_{\bf{p}} {} \Pr ({n_R}|{\bf{p}},\phi  = Lump)\Pr ({n_D}|{\bf{p}},\phi  = Lump)\Pr ({n_{RD}}|{n_R},{n_D},\phi  = Lump)\Pr ({\bf{p}})\\
+{\rm{ = }}\int\limits_{\bf{p}} {} \Pr ({n_R}|{\bf{p}},\phi  = Lump)\Pr ({n_D}|{\bf{p}},\phi  = Lump)\Pr ({n_{RD}}|{n_R},{n_D},\phi  = Lump)\Pr ({\bf{p}})\\\\
 {\rm{ = }}\int\limits_{\bf{p}} {} dbinom({n_R},n,{p_R})dbeta({n_D},n,{p_D})dhyper({n_{RD}},{n_R},{n_N},{n_D})ddirichlet({\bf{p}},{\bf{a}}))
-\end{array}\\
+\end{array}\\\\
 { = \int\limits_{\bf{p}} {\frac{{n!}}{{{n_R}!{n_N}!}}p_R^{{n_R}}p_N^{{n_N}} \cdot \frac{{n!}}{{{n_D}!{n_L}!}}p_D^{{n_D}}p_L^{{n_L}}}  \cdot \frac{{\left( {\begin{array}{*{20}{c}}
-{{n_R}}\\
+{{n_R}}\\\\
 {{n_{RD}}}
-\end{array}} \right)\left( {\begin{array}{*{20}{c}}
-{{n_L}}\\
+\end{array}} \right)\left( 
+{\begin{array}{*{20}{c}}
+{{n_L}}\\\\
 {{n_{LD}}}
 \end{array}} \right)}}{{\left( {\begin{array}{*{20}{c}}
-{{n_{}}}\\
+{{n_{}}}\\\\
 {{n_D}}
 \end{array}} \right)}} \cdot \frac{p_R^{{a_R} - 1}p_N^{{a_N} - 1}}{Beta({a_R},{a_N})} \cdot 
-\frac{p_D^{{a_D} - 1}p_L^{{a_L} - 1}}{Beta({a_D},{a_L})}}\\
+\frac{p_D^{{a_D} - 1}p_L^{{a_L} - 1}}{Beta({a_D},{a_L})}}\\\\
 { = \frac{{n!}}{{{n_R}!{n_N}!}}\frac{{n!}}{{{n_D}!{n_L}!}}\frac{{\left( {\begin{array}{*{20}{c}}
-{{n_R}}\\
+{{n_R}}\\\\
 {{n_{RD}}}
 \end{array}} \right)\left( {\begin{array}{*{20}{c}}
-{{n_N}}\\
+{{n_N}}\\\\
 {{n_{ND}}}
 \end{array}} \right)}}{{\left( {\begin{array}{*{20}{c}}
-{{n_{}}}\\
+{{n_{}}}\\\\
 {{n_D}}
 \end{array}} \right)}} 
 \frac{Beta({n_R} + {a_R},{n_N} + {a_N})} {Beta({a_R},{a_N})}
