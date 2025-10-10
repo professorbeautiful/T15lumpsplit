@@ -139,7 +139,7 @@ The posterior distribution for Dr. Who,
 which marginalizes over $\phi$ as we have seen,  
 is a mixture, as graphed here.
 
-Viewing Dr. Who's posterior:
+Viewing Dr. Who's posterior (surely there's an emoji for that):
 
 ```{r}
 jumpList_DTC = c(jumpList_DTC, whoMixturePlot='Posterior distribution for Dr. Who')
@@ -153,7 +153,7 @@ output$whoMixturePlot =
     par(mfrow=c(1,2))
     prior.s = dbeta(pSeq, 1, 1)
     prior.l = dbeta(pSeq, 2, 2)
-    prior.w = (1/2) * prior.s + (1/2) * prior.l
+    prior.w = rValues$WhoPriorProb * prior.s + (1-rValues$WhoPriorProb) * prior.l
     plot(pSeq, prior.s, col='blue', type='l',
          xlab='probability', ylab='density',
          ylim=c(0,15),
@@ -262,6 +262,8 @@ output$whoMixturePlot =
     text(posterior.mean.w, onTop*1.00, col='darkgreen', xpd=NA, labels="W", cex=1, pos = 3, font=4)
   })
 plotOutput('whoMixturePlot')
+WhoPriorProbNumericInput()
+
 dataTableComponent(showhide='hide', analysisName='whoMixturePlot')
 TextQuestion("Experiment with changing #RL in the range 2 to 9. What happens?  And... why? ")
 QandAha('QA-whoMixturePlot')
