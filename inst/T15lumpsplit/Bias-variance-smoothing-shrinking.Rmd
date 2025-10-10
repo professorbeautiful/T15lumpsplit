@@ -491,9 +491,8 @@ getBDCnumber = function(analysisName) {
 }
 ```
 
-# Hypothetical medical study <!-- #title -->
+# The Lump vs Split challenge in a medical study <!-- #title -->
 
-## Description of the challenge <!-- #title -->
 
 **The Problem**:  A new treatment is given to some patients.  
 
@@ -525,14 +524,22 @@ To guide the decision, we need to assess what we know about the
 **conditional probability**,  
 the probability that the patient responds to treatment  
 given that the patient is a $D$ patient.  
-We  see this conditional probability written different ways,  
-in words, some long, some short,  
-using the vertical bar, or the dot to say *"conditional on"* or *given*:
 
-* Probability of response given a $D$ patient
-* $Pr(Y~=~R ~|~ X_{DL} ~=~ D)$
-* $Pr(R ~|~ D)$
-* $P_{R~.~D}$
+```{r}
+actionButton('showconditionalProbabilityModel.Rmd', label = 'NOTATIONS for conditional probability')
+          
+observe( {
+  if(!is.null(input$showconditionalProbabilityModel.Rmd) ) {
+    if(input$showconditionalProbabilityModel.Rmd > 0) {
+        showModal(modalDialog(title="NOTATIONS for conditional probability", easyClose = T,
+                               footer=modalButton('cancel'),
+                              inclRmd('conditionalProbabilityModel.Rmd')))
+    }
+  }
+}
+)
+```
+
 
 
 
@@ -599,13 +606,11 @@ utilizing the whole set of patients,
 which is `r reactive(round(100*rValues$estimates_Lump_Split$lump))`*%*. 
   
 
-### <a name='section-Lump-or-Split'> Interactive data table</a> <!-- #title -->
+### <a name='section-Lump-or-Split'> Changing the data: estimates & intervals</a> <!-- #title -->
 
 In the following plot, we see the estimate and the confidence interval  
 for `Pr(R | D)`, depending on whether  
 the *"Lump"* or *"Split"* approach is taken.  
-The confidence interval for *"Split"* is much wider.
-Examine the data table below. 
 
 
 
