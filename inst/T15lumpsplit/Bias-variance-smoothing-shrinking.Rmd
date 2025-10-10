@@ -825,6 +825,19 @@ fluidRow(
 QandAha('QA-fisher')
 ```
 
+
+### <a name='section-Bayes_mixture'> Dr. Who's Bayes mixture of "Lump" and "Split"</a> <!-- #title -->
+
+Dr. Who doesn't know *who* to believe.
+
+
+```{r DrWho, child = 'DrWho.Rmd'}
+```
+
+```{r QA-DrWho}
+QandAha('QA-DrWho')
+```
+
 ## Parametrizing the probabilities <!-- #title -->
 
 We must dive deeper. We need some notation.  
@@ -850,18 +863,6 @@ QandAha(context='QA-parametrization')
 * [Bayes joint prior, logit scale](#Bayes_joint_prior).  
 * Approaches used in the famous ECMO data set. (ToDo)
 
-
-### <a name='section-Bayes_mixture'> Dr. Who's Bayes mixture of "Lump" and "Split"</a> <!-- #title -->
-
-Dr. Who doesn't know *who* to believe.
-
-
-```{r DrWho, child = 'DrWho.Rmd'}
-```
-
-```{r QA-DrWho}
-QandAha('QA-DrWho')
-```
 
 ###  Optimizing the mixture with cross-validation <!-- #title -->
 
