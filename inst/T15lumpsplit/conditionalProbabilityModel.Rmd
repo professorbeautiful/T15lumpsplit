@@ -1,0 +1,11 @@
+
+We  see this conditional probability written different ways,  
+in words, some long, some short,  
+using the vertical bar, or the dot to say *"conditional on"* or *given*:
+  
+  
+* Probability of response given a $D$ patient
+* $Pr(Y~=~R ~|~ X_{DL} ~=~ D)$
+* $Pr(R ~|~ D)$
+* $P_{R~.~D}$
+  
