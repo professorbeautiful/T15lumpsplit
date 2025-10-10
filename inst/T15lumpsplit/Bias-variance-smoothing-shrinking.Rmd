@@ -1705,8 +1705,12 @@ conditionalPanelWithCheckboxPDF(
   cbStringId='EmpiricalBayes')
 ```
 
-We can apply EB to a collection of estimates. In this instance, let's collect the estimates of association between the outcome and all 100 features. These estimates are the odds ratios. For the original feature $X_{DL}$, the odds ratio is
-`r DLdataOriginal['R','D']` / `r DLdataOriginal['N','D']` * `r DLdataOriginal['R','L']` / `r DLdataOriginal['N','L']`), which is 
+We can apply EB to a collection of estimates.  
+Let's collect the estimates of association 
+between the outcome and all 100 features. 
+These estimates are the odds ratios. 
+For the original feature $X_{DL}$, the odds ratio is  
+`r DLdataOriginal['R','D']` / `r DLdataOriginal['N','D']` * `r DLdataOriginal['R','L']` / `r DLdataOriginal['N','L']`), which is  
 `r oddsRatioOriginal = DLdataOriginal['R','D'] / DLdataOriginal['N','D'] * DLdataOriginal['R','L'] / DLdataOriginal['N','L'] ` ).
 
 This can be compared to all 100 odds ratios for the features:
