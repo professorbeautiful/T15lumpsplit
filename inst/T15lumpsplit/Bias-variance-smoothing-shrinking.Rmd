@@ -533,7 +533,7 @@ observe( {
   if(!is.null(input$showconditionalProbabilityModel.Rmd) ) {
     if(input$showconditionalProbabilityModel.Rmd > 0) {
         showModal(modalDialog(title="NOTATIONS for conditional probability", easyClose = T,
-                               footer=modalButton('cancel'),
+                               footer=modalButton('OK'),
                               inclRmd('conditionalProbabilityModel.Rmd')))
     }
   }

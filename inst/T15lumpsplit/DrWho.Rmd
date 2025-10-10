@@ -13,7 +13,7 @@ observe( {
   if(!is.null(input$DrWho_prior_notation) ) {
     if(input$DrWho_prior_notation > 0) {
         showModal(modalDialog(title="NOTATIONS for NOTATIONS for Dr. Who\'s prior and posterior probability", easyClose = T,
-                               footer=modalButton('cancel'),
+                               footer=modalButton('OK'),
                               inclRmd('DrWho-prior-notation.Rmd')))
     }
   }
