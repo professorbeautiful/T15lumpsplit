@@ -184,12 +184,16 @@ If *Dr.Split* and *Dr.Lump* have equal prior probability (prior odds = 1),
 then the posterior odds is the Bayes factor,
 and  the posterior probability that *Dr.Lump* is correct is
 
-\[{\rm{Pr(}}\phi  = Lump|data) = {m_{Lump}}/({m_{Split}} + {m_{Lump}}).\]
+$$
+\rm{Pr(}\phi  = Lump|data) = {m_{Lump}}/({m_{Split}} + {m_{Lump}}).
+$$
 
 More generally, 
 
-\[
-\Pr (R|D,Who) = \Pr (Lump|data) \times \Pr (R|D,Lump) + \Pr (Split|data) \times \Pr (R|D,Split),  \]
+
+$$
+\Pr (R|D,Who) = \Pr (Lump|data) \times \Pr (R|D,Lump) + \Pr (Split|data) \times \Pr (R|D,Split),  
+$$
 
 ```{r}
 output$bayesAverage = renderText({
@@ -210,7 +214,9 @@ You can adjust the prior probability and observe how
 the posterior probability changes.  
 The Bayes factor in favor of  *Dr.Split* is correct is
 
-\[{\rm{Odds}(\phi = Split|data) = \rm{Odds(}\phi  = Split) \times {m_{Split}}/{m_{Lump}}}.\]
+$$
+{\rm{Odds}(\phi = Split|data) = \rm{Odds(}\phi  = Split) \times {m_{Split}}/{m_{Lump}}}.
+$$
 If Dr. Who puts equal prior probability on *Lump* and *Split*,  
 the Bayes factor is the same as the posterior odds.  
 Converting from odds to probability,  
