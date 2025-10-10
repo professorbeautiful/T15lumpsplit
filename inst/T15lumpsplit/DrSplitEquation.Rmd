@@ -4,7 +4,8 @@ output:
   html_document: default
 ---
 
-We borrow some function names from R to indicate the corresponding probability functions ***dmultinom*** (for the multinomial distribution) , and a density function ***ddirichlet*** (for the Dirichlet distribution).
+We borrow some function names from R to indicate the corresponding probability functions   ***dmultinom*** (for the multinomial distribution) ,  
+and a density function ***ddirichlet*** (for the Dirichlet distribution).
 
 We let $Dir$ be the Dirichlet distribution normalizer constant, defined by 
 
@@ -22,9 +23,9 @@ where $Gamma$ is the standard gamma function, with the convenient property $Gamm
 $$
 \begin{array}{*{20}{l}}
 \begin{array}{l}
-{m_{Split}} = \Pr ({\bf{n}}|\phi  = Split) = \int\limits_{\bf{p}} {} \Pr ({\bf{n}}|{\bf{p}},\phi  = Split)\Pr ({\bf{p}})\\
+{m_{Split}} = \Pr ({\bf{n}}|\phi  = Split) = \int\limits_{\bf{p}} {} \Pr ({\bf{n}}|{\bf{p}},\phi  = Split)\Pr ({\bf{p}})\\\\
  = \int\limits_{\bf{p}} {} dmultinom({\bf{n}},{\bf{p}}) \cdot ddirichlet({\bf{p}},{\bf{a}})
-\end{array}\\
+\end{array}\\\\
 { = \int\limits_{\bf{p}} {\left( {\frac{{n!}}{{{n_{RD}}!{n_{ND}}!{n_{RL}}!{n_{NL}}!}}p_{RD}^{{n_{RD}}} \cdot p_{ND}^{{n_{ND}}} \cdot p_{RL}^{{n_{RL}}} \cdot p_{NL}^{{n_{NL}}}} \right)}  \cdot \frac{p_{RD}^{{a_{RD}} - 1} \cdot p_{ND}^{{a_{ND}} - 1} \cdot p_{RL}^{{a_{RL}} - 1} \cdot p_{NL}^{{a_{NL}} - 1}}{Dir({\bf{a}})}}
 \end{array}
 $$
@@ -33,8 +34,8 @@ For the original data, this is
 
  $$
  \begin{aligned}
-{m_{Split}} & = \frac{{100!}}{{3!2!5!90!}}Dir(4,3,6,91){Dir^{ - 1}}(1,1,1,1)\\
-{\rm{    }} & = \frac{{100!}}{{103!}}3!\\
+{m_{Split}} & = \frac{{100!}}{{3!2!5!90!}}Dir(4,3,6,91){Dir^{ - 1}}(1,1,1,1)\\\\
+{\rm{    }} & = \frac{{100!}}{{103!}}3!\\\\
 {\rm{    }} & = 5.654477 \times 10^{ -6}
 \end{aligned}
 $$
