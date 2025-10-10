@@ -1223,6 +1223,7 @@ output$tableOfEstimates =
 
 div(style='fontsize:large;', 
     tableOutput('tableOfEstimates'),
+    WhoPriorProbNumericInput(),
     dataTableComponent(analysisName = 'estimateTable')
 )
 ```
