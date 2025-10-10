@@ -45,6 +45,11 @@ a{
   color: blue;
 }
 */
+.modal-dialog {
+  width: fit-content!important;
+
+}
+
 .disabled {
   border: gray;
   background: gray;
