@@ -1,6 +1,6 @@
 /* Headers */
 
-h1,h2{
+h1,h2{   /* elements (tags)*/
   font-size: 20pt;
   color: green;
   font-style: italic;
@@ -11,12 +11,23 @@ h3{  /* affects only the number in the body, not the TOC.
   font-style: italic;
   color:green;
 }
-h4,h5,h6{
-  font-size: 16pt;
-}
-#title{
+h4{
+  color:orange!important; /*works but not in TOC*/
   font-size: 14pt;
 }
+h5{
+  color:purple;
+  font-size: 14pt;
+}
+#title{
+/*The id of an element is unique within a page, so the id selector is used to select one unique element!
+*/
+  font-size: 14pt;
+}
+.sidebar{  /* sidebar class */
+  color:orange!important
+}
+
 a{
   color:blue;
 }

@@ -525,8 +525,9 @@ To guide the decision, we need to assess what we know about the
 the probability that the patient responds to treatment  
 given that the patient is a $D$ patient.  
 
+
+#### : Sidebar:  `r actionButton(class='sidebar', inputId='showconditionalProbabilityModel.Rmd', label =  'NOTATIONS for conditional probability' )`  <!-- #title -->
 ```{r}
-actionButton('showconditionalProbabilityModel.Rmd', label = 'NOTATIONS for conditional probability')
           
 observe( {
   if(!is.null(input$showconditionalProbabilityModel.Rmd) ) {
