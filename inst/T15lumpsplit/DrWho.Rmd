@@ -3,137 +3,25 @@ Dr. Who is not confident in either Dr. Split or Dr. Lump,
 but is prepared to let the data guide  
 a good compromise between the two viewpoints.  
 Maybe one’s right ($\phi  = Split$ ),  
-maybe the other ( $\phi  = Lump$).  
-Here is a prior that might represent this view:
+maybe the other ( $\phi  = Lump$). 
 
 
-
-
-$$
-\def\Who{\mathbf{Who}}
-\begin{aligned}
-\pi _{\Who}^{}({\bf{p}}) = & ~~~~~\pi _{\Who}^{}(\phi  = Split)~~~\pi _{Split}^{}({\bf{p}}) \\
-    & + \pi _{\Who}^{}(\phi  = Lump)~~\pi _{Lump}^{}({\bf{p}}).
-\end{aligned}
-$$
- 
-NOTE: This marginalizes out (sums over)  
-the *nuisance parameter* $\phi$  (who is right?)  
-over the joint distribution of ( ${p_{R.D}},\phi$)!  
-
-
-Briefly Bayes Theorem without a nuisance parameter is  
-(eliminating the usual $\Pr$ & using square brackets, for brevity):
-
-\[\begin{array}{l}
-\quad [\theta |X] = \frac{{[X,\theta ]}}{X} = \frac{{[X,\theta ]}}{{\int\limits_\theta  {} [X,\theta ]}} = \frac{{[X|\theta ][\theta ]}}{{\int\limits_\theta  {} [X,\theta ]}}\\
-\end{array}.\]
-
-And Bayes Theorem with a nuisance parameter is:
-
-\[\begin{array}{l}
-\quad [\theta |X] = \sum\limits_\phi  {} [\theta ,\phi |X] = \frac{{\sum\limits_\phi  {} [X,\theta ,\phi ]}}{{\sum\limits_{\phi ,\theta } {} [X,\theta ,\phi ]}}
-\end{array}.\]
-
-Here the nuisance parameter $\phi$ is:  
-whose opinion is right, $Split$ or $Lump$?
-
-More details on Bayes Theorem,  
-including conditioning and marginalizing, are here: 
+#### : Sidebar:  `r actionButton(class='sidebar', inputId='DrWho_prior_notation', label =  'NOTATIONS for Dr. Who\'s prior and posterior probability' )`  <!-- #title -->
 ```{r}
-conditionalPanelWithCheckboxPDF(
-  labelString="Details on Bayes Theorem", 
-  filename='bayes_decision_analysis.pdf',
-  cbStringId='bayes_decision_analysis')
-```
-
-
-To apply the Bayes theorem principles:  
-* We know the data, so we condition on $\bf{n}$.   
-* We dont' know (and don't care about) $\phi$  
-($\phi$ is the "nuisance parameter"), so we "marginalize" over it.  
-* All that's left is $\bf{p}$, what we care about.
-
-Then,  Dr. Who’s posterior distribution for ${\bf{p}}$ is:
- \[\pi _{\Who}^*({p_{R.D}}) = \pi _{\Who}^*(\phi  = Split)\pi _{Split}^*({p_{R.D}})  
- + \pi _{\Who}^*(\phi  = Lump)\pi _{Lump}^*({p_{R.D}}),\]
-
-where
- \[\pi _{\Who}^*(\phi  = Split) = \frac{{\pi (Split){m_{Split}}}}{{\pi (Split){m_{Split}} + \pi (Lump){m_{Lump}}}},\]
-and the $m$ values are the respective marginal distributions of the data   $({n_{RD}},{n_{RL}},{n_{ND}},{n_{NL}})$  
-
-if you knew $\phi$ but not the parameters   
--- then you condition $\phi$ and marginalize over ${p_{R.D}}$  
-to get what you care about,  
-${p_{R|D}}$ 
-
-```{r}
-TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing the data, is this still true AFTER seeing the data?
-")
-```
-
-#### Marginal probability for each hypothesis Split and Lump <!-- #title -->
-
-```{r}
-output$mSplit = renderText({
-  analysisName = 'whoMixturePlot'
-  source(analysisReactiveSetup_DTC, local=TRUE)
-  signif(digits=3, mSplit(thisData)); 
-  })
-```
-
-If *Split* is correct, then the (marginal) probability of getting the data we observed is 
-**`r   textOutput('mSplit', inline=TRUE)`**.
-
-For the technical details, take a look here:
-```{r}
-conditionalPanelWithCheckboxPDF(
-  labelString = 'Equations for Dr. Split\'s marginal probability', 
-  #html=withMathJax(shiny::includeMarkdown(path = 'DrSplitEquation.Rmd')),
-  filename='DrSplitEquation.pdf',
-  #filename = 'DrSplitEquation.Rmd',
-  #html='',
-  cbStringId='DrSplitEquation'
+          
+observe( {
+  if(!is.null(input$DrWho_prior_notation) ) {
+    if(input$DrWho_prior_notation > 0) {
+        showModal(modalDialog(title="NOTATIONS for NOTATIONS for Dr. Who\'s prior and posterior probability", easyClose = T,
+                               footer=modalButton('cancel'),
+                              inclRmd('DrWho-prior-notation.Rmd')))
+    }
+  }
+}
 )
 ```
 
-```{r}
-output$mLump = renderText({
-  analysisName = 'whoMixturePlot'
-  source(analysisReactiveSetup_DTC, local=TRUE)
-  signif(digits=3, mLump(thisData)); 
-})
-```
 
-If *Lump* is correct,  
-then the (marginal) probability of getting the data we observed is:
-**`r   textOutput('mLump', inline=TRUE)`**.
-
-For the technical details, take a look here:
-```{r}
-conditionalPanelWithCheckboxPDF(
-  labelString = 'Equations for Dr. Lump\'s marginal probability', 
-  filename='DrLumpEquation.pdf',
-#    html=withMathJax(shiny::includeMarkdown(path = 'DrLumpEquation.Rmd')),
-  cbStringId='DrLumpEquation'
-)
-```
-
-Here is the code to calculating the marginals and the Bayes factor  
-if you are interested:
-
-```{r}
-DrWhoBayesFactor.code = readLines(con='DrWhoBayesFactor.R')
-DrWhoBayesFactor.code = 
- HTML(gsub('  ', '&nbsp;&nbsp;',
-                        paste(DrWhoBayesFactor.code,
-                    collapse='<br>\n')))
-conditionalPanelWithCheckbox(
-  labelString = 'Code for the Lump and Split marginal probabilities',
-  html=DrWhoBayesFactor.code,
-  initialValue=FALSE
-)
-```
 
 The posterior distribution for Dr. Who,  
 which marginalizes over $\phi$ as we have seen,  
