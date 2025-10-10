@@ -542,9 +542,18 @@ observe( {
 ```
 
 
+# Estimating Pr(R | D) 4 ways <!-- #title -->
 
 
-## Simple "Lump" and "Split" <br>estimates of $Pr(R ~|~ D)$ <!-- #title -->
+* [Dr.Lump and Dr.Split: have opinions!](#LumpOrSplit) 
+* [Who's right? Gotta choose! Classical significance test](#ClassicalTest)
+* [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
+* [Bayes joint prior, logit scale](#Bayes_joint_prior).  
+* Approaches used in the famous ECMO data set. (ToDo)
+
+
+## <a name='section-LumpOrSplit'>Simple "Lump" and "Split" <br>estimates of $Pr(R ~|~ D)$ <!-- #title -->
+
 ```{r analysis-plotLumpSplitPoints}
 
 
@@ -723,16 +732,16 @@ but with little precision.
 The very wide horizontal confidence interval  
 reflects this *high variance*.
 
-### <a name='section-ClassicalTest'> Who's right? Choose! Classical test</a> <!-- #title -->
+## <a name='section-ClassicalTest'> Who's right? Gotta choose! Classical significance test</a> <!-- #title -->
 
-A time-honored but fading technique is  
-to use a classical hypothesis test,  
+We COULD do an old fashioned significance test:  
+  ***"Is $X_{DL}$ independent of the outcome Y?"***
+A time-honored but fading technique   
 to guide which of two analyses "Lump" or "Split", to present.  
-Here the hypothesis to be tested is 
-"$X_{DL}$ is independent of Y";  
-the response rate of D patients does not differ from L patients.  
-Then, depending on the hypothesis test result,  
-Dr.Lump's answer or Dr. Split's answer is selected. 
+  
+Does the response rate of D patients  differ from L patients?  
+Then, depending on the significance test result,  
+Dr.Lump's answer or Dr. Split's answer is selected.  
 
 In a 2x2 table like this one,
 one test frequently performed to test whether a feature like  $X_{DL}$  is
@@ -826,7 +835,7 @@ QandAha('QA-fisher')
 ```
 
 
-### <a name='section-Bayes_mixture'> Dr. Who's Bayes mixture of "Lump" and "Split"</a> <!-- #title -->
+## <a name='section-Bayes_mixture'> Dr. Who's Bayes mixture of "Lump" and "Split"</a> <!-- #title -->
 
 Dr. Who doesn't know *who* to believe.
 
@@ -855,14 +864,6 @@ TextQuestion('Why focus on this parameter?')
 ```{r QA-parametrization}
 QandAha(context='QA-parametrization')
 ```
-
-## Estimating Pr(R | D) 4 ways <!-- #title -->
-
-* [Classical test: is $X_{DL}$ independent of the outcome Y?](#ClassicalTest)
-* [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
-* [Bayes joint prior, logit scale](#Bayes_joint_prior).  
-* Approaches used in the famous ECMO data set. (ToDo)
-
 
 ###  Optimizing the mixture with cross-validation <!-- #title -->
 
@@ -917,7 +918,7 @@ TextQuestion("What advantage does the cross-validation approach here have, relat
 QandAha('QA-for-crossvalidation')
 ```
 
-### <a name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a> <!-- #title -->
+## <a name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a> <!-- #title -->
 
 Another Bayesian approach is to set a Bayesian prior  
 on the joint distribution of the two conditional probabilities  
