@@ -35,7 +35,7 @@ with the convenient property $Gamma(n) = (n-1)!$.
 <!-- notice the trick with Beta inverse -->
 
 
-![IMG?](DrLumpEquation.png)
+![](DrLumpEquation.png)
 
 
 
