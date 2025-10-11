@@ -35,7 +35,93 @@ with the convenient property $Gamma(n) = (n-1)!$.
 <!-- notice the trick with Beta inverse -->
 
 
-![](DrLumpEquation.png)
+$$
+\begin{aligned}
+{m_{Lump}} &= \Pr ({\bf{n}}|\phi  = Lump) = \int\limits_{\bf{p}} {} \Pr ({\bf{n}}|{\bf{p}},\phi  = Lump)\Pr ({\bf{p}})\\\\
+
+ &= \int\limits_{\bf{p}} {} \Pr ({n_R}|{\bf{p}},\phi  = Lump)\Pr ({n_D}|{\bf{p}},\phi  = Lump)\Pr ({n_{RD}}|{n_R},{n_D},\phi  = Lump)\Pr ({\bf{p}})\\\\
+ &\rm{ = }\int\limits_{\bf{p}} {} dbinom({n_R},n,{p_R})dbinom({n_D},n,{p_D})dhyper({n_{RD}},{n_R},{n_N},{n_D})
+ ddirichlet({\bf{p}},{\bf{a}}))\\\\
+ 
+ & = \int\limits_{\bf{p}} {\frac{{n!}}{{{n_R}!{n_N}!}}p_R^{{n_R}}p_N^{{n_N}} \cdot \frac{{n!}}{{{n_D}!{n_L}!}}p_D^{{n_D}}p_L^{{n_L}}}  \cdot 
+\frac{   
+\left( 
+  \begin{array}{c}
+  {{n_R}}\\
+  {n_{RD}}
+  \end{array}
+\right)
+\left( 
+  \begin{array}{c}
+  {n_L}\\
+  {n_{LD}}
+  \end{array}
+\right)
+}
+{
+\left( 
+  \begin{array}{c}
+  {n}\\
+  {n_{D}}
+  \end{array}
+\right)
+}
+\cdot 
+\left(
+\frac
+{p_R^{{a_R} - 1}p_N^{{a_N} - 1}} 
+{Beta(a_R,a_N)}
+\cdot \frac
+{p_D^{{a_D} - 1}p_L^{{a_L} - 1}} 
+{Beta(a_D,a_L)}
+\right)\\\\
+
+ & =  \frac
+ {n!}
+ {{n_R}!{n_N}!} 
+ \cdot 
+ \frac
+ {{n!}}
+ {{{n_D}!{n_L}!}}
+ \cdot 
+\frac{   
+\left( 
+  \begin{array}{c}
+  {{n_R}}\\
+  {n_{RD}}
+  \end{array}
+\right)
+\left( 
+  \begin{array}{c}
+  {n_L}\\
+  {n_{LD}}
+  \end{array}
+\right)
+}
+{
+\left( 
+  \begin{array}{c}
+  {n}\\
+  {n_{D}}
+  \end{array}
+\right)
+}
+\cdot \frac
+{Beta(n_R+a_R,n_N+a_N)} 
+{Beta(a_R,a_N)}
+\cdot \frac
+{Beta(n_D+a_D,n_L+a_L)}  
+{Beta(a_D,a_L)}\\\\
+\end{aligned}
+$$
+
+
+The Dirichlet factors so neatly into two separate Dirichlets because...  
+the feature $X \in \{D,L\}$ is assumed (by Dr. Lump)  
+to be independent of the outcome $Y \in \{R,N\}$ .   
+We can "borrow strength" from the big group of $L$ people.  
+But the bummer is, we can't use our special status as a $D$ person  
+to get a more unbiased estimate.
 
 
 
