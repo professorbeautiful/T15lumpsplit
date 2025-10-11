@@ -552,7 +552,7 @@ observe( {
 * Approaches used in the famous ECMO data set. (ToDo)
 
 
-## <a name='section-LumpOrSplit'>Simple "Lump" and "Split" <br>estimates of $Pr(R ~|~ D)$ <!-- #title -->
+## <a name='section-LumpOrSplit'>Simple "Lump" and "Split" <br>estimates of $Pr(R ~|~ D)$ </a> <!-- #title -->
 
 ```{r analysis-plotLumpSplitPoints}
 
