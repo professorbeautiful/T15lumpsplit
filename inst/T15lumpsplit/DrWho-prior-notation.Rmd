@@ -47,9 +47,9 @@ conditionalPanelWithCheckbox(
 
 
 To apply the Bayes theorem principles:  
-  * We know the data, so we condition on $\bf{n}$.   
+* We know the data, so we condition on $\bf{n}$.   
 * We dont' know (and don't care about) $\phi$  
-  ($\phi$ is the "nuisance parameter"), so we "marginalize" over it.  
+  ($\phi$, whether Dr.Lump or Dr.Split is correct, is the "nuisance parameter"), so we "marginalize" over it.  
 * All that's left is $\bf{p}$, what we care about.
 
 Then,  Dr. Who’s posterior distribution for ${\bf{p}}$ is:
