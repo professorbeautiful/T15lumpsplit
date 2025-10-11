@@ -38,10 +38,11 @@ Here the nuisance parameter $\phi$ is:
   More details on Bayes Theorem,  
 including conditioning and marginalizing, are here: 
 ```{r}
-conditionalPanelWithCheckboxPDF(
+conditionalPanelWithCheckbox(
   labelString="Details on Bayes Theorem", 
-  filename='bayes_decision_analysis.pdf',
-  cbStringId='bayes_decision_analysis')
+  # filename='bayes_decision_analysis.pdf',
+  html='<img src = "2006-08-29  Review.- bayes_decision_analysis - page 1.png">')
+#  cbStringId='bayes_decision_analysis')
 ```
 
 
