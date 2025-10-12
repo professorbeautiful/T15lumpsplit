@@ -378,6 +378,15 @@ conditionalPanelWithCheckbox(
 For a refresher on the concepts of  
 **bias, variance, and mean squared error** in estimation,  
 open this panel.
+<!--
+https://www.geeksforgeeks.org/html/how-to-embed-pdf-file-using-html/
+<div>
+bias-variance-meansquarederror-MSE.pdf,
+         <embed class="pdf"   src="bias-variance-meansquarederror-MSE.pdf"
+           width="800" height="500">
+    </div>
+    OK but not better.  No "Microsoft" label now.  Why changed?
+-->
 
 ```{r bias-variance-meansquarederror-MSE.pdf}
 conditionalPanelWithCheckboxPDF(labelString='Concepts: bias, variance, and mean squared error in estimation',
