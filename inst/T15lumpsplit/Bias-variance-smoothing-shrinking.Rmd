@@ -372,38 +372,7 @@ require(shinyBS)
 conditionalPanelWithCheckbox(
   labelString = 'Overview of the topic', 
   filename = 'Overview.Rmd', 
-  initialValue = TRUE)
-```
-
-For a refresher on the concepts of  
-**bias, variance, and mean squared error** in estimation,  
-open this panel.
-<!--
-https://www.geeksforgeeks.org/html/how-to-embed-pdf-file-using-html/
-<div>
-bias-variance-meansquarederror-MSE.pdf,
-         <embed class="pdf"   src="bias-variance-meansquarederror-MSE.pdf"
-           width="800" height="500">
-    </div>
-    OK but not better.  No "Microsoft" label now.  Why changed?
--->
-
-```{r bias-variance-meansquarederror-MSE.pdf}
-conditionalPanelWithCheckboxPDF(labelString='Concepts: bias, variance, and mean squared error in estimation',
-     filename="bias-variance-meansquarederror-MSE.pdf",
-     cbStringId='cbStringIdBiasVariance')
-```
-
-The bias-variance axis has many disguises:
-
-```{r biasVariancePicture}
-#### THIS WORKS. In the Preview window, iframe is turned into external to Preview  app. but not from the browser, that's OK. ####
-
-#### bias-variance axis ####
-conditionalPanelWithCheckboxPDF(labelString='The bias-variance axis',
-     filename="Reproducibility-lump-split-page-1.pdf",
-     cbStringId='cbStringIdReproducibility')
-
+  initialValue = FALSE)
 ```
 
 ## Tips for the user  <!-- #title -->
@@ -536,83 +505,11 @@ given that the patient is a $D$ patient.
 
 
 ```{r}
-conditionalPanelWithCheckbox('NOTATIONS for conditional probability', filename = 'conditionalProbabilityModel.Rmd')
+conditionalPanelWithCheckbox('Other ways people write conditional probability $Pr(R|D)$', filename = 'conditionalProbabilityModel.Rmd')
 ``` 
-# Estimating Pr(R | D) 4 ways <!-- #title -->
 
 
-* [Dr.Lump and Dr.Split: have opinions!](#LumpOrSplit) 
-* [Who's right? Gotta choose! Classical significance test](#ClassicalTest)
-* [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
-* [Bayes joint prior, logit scale](#Bayes_joint_prior).  
-* Approaches used in the famous ECMO data set. (ToDo)
-
-
-## <a name='section-LumpOrSplit'>Simple "Lump" and "Split" <br>estimates of $Pr(R ~|~ D)$ </a> <!-- #title -->
-
-```{r analysis-plotLumpSplitPoints}
-
-
-output$plotLumpSplitPoints = renderPlot(
-  height = 300, 
-  {
-    #  NOTE!   To get this plotLumpSplitPoints, 
-    #we use calculatePlightPdarkPosterior with options to hide W and contours.
-    analysisName = 'plotLumpSplitPoints'
-    source(analysisReactiveSetup_DTC, local=TRUE)
-    #cat('plotLumpSplitPoints: renderPlot', paste(thisData), '\n')
-    #cat('plotLumpSplitPoints: renderPlot', paste(getDLdata(analysisName)), '\n')
-    bivariateNormResults = #rValues$bivariateNormResults <<-
-      calculatePlightPdarkPosterior(
-        DLdata=thisData,
-        tau=ifelse(is.null(input$tau), 1, input$tau),
-        phi=ifelse(is.null(input$phi), 1, input$phi),
-        mu0=ifelse(is.null(input$mu0), 0.5, input$mu0),
-        fudgeFactor=ifelse(is.null(input$fudgeFactor), 1e-6, input$fudgeFactor)
-      ) 
-    #cat('plotLumpSplitPoints: ', names(bivariateNormResults), '\n')
-
-    plotPlightPdarkPosterior(
-      DLdata=thisData,
-      bivariateNormResults=bivariateNormResults,
-      showPrior = FALSE, 
-      showPosterior=FALSE, showLikelihood=FALSE,
-      showS = TRUE,
-      showL = TRUE,
-      showW = FALSE)
-  })
-```
-
-Two colleagues on the study hold some strong but opposite opinions.
-
-**Dr. Split** speaks:  
-“I believe that $X_{DL}$  is an important *biomarker*  
--- so important that the $D$ people and the $L$ people  
-are fundamentally different.   
-Since the question is what to do with $D$ people,  
-I will only look at their data.”  
-
-**Dr. Lump**   disagrees!   
-“No no, I am sure that this so-called *'biomarker'* $X_{DL}$  
-is *irrelevant!*  
-I will ignore it, and look at the data  
-for *all* the patients.  
-My estimate will be more accurate.” 
-
-
-*Dr. Split* will *"split"* the sample of patients into the two groups,  
-estimating the response rate `Pr(R | D)` by utilizing the D patients only,  
-is 
-`r reactive(round(100*rValues$estimates_Lump_Split$split))`*%*. 
-
-*Dr. Lump* will  *"lump"* together all the patients,  
-estimating that the response rate `Pr(R | D)`  
-for $D$ patients is the same as `Pr(R)`,  
-utilizing the whole set of patients,  
-which is `r reactive(round(100*rValues$estimates_Lump_Split$lump))`*%*. 
-  
-
-### <a name='section-Lump-or-Split'> Changing the data: estimates & intervals</a> <!-- #title -->
+## <a name='section-Lump-or-Split'> Changing the data: estimates & intervals</a> <!-- #title -->
 
 In the following plot, we see the estimate and the confidence interval  
 for `Pr(R | D)`, depending on whether  
@@ -688,8 +585,7 @@ You can also press "reset" .)
 
 ```{r plotLumpSplit-UI}
 div(fluidRow(
-  column(6,
-         dataTableComponent(showhide='show', analysisName=analysisName)),
+  
   column(6, 
          div(style='text-align:center;font-weight: bold', 
              br(),br(),br(),
@@ -703,11 +599,87 @@ div(fluidRow(
                                           "; text-align:center"),
                              textOutput('confInterval_Lump')),
          plotOutput('plotLumpSplitPoints')
-  )),
+  ),
+  column(6,
+         dataTableComponent(showhide='show', analysisName=analysisName))),
   br()
 )
 ```
 
+
+# Estimating Pr(R | D), several ways <!-- #title -->
+
+
+* [Dr.Lump and Dr.Split have opinions about $Pr(R ~|~ D)$ !](#LumpOrSplit) 
+* [Who's right? Gotta choose! Classical significance test](#ClassicalTest)
+* [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
+* [Bayes joint prior, logit scale](#Bayes_joint_prior).  
+* Approaches used in the famous ECMO data set. (ToDo)
+
+
+## <a name='section-LumpOrSplit'>Simple "Lump" and "Split" <br>opinions of </a> <!-- #title -->
+
+```{r analysis-plotLumpSplitPoints}
+
+
+output$plotLumpSplitPoints = renderPlot(
+  height = 300, 
+  {
+    #  NOTE!   To get this plotLumpSplitPoints, 
+    #we use calculatePlightPdarkPosterior with options to hide W and contours.
+    analysisName = 'plotLumpSplitPoints'
+    source(analysisReactiveSetup_DTC, local=TRUE)
+    #cat('plotLumpSplitPoints: renderPlot', paste(thisData), '\n')
+    #cat('plotLumpSplitPoints: renderPlot', paste(getDLdata(analysisName)), '\n')
+    bivariateNormResults = #rValues$bivariateNormResults <<-
+      calculatePlightPdarkPosterior(
+        DLdata=thisData,
+        tau=ifelse(is.null(input$tau), 1, input$tau),
+        phi=ifelse(is.null(input$phi), 1, input$phi),
+        mu0=ifelse(is.null(input$mu0), 0.5, input$mu0),
+        fudgeFactor=ifelse(is.null(input$fudgeFactor), 1e-6, input$fudgeFactor)
+      ) 
+    #cat('plotLumpSplitPoints: ', names(bivariateNormResults), '\n')
+
+    plotPlightPdarkPosterior(
+      DLdata=thisData,
+      bivariateNormResults=bivariateNormResults,
+      showPrior = FALSE, 
+      showPosterior=FALSE, showLikelihood=FALSE,
+      showS = TRUE,
+      showL = TRUE,
+      showW = FALSE)
+  })
+```
+
+Two colleagues on the study hold some strong but opposite opinions.
+
+**Dr. Split** speaks:  
+“I believe that $X_{DL}$  is an important *biomarker*  
+-- so important that the $D$ people and the $L$ people  
+are fundamentally different.   
+Since the question is what to do with $D$ people,  
+I will only look at their data.”  
+
+**Dr. Lump**   disagrees!   
+“No no, I am sure that this so-called *'biomarker'* $X_{DL}$  
+is *irrelevant!*  
+I will ignore it, and look at the data  
+for *all* the patients.  
+My estimate will be more accurate.” 
+
+
+*Dr. Split* will *"split"* the sample of patients into the two groups,  
+estimating the response rate `Pr(R | D)` by utilizing the D patients only,  
+is 
+`r reactive(round(100*rValues$estimates_Lump_Split$split))`*%*. 
+
+*Dr. Lump* will  *"lump"* together all the patients,  
+estimating that the response rate `Pr(R | D)`  
+for $D$ patients is the same as `Pr(R)`,  
+utilizing the whole set of patients,  
+which is `r reactive(round(100*rValues$estimates_Lump_Split$lump))`*%*. 
+  
 
 
 Lumping gives an answer with  
@@ -727,6 +699,48 @@ it is directly asking the right question,
 but with little precision.  
 The very wide horizontal confidence interval  
 reflects this *high variance*.
+
+
+
+### <a name='section-Variance-Bias'> Variance and bias refresher</a> <!-- #title -->
+
+#### <a name='section-bias-variance-mse'>Bias, variance, and mean squared error</a> <!-- #title -->
+
+
+For a refresher on the concepts of  
+**bias, variance, and mean squared error** in estimation,  
+open this panel.
+<!--
+https://www.geeksforgeeks.org/html/how-to-embed-pdf-file-using-html/
+<div>
+bias-variance-meansquarederror-MSE.pdf,
+         <embed class="pdf"   src="bias-variance-meansquarederror-MSE.pdf"
+           width="800" height="500">
+    </div>
+    OK but not better.  No "Microsoft" label now.  Why changed?
+-->
+
+```{r bias-variance-meansquarederror-MSE.pdf}
+conditionalPanelWithCheckboxPDF(labelString='Concepts: bias, variance, and mean squared error in estimation',
+     filename="bias-variance-meansquarederror-MSE.pdf",
+     cbStringId='cbStringIdBiasVariance')
+```
+
+
+#### <a name='section-bias-variance-axis'> The many faces of the bias-variance axis</a> <!-- #title -->
+
+The bias-variance axis has many disguises:
+
+```{r biasVariancePicture}
+#### THIS WORKS. In the Preview window, iframe is turned into external to Preview  app. but not from the browser, that's OK. ####
+
+#### bias-variance axis ####
+conditionalPanelWithCheckboxPDF(labelString='The bias-variance axis',
+     filename="Reproducibility-lump-split-page-1.pdf",
+     cbStringId='cbStringIdReproducibility')
+
+```
+
 
 ## <a name='section-ClassicalTest'> Who's right? Gotta choose! Classical significance test</a> <!-- #title -->
 
