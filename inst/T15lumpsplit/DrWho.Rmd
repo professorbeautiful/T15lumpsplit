@@ -6,9 +6,6 @@ Maybe one’s right ($\phi  = Split$ ),
 maybe the other ( $\phi  = Lump$). 
 
 
-
-
-
 The posterior distribution for Dr. Who,  
 which averages ("marginalizes") over $\phi$ ,  
 is a mixture.
