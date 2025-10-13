@@ -607,7 +607,7 @@ div(fluidRow(
 ```
 
 
-# Estimating Pr(R | D), several ways <!-- #title -->
+## Estimating Pr(R | D), several ways <!-- #title -->
 
 
 * [Dr.Lump and Dr.Split have opinions about $Pr(R ~|~ D)$ !](#LumpOrSplit) 
@@ -617,7 +617,7 @@ div(fluidRow(
 * Approaches used in the famous ECMO data set. (ToDo)
 
 
-## <a name='section-LumpOrSplit'>Simple "Lump" and "Split" <br>opinions of </a> <!-- #title -->
+### <a name='section-LumpOrSplit'>Dr.Lump and Dr.Split reach different conclusions </a> <!-- #title -->
 
 ```{r analysis-plotLumpSplitPoints}
 
@@ -742,7 +742,7 @@ conditionalPanelWithCheckboxPDF(labelString='The bias-variance axis',
 ```
 
 
-## <a name='section-ClassicalTest'> Who's right? Gotta choose! Classical significance test</a> <!-- #title -->
+### <a name='section-ClassicalTest'> Who's right? Dr.Who's gotta choose! Classical significance test</a> <!-- #title -->
 
 We COULD do an old fashioned significance test:  
   ***"Is $X_{DL}$ independent of the outcome Y?"***
@@ -845,9 +845,9 @@ QandAha('QA-fisher')
 ```
 
 
-## <a name='section-Bayes_mixture'> Dr. Who's Bayes mixture of "Lump" and "Split"</a> <!-- #title -->
+### <a name='section-Bayes_mixture'> Bayes mixture of smooth "Lump" and smooth "Split"</a> <!-- #title -->
 
-Dr. Who doesn't know *who* to believe.
+Dr. Who doesn't know *who* to believe.  But now, 
 
 
 ```{r DrWho, child = 'DrWho.Rmd'}
