@@ -535,22 +535,9 @@ the probability that the patient responds to treatment
 given that the patient is a $D$ patient.  
 
 
-#### : Sidebar:  `r actionButton(class='sidebar', inputId='showconditionalProbabilityModel.Rmd', label =  'NOTATIONS for conditional probability' )`  <!-- #title -->
 ```{r}
-          
-observe( {
-  if(!is.null(input$showconditionalProbabilityModel.Rmd) ) {
-    if(input$showconditionalProbabilityModel.Rmd > 0) {
-        showModal(modalDialog(title="NOTATIONS for conditional probability", easyClose = T,
-                               footer=modalButton('OK'),
-                              inclRmd('conditionalProbabilityModel.Rmd')))
-    }
-  }
-}
-)
-```
-
-
+conditionalPanelWithCheckbox('NOTATIONS for conditional probability', filename = 'conditionalProbabilityModel.Rmd')
+``` 
 # Estimating Pr(R | D) 4 ways <!-- #title -->
 
 
