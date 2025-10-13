@@ -6,20 +6,6 @@ Maybe one’s right ($\phi  = Split$ ),
 maybe the other ( $\phi  = Lump$). 
 
 
-#### : Sidebar:  `r actionButton(class='sidebar', inputId='DrWho_prior_notation', label =  'Dr. Who\'s setup for prior and posterior probability' )`  <!-- #title -->
-```{r}
-          
-observe( {
-  if(!is.null(input$DrWho_prior_notation) ) {
-    if(input$DrWho_prior_notation > 0) {
-        showModal(modalDialog(title="NOTATIONS for Dr. Who\'s prior and posterior probability", easyClose = T,
-                               footer=modalButton('OK'),
-                              inclRmd('DrWho-prior-notation.Rmd')))
-    }
-  }
-}
-)
-```
 
 
 
@@ -174,6 +160,21 @@ conditionalPanelWithCheckboxPDF(
    filename='./Overview_of_Bayesian_calculation_C.pdf',
   cbStringId='bayes_decision_analysis_C')
 
+```
+
+###  Sidebar:  `r actionButton(class='sidebar', inputId='DrWho_prior_notation', label =  'Dr. Who\'s notation for prior and posterior probability' )`  <!-- #title -->
+```{r}
+          
+observe( {
+  if(!is.null(input$DrWho_prior_notation) ) {
+    if(input$DrWho_prior_notation > 0) {
+        showModal(modalDialog(title="NOTATIONS for Dr. Who\'s prior and posterior probability", easyClose = T,
+                               footer=modalButton('OK'),
+                              inclRmd('DrWho-prior-notation.Rmd')))
+    }
+  }
+}
+)
 ```
 
 
