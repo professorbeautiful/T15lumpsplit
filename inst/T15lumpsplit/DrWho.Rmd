@@ -6,7 +6,7 @@ Maybe one’s right ($\phi  = Split$ ),
 maybe the other ( $\phi  = Lump$). 
 
 
-#### : Sidebar:  `r actionButton(class='sidebar', inputId='DrWho_prior_notation', label =  'NOTATIONS for Dr. Who\'s prior and posterior probability' )`  <!-- #title -->
+#### : Sidebar:  `r actionButton(class='sidebar', inputId='DrWho_prior_notation', label =  'Dr. Who\'s setup for prior and posterior probability' )`  <!-- #title -->
 ```{r}
           
 observe( {
@@ -24,10 +24,10 @@ observe( {
 
 
 The posterior distribution for Dr. Who,  
-which marginalizes over $\phi$ as we have seen,  
-is a mixture, as graphed here.
+which averages ("marginalizes") over $\phi$ ,  
+is a mixture.
 
-Viewing Dr. Who's posterior (surely there's an emoji for that):
+We gaze at Dr. Who's "posterior" (surely there's an emoji for that):
 
 ```{r}
 jumpList_DTC = c(jumpList_DTC, whoMixturePlot='Posterior distribution for Dr. Who')
@@ -157,7 +157,27 @@ TextQuestion("Experiment with changing #RL in the range 2 to 9. What happens?  A
 QandAha('QA-whoMixturePlot')
 ```
 
-#### The Bayes Factor: posterior odds (and probability) of the "null hypothesis" <!-- #title -->
+### The fundamental idea of Bayesian analysis, in 3 steps
+
+```{r }
+
+conditionalPanelWithCheckboxPDF(
+  labelString="(A)  Define the problem", 
+   filename='./Overview_of_Bayesian_calculation_A.pdf',
+  cbStringId='bayes_decision_analysis_A')
+conditionalPanelWithCheckboxPDF(
+  labelString='(B)  Apply Bayes “theorem”:  Calculate the (posterior) distribution of the quantity of interest', 
+   filename='./Overview_of_Bayesian_calculation_B.pdf',
+  cbStringId='bayes_decision_analysis_B')
+conditionalPanelWithCheckboxPDF(
+  labelString="(C)  Bayesian decision-making", 
+   filename='./Overview_of_Bayesian_calculation_C.pdf',
+  cbStringId='bayes_decision_analysis_C')
+
+```
+
+
+### The Bayes Factor: posterior odds (and probability) of the "null hypothesis" <!-- #title -->
 
 The  Bayes Factor is the ratio of these marginal probabilities of the data,
 and also the ratio of posterior odds to prior odds:

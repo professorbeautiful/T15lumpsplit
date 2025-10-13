@@ -35,16 +35,15 @@ $$
 Here the nuisance parameter $\phi$ is:  
   whose opinion is right, $Split$ or $Lump$?
   
-  More details on Bayes Theorem,  
+More details on Bayes Theorem,  
 including conditioning and marginalizing, are here: 
-```{r}
-conditionalPanelWithCheckbox(
-  labelString="Details on Bayes Theorem", 
-  # filename='bayes_decision_analysis.pdf',
-  html='<img src = "2006-08-29  Review.- bayes_decision_analysis - page 1.png">')
-#  cbStringId='bayes_decision_analysis')
-```
 
+
+Great examples of Bayes decision-making are here: 
+<a href="https://www.youtube.com/watch?v=c2IXn-rBl6k"> "Episode 3: Dose Utility Explorer, a "shiny" app. Expected Utility with Meihua Marie & Devlish Merry" </a>
+
+
+IN SUMMARY:
 
 To apply the Bayes theorem principles:  
 * We know the data, so we condition on $\bf{n}$.   
