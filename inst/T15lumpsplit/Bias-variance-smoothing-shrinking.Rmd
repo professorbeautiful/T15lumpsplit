@@ -500,12 +500,13 @@ Decide whether to treat the "$D$ patients"
 into studying the treatment further for "$D$ patients".  
 To guide the decision, we need to assess what we know about the  
 **conditional probability**,  
-the probability that the patient responds to treatment  
-given that the patient is a $D$ patient.  
+$Pr(R|D)$,  
+the probability that the patient responds ($R$) to treatment  
+given that the patient is a $D$ type of patient.  
 
 
 ```{r}
-conditionalPanelWithCheckbox('Other ways people write conditional probability $Pr(R|D)$', filename = 'conditionalProbabilityModel.Rmd')
+conditionalPanelWithCheckbox('Other ways that people write conditional probability' , filename = 'conditionalProbabilityModel.Rmd')
 ``` 
 
 
