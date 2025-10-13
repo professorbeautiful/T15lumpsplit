@@ -929,14 +929,16 @@ TextQuestion("What advantage does the cross-validation approach here have, relat
 QandAha('QA-for-crossvalidation')
 ```
 
-## <a name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a> <!-- #title -->
+### <a name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a> <!-- #title -->
 
-Another Bayesian approach is to set a Bayesian prior  
+No more crude mixture of the two extreme views of   
+"Dr. Lump" and "Dr. Split".  
+Another fancier Bayesian approach is to set a Bayesian prior  
 on the joint distribution of the two conditional probabilities  
 Pr(R | D) and Pr(R | L).  
-This allows data on the two probabilities to be shared between them,  
-smoothly instead of a crude mixture of the two extreme views of   
-"Dr. Lump" and "Dr. Split".
+This allows data on the two probabilities for $D$ and $L$ to be shared between them,  
+smoothly, instead of the "Dr. Lump" versus "Dr. Split" winner-take-all.
+
 ```{r QA-smooth-joint-prior}
 QandAha('QA-smooth-joint-prior')
 ```
