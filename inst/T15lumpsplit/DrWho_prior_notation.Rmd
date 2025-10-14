@@ -3,7 +3,7 @@
 
 ### DETAILS: Bayes calculation of Dr. Who\'s prior and posterior probabilities" <!-- #title -->
 
-Here is a prior that represents Dr. Who's view that each one has their own person prior distribution $\pi _{Split}^{}({\bf{p}})$ or $\pi _{Lump}^{}({\bf{p}})$, and one or the other is absolutely correct, but "who knows which one?":
+Here is a prior that represents Dr. Who's view that each one has their own person ***prior*** distribution $\pi _{Split}^{}({\bf{p}})$ or $\pi _{Lump}^{}({\bf{p}})$, and one or the other is absolutely correct, but "who knows which one?":
   
   
 $$
@@ -13,10 +13,11 @@ $$
 & + \pi _{\Who}^{}(\phi  = Lump)~~\pi _{Lump}^{}({\bf{p}}).
 \end{aligned}
 $$
-  
+where $\pi$ is not the number "pi"  but is just a traditional symbol for a Bayesian probability representing current belief.  
+
 NOTE: This marginalizes out (sums over)  
 the *nuisance parameter* $\phi$  (who is right?)  
-over the joint distribution of ( ${p_{R.D}},\phi$)!  
+over the joint distribution of ( ${p_{R.D}}~|~\phi$)!  
   
   
   Briefly Bayes Theorem without a nuisance parameter is  
@@ -44,29 +45,43 @@ To apply the Bayes theorem principles:
 * We know the data, so we condition on $\bf{n}$.   
 * We dont' know (and don't care about) $\phi$  
   ($\phi$, whether Dr.Lump or Dr.Split is correct, is the "nuisance parameter"), so we "marginalize" over it.  
-* All that's left is $\bf{p}$, what we care about.
+* All that's left is $\bf{p}$, what we care about.  
 
-Then,  Dr. Who’s posterior distribution for ${\bf{p}}$ is:
-$$\pi _{\Who}^*({p_{R.D}}) = \pi _{\Who}^*(\phi  = Split)\pi _{Split}^*({p_{R.D}})  
+Now, the details:
+
+### Dr. Who’s posterior distribution for ${\bf{p}}$
+
+Now we put a little asterisk $\pi^*$ over the $\pi$ to mean "posterior" (after seeing the data) instead of "prior" (before seeing the data).  
+
+Dr. Who’s posterior distribution for ${\bf{p}}$ is:
+$$\pi _{\Who}^*({p_{R.D}}) = \pi _{\Who}^*(\phi  = Split) \pi _{Split}^*({p_{R.D}})  
  + \pi _{\Who}^*(\phi  = Lump)\pi _{Lump}^*({p_{R.D}}),
 $$
+That means knowing  
+* the MARGINAL POSTERIOR probabilities  
+$~~~~~~~$ for Lump $\pi _{\Who}^*(\phi  = Lump)$ and Split  $\pi _{\Who}^*(\phi  = Split)$  
+* the CONDITIONAL POSTERIOR probability distributions  
+$~~~~~~~$ for ${\bf{p}}$ given Lump, $\pi{Lump}^*({p_{R.D}}) $ and given Split, $\pi _{Split}^*({p_{R.D}}$).  
 
-where
+So... how do we get THEM?
+
+
+###  Dr Who's posterior probability that $Split$ is correct
+
+Here are those MARGINAL POSTERIOR probabilities!  
+
 $$\pi _{\Who}^*(\phi  = Split) = \frac{{\pi (Split){m_{Split}}}}{{\pi (Split){m_{Split}} + \pi (Lump){m_{Lump}}}},
 $$
-and the $m$ values are the respective marginal distributions of the data   $({n_{RD}},{n_{RL}},{n_{ND}},{n_{NL}})$  
-
-if you knew $\phi$ but not the parameters   
--- then you condition $\phi$ and marginalize over ${p_{R.D}}$  
-to get what you care about,  
-${p_{R|D}}$ 
+and the $m$ values are the two respective marginal probabilities of the observed data table $({n_{RD}},{n_{RL}},{n_{ND}},{n_{NL}})$ . 
 
 ```{r}
 TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing the data, is this still true AFTER seeing the data?
 ")
 ```
 
-#### Marginal probability for each hypothesis Split and Lump <!-- #title -->
+### Each marginal probability of the data table, given $\phi$ (which Dr.) <!-- #title -->
+
+Here are those CONDITIONAL POSTERIOR probability distributions!
 
 ```{r, echo=FALSE}
 output$mSplit = renderText({
@@ -76,41 +91,18 @@ output$mSplit = renderText({
   })
 ```
 
-
 If *Split* is correct, then the (marginal) probability of getting the data we observed is  
 
-**`r   textOutput('mSplit', inline=TRUE)`**.
+$~~~~~~~$ $m_{Split} = $**`r   textOutput('mSplit', inline=TRUE)`**.
 
-For the technical details, take a look here:
 
-```{r sidebar function, echo =F}
-## nice try, doesn't work, the input name not found..
-sidebar = function(RmdFileName){
-  h4content = paste0("Sidebar:  `r actionButton(class='sidebar', inputId=",
-            RmdFileName,
-           "', label =  ", RmdFileName, " )`  <!-- #title -->"
-  )
-  print(h4content)
-  h4(h4content) 
-  observe( {
-    if(!is.null(input[[RmdFileName]]) ) {
-      if(input[[RmdFileName]] > 0) {
-        showModal(modalDialog(size='xl', title=RmdFileName, easyClose = T,
-                              footer=modalButton('OK'),
-                              inclRmd(RmdFileName)))
-      }
-    }
-  })
-}
-```
-
-#### : Sidebar:  `r actionButton(class='sidebar', inputId='DrSplitEquation.Rmd', label =  'DrSplitEquation.Rmd' )`  <!-- #title -->
+***Calculating $m_{Split}$:***  `r actionButton(class='sidebar', inputId='DrSplitEquation.Rmd', label =  'Dr Split\'s Equation' )`  <!-- #title -->
 ```{r}
 #### this works!
 observe( {
   if(!is.null(input$DrSplitEquation.Rmd) ) {
     if(input$DrSplitEquation.Rmd > 0) {
-        showModal(modalDialog(size='xl', title="DrSplitEquation.Rmd", easyClose = T,
+        showModal(modalDialog(size='xl', title="Dr Split\'s Equation", easyClose = T,
                                footer=modalButton('OK'),
                               inclRmd('DrSplitEquation.Rmd')))
     }
@@ -118,8 +110,6 @@ observe( {
 }
 )
 ```
-
-
 
 ```{r}
 output$mLump = renderText({
@@ -130,19 +120,17 @@ output$mLump = renderText({
 ```
 
 If *Lump* is correct,  
-then the (marginal) probability of getting the data we observed is:
-  **`r   textOutput('mLump', inline=TRUE)`**.
+then the (marginal) probability of getting the data we observed is:  
+  $~~~~~~~$ $m_{Lump}$ = **`r   textOutput('mLump', inline=TRUE)`**.
 
-For the technical details, take a look here:
-#### : Sidebar:  `r actionButton(class='sidebar', inputId='DrLumpEquation.Rmd', label =  'DrLumpEquation.Rmd' )`  <!-- #title -->
+***Calculating $m_{Lump}$:***   `r actionButton(class='sidebar', inputId='DrLumpEquation.Rmd', label =  'Dr Lump\'s Equation' )`  <!-- #title -->
 ```{r}
-#sidebar('DrLumpEquation.Rmd') ### too bad doesn't work.
 
 #### this works!
 observe( {
   if(!is.null(input$DrLumpEquation.Rmd) ) {
     if(input$DrLumpEquation.Rmd > 0) {
-        showModal(modalDialog(size='xl', title="DrLumpEquation.Rmd", easyClose = T,
+        showModal(modalDialog(size='xl', title="Dr Lump\'s Equation", easyClose = T,
                                footer=modalButton('OK'),
                               inclRmd('DrLumpEquation.Rmd')))
     }
@@ -151,14 +139,16 @@ observe( {
 )
 ```
 
-
+BayesFactor.Rmd
 ```{r}
 
 inclRmd('BayesFactor.Rmd')
 
 ```
+BayesFactor.Rmd
 
-Here is the code to calculating the marginals and the Bayes factor  
+
+Here is the R code to calculating the marginals and the Bayes factor  
 if you are interested:
   
 ```{r DrWhoBayesFactor.R}
