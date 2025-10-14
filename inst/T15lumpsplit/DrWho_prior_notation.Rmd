@@ -93,7 +93,7 @@ output$mSplit = renderText({
 
 If *Split* is correct, then the (marginal) probability of getting the data we observed is  
 
-$~~~~~~~$ $m_{Split} = $**`r   textOutput('mSplit', inline=TRUE)`**.
+$~~~~~~~$ $m_{Split}$ = $**`r   textOutput('mSplit', inline=TRUE)`**.
 
 
 ***Calculating $m_{Split}$:***  `r actionButton(class='sidebar', inputId='DrSplitEquation.Rmd', label =  'Dr Split\'s Equation' )`  <!-- #title -->
