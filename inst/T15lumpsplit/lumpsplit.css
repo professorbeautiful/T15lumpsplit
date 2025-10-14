@@ -13,6 +13,9 @@ h2{   /* elements (tags)*/
 ul[data-tag="2"] {
   color:green!important;
 }
+a[data-tag="2"] {
+  color:green!important;
+}
 
 h3{  /* affects only the number in the body, not the TOC.
   The <a> makes it blue in the TOC.*/
@@ -21,6 +24,9 @@ h3{  /* affects only the number in the body, not the TOC.
   color:grey!important;
 }
 ul[data-tag="3"] {
+  color:grey!important;
+}
+a[data-tag="3"] {
   color:grey!important;
 }
 h4{
