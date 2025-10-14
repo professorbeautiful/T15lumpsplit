@@ -139,14 +139,21 @@ observe( {
 )
 ```
 
-BayesFactor.Rmd
-```{r}
 
-inclRmd('BayesFactor.Rmd')
+***Fun facts about the Bayes Factors:***   `r actionButton(class='sidebar', inputId='BayesFactor.Rmd', label =  'Bayes Factors' )`  <!-- #title -->
+```{r}
+observe( {
+  if(!is.null(input$BayesFactor.Rmd) ) {
+    if(input$BayesFactor.Rmd > 0) {
+        showModal(modalDialog(size='xl', title="Bayes Factors", easyClose = T,
+                               footer=modalButton('OK'),
+                              inclRmd('BayesFactor.Rmd')))
+    }
+  }
+}
+)
 
 ```
-BayesFactor.Rmd
-
 
 Here is the R code to calculating the marginals and the Bayes factor  
 if you are interested:
