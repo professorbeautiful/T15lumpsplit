@@ -66,7 +66,7 @@ $~~~~~~~$ for ${\bf{p}}$ given Lump, $\pi{Lump}^*({p_{R.D}}) $ and given Split, 
 So... how do we get THEM?
 
 
-###  Dr Who's posterior probability that $Split$ is correct
+####  Dr Who's posterior probability that $Split$ is correct
 
 Here are those MARGINAL POSTERIOR probabilities!  
 
@@ -79,7 +79,7 @@ TextQuestion("If Dr. Who gives Dr. Lump and Dr. Split equal weight BEFORE seeing
 ")
 ```
 
-### Each marginal probability of the data table, given $\phi$ (which Dr.) <!-- #title -->
+#### Each marginal probability of the data table, given $\phi$ (which Dr.) <!-- #title -->
 
 Here are those CONDITIONAL POSTERIOR probability distributions!
 
