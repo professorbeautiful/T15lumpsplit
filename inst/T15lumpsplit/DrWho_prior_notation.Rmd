@@ -1,5 +1,9 @@
 
-Here is a prior that might represent this view:
+
+
+### DETAILS: Bayes calculation of Dr. Who\'s prior and posterior probabilities" <!-- #title -->
+
+Here is a prior that represents Dr. Who's view that each one has their own person prior distribution $\pi _{Split}^{}({\bf{p}})$ or $\pi _{Lump}^{}({\bf{p}})$, and one or the other is absolutely correct, but "who knows which one?":
   
   
 $$
@@ -10,7 +14,7 @@ $$
 \end{aligned}
 $$
   
-  NOTE: This marginalizes out (sums over)  
+NOTE: This marginalizes out (sums over)  
 the *nuisance parameter* $\phi$  (who is right?)  
 over the joint distribution of ( ${p_{R.D}},\phi$)!  
   
@@ -72,13 +76,14 @@ output$mSplit = renderText({
   })
 ```
 
+
 If *Split* is correct, then the (marginal) probability of getting the data we observed is  
 
 **`r   textOutput('mSplit', inline=TRUE)`**.
 
 For the technical details, take a look here:
 
-```{r sidebars, echo =F}
+```{r sidebar function, echo =F}
 ## nice try, doesn't work, the input name not found..
 sidebar = function(RmdFileName){
   h4content = paste0("Sidebar:  `r actionButton(class='sidebar', inputId=",
@@ -144,6 +149,13 @@ observe( {
   }
 }
 )
+```
+
+
+```{r}
+
+inclRmd('BayesFactor.Rmd')
+
 ```
 
 Here is the code to calculating the marginals and the Bayes factor  

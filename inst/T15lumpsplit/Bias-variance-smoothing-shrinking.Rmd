@@ -855,13 +855,10 @@ QandAha('QA-fisher')
 ### <a name='section-Bayes_mixture'> Bayes mixture of smooth "Lump" and smooth "Split" prior beliefs</a> <!-- #title -->
 
 
-
-
 ```{r DrWho, child = 'DrWho.Rmd'}
 ```
 
-### <a name='section-Notation for DrWho'> Notation for Dr Who
-```{r WhoNotation, child = 'DrWho-prior-notation.Rmd'}
+```{r WhoNotation, child = 'DrWho_prior_notation.Rmd'}
 ```
 
 ```{r QA-DrWho}
