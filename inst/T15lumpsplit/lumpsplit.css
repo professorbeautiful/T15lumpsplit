@@ -1,4 +1,9 @@
 /* Headers */
+/* affects only the number in the body, not the TOC.
+  The <a> makes it blue in the TOC.
+
+  ul[data-tag=3]
+etcetera change the TOC number, but if an <a> not the TOC text.   */
 
 h1{   /* elements (tags)*/
   font-size: 20pt;
@@ -10,34 +15,17 @@ h2{   /* elements (tags)*/
   color: green;
   font-style: italic;
 }
-ul[data-tag="2"] {
-  color:green!important;
-}
-a[data-tag="2"] {
-  color:green!important;
-}
-
-h3{  /* affects only the number in the body, not the TOC.
-  The <a> makes it blue in the TOC.*/
+h3{
   font-size: 16pt;
   font-style: italic;
-  color:grey!important;
-}
-ul[data-tag="3"] {
-  color:grey!important;
-}
-a[data-tag="3"] {
-  color:grey!important;
+  color:green;
 }
 h4{
   color:orange!important; /*works but not in TOC*/
   font-size: 14pt;
 }
-ul[data-tag="4"] {
-  color:orange!important;
-}
 h5{
-  color:orange;
+  color:purple;
   font-size: 14pt;
 }
 #title{
