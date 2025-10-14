@@ -36,6 +36,12 @@ options(shiny.error = browser)
 options(shiny.error = recover) 
 options(error = browser)
 options(error = recover) 
+myErrorFunction = function(){
+  dump.frames()
+  showModal(modalDialog(title='ERR', 
+                        last.dump))
+}
+options(error = myErrorFunction) 
 
 ```
 
