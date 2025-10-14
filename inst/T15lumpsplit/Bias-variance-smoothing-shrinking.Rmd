@@ -854,17 +854,21 @@ QandAha('QA-fisher')
 
 ### <a name='section-Bayes_mixture'> Bayes mixture of smooth "Lump" and smooth "Split"</a> <!-- #title -->
 
-Dr. Who doesn't know *who* to believe.  But now, 
+
 
 
 ```{r DrWho, child = 'DrWho.Rmd'}
+```
+
+### <a name='section-Notation for DrWho'> Notation for Dr Who
+```{r WhoNotation, child = 'DrWho-prior-notation.Rmd'}
 ```
 
 ```{r QA-DrWho}
 QandAha('QA-DrWho')
 ```
 
-## Parametrizing the probabilities <!-- #title -->
+## Parametrizing the probabilities: likelihood functions <!-- #title -->
 
 We must dive deeper. We need some notation.  
 "\*Yawn\*"?   NO!  Exciting. Good notation is POWERFUL.

@@ -31,16 +31,7 @@ $$
     \quad [\theta |X] = \sum\limits_\phi  {} [\theta ,\phi |X] = \frac{{\sum\limits_\phi  {} [X,\theta ,\phi ]}}{{\sum\limits_{\phi ,\theta } {} [X,\theta ,\phi ]}}
     \end{array}.
 $$
-
-Here the nuisance parameter $\phi$ is:  
-  whose opinion is right, $Split$ or $Lump$?
-  
-More details on Bayes Theorem,  
-including conditioning and marginalizing, are here: 
-
-
-Great examples of Bayes decision-making are here: 
-<a href="https://www.youtube.com/watch?v=c2IXn-rBl6k"> "Episode 3: Dose Utility Explorer, a "shiny" app. Expected Utility with Meihua Marie & Devlish Merry" </a>
+ 
 
 
 IN SUMMARY:

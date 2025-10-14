@@ -1,16 +1,17 @@
 
-Dr. Who is not confident in either Dr. Split or Dr. Lump,  
-but is prepared to let the data guide  
+Dr. Who doesn't know *who* to believe.   
+We stick with the idea that one and only one is correct.
+Maybe one’s correct ($\phi  = Split$ ),  
+maybe the other one is ( $\phi  = Lump$). 
+But instead of making a choice, why not let the data guide  
 a good compromise between the two viewpoints.  
-Maybe one’s right ($\phi  = Split$ ),  
-maybe the other ( $\phi  = Lump$). 
-
 
 The posterior distribution for Dr. Who,  
-which averages ("marginalizes") over $\phi$ ,  
-is a mixture.
+which averages ("marginalizes") over $\phi$,  
+is a mixture. A "Bayesian" mixture.
 
-We gaze at Dr. Who's "posterior" (surely there's an emoji for that):
+We gaze at Dr. Who's "posterior"  
+(surely there's an emoji for that):
 
 ```{r}
 jumpList_DTC = c(jumpList_DTC, whoMixturePlot='Posterior distribution for Dr. Who')
@@ -148,18 +149,36 @@ conditionalPanelWithCheckboxPDF(
   labelString="(A)  Define the problem", 
    filename='./Overview_of_Bayesian_calculation_A.pdf',
   cbStringId='bayes_decision_analysis_A')
+```
+
+We have a nuisance parameter all right: 
+$\phi$,     whose opinion is right, either $Split$ or $Lump$.
+ 
+```{r}
 conditionalPanelWithCheckboxPDF(
   labelString='(B)  Apply Bayes “theorem”:  Calculate the (posterior) distribution of the quantity of interest', 
    filename='./Overview_of_Bayesian_calculation_B.pdf',
   cbStringId='bayes_decision_analysis_B')
+```
+
+The details of the calculation in our case is here.
+
+
+```{r}
 conditionalPanelWithCheckboxPDF(
   labelString="(C)  Bayesian decision-making", 
    filename='./Overview_of_Bayesian_calculation_C.pdf',
   cbStringId='bayes_decision_analysis_C')
-
 ```
 
-###  Sidebar:  `r actionButton(class='sidebar', inputId='DrWho_prior_notation', label =  'Dr. Who\'s notation for prior and posterior probability' )`  <!-- #title -->
+
+Great examples of Bayes decision-making are here:  
+<a href="https://www.youtube.com/watch?v=c2IXn-rBl6k"> 
+"Episode 3: ***Dose Utility Explorer***, a "shiny" app. Expected Utility with Meihua Marie & Devlish Merry" </a>   
+Yes, there's an <a href="https://trials.shinyapps.io/DUEshiny/"> app </a> for that. 
+
+***Sidebar***:  
+`r actionButton(class='sidebar', inputId='DrWho_prior_notation', label =  'Dr. Who\'s notation for prior and posterior probability' )`  
 ```{r}
           
 observe( {
@@ -172,6 +191,8 @@ observe( {
   }
 }
 )
+
+
 ```
 
 
