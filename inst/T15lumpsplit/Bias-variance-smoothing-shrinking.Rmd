@@ -516,7 +516,7 @@ conditionalPanelWithCheckbox('Other ways that people write conditional probabili
 ``` 
 
 
-## <a name='section-Lump-or-Split'> Changing the data: estimates & intervals</a> <!-- #title -->
+## <a class='twosharps' name='section-Lump-or-Split'> Changing the data: estimates & intervals</a> <!-- #title -->
 
 In the following plot, we see the estimate and the confidence interval  
 for `Pr(R | D)`, depending on whether  
@@ -624,7 +624,7 @@ div(fluidRow(
 * Approaches used in the famous ECMO data set. (ToDo)
 
 
-### <a name='section-LumpOrSplit'>Dr.Lump and Dr.Split reach different conclusions </a> <!-- #title -->
+### <a class='threesharps' name='section-LumpOrSplit'>Dr.Lump and Dr.Split reach different conclusions </a> <!-- #title -->
 
 ```{r analysis-plotLumpSplitPoints}
 
@@ -709,9 +709,9 @@ reflects this *high variance*.
 
 
 
-### <a name='section-Variance-Bias'> Variance and bias refresher</a> <!-- #title -->
+### <a class='threesharps' name='section-Variance-Bias'> Variance and bias refresher</a> <!-- #title -->
 
-#### <a name='section-bias-variance-mse'>Bias, variance, and mean squared error</a> <!-- #title -->
+#### <a class='foursharps' name='section-bias-variance-mse'>Bias, variance, and mean squared error</a> <!-- #title -->
 
 
 For a refresher on the concepts of  
@@ -734,7 +734,7 @@ conditionalPanelWithCheckboxPDF(labelString='Concepts: bias, variance, and mean 
 ```
 
 
-#### <a name='section-bias-variance-axis'> The many faces of the bias-variance axis</a> <!-- #title -->
+#### <a class='foursharps' name='section-bias-variance-axis'> The many faces of the bias-variance axis</a> <!-- #title -->
 
 The bias-variance axis has many disguises:
 
@@ -749,7 +749,7 @@ conditionalPanelWithCheckboxPDF(labelString='The bias-variance axis',
 ```
 
 
-### <a name='section-ClassicalTest'> Who's right? Dr.Who's gotta choose! Classical significance test</a> <!-- #title -->
+### <a class='threesharps' name='section-ClassicalTest'> Who's right? Dr.Who's gotta choose! Classical significance test</a> <!-- #title -->
 
 We COULD do an old fashioned significance test:  
   ***"Is $X_{DL}$ independent of the outcome Y?"***
@@ -852,7 +852,7 @@ QandAha('QA-fisher')
 ```
 
 
-### <a name='section-Bayes_mixture'> Bayes mixture of smooth "Lump" and smooth "Split" prior beliefs</a> <!-- #title -->
+### <a class='threesharps' name='section-Bayes_mixture'> Bayes mixture of smooth "Lump" and smooth "Split" prior beliefs</a> <!-- #title -->
 
 
 ```{r DrWho, child = 'DrWho.Rmd'}
@@ -936,7 +936,7 @@ TextQuestion("What advantage does the cross-validation approach here have, relat
 QandAha('QA-for-crossvalidation')
 ```
 
-### <a name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a> <!-- #title -->
+### <a class='threesharps' name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a> <!-- #title -->
 
 No more crude mixture of the two extreme views of   
 "Dr. Lump" and "Dr. Split".  
