@@ -47,7 +47,7 @@ a{
 */
 .modal-dialog {
   width: fit-content!important;
-
+/*  https://stackoverflow.com/questions/63882483/how-to-adjust-shiny-modaldialog-width-to-a-dt-object-to-fully-show-the-table-i*/
 }
 
 .disabled {
