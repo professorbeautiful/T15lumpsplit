@@ -174,9 +174,9 @@ conditionalPanelWithCheckboxPDF(
 
 
 Great examples of Bayes decision-making are here:  
-<a href="https://www.youtube.com/watch?v=c2IXn-rBl6k"> 
+<a href="https://www.youtube.com/watch?v=c2IXn-rBl6k"  target='_blank'> 
 "Episode 3: ***Dose Utility Explorer***, a "shiny" app. Expected Utility with Meihua Marie & Devlish Merry" </a>   
-Yes, there's an <a href="https://trials.shinyapps.io/DUEshiny/"> app </a> for that. 
+Yes, there's an <a href="https://trials.shinyapps.io/DUEshiny/" target='_blank'> app </a> for that. 
 
 ***Sidebar***:  
 `r actionButton(class='sidebar', inputId='DrWho_prior_notation', label =  'Dr. Who\'s notation for prior and posterior probability' )`  
