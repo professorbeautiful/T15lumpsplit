@@ -1,10 +1,10 @@
 
 Dr. Who doesn't know *who* to believe.   
-We stick with the idea that one and only one is correct.
+We stick with the idea that one and only one is correct.  
 Maybe one’s correct ($\phi  = Split$ ),  
-maybe the other one is ( $\phi  = Lump$). 
+maybe the other one is ( $\phi  = Lump$).  
 But instead of making a choice, why not let the data guide  
-a good compromise between the two viewpoints.  
+a good ***compromise*** between the two viewpoints.  
 
 The posterior distribution for Dr. Who,  
 which averages ("marginalizes") over $\phi$,  
@@ -151,8 +151,9 @@ conditionalPanelWithCheckboxPDF(
   cbStringId='bayes_decision_analysis_A')
 ```
 
-We have a nuisance parameter all right: 
-$\phi$,     whose opinion is right, either $Split$ or $Lump$.
+What we care about is the probability of $R$ if the patient is a $D$.  
+We also have a nuisance parameter all right: 
+$\phi$:     whose prior opinion is right, is it $Split$ or $Lump$?
  
 ```{r}
 conditionalPanelWithCheckboxPDF(
