@@ -852,7 +852,7 @@ QandAha('QA-fisher')
 ```
 
 
-### <a name='section-Bayes_mixture'> Bayes mixture of smooth "Lump" and smooth "Split"</a> <!-- #title -->
+### <a name='section-Bayes_mixture'> Bayes mixture of smooth "Lump" and smooth "Split" prior beliefs</a> <!-- #title -->
 
 
 
