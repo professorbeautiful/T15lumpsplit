@@ -1280,20 +1280,23 @@ how should we strike the balance?
 In this section we explore different scenarios  
 of external information, to see how they affect the estimation of ${Pr(R|D}$.
 
-##	Strong prior belief that feature $X_{DL}$ is *un*important <!-- #title -->
+##	Strong prior belief that feature $X_{DL}$ is implausible <!-- #title -->
 
-What if D and L represent dark hair color and light hair color?  
-"Dr. Who" may be highly skeptical that this $X_{DL}$  
-really affects response,  
-and express this by choosing a prior odds that favors Dr. Lump  over Dr. Split. 
+What if D and L represent ***dark and light hair color***?  
+"Dr. Who" may be **highly skeptical** that this $X_{DL}$
+really affects response.  
+Then "Dr. Who" may choose a prior odds  
+that favors Dr. Lump  over Dr. Split. 
+
 ##	Strong prior belief that the feature $X_{DL}$ is important <!-- #title -->
 
-What if D and L represent two alleles of a  
-gene believed to affect this drug's pharmacodynamics?  
+But what if D and L represent two alleles of a  
+gene shown to affect this drug's **pharmacodynamics**?  
 Or perhaps, $X_{DL} = D = dark hair$, $X_{DL} = L = light hair$,  
 but hair color is strongly tied to ethnicity in this sample 
-… which is strongly tied to a key genetic variant. 
-"Dr. Who" can express choosing a prior odds  
+… which is strongly tied to a key genetic variant.  
+
+Then "Dr. Who" may choose a prior odds  
 that favors  Dr. Split over Dr. Lump. 
 
 You can experiment with the effects of prior belief  
@@ -1583,7 +1586,7 @@ can be represented as the odds ratio:
 
 \[\frac{{odds(Y = R|{X_j} = 0)}}{{odds(Y = R|{X_j} = 1)}} = \frac{{\Pr (Y = R|{X_j} = 0)/\Pr (Y = N|{X_j} = 0)}}{{\Pr (Y = R|{X_j} = 1)/\Pr (Y = N|{X_j} = 1)}}\]
 
-Initially the extra 99 feature are all "null hypotheses".  
+Initially the extra 99 features are all "null hypotheses".  
 The odds ratios all equal 1,  
 so the odds that $Y=R$ does not change with $X_j$.  
 But we can explore what happens if they do not all equal 1.
