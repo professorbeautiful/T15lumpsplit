@@ -342,6 +342,25 @@ shinyDebuggingPanel::withDebuggingPanel()
 )
 ```
 
+```{r}
+go_to_section =  function(sectionName='whoMixturePlot', 
+                          labelString=paste0('▸ ', jumpList_DTC[[sectionName]])){
+  anchorName = paste0('a_', sectionName)
+#  linktext = paste0('▸ ', jumpList_DTC[[sectionName]]) 
+  thisNumber = which(names(jumpList_DTC) == sectionName)
+  IdThisLinkin = paste0('linkinLink', thisNumber)
+  onclickAction = paste0(IdThisLinkin, labelString)
+#  labelString = linktext
+  # This works, even when pasted into debug panel!
+  a(id=IdThisLinkin,
+    onclick=onclickAction,
+    href=paste0('#section-',
+                anchorName),
+    labelString)
+}
+
+```
+
 ```{r JS and CSS includes}
 includeScript('www/KeyHandler.js')
 includeScript('navigateToId.js')   ### ESCAPE key to return.  
@@ -1287,25 +1306,8 @@ how should we strike the balance?
 In this section we explore different scenarios  
 of external information, to see how they affect the estimation of ${Pr(R|D}$.
 
-```{r}
-go_to_whoMixturePlot =  function(){
-  anchorName = paste0('a_', 'whoMixturePlot')
-  linktext = paste0('▸ ', jumpList_DTC[['whoMixturePlot']]) 
-  thisNumber = which(names(jumpList_DTC) == 'whoMixturePlot')
-  IdThisLinkin = paste0('linkinLink', thisNumber)
-  onclickAction = paste0(IdThisLinkin, linktext)
-  labelString = linktext
-  # This works, even when pasted into debug panel!
-  a(id=IdThisLinkin,
-    onclick=onclickAction,
-    href=paste0('#section-',
-                anchorName),
-    labelString)
-}
 
-```
-
-##	Strong prior beliefs
+##	<a class='threesharps' name='section-Strong_prior_beliefs'>Strong prior beliefs about $X_{DL}$ </a><!-- #title -->
 
 ### <a class='threesharps' name='section-featureImplausible'>Strong prior belief that feature $X_{DL}$ is ***IMPLAUSIBLE*** </a><!-- #title -->
 
@@ -1316,7 +1318,7 @@ really affects response.
 Then "Dr. Who" may choose a prior odds  
 that favors ***Dr. Lump***  over Dr. Split.  
 How does that matter?  
-Revisit the prior section: `r go_to_whoMixturePlot()`
+Revisit the prior section: `r go_to_section()`
 
 
 
@@ -1332,7 +1334,7 @@ Then "Dr. Who" may choose a prior odds
 that favors ***Dr. Split***  over Dr.  Lump.  
 How does that matter?  
 Revisit the prior section 
-`r go_to_whoMixturePlot() `
+`r go_to_section() `
 
 ```{r QA-Strong-prior-belief-X_DL-important}
 
