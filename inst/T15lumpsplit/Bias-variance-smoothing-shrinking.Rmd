@@ -346,11 +346,9 @@ shinyDebuggingPanel::withDebuggingPanel()
 go_to_section =  function(sectionName='whoMixturePlot', 
                           labelString=paste0('▸ ', jumpList_DTC[[sectionName]])){
   anchorName = paste0('a_', sectionName)
-#  linktext = paste0('▸ ', jumpList_DTC[[sectionName]]) 
   thisNumber = which(names(jumpList_DTC) == sectionName)
   IdThisLinkin = paste0('linkinLink', thisNumber)
   onclickAction = paste0(IdThisLinkin, labelString)
-#  labelString = linktext
   # This works, even when pasted into debug panel!
   a(id=IdThisLinkin,
     onclick=onclickAction,
