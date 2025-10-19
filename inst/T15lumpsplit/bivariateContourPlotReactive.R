@@ -92,6 +92,8 @@ plotPlightPdarkPosteriorReactive = reactive( {
   # Pass the calculations on to the plotting function.
   plotPlightPdarkPosterior(
     DLdata = thisData,
+    showPrior = input$checkPrior,
+    showPosterior = input$checkPosterior,
     bivariateNormResults = bivariateNormResults,
     showConfIntBinormal = TRUE
   )
