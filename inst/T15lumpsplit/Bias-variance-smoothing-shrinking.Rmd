@@ -1287,15 +1287,40 @@ how should we strike the balance?
 In this section we explore different scenarios  
 of external information, to see how they affect the estimation of ${Pr(R|D}$.
 
-##	Strong prior belief that feature $X_{DL}$ is implausible <!-- #title -->
+```{r}
+go_to_whoMixturePlot =  function(){
+  anchorName = paste0('a_', 'whoMixturePlot')
+  linktext = paste0('▸ ', jumpList_DTC[['whoMixturePlot']]) 
+  thisNumber = which(names(jumpList_DTC) == 'whoMixturePlot')
+  IdThisLinkin = paste0('linkinLink', thisNumber)
+  onclickAction = paste0(IdThisLinkin, linktext)
+  labelString = linktext
+  # This works, even when pasted into debug panel!
+  a(id=IdThisLinkin,
+    onclick=onclickAction,
+    href=paste0('#section-',
+                anchorName),
+    labelString)
+}
+
+```
+
+##	Strong prior beliefs
+
+### <a class='threesharps' name='section-featureImplausible'>Strong prior belief that feature $X_{DL}$ is ***IMPLAUSIBLE*** </a><!-- #title -->
+
 
 What if D and L represent ***dark and light hair color***?  
 "Dr. Who" may be **highly skeptical** that this $X_{DL}$
 really affects response.  
 Then "Dr. Who" may choose a prior odds  
-that favors Dr. Lump  over Dr. Split. 
+that favors ***Dr. Lump***  over Dr. Split.  
+How does that matter?  
+Revisit the prior section: `r go_to_whoMixturePlot()`
 
-##	Strong prior belief that the feature $X_{DL}$ is important <!-- #title -->
+
+
+###	<a class='threesharps' name='section-featureImplausible'>Strong prior belief that the feature $X_{DL}$ is ***IMPORTANT*** </a> <!-- #title -->
 
 But what if D and L represent two alleles of a  
 gene shown to affect this drug's **pharmacodynamics**?  
@@ -1304,24 +1329,18 @@ but hair color is strongly tied to ethnicity in this sample
 … which is strongly tied to a key genetic variant.  
 
 Then "Dr. Who" may choose a prior odds  
-that favors  Dr. Split over Dr. Lump. 
+that favors ***Dr. Split***  over Dr.  Lump.  
+How does that matter?  
+Revisit the prior section 
+`r go_to_whoMixturePlot() `
 
-You can experiment with the effects of prior belief  
-by choosing such a value here: 
-
-```{r WhoPriorProbNumericInput2}
-WhoPriorProbNumericInput()
-```
-
-and reviewing revised results at these previous locations:
-  
 ```{r QA-Strong-prior-belief-X_DL-important}
-inclRmd('jumpBack_DTC.Rmd')
+
 QandAha('QA-Strong-prior-belief-about-X_DL')
 ```
 
 Which of the previous analyses allow you to  
-interject prior belief on the Lump-versus-Split axis?
+interject prior belief about the credibility of Lump versus Split?
 
 ##	Multiple features, with some prior belief <!-- #title -->
 
