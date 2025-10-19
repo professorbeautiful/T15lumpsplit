@@ -945,6 +945,13 @@ on the joint distribution of the two conditional probabilities
 Pr(R | D) and Pr(R | L).  
 This allows data on the two probabilities for $D$ and $L$ to be shared between them,  
 smoothly, instead of the "Dr. Lump" versus "Dr. Split" winner-take-all.
+The extremes of Lump and Split, and the compromise view of Who,  
+are expressed by setting values for  
+* the prior variance within group (phi)
+* shared additional variance (tau)
+Dr. Split says there IS no shared variance:  tau=0.  
+Dr. Lump says it's ALL shared variance:  tau = 1. (Well,  almost all; a tiny phi for nice plotting.)
+
 
 ```{r QA-smooth-joint-prior}
 QandAha('QA-smooth-joint-prior')
