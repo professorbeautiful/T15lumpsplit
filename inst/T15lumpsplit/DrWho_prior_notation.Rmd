@@ -3,7 +3,8 @@
 
 ### DETAILS: Bayes calculation of Dr. Who\'s prior and posterior probabilities" <!-- #title -->
 
-Here is a prior that represents Dr. Who's view that each one has their own person ***prior*** distribution $\pi _{Split}^{}({\bf{p}})$ or $\pi _{Lump}^{}({\bf{p}})$, and one or the other is absolutely correct, but "who knows which one?":
+Here is a prior that represents Dr. Who's view that each one has their own personal ***prior*** belief, represented by each distribution $\pi _{Split}^{}({\bf{p}})$ or $\pi _{Lump}^{}({\bf{p}})$. 
+And, one or the other is absolutely correct, but "who knows which one?":
   
   
 $$
