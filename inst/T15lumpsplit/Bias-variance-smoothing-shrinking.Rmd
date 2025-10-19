@@ -777,10 +777,10 @@ the traditional consequence is that we use Dr. Split's estimate:
 
 
 
-```{r panelOfBifurcation}
+```{r Test_to_choose_who_is_right}
 
 output$fisherResult = renderUI({
-  analysisName = 'panelOfBifurcation'
+  analysisName = 'Test_to_choose_who_is_right'
   source(analysisReactiveSetup_DTC, local=TRUE)
 
   Pvalue = fisher.test(thisData)$p.value
@@ -834,15 +834,15 @@ output$fisherResultOriginal = renderText({
 
 
 ```{r fisherResultDTC}
-jumpList_DTC = c(jumpList_DTC, panelOfBifurcation='panelOfBifurcation')
-source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', 'panelOfBifurcation') )
+jumpList_DTC = c(jumpList_DTC, Test_to_choose_who_is_right='Test to choose who is right')
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', 'Test_to_choose_who_is_right') )
 
 fluidRow(
   column(7, br(),br(),br(),br(),br(),
          uiOutput('fisherResult')),
   column(5,
          br(),
-         dataTableComponent(analysisName='panelOfBifurcation')
+         dataTableComponent(analysisName='Test_to_choose_who_is_right')
 ))
 
 ```
