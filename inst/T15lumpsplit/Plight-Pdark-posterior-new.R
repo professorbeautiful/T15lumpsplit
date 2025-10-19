@@ -237,7 +237,8 @@ plotPlightPdarkPosterior = function(
   if(showW) {
     BayesFactor = DrWhoBayesFactor(DLdata)
     BayesProbSplit = BayesFactor/(1+BayesFactor)
-    Wpoint = Spoint*BayesProbSplit + Lpoint*(1-BayesProbSplit)
+    Wpoint = rValues$bivariateNormResults$postmean.p
+    #Wpoint = Spoint*BayesProbSplit + Lpoint*(1-BayesProbSplit)
     midpoint = Spoint[1]/2 + Lpoint[1]/2
     addCircledLetter(
       pointLocation = c(Wpoint[1], Wpoint[2]),
