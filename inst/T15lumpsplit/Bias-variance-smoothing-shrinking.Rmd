@@ -608,6 +608,7 @@ You can also press "reset" .)
 
 
 ```{r plotLumpSplit-UI}
+analysisName = 'plotLumpSplitPoints'
 div(fluidRow(
   
   column(6, 
