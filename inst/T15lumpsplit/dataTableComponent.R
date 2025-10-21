@@ -43,7 +43,7 @@ createDLdataChoiceObserver <- function(analysisName) {
                  currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
                  if( ! exists('saved_DLdataMyChoice')) {
                    if(printDTCProgress)
-                     cat('\n Responding to numericInputs: ')
+                     cat('\n Responding to numericInputs: \n')
                    if( is.null(getDLdata(analysisName, myChoice=TRUE)))
                      DLdataMyChoice = DLdataOriginal
                    else
@@ -56,10 +56,12 @@ createDLdataChoiceObserver <- function(analysisName) {
                      DLdataMyChoice[1,2] =  newValues[3]
                      DLdataMyChoice[2,2] =  newValues[4]
                    }
-                   setDLdata(DLdataMyChoice, analysisName)  # myChoice=FALSE
+                   setDLdata(DLdataMyChoice, analysisName)  # myChoice=FALSE.  Why?
                    setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
                    if(printDTCProgress)
-                     print(paste(DLdataMyChoice), ' ', analysisName)
+                     print(paste(myName, ': two calls to setDLdata: ',
+                                 paste(collapse=',', unlist(DLdataMyChoice)),
+                           ': ', analysisName))
                  }
                  else {
                    saved_DLdataMyChoice_location = find('saved_DLdataMyChoice')
@@ -182,8 +184,8 @@ dataTableComponent = function(showhide='show', analysisName) {
                currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
                DLdataMyChoice = getDLdata(analysisName, myChoice=TRUE)
                if(printDTCProgress)
-                 cat('   Copying DLdataMyChoice into numericinputs: ',
-                   paste(DLdataMyChoice), '\n')
+                 cat('   updateNumericInput:  DLdataMyChoice into table cells: ',
+                   paste(collapse=',', DLdataMyChoice), '\n')
                for(cellnum in 1:4)
                  updateNumericInput(
                    session,

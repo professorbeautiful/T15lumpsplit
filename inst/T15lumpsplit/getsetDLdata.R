@@ -3,7 +3,9 @@ getDLdata = function(analysisName, myChoice=FALSE, DTCnumber) {
     DTCnumber = mapAnalysisToDTCnumber[analysisName]
   index = paste0(ifelse(myChoice, 'DLdataMyChoice', 'DLdata'),
                  DTCnumber)
-  #cat('getDLdata: ', index, '\n')
+  value = rValues[[ index ]]
+  print(paste('\nGGGGGGGET getDLdata: ', index,  'myChoice:', myChoice,
+              paste(collapse=',', unlist(value)),'\n'))
   rValues[[ index ]]
 }
 
@@ -12,7 +14,10 @@ setDLdata = function(value, analysisName, myChoice=FALSE, DTCnumber) {
     DTCnumber = mapAnalysisToDTCnumber[analysisName]
   index = paste0(ifelse(myChoice, 'DLdataMyChoice', 'DLdata'),
                  DTCnumber)
-  #cat('setDLdata: ', index, '\n')
+  print(paste('\nSSSSSSSET setDLdata: ', index,  'myChoice:', myChoice,
+              paste(collapse=',', unlist(value)),'\n'))
+
+
   rValues[[ index ]] = value
 }
 
