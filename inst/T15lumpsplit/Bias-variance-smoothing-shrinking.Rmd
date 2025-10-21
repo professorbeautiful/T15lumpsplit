@@ -207,9 +207,9 @@ rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
                          #DLdata=list(),
                          #DLdataMyChoice=list(),
                          #DLdataLastUsed = DLdataOriginal,
-                         isResetting = FALSE,
-                         isLoopingSync = FALSE,
-                         WhoPriorProbProb = 1/2,
+                         isResetting = FALSE,  #not used
+                         isLoopingSync = FALSE, #not used
+                         WhoPriorProb = 1/2,
                          WhoPriorOdds = 1, #,
                          #thisSession = session
                          qStar = 1
