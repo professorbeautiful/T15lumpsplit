@@ -46,10 +46,16 @@ DrWhoBayesFactor = function(theData=rValues$DLdata) {
   #6/101/102/103
 }
 
-posteriorOdds = function(priorOdds=rValues$WhoPriorOdds, theData)
+posteriorOdds = function(priorOdds, theData)
   priorOdds * DrWhoBayesFactor(theData)
 
 oddsToProb = function(odds) odds/(1+odds)
 
-posteriorProb = function(priorOdds=rValues$WhoPriorOdds, theData)
+posteriorProb = function(priorOdds, theData)
   oddsToProb(posteriorOdds(priorOdds, theData))
+
+observeEvent(rValues$WhoPriorOdds,  theData=rValues$WhoPriorOdds) {
+  rValues$WhoPosteriorOdds = posteriorOdds(WhoPriorOdds, WhoPriorOdds)
+  rValues$WhoPosteriorProb = oddsToProb(rValues$WhoPosteriorOdds)
+
+}
