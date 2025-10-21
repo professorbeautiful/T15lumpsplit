@@ -1,6 +1,6 @@
 # dataTableComponent.R
 
-printDTCProgress = FALSE
+printDTCProgress = TRUE
 
 cellNames = c('RD', 'ND', 'RL', 'NL')
 
@@ -39,11 +39,11 @@ createDLdataChoiceObserver <- function(analysisName) {
              try(silent = FALSE, {
                isolate({
                  if(printDTCProgress)
-                   cat('updateDLdataMyChoice: changing MyChoice')
+                   cat('\n', myName, ': changing MyChoice\n')
                  currentDTCnumber = mapAnalysisToDTCnumber[analysisName]
                  if( ! exists('saved_DLdataMyChoice')) {
                    if(printDTCProgress)
-                     cat(': Responding to numericInputs: ')
+                     cat('\n Responding to numericInputs: ')
                    if( is.null(getDLdata(analysisName, myChoice=TRUE)))
                      DLdataMyChoice = DLdataOriginal
                    else
@@ -56,18 +56,18 @@ createDLdataChoiceObserver <- function(analysisName) {
                      DLdataMyChoice[1,2] =  newValues[3]
                      DLdataMyChoice[2,2] =  newValues[4]
                    }
-                   setDLdata(DLdataMyChoice, analysisName)
+                   setDLdata(DLdataMyChoice, analysisName)  # myChoice=FALSE
                    setDLdata(DLdataMyChoice, analysisName, myChoice=TRUE)
                    if(printDTCProgress)
-                     cat(paste(DLdataMyChoice), ' ', analysisName)
+                     print(paste(DLdataMyChoice), ' ', analysisName)
                  }
                  else {
                    saved_DLdataMyChoice_location = find('saved_DLdataMyChoice')
                    if(printDTCProgress)
-                     cat(': Restoring saved_DLdataMyChoice ',
+                     print(paste(': Restoring saved_DLdataMyChoice ',
                        paste(saved_DLdataMyChoice),
                        'from ',
-                       saved_DLdataMyChoice_location)
+                       saved_DLdataMyChoice_location))
                    setDLdata(saved_DLdataMyChoice, analysisName, myChoice=TRUE)
                    rm('saved_DLdataMyChoice', pos='.GlobalEnv')
                    if(printDTCProgress)
