@@ -136,6 +136,8 @@ if(!require(shinyDebuggingPanel))
   devtools::install_github('professorbeautiful/shinyDebuggingPanel')
 require(magrittr);require(shinyBS)
 require(knitr);require(rmarkdown);require(markdown);
+require(reactlog)
+
 
 if(interactive()) {  ### Running out of RStudio locally
   analysisReactiveSetup_DTC = paste0('inst/T15lumpsplit/', 'analysisReactiveSetup_DTC.R')
@@ -274,6 +276,10 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(
 
 
 options(shiny.trace=TRUE)
+options(shiny.reactlog=TRUE)   ### TEMPORARY
+options(shiny.launch.browser=TRUE)
+reactlog_enable()
+
 ```
 
 ```{r fat arrow, results='asis'}
