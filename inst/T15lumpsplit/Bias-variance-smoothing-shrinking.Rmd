@@ -1029,6 +1029,10 @@ div(
 )
 ```
 
+The raw Lump and Split the estimates and  confidence intervals are shown.  
+For Dr. Who, the estimate will be between Lump's and Split's,  
+and the confidence interval will be  narrower than  Split's.
+
 To set the prior on the joint distribution of  
 Pr(R | D) and Pr(R | L), we first convert them to  
 logits ("logit" means "log(odds)").
