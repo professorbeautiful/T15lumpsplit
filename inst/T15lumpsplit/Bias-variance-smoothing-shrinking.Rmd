@@ -796,36 +796,46 @@ the traditional consequence is that we use Dr. Split's estimate:
 
 ```{r Test_to_choose_who_is_right}
 
+Test_to_choose_who_is_right = function(thisData) {
+    Pvalue = fisher.test(thisData)$p.value
+
+    lump = round(digits=2, sum(thisData['R', ])/
+      sum(thisData[ , ]))
+    split =  round(digits=2, (thisData['R', 'D'])/
+      sum(thisData[ , 'D']))
+    confInterval_Split = binom.test(x = thisData['R', 'D'],
+                                    n = sum(thisData[ , 'D']) )$conf.int
+    confInterval_Lump = binom.test(x = sum(thisData['R', ]),
+                                   n = sum(thisData[ , ]) )$conf.int
+    if(Pvalue < 0.05) # pick Split
+      whosRight = 'split'
+    else
+      whosRight = 'lump'
+    return(
+      list(Pvalue=Pvalue, lump=lump, split=split, confInterval_Split=confInterval_Split,
+           confInterval_Lump=confInterval_Lump, whosRight=whosRight)
+      )
+}
 output$fisherResult = renderUI({
   analysisName = 'Test_to_choose_who_is_right'
   source(analysisReactiveSetup_DTC, local=TRUE)
 
-  Pvalue = fisher.test(thisData)$p.value
-  rValues$estimates_choose_Lump_or_Split = list(
-    lump = round(digits=2, sum(thisData['R', ])/
-      sum(thisData[ , ])),
-    split =  round(digits=2, (thisData['R', 'D'])/
-      sum(thisData[ , 'D'])),
-    confInterval_Split = binom.test(x = thisData['R', 'D'],
-                                    n = sum(thisData[ , 'D']) )$conf.int,
-    confInterval_Lump = binom.test(x = sum(thisData['R', ]),
-                                   n = sum(thisData[ , ]) )$conf.int
-  )
+  testresult = Test_to_choose_who_is_right(thisData)
+
   theText = paste(
     "If you change the data, <br>then the P value changes.<br>
       With Fisher\'s test, the P value is  P = " ,
-    strong(em(signif(digits=3, Pvalue))),
+    strong(em(signif(digits=3, testresult$Pvalue))),
     ". <br>")
-  if(Pvalue < 0.05) # pick Split
+  if(testresult$Pvalue < 0.05) # pick Split
     {theText = paste(theText,
       "That's less than 0.05. <br> So the test concludes 
       <em><strong><font color='", splitColor, 
       "'>'Dr. Split is right'.  </em></strong></font><br> 
       We go with the Dr. Split estimate:<br><br>
       Our guess:  <em><strong>Pr(R|D) =  ", 
-      rValues$estimates_choose_Lump_or_Split[['split']],
+      testresult[['split']],
       '</em></strong>')
-    rValues$whosRight = 'split'
     }
   else{  # pick Lump
     theText = paste(theText,
@@ -834,11 +844,9 @@ output$fisherResult = renderUI({
       "'>'Dr. Lump is right'. </em></strong></font><br> 
       We go with the Dr. Lump estimate:<br><br>
       Our guess:  <em><strong>Pr(R|D) =  ", 
-      rValues$estimates_choose_Lump_or_Split[['lump']],
+      testresult[['lump']],
       '</em></strong>')
-    rValues$whosRight = 'lump'
   }
-
   div(HTML(theText))
 })
 output$fisherResultOriginal = renderText({
@@ -1213,13 +1221,13 @@ output$tableOfEstimates =
     niceColHeader = c(
       'Probability estimate Pr(R | D)', 'Weight (Lump)', 'Weight (Split)')
 
-
-
+    testresult = Test_to_choose_who_is_right(thisData)
+    testresult$selectedMean = ifelse(testresult$whosRight=='lump',
+                                   testresult$lump, testresult$split)
       means = rValues$means = c(
         LumpRawMean,
         SplitRawMean,
-        # rValues$estimates_choose_Lump_or_Split[['lump']],
-        # rValues$estimates_choose_Lump_or_Split[['split']],
+        testresult$selectedMean,
         #rValues$estimates_choose_Lump_or_Split[[rValues$whosRight]],
         posterior.mean.w,
         CVoptimalEstimate,
@@ -1228,7 +1236,7 @@ output$tableOfEstimates =
       weightsForLump = rValues$weightsForLump = c(
         1,
         0,
-        #c(lump=1, split=0)[rValues$whosRight],
+        c(lump=1, split=0)[testresult$whosRight],
         pProbLump,
         1-CVoptimalWeight,
         implicitWeights_ForLogit[2]
@@ -1236,7 +1244,7 @@ output$tableOfEstimates =
       weightsForSplit = rValues$weightsForLump = c(
         0,
         1,
-        #c(lump=0, split=1)[rValues$whosRight],
+        c(lump=0, split=1)[testresult$whosRight],
         pProbSplit,
         CVoptimalWeight,
         implicitWeights_ForLogit[1]
@@ -1265,7 +1273,7 @@ output$tableOfEstimates =
     rownames(result) = c(
       'Raw proportion (Lump)',
       'Raw proportion (Split)',
- #     paste('Test chooses ', whosRightCapitalized[rValues$whosRight]),
+     paste('Test chooses ', whosRightCapitalized[testresult$whosRight]),
 #      paste('Test chooses ', rValues$whosRight),
       "Dr.Who mixture posterior mean", 
       "Cross-validation optimal",
