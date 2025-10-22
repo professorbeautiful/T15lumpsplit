@@ -1,6 +1,6 @@
 # dataTableComponent.R
 
-printDTCProgress = TRUE
+printDTCProgress = FALSE
 
 cellNames = c('RD', 'ND', 'RL', 'NL')
 

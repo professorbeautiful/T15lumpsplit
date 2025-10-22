@@ -1168,7 +1168,7 @@ output$tableOfEstimates =
     ###  Only for the flat priors. We don't allow Split and Lump priors to change.
     posterior.mean.s = (1+nRD)/(2+nRD+nND)
     posterior.mean.l = (2+nR)/(4+nN)
-    pProbSplit = posteriorProb(theData=thisData)
+    pProbSplit = posteriorProb(rValues$WhoPriorProb, theData=thisData)
       ### Is this responsive to user's Who prior?
     pProbLump = (1-pProbSplit)
     posterior.mean.w = 
