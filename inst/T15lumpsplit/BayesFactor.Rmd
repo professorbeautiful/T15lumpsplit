@@ -1,0 +1,74 @@
+
+#### The Bayes Factor: posterior odds (and probability) of the "null hypothesis" <!-- #title -->
+
+The  Bayes Factor is the ratio of these marginal probabilities of the data,  
+and also the ratio of posterior odds to prior odds:  
+
+$$
+BF = \frac{m_{Split}}{m_{Lump}} = \frac{Pr(Split|data)}{Pr(Lump|data)}
+\div \frac{Pr(Split)}{Pr(Lump)}.
+$$
+
+
+
+```{r , echo=F}
+output$BForig = renderText({DrWhoBayesFactor(DLdataOriginal)})
+```
+
+```{r , echo=F}
+output$BF = renderText({
+  analysisName = 'whoMixturePlot'
+  source(analysisReactiveSetup_DTC, local=TRUE)
+  DrWhoBayesFactor(thisData)
+})
+```
+
+In our case, the Bayes Factor is `r textOutput('BForig', inline=TRUE)`,  
+for the original data, and if you have modified the numbers in the table,  
+the Bayes factor is now `r textOutput('BF', inline=TRUE)`.
+
+If *Dr.Split* and *Dr.Lump* have equal prior probability (prior odds = 1),  
+then the posterior odds is the Bayes factor,  
+and  the posterior probability that *Dr.Lump* is correct is
+
+$$
+\rm{Pr(}\phi  = Lump|data) = {m_{Lump}}/({m_{Split}} + {m_{Lump}}).
+$$
+
+
+More generally, 
+
+
+$$
+\Pr (R|D,Who) = \Pr (Lump|data) \times \Pr (R|D,Lump) + \Pr (Split|data) \times \Pr (R|D,Split),  
+$$
+
+
+```{r , echo=F}
+output$bayesAverage = renderText({
+  analysisName = 'whoMixturePlot'
+  source(analysisReactiveSetup_DTC, local=TRUE)
+
+  paste0('Pr(Lump) *  mLump + Pr(Split) * mSplit',
+         '= ',
+         signif(digits=3,
+                (1/2) * mLump(thisData) +
+                  (1/2) * mSplit(thisData))
+  )
+})
+```
+which equals  `r textOutput('bayesAverage', inline=TRUE)`  
+for the current data table and a 50% 50% even odds for Lump and Split.
+
+You can adjust the prior probability and observe how  
+the posterior probability changes.  
+The Bayes factor in favor of  *Dr.Split* is correct is
+
+$$
+{\rm{Odds}(\phi = Split|data) = \rm{Odds(}\phi  = Split) \times {m_{Split}}/{m_{Lump}}}.
+$$
+If Dr. Who puts equal prior probability on *Lump* and *Split*,  
+the Bayes factor is the same as the posterior odds.  
+Converting from odds to probability,  
+with the current data the posterior probability in favor of *Split*  
+equals `r output$postProb = shiny::renderText({round(digits=3, posteriorProb(theData=getDLdata('whoMixturePlot')))}); textOutput('postProb', inline=TRUE)`.

@@ -82,7 +82,7 @@ output$whoMixturePlot =
     #cat('mSplit is ', mSplit(thisData), '\n')
     #cat('mLump is ', mLump(thisData), '\n')
     #cat('DrWhoBayesFactor is ', DrWhoBayesFactor(thisData), '\n')
-    pProbSplit = posteriorProb(theData=thisData)
+    pProbSplit = posteriorProb(priorOdds = rValues$WhoPriorProb, theData=thisData)
     pProbLump = (1-pProbSplit)
     posterior.w = pProbSplit * posterior.s + pProbLump * posterior.l
     posterior.mean.w = 
