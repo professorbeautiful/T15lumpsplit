@@ -54,8 +54,4 @@ oddsToProb = function(odds) odds/(1+odds)
 posteriorProb = function(priorOdds, theData)
   oddsToProb(posteriorOdds(priorOdds, theData))
 
-observeEvent(rValues$WhoPriorOdds,  theData=rValues$WhoPriorOdds) {
-  rValues$WhoPosteriorOdds = posteriorOdds(WhoPriorOdds, WhoPriorOdds)
-  rValues$WhoPosteriorProb = oddsToProb(rValues$WhoPosteriorOdds)
 
-}
