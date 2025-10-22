@@ -1216,9 +1216,11 @@ output$tableOfEstimates =
 
 
       means = rValues$means = c(
-        rValues$estimates_choose_Lump_or_Split[['lump']],
-        rValues$estimates_choose_Lump_or_Split[['split']],
-        rValues$estimates_choose_Lump_or_Split[[rValues$whosRight]],
+        LumpRawMean,
+        SplitRawMean,
+        # rValues$estimates_choose_Lump_or_Split[['lump']],
+        # rValues$estimates_choose_Lump_or_Split[['split']],
+        #rValues$estimates_choose_Lump_or_Split[[rValues$whosRight]],
         posterior.mean.w,
         CVoptimalEstimate,
         bivariateNormResults$postmean.p[1]
@@ -1226,7 +1228,7 @@ output$tableOfEstimates =
       weightsForLump = rValues$weightsForLump = c(
         1,
         0,
-        c(lump=1, split=0)[rValues$whosRight],
+        #c(lump=1, split=0)[rValues$whosRight],
         pProbLump,
         1-CVoptimalWeight,
         implicitWeights_ForLogit[2]
@@ -1234,7 +1236,7 @@ output$tableOfEstimates =
       weightsForSplit = rValues$weightsForLump = c(
         0,
         1,
-        c(lump=0, split=1)[rValues$whosRight],
+        #c(lump=0, split=1)[rValues$whosRight],
         pProbSplit,
         CVoptimalWeight,
         implicitWeights_ForLogit[1]
@@ -1263,7 +1265,7 @@ output$tableOfEstimates =
     rownames(result) = c(
       'Raw proportion (Lump)',
       'Raw proportion (Split)',
-      paste('Test chooses ', whosRightCapitalized[rValues$whosRight]),
+ #     paste('Test chooses ', whosRightCapitalized[rValues$whosRight]),
 #      paste('Test chooses ', rValues$whosRight),
       "Dr.Who mixture posterior mean", 
       "Cross-validation optimal",
