@@ -30,7 +30,7 @@ if(printFromAnalysisReactiveSetup_BDC)
 
 isolate({
   rValues[[thisBigDataID ]] <<-
-    makeBigDataWithFeatures(DLdata = DLdataOriginal, Omega = thisOmega)
+    makeBigDataWithFeatures(DLdata = DLdataOriginal, Omega = thisOmega, whoFrom= 'thisBigDataID')
 
 if(is.null(
   rValues[[thisBigDataID ]]

@@ -23,6 +23,11 @@ get_thisOmegaID =  function(aN) {
     aN  = mapAnalysisToBDCnumber[aN]
   paste0('BigDataController_ID_', aN)
 }
+get_thisRegenerateID =  function(aN) {
+  if(is.character(aN))
+    aN  = mapAnalysisToBDCnumber[aN]
+  paste0('BigDataController_Regenerate_', aN)
+}
 
 getBigData_Omega = function(analysisName, myChoice=FALSE, BDCnumber) {
   if( ! missing(analysisName))

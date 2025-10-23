@@ -3,7 +3,7 @@
 
 printBDCProgress =  FALSE
 
-printBDCProgress = FALSE
+printBDCProgress = TRUE
 
 # Usage:  bigDataComponent(analysisName='qValue')
 
@@ -67,7 +67,7 @@ createBigDataParamChoiceObserver <- function(analysisName) {
                    if(newValue == 0) set.seed(45)
                    BigDataMyChoice = makeBigDataWithFeatures(
                      DLdataOriginal,
-                     Omega=newValue)
+                     Omega=newValue, whoFrom='BigDataMyChoice')
                    setBigData_Omega(value=newValue, analysisName=analysisName)
                    setBigData_Omega(value=newValue, analysisName=analysisName, myChoice=TRUE)
                    setBigData(BigDataMyChoice, analysisName)
@@ -116,7 +116,7 @@ bigDataComponent = function(analysisName) {
 
     #  theBigDataController = paste0('BigDataController_ID_', analysisNumber)
   thisOmegaID = get_thisOmegaID(analysisNumber)
-
+  thisRegenerateID = get_thisRegenerateID(analysisNumber)
   #### resetIdThisBDC button ####
   'When resetIdThisBDC Button  is clicked, update OmegaId input to zero and copy to OmegaLastUsed.'
   myName = paste0('observeEvent_resetIdThisBDC_', thisBDCNumber)
@@ -157,22 +157,39 @@ bigDataComponent = function(analysisName) {
   )
 
   ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified BigData.
-  observeEvent(list(input$regenerateFeatures, input[[thisOmegaID]]), {
+  regenerate = function (whoFrom)  {  # was it from Omega box, or Regenerate button?
     try( {
+      print(paste('regenerate: whoFrom = ', whoFrom))
       Omega = makeSureOmegaIsGood(input[[thisOmegaID]])
-      if(printBDCProgress)
-        cat('BDC:  Omega: ', Omega, '  analysisName=', analysisName, '\n')
+      if(printBDCProgress) {
+        cat('regenerate:  called from ', whoFrom, '\n')
+        cat('BDC:  Omega: ', Omega, ' thisOmegaID:', thisOmegaID,
+            ' thisRegenerateNumber:', input[[thisRegenerateID]], ' thisRegenerateID:', thisRegenerateID,
+            'analysisName=', analysisName, '\n')
+      }
       OmegaLastUsed <<- Omega
-      isolate({
+      #isolate({
         setBigData(
           makeBigDataWithFeatures(DLdata = DLdataOriginal,
-                                  Omega = Omega),
-          analysisName, myChoice=FALSE)
-      })
+                                  Omega = Omega, whoFrom='setBigData'),
+          analysisName, myChoice=FALSE)  ### why not TRUE?
+      #})
       #generateAllPvalues(rValues$BigDataDFwithFeatures)
       #not necessary; observer in place. observer_Pvalues_all_features
     })
+}
+observeEvent(input[[thisRegenerateID]], {
+  ### goofy kluge follows.
+  savedOmega =  input[[thisOmegaID]]
+  shiny::updateNumericInput(inputId = thisOmegaID,
+                            value = savedOmega+1e-5)
+  shiny::updateNumericInput(inputId = thisOmegaID,
+                            value = savedOmega)
+
+  #regenerate(thisRegenerateID)   # this should be enough!
   })
+observeEvent(input[[thisOmegaID]], regenerate(thisOmegaID))
+
   #### Output of bigDataComponent ####
   if(printBDCProgress )
       cat('bigDataComponent for ', analysisName, ' ', thisBDCNumber, '\n')
@@ -183,7 +200,7 @@ bigDataComponent = function(analysisName) {
                           value = 0, min=0,  step=0.1),
 
              ##```{r regenerateFeatures button}
-             actionButton(inputId = 'regenerateFeatures', label = 'regenerate Features')
+             actionButton(inputId = thisRegenerateID, label = 'regenerate Features')
              ),
       column(6, br(), br(),
              #disabled(  #Start disabled. Doesn't seem to work.
