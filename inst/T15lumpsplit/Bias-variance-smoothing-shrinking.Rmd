@@ -1085,7 +1085,7 @@ The variance of the logarithm of a count is roughly
 the reciprocal of the count.
 
 (This doesn't work well if the count is near zero,  
-and not at all at zero.
+and not at all at exactly zero.
 For this reason a "continuity fudge" is applied, if necessary.)
 
 ```{r}
