@@ -644,6 +644,7 @@ div(fluidRow(
 * [Dr.Lump and Dr.Split have opinions about $Pr(R ~|~ D)$ !](#LumpOrSplit) 
 * [Who's right? Gotta choose! Classical significance test](#ClassicalTest)
 * [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
+* [Cross-validation to optimize](#Cross_validation)
 * [Bayes joint prior, logit scale](#Bayes_joint_prior).  
 * Approaches used in the famous ECMO data set. (ToDo)
 
@@ -915,7 +916,7 @@ TextQuestion('Why focus on this parameter?')
 QandAha(context='QA-parametrization')
 ```
 
-###  Optimizing the mixture with cross-validation <!-- #title -->
+###  <a class='threesharps' name='section-Cross_validation'>Optimizing the mixture with cross-validation </a><!-- #title -->
 
 Cross-validation is a technique in which  
 the performance of a model can be checked  
@@ -936,10 +937,13 @@ since each test set is of size one.
 
 For this example dataset,  
 we perform leave-one-out cross-validation, with a "least squares" penalty:  
-* If the one left out is a responder, $penalty$ =  $(1-prediction)^2$.  
-* If the one left out is a non-responder, $penalty$ =  $prediction^2$.  
+* If the one left out is a *responder*, $penalty$ =  $(1-prediction)^2$.  
+* If the one left out is a *non-responder*, $penalty$ =  $prediction^2$.  
 
-where the $prediction$ is based on the rest of the sample.
+where the $prediction$ is based on the rest of the sample, using the weights for $Lump$ and $Split$.  
+(Other penalty functions are sometimes used.)  
+
+
 
 ```{r Lump-Split-crossvalidation.R}
 jumpList_DTC = c(jumpList_DTC, crossvalidationPlot='Cross-validation plot')
@@ -957,10 +961,15 @@ fluidRow(
 ```
 
 
-The optimal weighting is at 0.73 for Split 0.27 for Lump. 
+Peek ahead by opening up ***"Jump to other analyses"***   
+to see how these optimal weights compare to the other methods.  
+
+For the original data, the optimal weighting is at 0.73 for Split (& 0.27 for Lump). 
 This achieves the lowest average penalty.  
 The predicted probability of response Pr(R|D)  is 38%.  
-Not as good as 50%, but a lot better than 7%.
+Not as good as 50%, but a lot better than 7%.  
+
+So this is another way of "borrowing strength" from the larger subgroup.
 
 
 ```{r TQ and QA for crossvalidation}
