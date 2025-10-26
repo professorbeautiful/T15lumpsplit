@@ -3,7 +3,7 @@
 
 printBDCProgress =  FALSE
 
-printBDCProgress = TRUE
+# printBDCProgress = TRUE
 
 # Usage:  bigDataComponent(analysisName='qValue')
 
