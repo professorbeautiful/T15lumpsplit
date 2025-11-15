@@ -1365,11 +1365,17 @@ Revisit the prior section: `r go_to_section()`
 
 ###	<a class='threesharps' name='section-featureImplausible'>Strong prior belief that the feature $X_{DL}$ is ***IMPORTANT*** </a> <!-- #title -->
 
-But what if D and L represent two alleles of a  
-gene shown to affect this drug's **pharmacodynamics**?  
+But what if D and L represent two variants of a  
+genotype shown to affect this drug's **pharmacodynamics**?  
+  
+Or, maybe  the D folks and the L folks got different isoforms of the medicine ?  
+The **D** folks got the **Dextro** form of the  drug, the **L** folks the **Levo** drug?
+
+<!--
 Or perhaps, $X_{DL} = D = dark hair$, $X_{DL} = L = light hair$,  
-but hair color is strongly tied to ethnicity in this sample 
+but hair color is strongly tied to ethnicity in this sample  
 … which is strongly tied to a key genetic variant.  
+-->
 
 Then "Dr. Who" may choose a prior odds  
 that favors ***Dr. Split***  over Dr.  Lump.  
