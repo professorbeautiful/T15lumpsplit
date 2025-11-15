@@ -804,8 +804,8 @@ the traditional consequence is that we use Dr. Split's estimate:
 
 ```{r Test_to_choose_who_is_right}
 
-Test_to_choose_who_is_right = function(thisData) {
-    Pvalue = fisher.test(thisData)$p.value
+Test_to_choose_who_is_right = function(thisData, chosentest=fisher.test) {
+    Pvalue = chosentest(thisData)$p.value
 
     lump = round(digits=2, sum(thisData['R', ])/
       sum(thisData[ , ]))
@@ -824,15 +824,23 @@ Test_to_choose_who_is_right = function(thisData) {
            confInterval_Lump=confInterval_Lump, whosRight=whosRight)
       )
 }
+testChoices <<-
+  list("Fisher exact test"=fisher.test, "chi square test"=chisq.test)
 output$fisherResult = renderUI({
   analysisName = 'Test_to_choose_who_is_right'
   source(analysisReactiveSetup_DTC, local=TRUE)
 
-  testresult = Test_to_choose_who_is_right(thisData)
+  
+  if(is.null(input$chosentest))
+    chosentest =fisher.test
+  else
+    chosentest = testChoices[[input$chosentest]]
+  
+  testresult = Test_to_choose_who_is_right(thisData, chosentest=chosentest)
 
   theText = paste(
     "If you change the data, <br>then the P value changes.<br>
-      With Fisher\'s test, the P value is  P = " ,
+      With ", strong(em(input$chosentest)), ",", br(), " the P value is  P = " ,
     strong(em(signif(digits=3, testresult$Pvalue))),
     ". <br>")
   if(testresult$Pvalue < 0.05) # pick Split
@@ -872,6 +880,8 @@ source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', 'T
 
 fluidRow(
   column(7, br(),br(),br(),br(),br(),
+         radioButtons(inputId ='chosentest', label = "which test to use", 
+                 choices = names(testChoices), selected = "Fisher exact test"),
          uiOutput('fisherResult')),
   column(5,
          br(),
