@@ -56,10 +56,14 @@ We might care only about ${\bf{p}}=Pr(\mathrm{response~given~D})={p_{R.D}}$.  Th
 
 Now we put a little asterisk $\pi^*$ over the $\pi$ to mean "posterior" (after seeing the data) instead of "prior" (before seeing the data).  That's nice, we don't have to keep writing "given the data" over and over.
 
-Averaging over $\phi$,  (that's the big green 'plus', $\large\bf\color{green}{+}$)
+Averaging over $\phi$,  (that's the big green 'plus', 
+$\large\bf\color{green}{+}$)
 Dr. Who’s posterior distribution for ${\bf{p}}$ is:
-$$\pi _{\Who}^*({p_{R.D}}) = \pi _{\Who}^*(\phi  = Split) \times \pi _{Split}^*({p_{R.D}})  
- ~\large\bf\color{green}{+}~ \pi _{\Who}^*(\phi  = Lump)\times \pi _{Lump}^*({p_{R.D}}),
+$$
+\begin{aligned}
+\pi _{\Who}^*({p_{R.D}}) = &~~~~~~\pi _{\Who}^*(\phi  = Split) \times \pi _{Split}^*({p_{R.D}})  \\
+ &~{\bf\color{green}{\large+}} ~ \pi _{\Who}^*(\phi  = Lump)\times \pi _{Lump}^*({p_{R.D}}),
+\end{aligned}
 $$
 
 
