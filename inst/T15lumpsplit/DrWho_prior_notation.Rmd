@@ -43,28 +43,33 @@ $$
 IN SUMMARY:
 
 To apply the Bayes theorem principles:  
-* We know the data, so we condition on $\bf{n}$.   
+* We know the data, so we condition on $\bf{n}$.  (Divide by its probability.)  
 * We dont' know (and don't care about) $\phi$  
-  ($\phi$, whether Dr.Lump or Dr.Split is correct, is the "nuisance parameter"), so we "marginalize" over it.  
+  ($\phi$, whether Dr.Lump or Dr.Split is correct, is the "nuisance parameter"), so we "marginalize" over it.  (Average over $\phi$.)
 * All that's left is $\bf{p}$, what we care about.  
 
 Now, the details:
 
 ### Dr. Who’s posterior distribution for ${\bf{p}}$
 
-Now we put a little asterisk $\pi^*$ over the $\pi$ to mean "posterior" (after seeing the data) instead of "prior" (before seeing the data).  
+We might care only about ${\bf{p}}=Pr(\mathrm{response~given~D})={p_{R.D}}$.  Then Bayes says, average over what you don't care about.
 
+Now we put a little asterisk $\pi^*$ over the $\pi$ to mean "posterior" (after seeing the data) instead of "prior" (before seeing the data).  That's nice, we don't have to keep writing "given the data" over and over.
+
+Averaging over $\phi$,  (that's the big green 'plus', $\large\bf\color{green}{+}$)
 Dr. Who’s posterior distribution for ${\bf{p}}$ is:
-$$\pi _{\Who}^*({p_{R.D}}) = \pi _{\Who}^*(\phi  = Split) \pi _{Split}^*({p_{R.D}})  
- + \pi _{\Who}^*(\phi  = Lump)\pi _{Lump}^*({p_{R.D}}),
+$$\pi _{\Who}^*({p_{R.D}}) = \pi _{\Who}^*(\phi  = Split) \times \pi _{Split}^*({p_{R.D}})  
+ ~\large\bf\color{green}{+}~ \pi _{\Who}^*(\phi  = Lump)\times \pi _{Lump}^*({p_{R.D}}),
 $$
+
+
 That means knowing  
 * the MARGINAL POSTERIOR probabilities  
 $~~~~~~~$ for Lump $\pi _{\Who}^*(\phi  = Lump)$ and Split  $\pi _{\Who}^*(\phi  = Split)$  
 * the CONDITIONAL POSTERIOR probability distributions  
 $~~~~~~~$ for ${\bf{p}}$ is  
-$\pi_{Lump}^*({p_{R.D}})$ if Lump is correct,  and  
- $\pi _{Split}^*({p_{R.D}}$)  if Split is correct.  
+$~~~~~~~~~~~~\pi_{Lump}^*({p_{R.D}})~~~~$ if Lump is correct,  and  
+ $~~~~~~~~~~~~\pi _{Split}^*({p_{R.D}}~~~~$)  if Split is correct.  
 
 So... how do we get THEM?
 
