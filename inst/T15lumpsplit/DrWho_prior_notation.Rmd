@@ -127,6 +127,7 @@ then the (marginal) probability of getting the data we observed is:
   $~~~~~~~$ $m_{Lump}$ = **`r   textOutput('mLump', inline=TRUE)`**.
 
 ***Calculating $m_{Lump}$:***   `r actionButton(class='sidebar', inputId='DrLumpEquation.Rmd', label =  'Dr Lump\'s Equation' )`  <!-- #title -->
+
 ```{r}
 
 #### this works!
