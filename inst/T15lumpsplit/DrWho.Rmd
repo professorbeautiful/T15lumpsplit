@@ -134,14 +134,28 @@ output$whoMixturePlot =
     )
     text(offset+0.65, 5, labels = "L",
          col='red', cex=1.5, pos=4)
-    onTop = par('usr')[4]  ## ['y2']
+    onTop = par('usr')[4] * 1.05  ## ['y2']
     #cat('onTop: ', onTop, '\n')
     ######  Mark the positions of the means.
-    text(0, onTop*1.05, col='black', xpd=NA, 
+    text(0, onTop, col='black', xpd=NA, 
          labels=expression(Means %=>% phantom('.')), cex=1, pos = 2, font=4)
-    text(posterior.mean.l, onTop*1.00, col='red', xpd=NA, labels="L", cex=1, pos = 3, font=4)
-    text(posterior.mean.s, onTop*1.00, col='blue', xpd=NA, labels="S", cex=1, pos = 3, font=4)
-    text(posterior.mean.w, onTop*1.00, col='darkgreen', xpd=NA, labels="W", cex=1, pos = 3, font=4)
+    letterVerticalPosition = -0.5 * par('usr')[4]
+    letterVerticalPosition = onTop
+    addCircledLetter(
+      pointLocation = c(posterior.mean.s, 0),
+      labelLocation = c(posterior.mean.s, letterVerticalPosition),
+      pch='S', col='blue', cex=1.)
+    addCircledLetter(
+      pointLocation = c(posterior.mean.l, 0),
+      labelLocation = c(posterior.mean.l, letterVerticalPosition),
+      pch='L', col='red', cex=1.)
+    addCircledLetter(
+      pointLocation = c(posterior.mean.w, 0),
+      labelLocation = c(posterior.mean.w, letterVerticalPosition),
+      pch='W', col='darkgreen', cex=1.)
+    # text(posterior.mean.l, onTop*1.00, col='red', xpd=NA, labels="L", cex=1, pos = 3, font=4)
+    # text(posterior.mean.s, onTop*1.00, col='blue', xpd=NA, labels="S", cex=1, pos = 3, font=4)
+    # text(posterior.mean.w, onTop*1.00, col='darkgreen', xpd=NA, labels="W", cex=1, pos = 3, font=4)
   })
 plotOutput('whoMixturePlot')
 WhoPriorProbNumericInput()

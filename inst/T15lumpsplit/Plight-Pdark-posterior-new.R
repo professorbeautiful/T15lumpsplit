@@ -42,6 +42,38 @@ calculatePlightPdarkPosterior = function(
        logitmu0=logit(mu0), mu0=mu0
     ))
 }
+addCircledLetter = function(labelLocation,
+                            pointLocation,
+                            bg=NA,
+                            col='black', circleColor='black',
+                            size=0.05, pch, cex=1,
+                            lwd=1, lcol='darkgreen', lty=2){
+  if(!missing(pointLocation)) {
+    lines(rbind(pointLocation, labelLocation),
+          lty=lty, lwd=lwd, xpd=NA, col=lcol)
+    symbols(add = TRUE,
+            x=pointLocation[1],
+            y=pointLocation[2],
+            circles=size/5,
+            col=circleColor, inches=F, bg=bg,
+            xpd=NA)
+    symbols(add = TRUE,
+            x=pointLocation[1],
+            y=0,
+            circles=size/5,
+            col=circleColor, inches=F, bg=bg,
+            xpd=NA)
+  }
+  symbols(add = TRUE,
+          x=labelLocation[1],
+          y=labelLocation[2],
+          circles = size, col=circleColor, inches=F, bg=bg,
+          xpd=NA)
+  points(x=labelLocation[1],
+         y=labelLocation[2],
+         pch = pch,
+         cex=cex, col=col, xpd=NA)
+}
 
 plotPlightPdarkPosterior = function(
   DLdata,
@@ -71,38 +103,7 @@ plotPlightPdarkPosterior = function(
   plot(0:1, 0:1, xlab = "Pr(R | D)", ylab = "Pr(R | L)", pch=" ",
        cex=2, xaxs='i', yaxs='i')
   abline(a=0, b=1, col='grey', lty=2, lwd=2)
-  addCircledLetter = function(labelLocation,
-                              pointLocation,
-                              bg=NA,
-                              col='black', circleColor='black',
-                              size=0.05, pch, cex=1,
-                              lwd=1, lcol='darkgreen', lty=2){
-    if(!missing(pointLocation)) {
-      lines(rbind(pointLocation, labelLocation),
-            lty=lty, lwd=lwd, xpd=NA, col=lcol)
-      symbols(add = TRUE,
-              x=pointLocation[1],
-              y=pointLocation[2],
-              circles=size/5,
-              col=circleColor, inches=F, bg=bg,
-              xpd=NA)
-      symbols(add = TRUE,
-              x=pointLocation[1],
-              y=0,
-              circles=size/5,
-              col=circleColor, inches=F, bg=bg,
-              xpd=NA)
-    }
-    symbols(add = TRUE,
-            x=labelLocation[1],
-            y=labelLocation[2],
-            circles = size, col=circleColor, inches=F, bg=bg,
-            xpd=NA)
-    points(x=labelLocation[1],
-           y=labelLocation[2],
-           pch = pch,
-           cex=cex, col=col, xpd=NA)
-  }
+
   # if(showS | showL) {
   #   #title('L = Lump, S = Split', col.main='orange')
   # }
@@ -197,9 +198,13 @@ plotPlightPdarkPosterior = function(
     lines(rep(postmean.p[1], 2), confints.p[ , 2],lwd=3)
 
   }
+  Spoint = c(x=DLdata['R', 'D']/sum(DLdata[ , 'D']),
+             y=DLdata['R', 'L']/sum(DLdata[ , 'L']) )
+  Lpoint = rep(times=2,
+               sum(DLdata[ 'R', ])/sum(DLdata) )
+  Wpoint = rValues$bivariateNormResults$postmean.p
+
   if(showS) {
-    Spoint = c(x=DLdata['R', 'D']/sum(DLdata[ , 'D']),
-               y=DLdata['R', 'L']/sum(DLdata[ , 'L']) )
     confInterval_D = binom.test(x = DLdata['R', 'D'],
                                 n = sum(DLdata[ , 'D'])
     )$conf.int
@@ -220,8 +225,6 @@ plotPlightPdarkPosterior = function(
       pch='S', col='blue', cex=1.4)
   }
   if(showL) {
-    Lpoint = rep(times=2,
-                 sum(DLdata[ 'R', ])/sum(DLdata) )
     confInterval = binom.test(x = sum(DLdata[ 'R', ]),
                               n = sum(DLdata))$conf.int
     #print(confInterval)
@@ -237,7 +240,6 @@ plotPlightPdarkPosterior = function(
   if(showW) {
     BayesFactor = DrWhoBayesFactor(DLdata)
     BayesProbSplit = BayesFactor/(1+BayesFactor)
-    Wpoint = rValues$bivariateNormResults$postmean.p
     #Wpoint = Spoint*BayesProbSplit + Lpoint*(1-BayesProbSplit)
     midpoint = Spoint[1]/2 + Lpoint[1]/2
     addCircledLetter(
