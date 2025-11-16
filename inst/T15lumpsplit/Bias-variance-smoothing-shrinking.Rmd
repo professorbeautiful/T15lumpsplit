@@ -1003,15 +1003,23 @@ are expressed by setting values for
 * shared additional variance (tau)  
 
 Dr. Split says there IS no shared variance:  tau=0.  
-Dr. Lump says it's ALL shared variance:  tau = 1. (Well,  almost all; a tiny phi for nice plotting.)
+Dr. Lump says it's ALL shared variance:  tau = 1. (Well,  almost all; a tiny phi for nice plotting.)  
+
+Dr.Who says, forget about you guys, I'm making my own prior!
+
+My prior variance within group (phi) equals 0.5  
+My prior shared additional variance (tau) equals 0.5  
+My shared prior mean (mu)  is 0.5.  
+So I, Dr. Who, present to you a Bayesian mango.
 
 
+The phi and the tau are relevant on the **logit** scale. See below for the details about logits. You can adjust to get just the mango you want, to describe an initial belief and uncertainty you are confortable with.  
 
 ```{r QA-smooth-joint-prior}
 QandAha('QA-smooth-joint-prior')
 ```
 Once we have this joint prior distribution,  
-we compute the joint posterior.
+we can compute the joint posterior distribution.
 
 
 ```{r Bivariate contour plot}
@@ -1056,32 +1064,26 @@ div(
 
 The raw Lump and Split the estimates and  confidence intervals are shown.  
 For Dr. Who, the estimate will be between Lump's and Split's,  
-and the confidence interval will be  narrower than  Split's.
+and the confidence interval will be  narrower than  Split's,  
+because the $L$ data is contributing but not dictating.
 
 To set the prior on the joint distribution of  
 Pr(R | D) and Pr(R | L), we first convert them to  
 logits ("logit" means "log(odds)").
+
 ```{r Details about the logit}
-### conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rmd')
-### can't render with mathjax
+conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rmd')
+### yes it will render with mathjax!
 ###
 ```
 
-The function ${odds:[0,1] \to {\Re ^ + }}$ represents a probability $p \in [0,1]$ as a non-negative number: $\left( {\frac{p}{{1 - p}}} \right)$. 
-
-The word  “logit”  means log odds: ${{\mathop{\rm logit}\nolimits}:[0,1] \to {\Re }}$, 
-
-defined by 
-${\mathop{\rm logit}\nolimits} (p) = \log \left( {\frac{p}{{1 - p}}} \right)$. 
-The inverse of the logit function is 
-${\mathop{\rm logit ^ {-1}}\nolimits} (z) = {\frac{\exp(z)}{{1 + \exp(z)}}}$.
-
-
-Then we set a bivariate normal distribution on the logits.
+Then we set our prior belief/uncertainty  distribution as a bivariate normal distribution on the logits of the two response probabilities.  
 
 We also convert the observed proportions to logits.  
-We estimate the variances using the delta method.  
-Details are here:
+We estimate the variances using the **delta method**.  
+That gives us confidence intervals.
+
+Details on the **delta method** are here:
 ```{r}
 conditionalPanelWithCheckboxPDF(
   labelString="The delta method", 
@@ -1090,13 +1092,14 @@ conditionalPanelWithCheckboxPDF(
 ```
 
 We can apply the delta method to the Poisson distribution,  
-useful for count data like the data in our table.  
+a distribution very useful for count data like the data in our table.  
 The variance of the logarithm of a count is roughly  
 the reciprocal of the count.
 
 (This doesn't work well if the count is near zero,  
 and not at all at exactly zero.
-For this reason a "continuity fudge" is applied, if necessary.)
+For this reason a "continuity fudge factor" is one of our parameters,
+necessary around the edges.)
 
 ```{r}
 
