@@ -5,7 +5,7 @@ The  Bayes Factor is the ratio of these marginal probabilities of the data,
 and also the ratio of posterior odds to prior odds:  
 
 $$
-BF = \frac{m_{Split}}{m_{Lump}} = \frac{Pr(Split|data)}{Pr(Lump|data)}
+BF = \mathrm{Bayes Factor} = \frac{m_{Split}}{m_{Lump}} = \frac{Pr(Split|data)}{Pr(Lump|data)}
 \div \frac{Pr(Split)}{Pr(Lump)}.
 $$
 
@@ -33,12 +33,15 @@ then the posterior odds is the Bayes factor times one,
 $$
 \rm{odds(}\phi  = Lump|data) = \frac{m_{Lump}}{{m_{Split}}} ~~~\times~~~ 1.
 $$
+which is `r DrWhoBayesFactor(thisData)`  
 and  the posterior probability that *Dr.Lump* is correct is
 
 $$
-\rm{Pr(}\phi  = Lump|data) = {m_{Lump}}/({m_{Split}} + {m_{Lump}}).
+\rm{Pr(}\phi =Lump|data)  = \frac{\rm{odds(}\phi  = Lump|data)}
+{1~+~\rm{odds(}\phi  = Lump|data) } 
+= {m_{Lump}}/({m_{Split}} + {m_{Lump}}).
 $$
-
+which is `r DrWhoBayesFactor(thisData)/(1+DrWhoBayesFactor(thisData))`
 
 
 More generally, 
@@ -56,6 +59,10 @@ output$bayesAverage = renderText({
 
   paste0('Pr(Lump) *  mLump + Pr(Split) * mSplit',
          '= ',
+         "(1/2) * ", mLump(thisData),
+         "+
+                  (1/2) * ", mSplit(thisData),
+         '=',
          signif(digits=3,
                 (1/2) * mLump(thisData) +
                   (1/2) * mSplit(thisData))
