@@ -171,8 +171,8 @@ observe( {
 Here is the R code to calculating the marginals and the Bayes factor  
 if you are interested:
   
-```{r DrWhoBayesFactor.R}
-DrWhoBayesFactor.code = readLines(con='DrWhoBayesFactor.R')
+```{r DrWhoBayesFactor-functions.R}
+DrWhoBayesFactor.code = readLines(con='DrWhoBayesFactor-functions.R')
 DrWhoBayesFactor.code = 
   HTML(gsub('  ', '&nbsp;&nbsp;',
             paste(DrWhoBayesFactor.code,

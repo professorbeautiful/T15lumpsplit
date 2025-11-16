@@ -1,4 +1,4 @@
-source('DrWhoBayesFactor.R', local=TRUE)
+source('DrWhoBayesFactor-functions.R', local=TRUE)
 source('Plight-Pdark-posterior-new.R', local=TRUE)
 source('QandAha.R', local=TRUE)
 source('TextQuestion.R', local=TRUE)
