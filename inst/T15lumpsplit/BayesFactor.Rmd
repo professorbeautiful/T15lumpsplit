@@ -28,12 +28,17 @@ for the original data, and if you have modified the numbers in the table,
 the Bayes factor is now `r textOutput('BF', inline=TRUE)`.
 
 If *Dr.Split* and *Dr.Lump* have equal prior probability (prior odds = 1),  
-then the posterior odds is the Bayes factor,  
+then the posterior odds is the Bayes factor times one, 
+
+$$
+\rm{odds(}\phi  = Lump|data) = \frac{m_{Lump}}{{m_{Split}}} ~~~\times~~~ 1.
+$$
 and  the posterior probability that *Dr.Lump* is correct is
 
 $$
 \rm{Pr(}\phi  = Lump|data) = {m_{Lump}}/({m_{Split}} + {m_{Lump}}).
 $$
+
 
 
 More generally, 
@@ -56,9 +61,13 @@ output$bayesAverage = renderText({
                   (1/2) * mSplit(thisData))
   )
 })
+
+output$postProb = shiny::renderText({round(digits=3,
+                                        posteriorProb(priorOdds = 1,
+                                                      theData=getDLdata('whoMixturePlot')))})
 ```
 which equals  `r textOutput('bayesAverage', inline=TRUE)`  
-for the current data table and a 50% 50% even odds for Lump and Split.
+for the current data table and Dr.Who's  50% 50% even odds for Lump and Split.
 
 You can adjust the prior probability and observe how  
 the posterior probability changes.  
@@ -71,4 +80,4 @@ If Dr. Who puts equal prior probability on *Lump* and *Split*,
 the Bayes factor is the same as the posterior odds.  
 Converting from odds to probability,  
 with the current data the posterior probability in favor of *Split*  
-equals `r output$postProb = shiny::renderText({round(digits=3, posteriorProb(theData=getDLdata('whoMixturePlot')))}); textOutput('postProb', inline=TRUE)`.
+equals `r  textOutput('postProb', inline=TRUE)`.
