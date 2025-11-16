@@ -51,7 +51,7 @@ output$whoMixturePlot =
            prior.w[everyTenth], pch='W', col='darkgreen')
     Sexpression = as.expression(
       bquote("S:  " * italic(
-        p[R.D]) %~% italic(Be*ta)(2, 2) )  )
+        p[R.D]) %~% italic(Be*ta)(1, 1) )  )
     text(0, 11, labels = Sexpression,
          col='blue', cex=1.5, pos=4
     )
@@ -102,11 +102,11 @@ output$whoMixturePlot =
     points(pSeq[everyTenth], posterior.w[everyTenth], 
            pch='W', col='darkgreen')
 
-    offset = 0.2
+    offset = 0.1
     Sexpression = as.expression(
       bquote("S:  " * italic(
-        p[R.D]) %~% italic(Be*ta)(2+.(nRD), 2+.(nND))) ) 
-    text(offset+0,11, labels = Sexpression,
+        p[R.D]) %~% italic(Be*ta)(1+.(nRD), 1+.(nND))) ) 
+    text(x = offset+0, 11, labels = Sexpression,
          col='blue', cex=1.5, pos=4, xpd=NA
     )
     Lexpression = as.expression(
