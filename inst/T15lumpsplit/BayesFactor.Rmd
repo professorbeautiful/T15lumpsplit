@@ -31,25 +31,18 @@ If *Dr.Split* and *Dr.Lump* have equal prior probability (prior odds = 1),
 then the posterior odds is the Bayes factor times one, 
 
 $$
-\rm{odds(}\phi  = Lump|data) = \frac{m_{Lump}}{{m_{Split}}} ~~~\times~~~ 1.
+\rm{odds(}\phi  = Split|data) = \frac{m_{Split}}{{m_{Lump}}} ~~~\times~~~ 1.
 $$
 which is `r DrWhoBayesFactor(thisData)`  
-and  the posterior probability that *Dr.Lump* is correct is
+and  the posterior probability that *Split* is correct is
 
 $$
-\rm{Pr(}\phi =Lump|data)  = \frac{\rm{odds(}\phi  = Lump|data)}
-{1~+~\rm{odds(}\phi  = Lump|data) } 
-= {m_{Lump}}/({m_{Split}} + {m_{Lump}}).
+\rm{Pr(}\phi =Split|data)  = \frac{\rm{odds(}\phi  = Split|data)}
+{1~+~\rm{odds(}\phi  = Split|data) } 
+= \frac{m_{Split}}{{m_{Split} + {m_{Lump}}}}.
 $$
-which is `r DrWhoBayesFactor(thisData)/(1+DrWhoBayesFactor(thisData))`
-
-
-More generally, 
-
-
-$$
-\Pr (R|D,Who) = \Pr (Lump|data) \times \Pr (R|D,Lump) + \Pr (Split|data) \times \Pr (R|D,Split),  
-$$
+which is `r DrWhoBayesFactor(thisData)/(1+DrWhoBayesFactor(thisData))`  
+That's true if the prior odds equals 1  (or 50/50).
 
 
 ```{r , echo=F}
