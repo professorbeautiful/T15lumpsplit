@@ -275,7 +275,7 @@ shinyDebuggingPanel::makeDebuggingPanelOutput(
    condition='ctrlDpressed === true')
 
 
-options(shiny.trace=TRUE)
+options(shiny.trace=FALSE)
 options(shiny.reactlog=TRUE)   ### TEMPORARY
 options(shiny.launch.browser=TRUE)
 reactlog_enable()
