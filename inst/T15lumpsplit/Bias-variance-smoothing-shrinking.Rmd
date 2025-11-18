@@ -644,8 +644,8 @@ div(fluidRow(
 * [Dr.Lump and Dr.Split have opinions about $Pr(R ~|~ D)$ !](#LumpOrSplit) 
 * [Who's right? Gotta choose! Classical significance test](#ClassicalTest)
 * [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
-* [Cross-validation to optimize](#Cross_validation)
 * [Bayes joint prior, logit scale](#Bayes_joint_prior).  
+* [Cross-validation to optimize](#Cross_validation)
 * Approaches used in the famous ECMO data set. (ToDo)
 
 
@@ -926,67 +926,6 @@ TextQuestion('Why focus on this parameter?')
 QandAha(context='QA-parametrization')
 ```
 
-###  <a class='threesharps' name='section-Cross_validation'>Optimizing the mixture with cross-validation </a><!-- #title -->
-
-Cross-validation is a technique in which  
-the performance of a model can be checked  
-as if on an independent dataset,  
-without actually having a separate dataset.  
-*$K$-fold cross-validation* divides the dataset into  
-K disjoint subsets of observations,  
-and loops over these sets.  
-Each subset is, in turn, used as a `test set`. 
-We remove it from the full dataset,  
-re-build the model on the reduced dataset (the `training set`),  
-and evaluate predictions of that model  
-on the removed observations in the test set.  
-Performance metrics are usually averaged across the $K$ repetitions.  
-When $K=N$, the size of the full dataset,  
-the procedure is called `leave-one-out cross-validation`,  
-since each test set is of size one.
-
-For this example dataset,  
-we perform leave-one-out cross-validation, with a "least squares" penalty:  
-* If the one left out is a *responder*, $penalty$ =  $(1-prediction)^2$.  
-* If the one left out is a *non-responder*, $penalty$ =  $prediction^2$.  
-
-where the $prediction$ is based on the rest of the sample, using the weights for $Lump$ and $Split$.  
-(Other penalty functions are sometimes used.)  
-
-
-
-```{r Lump-Split-crossvalidation.R}
-jumpList_DTC = c(jumpList_DTC, crossvalidationPlot='Cross-validation plot')
-source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
-
-source('Lump-Split-crossvalidation.R', local=TRUE)  # , echo = FALSE)
-
-fluidRow(
-  column(5, 
-         plotOutput('crossvalidationPlot')),
-  column(7,
-         br(),
-         dataTableComponent(analysisName='crossvalidationPlot'))
-)
-```
-
-
-Peek ahead by opening up ***"Jump to other analyses"***   
-to see how these optimal weights compare to the other methods.  
-
-For the original data, the optimal weighting is at 0.73 for Split (& 0.27 for Lump). 
-This achieves the lowest average penalty.  
-The predicted probability of response Pr(R|D)  is 38%.  
-Not as good as 50%, but a lot better than 7%.  
-
-So this is another way of "borrowing strength" from the larger subgroup.
-
-
-```{r TQ and QA for crossvalidation}
-TextQuestion("What advantage does the cross-validation approach here have, relative to the approaches of Drs. Split, Lump and Who?")
-QandAha('QA-for-crossvalidation')
-```
-
 ### <a class='threesharps' name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a> <!-- #title -->
 
 No more crude mixture of the two extreme views of   
@@ -1140,6 +1079,67 @@ QandAha('QA-joint-posterior')
 ```
 
 
+###  <a class='threesharps' name='section-Cross_validation'>Optimizing the mixture with cross-validation </a><!-- #title -->
+
+Cross-validation is a technique in which  
+the performance of a model can be checked  
+as if on an independent dataset,  
+without actually having a separate dataset.  
+*$K$-fold cross-validation* divides the dataset into  
+K disjoint subsets of observations,  
+and loops over these sets.  
+Each subset is, in turn, used as a `test set`. 
+We remove it from the full dataset,  
+re-build the model on the reduced dataset (the `training set`),  
+and evaluate predictions of that model  
+on the removed observations in the test set.  
+Performance metrics are usually averaged across the $K$ repetitions.  
+When $K=N$, the size of the full dataset,  
+the procedure is called `leave-one-out cross-validation`,  
+since each test set is of size one.
+
+For this example dataset,  
+we perform leave-one-out cross-validation, with a "least squares" penalty:  
+* If the one left out is a *responder*, $penalty$ =  $(1-prediction)^2$.  
+* If the one left out is a *non-responder*, $penalty$ =  $prediction^2$.  
+
+where the $prediction$ is based on the rest of the sample, using the weights for $Lump$ and $Split$.  
+(Other penalty functions are sometimes used.)  
+
+
+
+```{r Lump-Split-crossvalidation.R}
+jumpList_DTC = c(jumpList_DTC, crossvalidationPlot='Cross-validation plot')
+source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
+
+source('Lump-Split-crossvalidation.R', local=TRUE)  # , echo = FALSE)
+
+fluidRow(
+  column(5, 
+         plotOutput('crossvalidationPlot')),
+  column(7,
+         br(),
+         dataTableComponent(analysisName='crossvalidationPlot'))
+)
+```
+
+
+Peek ahead by opening up ***"Jump to other analyses"***   
+to see how these optimal weights compare to the other methods.  
+
+For the original data, the optimal weighting is at 0.73 for Split (& 0.27 for Lump). 
+This achieves the lowest average penalty.  
+The predicted probability of response Pr(R|D)  is 38%.  
+Not as good as 50%, but a lot better than 7%.  
+
+So this is another way of "borrowing strength" from the larger subgroup.
+
+
+```{r TQ and QA for crossvalidation}
+TextQuestion("What advantage does the cross-validation approach here have, relative to the approaches of Drs. Split, Lump and Who?")
+QandAha('QA-for-crossvalidation')
+```
+
 
 ### Summary table of estimates  <!-- #title -->
 
@@ -1260,30 +1260,30 @@ output$tableOfEstimates =
     testresult = Test_to_choose_who_is_right(thisData)
     testresult$selectedMean = ifelse(testresult$whosRight=='lump',
                                    testresult$lump, testresult$split)
-      means = rValues$means = c(
+    means = rValues$means = c(
         LumpRawMean,
         SplitRawMean,
         testresult$selectedMean,
         #rValues$estimates_choose_Lump_or_Split[[rValues$whosRight]],
         posterior.mean.w,
-        CVoptimalEstimate,
-        bivariateNormResults$postmean.p[1]
+        bivariateNormResults$postmean.p[1],
+        CVoptimalEstimate
       )
       weightsForLump = rValues$weightsForLump = c(
         1,
         0,
         c(lump=1, split=0)[testresult$whosRight],
         pProbLump,
-        1-CVoptimalWeight,
-        implicitWeights_ForLogit[2]
+        implicitWeights_ForLogit[2],
+        1-CVoptimalWeight
       )
       weightsForSplit = rValues$weightsForLump = c(
         0,
         1,
         c(lump=0, split=1)[testresult$whosRight],
         pProbSplit,
-        CVoptimalWeight,
-        implicitWeights_ForLogit[1]
+        implicitWeights_ForLogit[1],
+        CVoptimalWeight
       )
       
       #if(debuggingWithModals) 
@@ -1310,10 +1310,10 @@ output$tableOfEstimates =
       'Raw proportion (Lump)',
       'Raw proportion (Split)',
      paste('Test chooses ', whosRightCapitalized[testresult$whosRight]),
-#      paste('Test chooses ', rValues$whosRight),
+    # paste('Test chooses ', rValues$whosRight),
       "Dr.Who mixture posterior mean", 
-      "Cross-validation optimal",
-      'Bivariate inverse logit of logit posterior mean')
+      'Bivariate inverse logit of logit posterior mean',
+      "Cross-validation optimal")
 
   return( (result) )
   })
