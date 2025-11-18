@@ -1087,6 +1087,8 @@ we perform leave-one-out cross-validation, with a "least squares" penalty:
 
 where the $prediction$ is based on the rest of the sample, using the weights for $Lump$ and $Split$.  
 (Other penalty functions are sometimes used.)  
+(We add penalties over the four cells, not each patient.
+One could also weight these penalties by the number in each cell, heavily weighting the Pr(N|L) cell.  Or even omit the two L cells.)
 
 
 
@@ -1123,14 +1125,14 @@ QandAha('QA-for-crossvalidation')
 ```
 
 
-### Summary table of estimates  <!-- #title -->
+### SUMMARY of APPROACHES: table of estimates and weights  <!-- #title -->
 
 Assembling the Posterior probabilities and weights  
 for the approaches to estimating  
 Pr(R | D):
 
 ```{r tableOfEstimates}
-jumpList_DTC = c(jumpList_DTC, estimateTable='Summary table of estimates and weights')
+jumpList_DTC = c(jumpList_DTC, estimateTable='SUMMARY of APPROACHES')
 source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$tableOfEstimates = 
