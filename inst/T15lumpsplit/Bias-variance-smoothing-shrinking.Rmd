@@ -1259,7 +1259,7 @@ output$tableOfEstimates =
         implicitWeights_ForLogit[2],
         1-CVoptimalWeight
       )
-      weightsForSplit = rValues$weightsForLump = c(
+      weightsForSplit = rValues$weightsForSplit = c(
         0,
         1,
         c(lump=0, split=1)[testresult$whosRight],
@@ -1267,11 +1267,13 @@ output$tableOfEstimates =
         implicitWeights_ForLogit[1],
         CVoptimalWeight
       )
-      
+      CVpenalties = sapply( rValues$weightsForSplit, function(w)
+        doCVanalysis(thisData, w)[['penaltyAtOpt']])
       #if(debuggingWithModals) 
-        # showModal(modalDialog(title = 'data frame',
-        #                        means)   
-        #   )
+      # showModal(modalDialog(title = 'CVpenalties',
+      #                       CVpenalties)   
+      # )
+      print(CVpenalties)
 
   tryCatch.W.E = function(expr)
   {
@@ -1285,17 +1287,17 @@ output$tableOfEstimates =
          warning = W)
   }
   whosRightCapitalized <<- c(lump="Lump", split="Split", who="Who")
-
-    result = data.frame(means, weightsForLump, weightsForSplit)
-    result = as.data.frame(lapply(result, round, digits=2) )
-    rownames(result) = c(
-      'Raw proportion (Lump)',
-      'Raw proportion (Split)',
-     paste('Test chooses ', whosRightCapitalized[testresult$whosRight]),
+  
+  result = data.frame(means, weightsForSplit, weightsForLump, CVpenalties)
+  result = as.data.frame(lapply(result, round, digits=3) )
+  rownames(result) = c(
+    'Raw proportion (Lump)',
+    'Raw proportion (Split)',
+    paste('Test chooses ', whosRightCapitalized[testresult$whosRight]),
     # paste('Test chooses ', rValues$whosRight),
-      "Dr.Who mixture posterior mean", 
-      'Bivariate inverse logit of logit posterior mean',
-      "Cross-validation optimal")
+    "Dr.Who mixture posterior mean", 
+    'Bivariate inverse logit of logit posterior mean',
+    "Cross-validation optimal")
 
   return( (result) )
   })
