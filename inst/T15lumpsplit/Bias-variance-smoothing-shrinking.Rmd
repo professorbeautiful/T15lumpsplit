@@ -638,18 +638,18 @@ div(fluidRow(
 ```
 
 
-## Estimating Pr(R | D), several ways <!-- #title -->
+## Estimating Pr(R | D), several APPROACHES <!-- #title -->
 
 
-* [Dr.Lump and Dr.Split have opinions about $Pr(R ~|~ D)$ !](#LumpOrSplit) 
-* [Who's right? Gotta choose! Classical significance test](#ClassicalTest)
-* [Bayes mixture:  "Dr. Who"](#Bayes_mixture)
-* [Bayes joint prior, logit scale](#Bayes_joint_prior).  
-* [Cross-validation to optimize](#Cross_validation)
+* [APPROACH: Dr.Lump and Dr.Split have opinions about $Pr(R ~|~ D)$ !](#LumpOrSplit) 
+* [APPROACH: Who's right? Gotta choose! Classical significance test](#ClassicalTest)
+* [APPROACH: Bayes mixture:  "Dr. Who"](#Bayes_mixture)
+* [APPROACH: Bayes joint prior, logit scale](#Bayes_joint_prior).  
+* [APPROACH: Cross-validation to optimize](#Cross_validation)
 * Approaches used in the famous ECMO data set. (ToDo)
 
 
-### <a class='threesharps' name='section-LumpOrSplit'>Dr.Lump and Dr.Split reach different conclusions </a> <!-- #title -->
+### <a class='threesharps' name='section-LumpOrSplit'>APPROACH: Dr.Lump and Dr.Split reach different conclusions </a> <!-- #title -->
 
 ```{r analysis-plotLumpSplitPoints}
 
@@ -734,7 +734,7 @@ reflects this *high variance*.
 
 
 
-### <a class='threesharps' name='section-Variance-Bias'> Variance and bias refresher</a> <!-- #title -->
+#### <a class='foursharps' name='section-Variance-Bias'> Variance and bias refresher</a> <!-- #title -->
 
 #### <a class='foursharps' name='section-bias-variance-mse'>Bias, variance, and mean squared error</a> <!-- #title -->
 
@@ -774,7 +774,7 @@ conditionalPanelWithCheckboxPDF(labelString='The bias-variance axis',
 ```
 
 
-### <a class='threesharps' name='section-ClassicalTest'> Who's right? Dr.Who's gotta choose! Classical significance test</a> <!-- #title -->
+### <a class='threesharps' name='section-ClassicalTest'> APPROACH: Who's right? Dr.Who's gotta choose! Classical significance test</a> <!-- #title -->
 
 We COULD do an old fashioned significance test:  
   ***"Is $X_{DL}$ independent of the outcome Y?"***
@@ -895,7 +895,7 @@ QandAha('QA-fisher')
 ```
 
 
-### <a class='threesharps' name='section-Bayes_mixture'> Bayes mixture of smooth "Lump" and smooth "Split" prior beliefs</a> <!-- #title -->
+### <a class='threesharps' name='section-Bayes_mixture'> APPROACH: Bayes mixture of smooth "Lump" and smooth "Split" prior beliefs</a> <!-- #title -->
 
 
 ```{r DrWho, child = 'DrWho.Rmd'}
@@ -926,7 +926,7 @@ TextQuestion('Why focus on this parameter?')
 QandAha(context='QA-parametrization')
 ```
 
-### <a class='threesharps' name='section-Bayes_joint_prior'> Approach: Bayes joint prior, logit scale.</a> <!-- #title -->
+### <a class='threesharps' name='section-Bayes_joint_prior'> APPROACH: Bayes joint prior, logit scale.</a> <!-- #title -->
 
 No more crude mixture of the two extreme views of   
 "Dr. Lump" and "Dr. Split".  
@@ -1079,7 +1079,7 @@ QandAha('QA-joint-posterior')
 ```
 
 
-###  <a class='threesharps' name='section-Cross_validation'>Optimizing the mixture with cross-validation </a><!-- #title -->
+###  <a class='threesharps' name='section-Cross_validation'>APPROACH: Optimizing the mixture with cross-validation </a><!-- #title -->
 
 Cross-validation is a technique in which  
 the performance of a model can be checked  

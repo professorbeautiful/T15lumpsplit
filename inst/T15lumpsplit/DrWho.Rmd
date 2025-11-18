@@ -165,7 +165,7 @@ TextQuestion("Experiment with changing #RL in the range 2 to 9. What happens?  A
 QandAha('QA-whoMixturePlot')
 ```
 
-### The fundamental idea of Bayesian analysis, in 3 steps
+#### The fundamental idea of Bayesian analysis, in 3 steps
 
 ```{r }
 

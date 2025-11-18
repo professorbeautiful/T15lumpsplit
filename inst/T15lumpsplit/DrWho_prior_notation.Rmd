@@ -1,7 +1,7 @@
 
 
 
-### DETAILS: Bayes calculation of Dr. Who\'s prior and posterior probabilities" <!-- #title -->
+#### DETAILS: Bayes calculation of Dr. Who\'s prior and posterior probabilities" <!-- #title -->
 
 Here is a prior that represents Dr. Who's view that each one has their own personal ***prior*** belief, represented by each distribution $\pi _{Split}^{}({\bf{p}})$ or $\pi _{Lump}^{}({\bf{p}})$. 
 And, let's suppose for now that Dr. Who thinks that one or the other is absolutely correct. But "who knows which one?":
@@ -50,7 +50,7 @@ To apply the Bayes theorem principles:
 
 Now, the details:
 
-### Dr. Who’s posterior distribution for ${\bf{p}}$
+#### Dr. Who’s posterior distribution for ${\bf{p}}$
 
 We might care only about ${\bf{p}}=Pr(\mathrm{response~given~D})={p_{R.D}}$.  Then Bayes says, average over what you don't care about.
 
