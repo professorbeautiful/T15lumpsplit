@@ -166,10 +166,16 @@ The ***Bayes Factor*** in favor of ***Dr. Split*** is
 $~~~~~~~$ 
 $m_{Split}$/$m_{Lump}$  = **`r  textOutput('BFequation', inline=TRUE)`**  
 
-So the posterior probability $Pr(Split | data)$ = `r paste(
-  signif(digits=3,DrWhoBayesFactor(thisData)), ' / (1 + ', 
-  signif(digits=3,DrWhoBayesFactor(thisData)), ') = ',
-  signif(digits=3, oddsToProb(as.numeric(DrWhoBayesFactor(thisData)))))`
+```{r postprob}
+output$postprobexpression = renderUI(
+  HTML(paste0(
+    signif(digits=3,DrWhoBayesFactor(thisData)), ' / (1 + ', 
+    signif(digits=3,DrWhoBayesFactor(thisData)), ') = ',
+    strong(signif(digits=3, oddsToProb(as.numeric(DrWhoBayesFactor(thisData)))))
+  ))
+)
+```
+So the posterior probability  $Pr(Split | data)$ = `r uiOutput('postprobexpression', inline=TRUE)`.
 
 ***Fun facts about the Bayes Factors:***   `r actionButton(class='sidebar', inputId='BayesFactor.Rmd', label =  'Bayes Factors' )`  <!-- #title -->
 ```{r}
