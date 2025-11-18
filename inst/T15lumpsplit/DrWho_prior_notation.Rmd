@@ -162,9 +162,14 @@ output$BFequation = renderText({
 })
 ```
 
-The Bayes Factor in favor of Dr. Split is  
+The ***Bayes Factor*** in favor of ***Dr. Split*** is  
 $~~~~~~~$ 
-$m_{Split}$/$m_{Lump}$  = **`r  textOutput('BFequation', inline=TRUE)`**
+$m_{Split}$/$m_{Lump}$  = **`r  textOutput('BFequation', inline=TRUE)`**  
+
+So the posterior probability $Pr(Split | data)$ = `r paste(
+  signif(digits=3,DrWhoBayesFactor(thisData)), ' / (1 + ', 
+  signif(digits=3,DrWhoBayesFactor(thisData)), ') = ',
+  signif(digits=3, oddsToProb(as.numeric(DrWhoBayesFactor(thisData)))))`
 
 ***Fun facts about the Bayes Factors:***   `r actionButton(class='sidebar', inputId='BayesFactor.Rmd', label =  'Bayes Factors' )`  <!-- #title -->
 ```{r}
