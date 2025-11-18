@@ -908,24 +908,6 @@ QandAha('QA-fisher')
 QandAha('QA-DrWho')
 ```
 
-## Parametrizing the probabilities: likelihood functions <!-- #title -->
-
-We must dive deeper. We need some notation.  
-"\*Yawn\*"?   NO!  Exciting. Good notation is POWERFUL.
-
-<!-- #### parametrize.Rmd #### -->
-```{r parametrize.Rmd, child = 'Rmd-text-snippets/parametrize.Rmd'}
-```
-
-```{r Why focus on this parameter}
-TextQuestion('Why focus on this parameter?')
-```
-
-
-```{r QA-parametrization}
-QandAha(context='QA-parametrization')
-```
-
 ### <a class='threesharps' name='section-Bayes_joint_prior'> APPROACH: Bayes joint prior, logit scale.</a> <!-- #title -->
 
 No more crude mixture of the two extreme views of   
@@ -1340,6 +1322,24 @@ Dr. Lump or Dr. Split (respectively) is correct.
 QandAha('QA-Who-prior-probability')
 ```
 
+
+## Parametrizing the probabilities: likelihood functions <!-- #title -->
+
+We must dive deeper. We need some notation.  
+"\*Yawn\*"?   NO!  Exciting. Good notation is POWERFUL.
+
+<!-- #### parametrize.Rmd #### -->
+```{r parametrize.Rmd, child = 'Rmd-text-snippets/parametrize.Rmd'}
+```
+
+```{r Why focus on this parameter}
+TextQuestion('Why focus on this parameter?')
+```
+
+
+```{r QA-parametrization}
+QandAha(context='QA-parametrization')
+```
 
 # The role of external information, explored by introducing different identities for "D" and "L". <!-- #title -->
 
