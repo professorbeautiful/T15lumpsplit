@@ -139,7 +139,7 @@ then the (marginal) probability of getting the data we observed is:
 
 ***Calculating $m_{Lump}$:***   `r actionButton(class='sidebar', inputId='DrLumpEquation.Rmd', label =  'Dr Lump\'s Equation' )`  <!-- #title -->
 
-```{r}
+```{r showModal "Dr Lump\'s Equation"}
 
 #### this works!
 observe( {
@@ -153,9 +153,18 @@ observe( {
 }
 )
 ```
+```{r BFequation}
+output$BFequation = renderText({
+  #strong(
+    paste(#'xXXXX', #paste0(collapse='', rep('&nbsp;', 10)), 
+          signif(digits=3, mSplit(thisData)), '/',  signif(digits=3,mLump(thisData)), ' = ', signif(digits=3,DrWhoBayesFactor(thisData)))
+  #)
+})
+```
 
 The Bayes Factor in favor of Dr. Split is  
-$m_{Split}$/$m_{Lump}$=***`r paste(signif(digits=3, mSplit(thisData)), '/',  signif(digits=3,mLump(thisData)), ' = ', signif(digits=3,DrWhoBayesFactor(thisData)))`***
+$~~~~~~~$ 
+$m_{Split}$/$m_{Lump}$  = **`r  textOutput('BFequation', inline=TRUE)`**
 
 ***Fun facts about the Bayes Factors:***   `r actionButton(class='sidebar', inputId='BayesFactor.Rmd', label =  'Bayes Factors' )`  <!-- #title -->
 ```{r}
