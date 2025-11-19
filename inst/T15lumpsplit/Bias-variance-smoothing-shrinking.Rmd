@@ -1098,12 +1098,16 @@ source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', an
 
 source('Lump-Split-crossvalidation.R', local=TRUE)  # , echo = FALSE)
 
-fluidRow(
-  column(5, 
-         plotOutput('crossvalidationPlot')),
-  column(7,
-         br(),
-         dataTableComponent(analysisName='crossvalidationPlot'))
+div(
+  selectInput('penaltychoice', label = 'penalty function', selected = 1,
+              choices = names(penaltyFunctions)),
+  fluidRow(
+    column(5, 
+           plotOutput('crossvalidationPlot')),
+    column(7,
+           br(),
+           dataTableComponent(analysisName='crossvalidationPlot'))
+  )
 )
 ```
 
