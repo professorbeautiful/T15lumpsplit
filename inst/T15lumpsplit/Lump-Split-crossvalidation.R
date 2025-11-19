@@ -5,25 +5,25 @@
 penaltyFunctions <- list(
   'LEAST SQUARES' = function(outcome, prediction)
     switch(outcome, R=(1-prediction)^2, N=prediction^2),
-  'EXPONENTIAL' = function(outcome, prediction)
-    exp(-switch(outcome, R=1, N=-1)*prediction),
+  # 'EXPONENTIAL' = function(outcome, prediction)
+  #   exp(-switch(outcome, R=1, N=-1)*prediction),
   'LOG LIKELIHOOD X (-1)' =    function(outcome, prediction)
     -log(dbinom((outcome=='R'), size = 1, prob=prediction))
     )
 
+rValues$penaltyFunction = penaltyFunctions[['LEAST SQUARES']]
 
-
-observeEvent(x = input$penaltychoice, {
-  penaltyFunction <<- penaltyFunctions[[input$penaltychoice]]
+observeEvent(eventExpr = input$penaltychoice, {
+  rValues$penaltyFunction <<- penaltyFunctions[[input$penaltychoice]]
 })
 
 
 output$penaltyPlot = renderPlot({
 
   predictions = seq(0,1,length=100)
-  plot(predictions, penaltyFunction('R', predictions), type='l', col= 'red',
+  plot(predictions, rValues$penaltyFunction('R', predictions), type='l', col= 'red',
        xlab='predicted probability of R', ylab='penalty')
-  lines(predictions, penaltyFunction('N', predictions), col='blue')
+  lines(predictions, rValues$penaltyFunction('N', predictions), col='blue')
   text(0.15, 3/4 * par('usr')[4], 'if R', col='red')
   text(0.85, 3/4 * par('usr')[4], 'if N', col='blue')
 })
@@ -40,7 +40,7 @@ leaveOneOut <<- function(splitWeight=1/2, outcome, feature) {
   # proportion of responses in the D group
   prediction = splitWeight*proportionThisGroupSmaller + (1-splitWeight)*proportionOverallSmaller
   # shrinking towards proportionOverallSmaller
-  penalty = penaltyFunction(outcome, prediction) * thisData[outcome, feature]
+  penalty = rValues$penaltyFunction(outcome, prediction) * thisData[outcome, feature]
   return(penalty)
 }
 

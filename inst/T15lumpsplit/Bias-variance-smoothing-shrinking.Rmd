@@ -1099,8 +1099,13 @@ source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', an
 source('Lump-Split-crossvalidation.R', local=TRUE)  # , echo = FALSE)
 
 div(
-  selectInput('penaltychoice', label = 'penalty function', selected = 1,
-              choices = names(penaltyFunctions)),
+   fluidRow(
+    column(6, br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),
+           radioButtons('penaltychoice', label = 'penalty function', 
+                        selected = names(penaltyFunctions)[1],
+              choices = names(penaltyFunctions))),
+    column(6, plotOutput('penaltyPlot'))
+    ),
   fluidRow(
     column(5, 
            plotOutput('crossvalidationPlot')),
