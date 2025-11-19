@@ -1130,6 +1130,8 @@ So this is another way of "borrowing strength" from the larger subgroup.
 
 ```{r TQ and QA for crossvalidation}
 TextQuestion("What advantage does the cross-validation approach here have, relative to the approaches of Drs. Split, Lump and Who?")
+TextQuestion("This counts penalties for all patients. Should it only include penalties for the predictions for the D people?")
+TextQuestion("What other flaws does this method have?")
 QandAha('QA-for-crossvalidation')
 ```
 
