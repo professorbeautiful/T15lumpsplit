@@ -1,10 +1,16 @@
 ####   Lump-Split-crossvalidation
 ####    Illustrating cross-validation with the Dark-Light dataset
 
+predictionCutoff = 0.5
 
 penaltyFunctions <- list(
   'LEAST SQUARES' = function(outcome, prediction)
     switch(outcome, R=(1-prediction)^2, N=prediction^2),
+  'GAMBLING LOSS' = function(outcome, prediction)
+    switch(outcome, R=(1-prediction), N=prediction),
+  'MISCLASSIFICATION' = function(outcome, prediction)
+    switch(outcome, R=(prediction <= predictionCutoff),
+           N=(prediction >= predictionCutoff)),
   # 'EXPONENTIAL' = function(outcome, prediction)
   #   exp(-switch(outcome, R=1, N=-1)*prediction),
   'LOG LIKELIHOOD X (-1)' =    function(outcome, prediction)
