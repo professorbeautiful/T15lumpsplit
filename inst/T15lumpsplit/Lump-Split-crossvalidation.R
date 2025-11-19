@@ -107,11 +107,11 @@ output$crossvalidationPlot = renderPlot({
 
   plot(x=splitWeights,
        y=penaltyVector,
-         xlab='weight for Split',
+       xlab='weight on Split',
          ylab="",
          #     ylim=range(penaltyVector)),
          type='l', col='purple', axes=F)
-    axis(1)
+    axis(1, xlab='')
     axis(2, col='purple', col.axis='purple')
     mtext(text = 'penalty', side = 2, col='purple',line=2)
 
@@ -129,7 +129,7 @@ output$crossvalidationPlot = renderPlot({
     #####  adding a right-hand-side vertical axis #####
     par(new=T)  ## Which of course means "new=F"!
     plot(splitWeights, estimators, axes=F, type='l', lty=2,
-         col='black', ylab='', ylim=c(0.0, proportionThisGroup*1.05))
+         col='black', xlab='', ylab='', ylim=c(0.0, proportionThisGroup*1.05))
     axis(4, col='black', col.axis='black')
     mtext('estimate Pr(R|D)', side = 4, col='black', line = 2)
     points(optimalWeight, CVoptimalEstimate,
