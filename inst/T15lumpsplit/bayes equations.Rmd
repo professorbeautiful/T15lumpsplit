@@ -1,0 +1,19 @@
+
+
+$Pr(X ~~~~~~ \mathrm{and}~~~~~~~\phi ~~~~~~~~~ \mathrm{and}  ~~~~  \theta)$
+
+$Pr({all ~the ~unknowns}  ~~~~  \mathrm{given} ~~~~~~~{what's ~known} )$
+
+$Pr( ~~~\phi ~~~ \mathrm{and}  ~~  \theta~~~~~~~\mathrm{given} ~~~~~~~~~~~X)$
+
+$\frac{Pr(X ~~~~~~ \mathrm{and}~~~~~~~\phi ~~~~~~~~~ \mathrm{and}  ~~~~  \theta)}{Pr(X)}$
+
+
+
+(And beta equations)
+$\color{blue}{\beta(1,1) = p^0 \times (1-p)^0 =~1~=~~ 'flat'}$
+
+$\color{red}{\beta(2,2) = p \times (1-p) =~~ 'gentle ~ curve'}$
+
+
+$\color{green}{= \frac{1}{2}}\times\color{blue}{\large{1}} ~~+ ~~\color{green}{\frac{1}{2}} \times \color{red}{p  (1-p) }$
