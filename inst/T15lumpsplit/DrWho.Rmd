@@ -182,7 +182,7 @@ $\phi$:     whose prior opinion is right, is it $Split$ or $Lump$?
  
 ```{r}
 conditionalPanelWithCheckboxPDF(
-  labelString='(B)  Apply Bayes “theorem”:  Calculate the (posterior) distribution of the quantity of interest', 
+  labelString='(B)  Apply Bayes “theorem”:  Calculate the (posterior) distribution of the unknown quantities', 
    filename='./Overview_of_Bayesian_calculation_B.pdf',
   cbStringId='bayes_decision_analysis_B')
 ```
