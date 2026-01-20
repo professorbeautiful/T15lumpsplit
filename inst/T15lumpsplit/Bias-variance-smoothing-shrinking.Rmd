@@ -31,6 +31,7 @@ shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ## have disappeared!
 invisible(require(shinyjs) )
 invisible(require(knitr) )
+invisible(require(kableExtra) )
 shinyjs::useShinyjs(rmd = TRUE)
 options(shiny.error = browser)
 options(shiny.error = recover) 
@@ -1147,7 +1148,7 @@ jumpList_DTC = c(jumpList_DTC, estimateTable='SUMMARY of APPROACHES')
 source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$tableOfEstimates = 
-  renderTable(rownames = TRUE, {
+  renderUI( { #rownames = TRUE, {
     analysisName = 'estimateTable'
     
     source(analysisReactiveSetup_DTC, local=TRUE);
@@ -1306,18 +1307,37 @@ output$tableOfEstimates =
   rownames(result) = c(
     'Raw proportion (Lump)',
     'Raw proportion (Split)',
-    paste('Test chooses ', whosRightCapitalized[testresult$whosRight]),
+    #span(style='color:red', 
+         paste('Test chooses ',
+               whosRightCapitalized[testresult$whosRight])   , #),
     # paste('Test chooses ', rValues$whosRight),
     "Dr.Who mixture posterior mean", 
     'Bivariate inverse logit of logit posterior mean',
     "Cross-validation optimal")
-
-  return( (result) )
+  
+  wrapCSS = function(x, css) {
+    paste('<span style="', css, ';"> ', x, '</span>')
+  }
+  
+  x = kableExtra::kbl(result)  %>%
+             kable_styling(full_width = F)
+  # if(! is.null(rValues$savedTable)){
+  #   entriesChanged = (rValues$savedTable != result)
+  #   print(paste('entriesChanged:'))
+  #   x [entriesChanged] = 
+  #     wrapCSS(x [entriesChanged], "color:red")
+  #   x[1] = gsub("&gt;", '>', x[1])
+  #   x[1] = gsub("&lt;", '<', x[1])
+  # }
+  rValues$savedTable = result  # no css formatting
+  cat(print(x))
+  return( print(x) )
+  #return( (result) )
   })
 
 
 div(style='fontsize:large;', 
-    tableOutput('tableOfEstimates'),
+    uiOutput('tableOfEstimates'),
     WhoPriorProbNumericInput(),
     dataTableComponent(analysisName = 'estimateTable')
 )
