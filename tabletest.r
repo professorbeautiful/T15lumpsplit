@@ -1,5 +1,7 @@
 require('shiny')
 require('xtable')
+require('dplyr')
+require('kableExtra')
 app =  shinyApp(
   list(ui=bootstrapPage(
          div(h1('hello'),
