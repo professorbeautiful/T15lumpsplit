@@ -1308,9 +1308,9 @@ output$tableOfEstimates =
     'Raw proportion (Lump)',
     'Raw proportion (Split)',
     #span(style='color:red', 
-         paste('Test chooses ',
-               whosRightCapitalized[testresult$whosRight])   , #),
-    # paste('Test chooses ', rValues$whosRight),
+   #      paste('Test chooses ',
+    #           whosRightCapitalized[testresult$whosRight])   , #),
+    paste('Test chooses ', rValues$whosRight),
     "Dr.Who mixture posterior mean", 
     'Bivariate inverse logit of logit posterior mean',
     "Cross-validation optimal")
@@ -1318,9 +1318,9 @@ output$tableOfEstimates =
   wrapCSS = function(x, css) {
     paste('<span style="', css, ';"> ', x, '</span>')
   }
-  
-  x = kableExtra::kbl(result)  %>%
-             kable_styling(full_width = F)
+  print(result)
+  # x = kableExtra::kbl(result)  %>%
+  #            kable_styling(full_width = F)
   # if(! is.null(rValues$savedTable)){
   #   entriesChanged = (rValues$savedTable != result)
   #   print(paste('entriesChanged:'))
@@ -1330,9 +1330,9 @@ output$tableOfEstimates =
   #   x[1] = gsub("&lt;", '<', x[1])
   # }
   rValues$savedTable = result  # no css formatting
-  cat(print(x))
-  return( print(x) )
-  #return( (result) )
+  #(print(x))
+  #return( print(x) )
+  return( (result) )
   })
 
 
