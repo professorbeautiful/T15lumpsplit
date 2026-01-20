@@ -13,7 +13,91 @@ $\frac{Pr(X ~~~~~~ \mathrm{and}~~~~~~~\phi ~~~~~~~~~ \mathrm{and}  ~~~~  \theta)
 (And beta equations)
 $\color{blue}{\beta(1,1) = p^0 \times (1-p)^0 =~1~=~~ 'flat'}$
 
-$\color{red}{\beta(2,2) = p \times (1-p) =~~ 'gentle ~ curve'}$
+$\color{red}{\beta(2,2) = 6 p  (1-p) =~~ 'gentle ~ curve'}$
 
 
-$\color{green}{= \frac{1}{2}}\times\color{blue}{\large{1}} ~~+ ~~\color{green}{\frac{1}{2}} \times \color{red}{p  (1-p) }$
+$\color{green}{= \frac{1}{2}}\times\color{blue}{\large{1}} ~~+ ~~\color{green}{\frac{1}{2}} \times \color{red}{\beta (2,2) }$
+$\color{green}{= \frac{1}{2}}\times\color{blue}{\beta (1,1)} ~~+ ~~\color{green}{\frac{1}{2}} \times \color{red}{\beta (2,2) }$
+
+$$
+\begin{aligned}
+probability~of~everything~
+~&=~~~~~model ~~\times ~~~prior\\
+&~=[X~|~\psi,\theta]~~\times~~~ [\psi,\theta]] 
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+posterior~&=~[\psi,\theta~|~X]\\
+~&=~\frac{model \times prior}{marginal~of~data}\\
+&~=\frac{[X~|~\psi,\theta]\times [\psi,\theta]]} {[X]}
+\end{aligned}
+$$
+The denominator just adds up over all the unknowns:
+$$
+\begin{aligned}
+marginal~of~data~&=~ [X]\\
+~&=~ {\large{\Sigma}\left( [X~|~\psi,\theta]\times [\psi,\theta]]\right)}
+\end{aligned}
+$$
+
+Just sum out the unknown you don't care about.
+
+$$
+\begin{aligned}
+posterior~&=~[\theta~|~X]\\
+~&=~\frac {\large{\Sigma_\psi}\left(model \times prior\right)}{marginal~of~data}\\
+~&=~\large{\Sigma_\psi}\left(\frac {model \times prior}{\left[X\right]}\right)
+\end{aligned}
+$$
+You sum  $\Sigma_\psi$ over discrete don't-know-don't-cares,  
+and you integrate $\int_\psi$ over continuous-valued don't-know-don't-cares.  
+
+$$
+\begin{matrix}
+\mathrm{Think~ about}\begin{matrix} P(R|D)\\ P(R|L) \end{matrix} 
+~~~
+&\Rightarrow
+&~~~~~~~\left\{ 
+\mathrm{Prior~for~~ } 
+\begin{matrix} logit(P(R|D))\\ logit(P(R|L)) \end{matrix} 
+\right\} ~+~ Data\\
+~\\
+&&\Downarrow \mathrm{Calculate}\\
+~\\
+&&\left\{ 
+\begin{matrix}
+\mathrm{\\Posterior~for}
+\end{matrix}
+\begin{matrix} logit(P(R|D))\\ logit(P(R|L)) \end{matrix} 
+\right\}
+
+&&\Rightarrow  \mathrm{Undo~}logit
+&&\Rightarrow 
+\mathrm{Posterior~ for}\begin{matrix} P(R|D)\\ P(R|L) \end{matrix} 
+\end{matrix}
+$$
+
+
+$$
+\begin{pmatrix} logit(P(R|D)\\ logit(P(R|L) \end{pmatrix} 
+\mathrm{is ~distributed~as} ~~ 
+$$
+
+$$
+\mathcal{N} 
+  \left( \begin{pmatrix}
+    0 \\
+    0
+  \end{pmatrix} , 
+    \begin{pmatrix}
+    \tau+\phi  & \tau\\
+    \tau & \tau+\phi\\
+  \end{pmatrix} 
+  \right)
+$$
+Here, the two zeros are $logit(0.5)$, or generally $logit(\mu)$.
+
+(Besides mathcal, there's also fonts \usepackage[mathscr]{euscript} and \usepackage{mathrsfs})
+
