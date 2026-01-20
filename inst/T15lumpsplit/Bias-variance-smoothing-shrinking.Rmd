@@ -1307,10 +1307,11 @@ output$tableOfEstimates =
   rownames(result) = c(
     'Raw proportion (Lump)',
     'Raw proportion (Split)',
+     paste('Test chooses ', whosRightCapitalized[testresult$whosRight]),
     #span(style='color:red', 
    #      paste('Test chooses ',
     #           whosRightCapitalized[testresult$whosRight])   , #),
-    paste('Test chooses ', rValues$whosRight),
+    #paste('Test chooses ', rValues$whosRight),
     "Dr.Who mixture posterior mean", 
     'Bivariate inverse logit of logit posterior mean',
     "Cross-validation optimal")
@@ -1319,20 +1320,27 @@ output$tableOfEstimates =
     paste('<span style="', css, ';"> ', x, '</span>')
   }
   print(result)
-  # x = kableExtra::kbl(result)  %>%
-  #            kable_styling(full_width = F)
-  # if(! is.null(rValues$savedTable)){
-  #   entriesChanged = (rValues$savedTable != result)
-  #   print(paste('entriesChanged:'))
-  #   x [entriesChanged] = 
-  #     wrapCSS(x [entriesChanged], "color:red")
-  #   x[1] = gsub("&gt;", '>', x[1])
-  #   x[1] = gsub("&lt;", '<', x[1])
-  # }
+  rValues$newResultTable = result
+  x = kableExtra::kbl(result) # %>%
+             #kable_styling(full_width = F)
+  (print(x))
+
+   if(! is.null(rValues$savedTable)){
+     rValues$entriesChanged = entriesChanged =
+       (rValues$savedTable != result)
+     print(paste('entriesChanged:', table(entriesChanged)))
+     x [entriesChanged] =
+       wrapCSS(x [entriesChanged], "color:blue")
+     print(x)
+     x[1] = gsub("&gt;", '>', x[1])
+     x[1] = gsub("&lt;", '<', x[1])
+   }
+  
   rValues$savedTable = result  # no css formatting
-  #(print(x))
-  #return( print(x) )
-  return( (result) )
+  rValues$savedTableX = x  # 
+  print(paste('nchar ', nchar(x)))
+    return( print(x) )
+  #return( (result) )
   })
 
 
