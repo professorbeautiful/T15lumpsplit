@@ -1329,8 +1329,16 @@ output$tableOfEstimates =
   # (print(x))
    x = DT::datatable(result,  autoHideNavigation = T, 
             options=list(buttons=F,pageLength=nrow(result)))
-   print(rownames(x))
-#   x = DT::
+   #   print(rownames(x))   NULL.
+   #   x = DT::
+   x = formatStyle(x, columns = 0, 
+                   fontWeight=styleRow(1, 'bold'), #border=5,
+                   color=styleRow(1, 
+                                  values=c('red')),  
+                   # color=styleRow(1:3, 
+                   #                values=c('red','blue','green')),  
+                   , target='cell')
+   
    isolate({
    if(! is.null(rValues$savedTable)){
      entriesChanged =
