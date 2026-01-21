@@ -32,6 +32,7 @@ shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 invisible(require(shinyjs) )
 invisible(require(knitr) )
 invisible(require(kableExtra) )
+invisible(require(DT) )
 shinyjs::useShinyjs(rmd = TRUE)
 options(shiny.error = browser)
 options(shiny.error = recover) 
@@ -1320,21 +1321,12 @@ output$tableOfEstimates =
     paste('<span style="', css, ';"> ', x, '</span>')
   }
   print(result)
-  rValues$newResultTable = result
-  x = kableExtra::kbl(result) # %>%
+   rValues$newResultTable = result
+  # x = kableExtra::kbl(result) # %>%
+  #            #kable_styling(full_width = F)
+  # (print(x))
+   x = DT::datatable(result) # %>%
              #kable_styling(full_width = F)
-  (print(x))
-
-   if(! is.null(rValues$savedTable)){
-     rValues$entriesChanged = entriesChanged =
-       (rValues$savedTable != result)
-     print(paste('entriesChanged:', table(entriesChanged)))
-     x [entriesChanged] =
-       wrapCSS(x [entriesChanged], "color:blue")
-     print(x)
-     x[1] = gsub("&gt;", '>', x[1])
-     x[1] = gsub("&lt;", '<', x[1])
-   }
   
   rValues$savedTable = result  # no css formatting
   rValues$savedTableX = x  # 
@@ -1342,7 +1334,19 @@ output$tableOfEstimates =
     return( print(x) )
   #return( (result) )
   })
-
+  rValues$proxy = dataTableProxy('tableOfEstimates')
+  observeEvent(input$tableOfEstimates,{
+   if(! is.null(rValues$savedTable)){
+     rValues$entriesChanged = entriesChanged =
+       (rValues$savedTable != result)
+     print(paste('entriesChanged:', table(entriesChanged)))
+     # x [entriesChanged] =
+     #   wrapCSS(x [entriesChanged], "color:blue")
+     # print(x)
+     # x[1] = gsub("&gt;", '>', x[1])
+     # x[1] = gsub("&lt;", '<', x[1])
+   }
+ })
 
 div(style='fontsize:large;', 
     uiOutput('tableOfEstimates'),
