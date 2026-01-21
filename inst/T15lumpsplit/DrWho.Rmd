@@ -30,19 +30,25 @@ source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', an
 
 output$whoMixturePlot = 
   renderPlot(expr =  {
+    WhoPriorProb = rValues$WhoPriorProb
     analysisName = 'whoMixturePlot'
     source(analysisReactiveSetup_DTC, local=TRUE)
+    
     pSeq = seq(0,1, length=100)
     par(mfrow=c(1,2))
+    lwd.w = 4 
+    lwd.s = 1 
+    lwd.l = 1
+    
     prior.s = dbeta(pSeq, 1, 1)
     prior.l = dbeta(pSeq, 2, 2)
-    prior.w = rValues$WhoPriorProb * prior.s + (1-rValues$WhoPriorProb) * prior.l
-    plot(pSeq, prior.s, col='blue', type='l',
+    prior.w = WhoPriorProb * prior.s + (1-WhoPriorProb) * prior.l
+    plot(pSeq, prior.s, col='blue', type='l', lwd=lwd.s,
          xlab='probability', ylab='density',
          ylim=c(0,15),
          main='Priors') 
-    lines(pSeq, prior.l,  col='red')
-    lines(pSeq, prior.w,  col='darkgreen', lwd=2)
+    lines(pSeq, prior.l,  col='red', lwd=lwd.l)
+    lines(pSeq, prior.w,  col='darkgreen', lwd=lwd.w)
     everyTenth = (1:length(pSeq)) %% 10 == 0
     points(pSeq[everyTenth], 
            prior.s[everyTenth], pch='S', col='blue')
@@ -83,7 +89,7 @@ output$whoMixturePlot =
     #cat('mSplit is ', mSplit(thisData), '\n')
     #cat('mLump is ', mLump(thisData), '\n')
     #cat('DrWhoBayesFactor is ', DrWhoBayesFactor(thisData), '\n')
-    pProbSplit = posteriorProb(priorOdds = rValues$WhoPriorProb, theData=thisData)
+    pProbSplit = posteriorProb(priorOdds = WhoPriorProb, theData=thisData)
     pProbLump = (1-pProbSplit)
     posterior.w = pProbSplit * posterior.s + pProbLump * posterior.l
     posterior.mean.w = 
@@ -91,10 +97,11 @@ output$whoMixturePlot =
       pProbLump * posterior.mean.l
     plot(pSeq, posterior.s, col='blue', type='l',
          xlab='probability', ylab='density',
-         ylim=c(0,15),
-         main='Posterior densities and means') 
+         ylim=c(0,15)
+         # ,main='Posterior densities and means'
+         ) 
     lines(pSeq, posterior.l,  col='red')
-    lines(pSeq, posterior.w,  col='darkgreen', lwd=2)
+    lines.default(pSeq, posterior.w,  col='darkgreen', lwd=2)
 
     points(pSeq[everyTenth], posterior.s[everyTenth], 
            pch='S', col='blue')
