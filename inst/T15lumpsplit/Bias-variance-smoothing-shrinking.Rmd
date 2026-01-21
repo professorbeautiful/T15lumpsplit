@@ -1150,7 +1150,8 @@ source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', an
 
 output$tableOfEstimates = 
   renderDataTable( server=FALSE, { #rownames = TRUE, {
-    #server =FALSE    allows the nav stuff to be hidden.
+    #server =FALSE    allows the navigation stuff to be hidden.
+    #reloadData() only works for tables in the server-side processing mode, e.g. tables rendered with renderDataTable(server = TRUE)
     analysisName = 'estimateTable'
     
     source(analysisReactiveSetup_DTC, local=TRUE);
@@ -1330,8 +1331,9 @@ output$tableOfEstimates =
             options=list(buttons=F,pageLength=nrow(result)))
    print(rownames(x))
 #   x = DT::
+   isolate({
    if(! is.null(rValues$savedTable)){
-     rValues$entriesChanged = entriesChanged =
+     entriesChanged =
        (rValues$savedTable != result)
      print('entriesChanged:')
      print(table(entriesChanged))
@@ -1345,7 +1347,7 @@ output$tableOfEstimates =
            x = formatStyle(x, columns = icol, 
               fontWeight=styleRow(irow, 'bold'), #border=5,
               color=styleRow(irow, values=c( color='red'))  
-              , type='cell', target='cell')
+              , target='cell')
          }
        }
      #   wrapCSS(x [entriesChanged], "color:blue")
@@ -1354,13 +1356,16 @@ output$tableOfEstimates =
    }
   rValues$savedTable = result  # no css formatting
   rValues$savedTableX = x  # 
+   })
   #print(paste('nchar ', nchar(x)))
     return( print(x) )
   #return( (result) )
   })
 
   rValues$proxy = dataTableProxy('tableOfEstimates')
-
+# this works: selectRows(rValues$proxy, 2)
+  # Not this:  selectCells(rValues$proxy, selected = matrix(c(1:4),nrow=2) )
+  
  #    observeEvent(input$tableOfEstimates,{
  #   if(! is.null(rValues$savedTable)){
  #     rValues$entriesChanged = entriesChanged =
