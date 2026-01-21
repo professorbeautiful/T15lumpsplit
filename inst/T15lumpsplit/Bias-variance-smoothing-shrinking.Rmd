@@ -1149,7 +1149,8 @@ jumpList_DTC = c(jumpList_DTC, estimateTable='SUMMARY of APPROACHES')
 source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$tableOfEstimates = 
-  renderUI( { #rownames = TRUE, {
+  renderDataTable( server=FALSE, { #rownames = TRUE, {
+    #server =FALSE    allows the nav stuff to be hidden.
     analysisName = 'estimateTable'
     
     source(analysisReactiveSetup_DTC, local=TRUE);
@@ -1321,35 +1322,60 @@ output$tableOfEstimates =
     paste('<span style="', css, ';"> ', x, '</span>')
   }
   print(result)
-   rValues$newResultTable = result
+  rValues$newResultTable = result
   # x = kableExtra::kbl(result) # %>%
   #            #kable_styling(full_width = F)
   # (print(x))
-   x = DT::datatable(result) # %>%
-             #kable_styling(full_width = F)
-  
-  rValues$savedTable = result  # no css formatting
-  rValues$savedTableX = x  # 
-  print(paste('nchar ', nchar(x)))
-    return( print(x) )
-  #return( (result) )
-  })
-  rValues$proxy = dataTableProxy('tableOfEstimates')
-  observeEvent(input$tableOfEstimates,{
+   x = DT::datatable(result,  autoHideNavigation = T, 
+            options=list(buttons=F,pageLength=nrow(result)))
+   print(rownames(x))
+#   x = DT::
    if(! is.null(rValues$savedTable)){
      rValues$entriesChanged = entriesChanged =
        (rValues$savedTable != result)
-     print(paste('entriesChanged:', table(entriesChanged)))
-     # x [entriesChanged] =
+     print('entriesChanged:')
+     print(table(entriesChanged))
+     for(irow in 1:nrow(result))
+       for(icol in 1:ncol(result)) {
+         if(rValues$savedTable[irow,icol]
+            != result[irow,icol]){
+           print(paste('entriesChanged', irow, ', ', icol, 
+                       ' from ', rValues$savedTable[irow,icol], 
+                       'to', result[irow,icol]))
+           x = formatStyle(x, columns = icol, 
+              fontWeight=styleRow(irow, 'bold'), #border=5,
+              color=styleRow(irow, values=c( color='red'))  
+              , type='cell', target='cell')
+         }
+       }
      #   wrapCSS(x [entriesChanged], "color:blue")
-     # print(x)
      # x[1] = gsub("&gt;", '>', x[1])
      # x[1] = gsub("&lt;", '<', x[1])
    }
- })
+  rValues$savedTable = result  # no css formatting
+  rValues$savedTableX = x  # 
+  #print(paste('nchar ', nchar(x)))
+    return( print(x) )
+  #return( (result) )
+  })
+
+  rValues$proxy = dataTableProxy('tableOfEstimates')
+
+ #    observeEvent(input$tableOfEstimates,{
+ #   if(! is.null(rValues$savedTable)){
+ #     rValues$entriesChanged = entriesChanged =
+ #       (rValues$savedTable != result)
+ #     print(paste('entriesChanged:', table(entriesChanged)))
+ #     # x [entriesChanged] =
+ #     #   wrapCSS(x [entriesChanged], "color:blue")
+ #     # print(x)
+ #     # x[1] = gsub("&gt;", '>', x[1])
+ #     # x[1] = gsub("&lt;", '<', x[1])
+ #   }
+ # })
 
 div(style='fontsize:large;', 
-    uiOutput('tableOfEstimates'),
+    dataTableOutput('tableOfEstimates'),
     WhoPriorProbNumericInput(),
     dataTableComponent(analysisName = 'estimateTable')
 )
