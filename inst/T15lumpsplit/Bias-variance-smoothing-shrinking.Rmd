@@ -390,9 +390,11 @@ includeCSS('lumpsplit.css')
 
 ```{r UI_begins}
 require(shinyBS)
-source('gitbranch.txt')
+gitbranchText=''
+if(file.exists('gitbranch.txt'))
+    gitbranchText = paste('Branch: ', readLines('gitbranch.txt'))
 ```
-*Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')` Branch: `cat(gitbranch)`  <br>  Author: Roger Day <br> An interactive "shiny" app. Visit [statisticsbeautiful](https://www.youtube.com/@statisticsbeautiful) for videos.*
+*Package:T15lumpsplit  `r packageVersion('T15lumpsplit')`  `r packageDate('T15lumpsplit')` `r gitbranchText`  <br>  Author: Roger Day <br> An interactive "shiny" app. Visit [statisticsbeautiful](https://www.youtube.com/@statisticsbeautiful) for videos.*
 
 
 # OVERVIEW   <!-- #title -->
