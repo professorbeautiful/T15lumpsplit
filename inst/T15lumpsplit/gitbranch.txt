@@ -1,0 +1,1 @@
+* master      6cb26bc [ahead 1] why not include the branch info

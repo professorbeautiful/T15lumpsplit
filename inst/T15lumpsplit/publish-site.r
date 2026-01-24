@@ -14,8 +14,9 @@ write(file = 'gitbranch.txt',
 
 appName = 'Bias-variance-smoothing-shrinking-3'
 appTitle = 'The group vs    the individual.'
-appDir = ifelse(basename(getwd()) == 'appPA', '.', 'appPA')
-appDir = '.'
+appPrimaryDoc = 'Bias-variance-smoothing-shrinking.Rmd'
+#appDir = ifelse(basename(getwd()) == 'appPA', '.', 'appPA')
+appDir = 'inst/T15lumpsplit/'
 logLevel = c("normal", "quiet", "verbose") [3]
 
 # launch.browser.bad = getOption("rsconnect.launch.browser",
@@ -27,7 +28,7 @@ rsconnect::deployApp(
   appDir = appDir,
   appFiles = NULL,
   appFileManifest = NULL,
-  appPrimaryDoc = NULL,
+  appPrimaryDoc = appPrimaryDoc,
   appName = appName,
   appTitle = appTitle,
   envVars = NULL,
@@ -51,8 +52,7 @@ rsconnect::deployApp(
   image = NULL,
   envManagement = NULL,
   envManagementR = NULL,
-  envManagementPy = NULL,
-  space = NULL
+  envManagementPy = NULL
 )
 
 #_site.yml
