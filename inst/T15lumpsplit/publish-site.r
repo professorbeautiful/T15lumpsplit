@@ -1,6 +1,6 @@
 
 ### you may need shinyDebuggingPanel installed fresh
-#  devtools::install_github('professorbeautiful/shinyDebuggingPanel')
+devtools::install_github('professorbeautiful/shinyDebuggingPanel')
 
 
 #  git push --set-upstream origin NEWBRANCHNAME
