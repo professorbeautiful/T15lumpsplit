@@ -1339,8 +1339,8 @@ output$tableOfEstimates =
    testresultColor =  ifelse(testresult$whosRight=='lump',
                              "red", "blue")
    print(paste('testresultColor', testresultColor))
-   x = formatStyle(x, columns = 0, 
-                   #fontWeight=styleRow(1, 'bold'), #border=5,
+   x = formatStyle(x, columns = 0:5, 
+                   fontWeight=styleRow(6, 'bold'), #border=5,
                    color=styleRow(1:5, 
                                   values=c('red','blue',
                                           testresultColor,
