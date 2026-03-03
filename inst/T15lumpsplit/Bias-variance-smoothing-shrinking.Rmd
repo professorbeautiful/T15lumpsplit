@@ -1087,8 +1087,10 @@ since each test set is of size one.
 
 For this example dataset,  
 we perform leave-one-out cross-validation, with a "LEAST SQUARES" penalty:  
-* If the one left out is a *responder*, $penalty$ =  $(1-prediction)^2$.  
-* If the one left out is a *non-responder*, $penalty$ =  $prediction^2$.  
+* If the one left out is a *responder*,  
+$penalty$ =  $(1-prediction)^2$.  
+* If the one left out is a *non-responder*,  
+ $penalty$ =  $prediction^2$.  
 
 where the $prediction$ is based on the rest of the sample, using the weights for $Lump$ and $Split$.  
 (Other penalty functions are sometimes used.)  
