@@ -7,22 +7,41 @@ calculatePlightPdarkPosterior = function(
   addFudge = TRUE
 ) {
   #### bivariate normal contours ####
+  printpaste('DLdata 1---', DLdata)
+
   logit.hat = logit(apply(DLdata, 'feature', function(r)r[1]/sum(r)))
   #varhat = apply(DLdata, 'feature', function(r)sum(1/r))
-  if(any(DLdata==0)) fudgeFactor = max(fudgeFactor, 0.001)
+#  if(any(DLdata==0))
+    fudgeFactor = max(fudgeFactor, 0.001, na.rm = T)
   # if wanted, or if needed (if any zero cells).
+  printpaste('fudgeFactor ', fudgeFactor)
+  printpaste('DLdata 2---', DLdata)
   DLdataFudged = DLdata + fudgeFactor
+  printpaste('DLdataFudged', DLdataFudged)
   logit.hat.fudged = logit(apply(DLdataFudged, 'feature', function(r)r[1]/sum(r)))
   varhat.fudged = apply(DLdataFudged, 'feature', function(r)sum(1/r))
+  printpaste('varhat.fudged', varhat.fudged)
   ### deltat method with protection from zero's.
+  if(length(tau) == 0) tau = 1
+  if(length(phi) == 0) phi = 1
+  if(length(mu0) == 0) mu0 = 1
+  printpaste('tau', tau)
+  printpaste('phi', phi)
+
   sig11 = sig12 = sig21 = matrix(c(tau+phi,tau,tau,tau+phi),nrow=2)
+  printpaste('sig11', sig11)
   sig22 = sig11 + diag(varhat.fudged)   ## marginal variance of the data?
   logit.prior.mean = logit(c(mu0, mu0))
+  printpaste('logit.prior.mean', logit.prior.mean)
+
   ## always use fudged here:
   postmean.logit = logit.prior.mean +
     sig12%*%solve(sig22) %*% (logit.hat.fudged-logit.prior.mean)
+  printpaste('postmean.logit', postmean.logit)
   postmean.p = antilogit(postmean.logit)
+  printpaste('postmean.p', postmean.p)
   postvar.logit = sig11 - sig12%*%solve(sig22)%*%sig21
+  printpaste('postvar.logit', postvar.logit)
   Jac = function(p) p^(-1)+(1-p)^(-1)
   postvar.p = sapply(1:2, function(d) postvar.logit[d]/Jac(postmean.p)^2)
   confints.logit = sapply(1:2,
