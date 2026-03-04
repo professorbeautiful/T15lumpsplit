@@ -1360,34 +1360,34 @@ output$tableOfEstimates =
                     , target='cell')
    
    isolate({
-   if(! is.null(rValues$savedTable)){
-     entriesChanged =
-       (rValues$savedTable != result)
-     print('entriesChanged:')
-     print(table(entriesChanged))
-     for(irow in 1:nrow(result))
-       for(icol in 1:ncol(result)) {
-         if(rValues$savedTable[irow,icol]
-            != result[irow,icol]){
-           print(paste('entriesChanged', irow, ', ', icol, 
-                       ' from ', rValues$savedTable[irow,icol], 
-                       'to', result[irow,icol]))
-           x = formatStyle(x, columns = icol, 
-              fontWeight=styleRow(irow, 'bold'), #border=5,
-              color=styleRow(irow, values=c( color='purple'))  
-              , target='cell')
-         }
-       }
-     #   wrapCSS(x [entriesChanged], "color:blue")
-     # x[1] = gsub("&gt;", '>', x[1])
-     # x[1] = gsub("&lt;", '<', x[1])
-   }
-  rValues$savedTable = result  # no css formatting
-  rValues$savedTableX = x  # 
+     # if(! is.null(rValues$savedTable)){
+     #   entriesChanged =
+     #     (rValues$savedTable != result)
+     #   print('entriesChanged:')
+     #   print(table(entriesChanged))
+     #   for(irow in 1:nrow(result))
+     #     for(icol in 1:ncol(result)) {
+     #       if(rValues$savedTable[irow,icol]
+     #          != result[irow,icol]){
+     #         print(paste('entriesChanged', irow, ', ', icol, 
+     #                     ' from ', rValues$savedTable[irow,icol], 
+     #                     'to', result[irow,icol]))
+     #         x = formatStyle(x, columns = icol, 
+     #                         fontWeight=styleRow(irow, 'bold'), #border=5,
+     #                         color=styleRow(irow, values=c( color='purple'))  
+     #                         , target='cell')
+     #       }
+     #     }
+     #   #   wrapCSS(x [entriesChanged], "color:blue")
+     #   # x[1] = gsub("&gt;", '>', x[1])
+     #   # x[1] = gsub("&lt;", '<', x[1])
+     # }
+     rValues$savedTable = result  # no css formatting
+     rValues$savedTableX = x  # 
    })
-  #print(paste('nchar ', nchar(x)))
-    return( print(x) )
-  #return( (result) )
+   #print(paste('nchar ', nchar(x)))
+   return( print(x) )
+   #return( (result) )
   })
 
   rValues$proxy = dataTableProxy('tableOfEstimates')
