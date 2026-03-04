@@ -669,13 +669,17 @@ output$plotLumpSplitPoints = renderPlot(
     #cat('plotLumpSplitPoints: renderPlot', paste(thisData), '\n')
     #cat('plotLumpSplitPoints: renderPlot', paste(getDLdata(analysisName)), '\n')
     bivariateNormResults = #rValues$bivariateNormResults <<-
-      calculatePlightPdarkPosterior(
+      try( {
+        calculatePlightPdarkPosterior(
         DLdata=thisData,
         tau=ifelse(is.null(input$tau), 1, input$tau),
         phi=ifelse(is.null(input$phi), 1, input$phi),
         mu0=ifelse(is.null(input$mu0), 0.5, input$mu0),
         fudgeFactor=ifelse(is.null(input$fudgeFactor), 1e-6, input$fudgeFactor)
       ) 
+      })
+    if(inherits(bivariateNormResults, "try-error"))
+    return(NULL)
     #cat('plotLumpSplitPoints: ', names(bivariateNormResults), '\n')
 
     plotPlightPdarkPosterior(
@@ -1867,7 +1871,8 @@ fun.BHtable = function(){
     # cat('qStarID:', input$qStarID, '\n')
     as.numeric(input$qStarID)
   })
-  if(class(tryResult) == 'try-error' | is.null(tryResult) |is.na(tryResult)) {
+  if(inherits(tryResult, "try-error")
+     | is.null(tryResult) |is.na(tryResult)) {
     qStar = 0
   } else qStar = tryResult
   rValues$BHtable = makeBHtable(

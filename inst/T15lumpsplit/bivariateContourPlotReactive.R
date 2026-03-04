@@ -122,9 +122,16 @@ output$colorForDoctorSelected = renderText(
 
 output$posteriorMean = renderUI(
   {
+    theMean = try({
+      rValues$bivariateNormResults$postmean.p[1]})
+    print(paste('theMeans ', theMean))
+    if(inherits(theMean, "try-error")
+       | (length(theMean) != 1) ) {
+      return(div())
+    }
     div(style=paste0('text-align:center; color:', colorsForDoctors[rValues$doctorSelected]),
         paste("posterior mean for Pr(R | D) = ",
-              signif(digits=2,  rValues$bivariateNormResults$postmean.p[1]))
+              signif(digits=2,  theMean))
     )
   #ColorForPosterior)
   }
@@ -183,7 +190,8 @@ output$title_1_ID = renderUI({rValues$title_1})
 output$title_2_ID = renderUI({rValues$title_2})
 output$title_3_ID = renderUI({rValues$title_3})
 
-output$thePlot = renderPlot(height=250,
+thePlot = try({
+  renderPlot(height=250,
                             {
                               par(mai=c(1,1,1,0.6))
                               par(mar=c(4,4,2,2) + 0.2)
@@ -191,4 +199,9 @@ output$thePlot = renderPlot(height=250,
                               par(pty='s')
                               plotPlightPdarkPosteriorReactive()
                             })
+})
+if(inherits(thePlot, "try-error")) {
+  output$thePlot = NULL
+} else
+  output$thePlot = thePlot
 ###
