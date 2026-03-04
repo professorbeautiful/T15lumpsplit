@@ -1,4 +1,8 @@
 
+
+appName = 'Bias-variance-smoothing-shrinking-3'
+appURL = paste0('https://trials.shinyapps.io/', appName)
+logURL = paste0('https://shinyapps.io/', 'admin')
 ### you may need shinyDebuggingPanel installed fresh
 devtools::install_github('professorbeautiful/shinyDebuggingPanel')
 
@@ -12,7 +16,6 @@ write(file = 'gitbranch.txt',
 )
 ### Read by server. We can use shinyDebuggingPanel to view it.
 
-appName = 'Bias-variance-smoothing-shrinking-3'
 appTitle = 'The group vs    the individual.'
 appPrimaryDoc = 'Bias-variance-smoothing-shrinking.Rmd'
 #appDir = ifelse(basename(getwd()) == 'appPA', '.', 'appPA')
