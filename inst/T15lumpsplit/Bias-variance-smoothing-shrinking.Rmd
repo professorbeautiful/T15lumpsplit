@@ -23,6 +23,13 @@ knitr::opts_chunk$set(echo = FALSE)
 options(knitr.duplicate.label = 'allow')
 shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
+```{r}
+  printpaste = function(intro, ..., ppverbose=1, ppcollapse=', ') {
+    if(verbose>ppverbose)
+      print(paste(intro, paste(collapse=ppcollapse, ...)))
+  }
+verbose = 2
+```
 
 ```{r invisible packages, context="server", message=FALSE, warning=FALSE}
 ## ok, adding message=FALSE, warning=FALSE succeeds in suppressing
