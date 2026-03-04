@@ -24,11 +24,11 @@ options(knitr.duplicate.label = 'allow')
 shiny::addResourcePath("shinyjs", system.file("srcjs", package = "shinyjs"))
 ```
 ```{r}
-  printpaste = function(intro, ..., ppverbose=1, ppcollapse=', ') {
+  printpaste <<- function(intro, ..., ppverbose=1, ppcollapse=', ') {
     if(verbose>ppverbose)
       print(paste(intro, paste(collapse=ppcollapse, ...)))
   }
-verbose = 2
+verbose <<- 2
 ```
 
 ```{r invisible packages, context="server", message=FALSE, warning=FALSE}
@@ -45,7 +45,7 @@ options(shiny.error = browser)
 options(shiny.error = recover) 
 options(error = browser)
 options(error = recover) 
-myErrorFunction = function(){
+myErrorFunction <<- function(){
   dump.frames()
   showModal(modalDialog(title='ERR', 
                         last.dump))
@@ -1273,6 +1273,7 @@ output$tableOfEstimates =
       'Probability estimate Pr(R | D)', 'Weight (Lump)', 'Weight (Split)')
 
     testresult = Test_to_choose_who_is_right(thisData)
+    printpaste('testresult', testresult)
     testresult$selectedMean = ifelse(testresult$whosRight=='lump',
                                    testresult$lump, testresult$split)
     means = rValues$means = c(

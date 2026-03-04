@@ -123,8 +123,10 @@ output$colorForDoctorSelected = renderText(
 output$posteriorMean = renderUI(
   {
     theMean = try({
+      printpaste('bivariateNormResults ',
+                 rValues$bivariateNormResults)
       rValues$bivariateNormResults$postmean.p[1]})
-    print(paste('theMeans ', theMean))
+    printpaste('theMean ', theMean)
     if(inherits(theMean, "try-error")
        | (length(theMean) != 1) ) {
       return(div())
