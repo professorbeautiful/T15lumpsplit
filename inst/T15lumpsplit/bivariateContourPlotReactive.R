@@ -54,13 +54,13 @@ ContoursPanelLegend = list(
   hr(),
   "Shaded: 50% region of highest density ",
   fluidRow(
-    column(6, div(style="color:orange",
+    column(6, div(style="color:lightgreen",
                   checkboxInput("checkPrior",
-                                "Orange = prior distribution",
+                                "LightGreen = prior distribution",
                                 TRUE))),
-    column(6, div(style="color:darkgrey",
+    column(6, div(style="color:darkgreen",
                   checkboxInput("checkPosterior",
-                                "Grey = posterior distribution",
+                                "DarkGreen = posterior distribution",
                                 TRUE))
     )
   )
