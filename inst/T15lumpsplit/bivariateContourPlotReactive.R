@@ -94,8 +94,11 @@ plotPlightPdarkPosteriorReactive = reactive( {
     DLdata = thisData,
     showPrior = input$checkPrior,
     showPosterior = input$checkPosterior,
+    showW = input$checkPosterior,
+    showS =  ! input$checkPosterior,
+    showL =  ! input$checkPosterior,
     bivariateNormResults = bivariateNormResults,
-    showConfIntBinormal = TRUE
+    showConfIntBinormal = input$checkPosterior
   )
 
 })
