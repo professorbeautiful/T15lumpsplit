@@ -1017,6 +1017,8 @@ conditionalPanelWithCheckbox('Details about the logit', filename = 'www/logit.Rm
 ###
 ```
 
+#### <a class='foursharps' name='section-Contour-prior-posterior'> Calculating the posterior distribution: "log odds"</a> <!-- #title -->
+
 Then we set our prior belief/uncertainty  distribution as a bivariate normal distribution on the logits of the two response probabilities.  
 
 We also convert the observed proportions to logits.  
