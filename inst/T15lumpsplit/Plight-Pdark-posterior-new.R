@@ -22,11 +22,11 @@ calculatePlightPdarkPosterior = function(
   varhat.fudged = apply(DLdataFudged, 'feature', function(r)sum(1/r))
   printpaste('varhat.fudged', varhat.fudged)
   ### deltat method with protection from zero's.
-  if(length(tau) == 0) tau = 1
-  if(length(phi) == 0) phi = 1
-  if(length(mu0) == 0) mu0 = 1
-  printpaste('tau', tau)
-  printpaste('phi', phi)
+  if(length(tau) == 0) tau = 0.5
+  if(length(phi) == 0) phi = 0.5
+  if(length(mu0) == 0) mu0 = 0.5
+  printpaste('calculatePlightPdarkPosterior: tau', tau)
+  printpaste('calculatePlightPdarkPosterior: phi', phi)
 
   sig11 = sig12 = sig21 = matrix(c(tau+phi,tau,tau,tau+phi),nrow=2)
   printpaste('sig11', sig11)
@@ -96,7 +96,7 @@ addCircledLetter = function(labelLocation,
 
 plotPlightPdarkPosterior = function(
   DLdata,
-  tau=1, phi=1, mu0=0.5,
+  tau=0.5, phi=0.5, mu0=0.5,
   bivariateNormResults,
   showPrior = TRUE, showPosterior=TRUE, showLikelihood=TRUE,
   showConfIntBinormal = FALSE,
