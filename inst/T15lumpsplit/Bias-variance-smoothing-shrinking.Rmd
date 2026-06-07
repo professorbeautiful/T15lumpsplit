@@ -221,6 +221,8 @@ rValues = reactiveValues(tau = 1,  phi = 0.001, mu=0.5,
                          isLoopingSync = FALSE, #not used
                          WhoPriorProb = 1/2,
                          WhoPriorOdds = 1, #,
+                         ColorForPrior = 'grey',
+                         ColorForPosterior = 'black',
                          #thisSession = session
                          qStar = 1
 )
