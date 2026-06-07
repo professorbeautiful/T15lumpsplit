@@ -210,7 +210,7 @@ plotPlightPdarkPosterior = function(
          #                        <p>♠ ♥ ♦ ♣</p>'"︎
          # DOWNWARDS BLACK ARROW  ## The fat one doesn't show up.
          #        Unicode: U+2B07 U+FE0E, UTF-8: E2 AC 87 EF B8 8E︎",
-         col='blue', xpd=TRUE)
+         col=ColorForPosterior, xpd=TRUE)
     abline(v=postmean.p[1],col=ColorForPosterior, lty=2, lwd=2)
   }
   if(showConfIntBinormal){
