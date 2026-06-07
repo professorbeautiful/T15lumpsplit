@@ -985,8 +985,9 @@ output$contourTitles = renderUI(
 )
 ```
 
-```{r}
 #### <a class='foursharps' name='section-Contour-parameters-and-graph'> The joint distribution contour plots</a> <!-- #title -->
+
+```{r}
 div(
   fluidRow(
     column(7, 
