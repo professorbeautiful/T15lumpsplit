@@ -1,10 +1,16 @@
 
+### not working.
+#Error in uploadShinyappsBundle(client, application$application_id, bundlePath) :
+#Could not upload file.
+#  Using the republish button instead.
+#  The republish button has a dropdown to change destination.
 
-appName = 'Bias-variance-smoothing-shrinking-3'
+appName = 'Bias-variance-smoothing-shrinking'
 appURL = paste0('https://trials.shinyapps.io/', appName)
 logURL = paste0('https://shinyapps.io/', 'admin')
 ### you may need shinyDebuggingPanel installed fresh
 devtools::install_github('professorbeautiful/shinyDebuggingPanel')
+devtools::install_github('professorbeautiful/T15lumpsplit')
 
 
 #  git push --set-upstream origin NEWBRANCHNAME
@@ -27,6 +33,10 @@ logLevel = c("normal", "quiet", "verbose") [3]
 ###----- Deployment error -----
 # Error in is_interactive() : could not find function "is_interactive"
 
+#rsconnect::setProperty('rsconnect.max.bundle.size', 7e9, appPath = 'inst/T15lumpsplit/', appName ='Bias-variance-smoothing-shrinking' )
+options('rsconnect.max.bundle.size')
+options(rsconnect.max.bundle.size = 7e9)  ### necessary for this deplyApp call.
+
 rsconnect::deployApp(
   appDir = appDir,
   appFiles = NULL,
@@ -38,7 +48,7 @@ rsconnect::deployApp(
   appId = NULL,
   appMode = 'shiny',
   contentCategory = NULL,
-  account = NULL,
+  account = 'trials',
   server = 'shinyapps.io',
   upload = TRUE,
   recordDir = NULL,
