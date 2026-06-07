@@ -84,6 +84,7 @@ shinycookie::initShinyCookie(cookieID, timeout = 500)
 shinyjs::extendShinyjs(script = 'www/readCookie.js', functions=c('readCookie'))
 
 #  This works in JS:  shinyjs.click(document.getElementById('downloadAllUserEntries') )
+#   To easily repeatedlyrevisit a location on the page, I use a KeyboardMaestro macro called "search web page for a phrase"
 
 saveEntriesJScode =  
   "shinyjs.saveEntriesJS = function() {document.getElementById('downloadAllUserEntries').click();}"
