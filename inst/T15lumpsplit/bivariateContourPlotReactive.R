@@ -52,15 +52,16 @@ ContoursPanelLegend = list(
   ),
   textOutput('posteriorMeans'),
   hr(),
-  "Shaded: 50% region of highest density ",
+  div(style=paste("color:", "black"),
+    "Shaded: 50% region of highest density "),
   fluidRow(
-    column(6, div(style="color:lightgreen",
+    column(6, div(#style="color:lightgreen",
                   checkboxInput("checkPrior",
-                                "LightGreen = prior distribution",
+                                "lighter color = prior distribution",
                                 TRUE))),
     column(6, div(style="color:darkgreen",
                   checkboxInput("checkPosterior",
-                                "DarkGreen = posterior distribution",
+                                "darker color = posterior distribution",
                                 TRUE))
     )
   )
@@ -94,6 +95,8 @@ plotPlightPdarkPosteriorReactive = reactive( {
     DLdata = thisData,
     showPrior = input$checkPrior,
     showPosterior = input$checkPosterior,
+    ColorForPrior = rValues$ColorForPrior,
+    ColorForPosterior = rValues$ColorForPosterior,
     showW = input$checkPosterior,
     showS =  ! input$checkPosterior,
     showL =  ! input$checkPosterior,
@@ -108,7 +111,14 @@ plotPlightPdarkPosteriorReactive = reactive( {
 ###{r lumpReact}
 lumpReact = observe({
   if(length(input$lumpID) > 0) {
-    #cat("lumpID\n")
+    updateCheckboxInput(inputId='checkPrior',
+                        label = span(style=paste("color:", lumpColor),
+                        "show prior"))
+    updateCheckboxInput(inputId='checkPosterior',
+                        label = span(style=paste("color:", lumpColor),
+                        "show posterior"))
+    rValues$ColorForPrior = lumpColor
+    rValues$ColorForPosterior = scales::col_darker(lumpColor, amount=10)
     rValues$tau <- 1; rValues$phi <- 0.001
     ### Lump:  no individual variation:   D is same as L.
     rValues$title_1 <- "Dr. Lump"
@@ -143,9 +153,18 @@ output$posteriorMean = renderUI(
 )
 
 ###{r splitReact}
-splitReact = observe({
+splitReact = observeEvent(input$splitID, {
   if(length(input$splitID) > 0) {
-    #cat("splitID\n")
+    cat('input$splitID)\n')
+     updateCheckboxInput(inputId='checkPrior',
+                         label = span(style=paste("color:", splitColor),
+                         "show prior"))
+    updateCheckboxInput(inputId='checkPosterior',
+                         label = span(style=paste("color:", splitColor),
+                         "show posterior"))
+
+    rValues$ColorForPrior = splitColor
+    rValues$ColorForPosterior = scales::col_darker(splitColor, amount=10)
     rValues$tau <<- 0; rValues$phi <<- 1
     ### Split:  D unconnected to L.
     rValues$title_1 <<- "Dr. Split"
@@ -155,23 +174,20 @@ splitReact = observe({
 })
 ###
 
-###{r whoReact}
-# whoReact = observe({
-#   if(length(input$whoID) > 0) {
-#     #cat("whoID\n")
-#     ### Who:  discrete mixture of Lump and Split.
-#     rValues$title_1 <<- "Dr. Who: \ndiscrete mixture of Lump and Split."
-#     rValues$title_2 <<- HTML(paste0("Prior belief: <BR> Pr(Split)=",
-#                                     rValues$WhoPriorProb))
-#     doctorSelected = 'who'
-#   }
-# })
-###
+
 
 ###{r whoReact}
-whoReact = observe({
+whoReact = observeEvent(input$whoID, {
   if(length(input$whoID) > 0) {
-    #cat("mixedID\n")
+    updateCheckboxInput(inputId='checkPrior',
+                        label = span(style=paste("color:", whoColor),
+                        "show prior"))
+    updateCheckboxInput(inputId='checkPosterior',
+                        label = span(style=paste("color:", whoColor),
+                        "show posterior"))
+
+    rValues$ColorForPrior = whoColor
+    rValues$ColorForPosterior = scales::col_darker(whoColor, amount=10)
     rValues$tau <<- 1/2; rValues$phi <<- 1/2
     rValues$title_1 <<- HTML("Bayesian Compromise: <br>a mixture of priors for Dr.Lump and Dr. Split")
     rValues$title_2 <<- HTML("Dr.Who's prior belief: <br> Pr(R|D) is somewhat related to Pr(R|L). ")
