@@ -324,7 +324,7 @@ tags$head(tags$script("Shiny.onInputChange('cookieinput', document.cookie);"))
 
 ```{r in-progress, eval=FALSE}
 h3("NOTE: this is a work in progress!")
-
+#  incidentally, this works in shinyDebuggingPanel:   click('whoID')
 actionButton("button", "Click me")
 div(id = "hello", "Hello!")
 ```
