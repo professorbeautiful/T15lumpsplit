@@ -2,7 +2,7 @@ calculatePlightPdarkPosterior = function(
   DLdata =
     matrix(c(3,2,5,90), nrow=2,
            dimnames = list( outcome=c("R","N"), feature=c("D","L"))),
-  tau=1, phi=1, mu0=0.5,
+  tau=0.5, phi=0.5, mu0=0.5,
   fudgeFactor = 0.001,
   addFudge = TRUE
 ) {
