@@ -159,7 +159,7 @@ bigDataComponent = function(analysisName) {
   ### When features are regenerated, re-do Ps, BH and Qvalues for both original and modified BigData.
   regenerate = function (whoFrom)  {  # was it from Omega box, or Regenerate button?
     try( {
-      print(paste('regenerate: whoFrom = ', whoFrom))
+      #print(paste('regenerate: whoFrom = ', whoFrom))
       Omega = makeSureOmegaIsGood(input[[thisOmegaID]])
       if(printBDCProgress) {
         cat('regenerate:  called from ', whoFrom, '\n')
