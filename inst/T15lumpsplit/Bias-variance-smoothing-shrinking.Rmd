@@ -1274,8 +1274,8 @@ output$tableOfEstimates =
       (SplitRawMean - LumpRawMean)
     implicitWeights_ForLogit = 
       c(implicitWeight1_ForLogit, 1-implicitWeight1_ForLogit)
-    print('implicitWeight1_ForLogit')
-    print(implicitWeight1_ForLogit)
+    # print('implicitWeight1_ForLogit')
+    # print(implicitWeight1_ForLogit)
     
     
 
@@ -1317,7 +1317,7 @@ output$tableOfEstimates =
       # showModal(modalDialog(title = 'CVpenalties',
       #                       CVpenalties)   
       # )
-      print(CVpenalties)
+      # print(CVpenalties)
 
   tryCatch.W.E = function(expr)
   {
@@ -1360,7 +1360,7 @@ output$tableOfEstimates =
    #   x = DT::
    testresultColor =  ifelse(testresult$whosRight=='lump',
                              "red", "blue")
-   print(paste('testresultColor', testresultColor))
+   # print(paste('testresultColor', testresultColor))
    x = formatStyle(x, columns = 0:5, 
                    fontWeight=styleRow(6, 'bold'), #border=5,
                    color=styleRow(1:5, 
@@ -1396,7 +1396,7 @@ output$tableOfEstimates =
      rValues$savedTableX = x  # 
    })
    #print(paste('nchar ', nchar(x)))
-   return( print(x) )
+   return( (x) )
    #return( (result) )
   })
 
