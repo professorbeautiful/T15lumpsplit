@@ -30,7 +30,8 @@ source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', an
 
 output$whoMixturePlot = 
   renderPlot(expr =  {
-    par(mar = c(3, 3, 1, 1))
+    par(mar = c(3, 3, 1, 1))   
+            #  wait, this works??  warning no longer! and mixture plot is ok.
 
     #req(input$whoMixturePlot_width > 200, cancelOutput = FALSE)
     #  this works to suppress the warning msg, but also blocks the mixture plot entirely
