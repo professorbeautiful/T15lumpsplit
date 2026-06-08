@@ -24,12 +24,24 @@ is a mixture. A "Bayesian" mixture.
 We gaze at Dr. Who's "posterior"  
 (surely there's an emoji for that):
 
-```{r}
+```{r fig.width=8, fig.height=6, fig.margin=TRUE}
 jumpList_DTC = c(jumpList_DTC, whoMixturePlot='Dr. Who\'s posterior: Bayes mixture')
 source('analysisInitialSetup_DTC.R', local=TRUE); a(name=paste0('section-a_', analysisName) )
 
 output$whoMixturePlot = 
   renderPlot(expr =  {
+    par(mar = c(3, 3, 1, 1))
+
+    #req(input$whoMixturePlot_width > 200, cancelOutput = FALSE)
+    #  this works to suppress the warning msg, but also blocks the mixture plot entirely
+   # withCallingHandlers(
+   # 
+   #  error = function(e) {
+   #    #if (grepl("figure margins too large", conditionMessage(e)))
+   #      #invokeRestart("muffleWarning")
+   #  },
+   #   expr = {
+
     WhoPriorProb = rValues$WhoPriorProb
     analysisName = 'whoMixturePlot'
     source(analysisReactiveSetup_DTC, local=TRUE)
@@ -164,6 +176,7 @@ output$whoMixturePlot =
     # text(posterior.mean.l, onTop*1.00, col='red', xpd=NA, labels="L", cex=1, pos = 3, font=4)
     # text(posterior.mean.s, onTop*1.00, col='blue', xpd=NA, labels="S", cex=1, pos = 3, font=4)
     # text(posterior.mean.w, onTop*1.00, col='darkgreen', xpd=NA, labels="W", cex=1, pos = 3, font=4)
+    # })
   })
 plotOutput('whoMixturePlot')
 WhoPriorProbNumericInput()
