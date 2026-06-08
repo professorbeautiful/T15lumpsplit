@@ -230,7 +230,7 @@ rValues = reactiveValues(tau = 0.5,  phi = 0.5, mu = 0.5,
 ```
 
 
-```{r sessioninitialized, eval=FALSE}
+```{r sessioninitialized, eval=TRUE}
 #### This doesn't work in Rmarkdown.
 invisible(
   tags$head(tags$script(
