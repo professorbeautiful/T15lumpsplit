@@ -1349,7 +1349,7 @@ output$tableOfEstimates =
   wrapCSS = function(x, css) {
     paste('<span style="', css, ';"> ', x, '</span>')
   }
-  print(result)
+  # print(result)   # don't print the table
   rValues$newResultTable = result
   # x = kableExtra::kbl(result) # %>%
   #            #kable_styling(full_width = F)
