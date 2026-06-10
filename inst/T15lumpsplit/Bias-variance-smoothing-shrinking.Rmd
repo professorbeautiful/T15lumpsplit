@@ -991,20 +991,19 @@ output$contourTitles = renderUI(
 ```{r}
 div(
   fluidRow(
-    column(7, 
+    column(4, 
            panelOfInputs,
-           uiOutput('posteriorMean'),
-          uiOutput('contourTitles'),
-           plotOutput(outputId = 'thePlot', height=260),
-           ContoursPanelLegend
-           
-    ),
-    column(5,
-           br(),
            dataTableComponent(analysisName='bivariateContourPlot')
-    )
+    ),
+    column(8,
+           uiOutput('contourTitles'),
+           uiOutput('posteriorMean'),
+           plotOutput(outputId = 'thePlot', width='100%'),
+           br(),
+           ContoursPanelLegend
+    ))
+  
   )
-)
 ```
 
 The raw Lump and Split the estimates and  confidence intervals are shown.  
