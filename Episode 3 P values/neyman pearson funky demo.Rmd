@@ -1,4 +1,4 @@
-#  newman pearson funky demo
+#  neyman pearson funky demo
 # violating conditionality principle
 
 
