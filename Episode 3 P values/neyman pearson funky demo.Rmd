@@ -20,11 +20,12 @@ knitr::opts_chunk$set(echo = FALSE)
 
 h0 = 0  # null
 ha = 1 #  alternative hypothesis
-vars = c(0.5, 2) ####    Small, and large. so power is large, Small.
+vars = c(0.1, 2) ####    Small, and large. so power is large, Small.
 alpha = 0.05
 col.v1 = 'red'
 col.v2 = 'darkgreen'
-col.v = c(col.v1, col.v2, 'blue')
+col.v = c(col.v1, col.v2, 'blue', 'orange')
+names(col.v) = c('small', 'big', 'alpha', 'LR')
 pow = function(C, M.alt=1, V) {
   1 - pnorm(C, M.alt, sqrt(V)) 
 }
@@ -89,16 +90,21 @@ lrDifference = function(alphaBig){
   lrBig - lrSmall
 }
 lrDifferenceAbs = function(alphaBig) abs(lrDifference(alphaBig))
-plot(Aseq,
-     lrDifferenceAbs(Aseq) , xlab='alpha Big', ylab='lrDifferenceAbs')
+# plot(Aseq,
+#      lrDifferenceAbs(Aseq) , xlab='alpha Big', ylab='lrDifferenceAbs')
 optimalAlphaBig = optimize(lrDifferenceAbs, 
                            maximum = FALSE, interval = range(Aseq)) $ minimum
 whichOptimal = print( which(abs(optimalAlphaBig - Aseq) < 1e-4) [1] )
 optimalAlphaSmall = 2*alpha - optimalAlphaBig
 C95Big =   qnorm(1 - optimalAlphaBig, sd = sqrt(max(vars)))
 C95Small = qnorm(1 - optimalAlphaSmall, sd = sqrt(min(vars)))
-lr(C95Small, min(vars))
-lr(C95Big, max(vars))
+testthat::expect_equal(lr(C95Small, min(vars)), 
+                       lr(C95Big, max(vars)) , tolerance = 1e-3)
+conditionalPowerEqualLR =   c( pow(C95Small, M.alt=1, V=vars[1]), 
+                               pow(C95Big, M.alt=1, V=vars[2]) )
+
+averagePowerEqualLR = mean(conditionalPowerEqualLR)
+  
 
 ```
 
@@ -107,7 +113,7 @@ lr(C95Big, max(vars))
 ### conditional power
 
 output$theplot = renderPlot({
-  plot(Cseq, 
+  plot(Cseq, ylim=c(0,1), xlim=c(0, C95Big * 1.01),
        pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
        pch='', col=col.v1)
   lines(x=c(lowerC, C95[1]), y= c(alpha,alpha) , col='black')
@@ -132,24 +138,25 @@ output$theplot = renderPlot({
   averagePowerEqualAlpha = mean(pow.M.alt.1)
 #  lines(x=c(lowerC, mean(C95)), y= rep(averagePowerEqualAlpha, 2), col=col.v[3])
   lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
-  text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,0), col=col.v[3], xpd=NA,
-       labels = paste('marginal power=', 
-                      signif(digits = 2, averagePowerEqualAlpha)))
-  
-  conditionaPowerEqualLR =   c( pow(C95Small, M.alt=1, V=vars[1]), 
-                                pow(C95Big, M.alt=1, V=vars[2]) )
+  text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
+       labels = paste('marginal power equal alpha:', 
+                      signif(digits = 6, averagePowerEqualAlpha)))
 
-  averagePowerEqualLR = mean(conditionaPowerEqualLR)
   
+  points( cex=2, c(C95Small, C95Big), 
+          conditionaPowerEqualLR, col=col.v, pch='L')
+  text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v[3], xpd=NA,
+       labels = paste('marginal power equal LR:', 
+                      signif(digits = 6, averagePowerEqualLR)))
   
-  points( c(C95Small, C95Big), conditionaPowerEqualLR, col=col.v, pch='L')
-
   
   legend(x='topright', 
-         legend=c(paste('M.alt=1 V=', vars[1]), 
-                  'M.alt=1 V=2'
-), 
-         text.col =  c(col.v1, col.v2, col.v1, col.v2)
+         legend=c(paste('Variance=', vars[1]), 
+                  paste('Variance=', vars[2]), 
+                  'equal alpha',
+                  'equal LR'
+         ), 
+         text.col =  col.v
   )
 })
 
