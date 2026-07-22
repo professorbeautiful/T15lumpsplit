@@ -1,17 +1,46 @@
+---
+title: "Untitled"
+author: "Roger Day"
+date: "2026-07-21"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
 #  neyman pearson funky demo
 # violating conditionality principle
 
 
 
-```{r}
-vars = c(1, 2)  ### two different variances
+```{r echo=FALSE}
+
 h0 = 0  # null
 ha = 1 #  alternative hypothesis
+vars = c(0.5, 2) ####    Small, and large. so power is large, Small.
+alpha = 0.05
+col.v1 = 'red'
+col.v2 = 'darkgreen'
+col.v = c(col.v1, col.v2, 'blue')
+pow = function(C, M.alt=1, V) {
+  1 - pnorm(C, M.alt, sqrt(V)) 
+}
+  lowerC = 0
+  Cseq <- seq(lowerC,3,length=1000)
+
 likelihood = function(h, v, x) {
    1 - pnorm( abs((x - h)/sqrt(v))  ) 
 }
 likelihood(h = 0, v = 1, x = qnorm(1-0.025))
 lr = function(x, v) likelihood(h = ha, v , x ) / likelihood(h = h0, v, x )
+```
+
+```{r eval=FALSE}
+
+### skip this plot
 plot(xseq<- seq(lowerC, 3, length=1000),  log(lr(xseq, vars[1])))
 abline(v=0:1)
 lines(col='red',xseq<- seq(lowerC, 3, length=1000),  log(lr(xseq, vars[2])))
@@ -30,59 +59,108 @@ the power to reject $M = 0$ if the true mean is $M_{alt}$ is
 $$
 Power(C)~=~  (1 - pnorm(C,M_{alt},\sqrt{V}) )
 $$
+The likelihood ratios at the two critical values are
+```{r echo=FALSE}
+  C95  = qnorm(1 - alpha, sd = sqrt(vars))
 
+lr(C95, vars)
+
+```
+
+If we raise the cutoff for the Bigger variance, and lower it for the Smaller variance, watch what happens.
 
 ```{r}
-### conditional power
-col.v1 = 'red'
-col.v2 = 'green'
-col.v = c(col.v1, col.v2)
-pow = function(C, M.alt=1, V=vars[1]) {
-  1 - pnorm(C,  M.alt,sqrt(V)) 
+Aseq<- seq(0.001, 0.05, length=1000)
+lrBigValues = numeric(0)
+lrSmallValues = numeric(0)
+C95BigValues = numeric(0)
+C95SmallValues = numeric(0)
+lrDifference = function(alphaBig){
+  alphaSmall = 2*alpha  - alphaBig # because they average to alpha.
+  C95Big = qnorm(1 - alphaBig, sd = sqrt(max(vars)))
+  C95Small = qnorm(1 - alphaSmall, sd = sqrt(min(vars)))
+  C95BigValues =  append(C95BigValues, C95Big)
+  C95SmallValues =  append(C95SmallValues, C95Small)
+  #print(c( lr(C95Big, v = max(vars)) , lr(C95Small, v = min(vars)) ) )
+  lrBig = lr(C95Big, v = max(vars)) 
+  lrSmall = lr(C95Small, v = min(vars))
+  lrBigValues =  append(lrBigValues, lrBig)
+  lrSmallValues =  append(lrSmallValues, lrSmall)
+  lrBig - lrSmall
 }
-lowerC = 0
-Cseq <- seq(lowerC,3,length=1000)
-plot(Cseq, 
-     pow(Cseq, M.alt=0), xlab='critical rejection cutoff', ylab='power',
-     pch='', col=col.v1)
-C95  = qnorm(1 - alpha, sd = sqrt(vars))
-lines(x=c(lowerC, C95[1]), y= c(alpha,alpha) , col='black')
-lines(x=c(lowerC, C95[2]), y= c(alpha,alpha) , col='black')
-text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
+lrDifferenceAbs = function(alphaBig) abs(lrDifference(alphaBig))
+plot(Aseq,
+     lrDifferenceAbs(Aseq) , xlab='alpha Big', ylab='lrDifferenceAbs')
+optimalAlphaBig = optimize(lrDifferenceAbs, 
+                           maximum = FALSE, interval = range(Aseq)) $ minimum
+whichOptimal = print( which(abs(optimalAlphaBig - Aseq) < 1e-4) [1] )
+optimalAlphaSmall = 2*alpha - optimalAlphaBig
+C95Big =   qnorm(1 - optimalAlphaBig, sd = sqrt(max(vars)))
+C95Small = qnorm(1 - optimalAlphaSmall, sd = sqrt(min(vars)))
+lr(C95Small, min(vars))
+lr(C95Big, max(vars))
+
+```
+
+
+```{r echo=FALSE}
+### conditional power
+
+output$theplot = renderPlot({
+  plot(Cseq, 
+       pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
+       pch='', col=col.v1)
+  lines(x=c(lowerC, C95[1]), y= c(alpha,alpha) , col='black')
+  lines(x=c(lowerC, C95[2]), y= c(alpha,alpha) , col='black')
+  text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
   points(C95, c(alpha, alpha), col=col.v, pch='C')
   #points(C95, pow(C95, M.alt=0), col=col.v, pch='C')
-pow.M.alt.1 = pow(C95, M.alt=1, V=vars)
-points(C95, pow.1.1, col='black', pch='C')
+  pow.M.alt.1 = pow(C95, M.alt=1, V=vars)
+  points(C95, pow.M.alt.1, col=col.v, pch='P')
+  
+  
+  for(Vn in 1:2) {
+    lines(Cseq, pow(Cseq, M.alt=1, V=vars[Vn]), lty=2, lwd=3, col=col.v[Vn])
+    lines(x=c(lowerC, C95[Vn]), y= rep(pow.M.alt.1 [Vn], 2), col=col.v[Vn])
+    lines(x=rep(C95[Vn],2), y = c(alpha, pow.M.alt.1 [Vn]), col=col.v[Vn])
+    text(x=lowerC, y=pow.M.alt.1 [Vn], col=col.v[Vn],
+         labels = paste('V=', vars[Vn], '  power=', 
+                        signif(digits = 2, pow.M.alt.1 [Vn])), adj = c(0,0))
+    
+  }
+  ### average
+  averagePowerEqualAlpha = mean(pow.M.alt.1)
+#  lines(x=c(lowerC, mean(C95)), y= rep(averagePowerEqualAlpha, 2), col=col.v[3])
+  lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
+  text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,0), col=col.v[3], xpd=NA,
+       labels = paste('marginal power=', 
+                      signif(digits = 2, averagePowerEqualAlpha)))
+  
+  conditionaPowerEqualLR =   c( pow(C95Small, M.alt=1, V=vars[1]), 
+                                pow(C95Big, M.alt=1, V=vars[2]) )
+
+  averagePowerEqualLR = mean(conditionaPowerEqualLR)
+  
+  
+  points( c(C95Small, C95Big), conditionaPowerEqualLR, col=col.v, pch='L')
 
   
-for(Vn in 1:2) {
-  lines(Cseq, pow(Cseq, M.alt=1, V=vars[Vn]), lty=2, lwd=3, col=col.v[Vn])
-}
-
-
-#abline(h=0.5,v=1, lty=2, col='lightgrey')
-#  lines(Cseq, pow(Cseq, M.alt=1), lty=2, col=col.v1)
-  lines(Cseq, pow(Cseq, M.alt=1, V=vars[Vn]), lty=2, lwd=3, col=col.v[Vn])
-
-  
-  points(C95, pow.1.1, col='black', pch='C')
-  lines(x=c(lowerC, C95), y= rep(pow.1.1, 2) , col='black')
-  text(x=lowerC, y=pow.1.1, labels = paste('power=', signif(digits = 2, pow.1.1)), adj = c(0,0), col='black') 
-#  pow.1.2 = pow(C95, M.alt=1, V=vars[2])
-  points(C95.2, pow.1.2, col='green', pch='C')
-  lines(x=c(lowerC, C95), y= rep(pow.1.2, 2) , col='green')
-  text(x=lowerC, y=pow.1.2, labels = paste('power=', signif(digits = 2, pow.1.2)), adj = c(0,0), col='green') 
-}
   legend(x='topright', 
-         legend=c('M.alt=1 V=1', 
-                  'M.alt=1 V=2', 
-                  'M.alt=0 V=1' , 
-                  'M.alt=0 V=2' ), 
+         legend=c(paste('M.alt=1 V=', vars[1]), 
+                  'M.alt=1 V=2'
+), 
          text.col =  c(col.v1, col.v2, col.v1, col.v2)
   )
+})
 
-### unconditional power
+output$likrat = renderPlot({
+  plot(c(C95SmallValues, C95BigValues), 
+       lr)
+})
+plotOutput('theplot')
 ```
+
+
 
 ```{r}
 cutoffs = qnorm(0.95, 0, sqrt(vars))
@@ -95,9 +173,14 @@ The likelihood ratios are, respectively,
 `r lr(cutoffs[1], vars[1])` and `r lr(cutoffs[2], vars[2])`
 
 The average power, conditioning on which variance is chosen:
-$$
-Power()
-$$
-Now lets
+The equalizer for the likelihood ratio is when  
+AlphaBig = optimalAlphaBig = `r optimalAlphaBig` and  
+AlphaSmall = optimalAlphaSmall = `r optimalAlphaSmall`.  
+The critical value for the small variance is now `r C95Small`,
+and for the large variance it's `r C95Big`.
+
+
+
+
 
 
