@@ -35,7 +35,7 @@ pow = function(C, M.alt=1, V) {
 likelihood = function(h, v, x) {
    1 - pnorm( abs((x - h)/sqrt(v))  ) 
 }
-likelihood(h = 0, v = 1, x = qnorm(1-0.025))
+# likelihood(h = 0, v = 1, x = qnorm(1-0.025)) # yes 0.025.
 lr = function(x, v) likelihood(h = ha, v , x ) / likelihood(h = h0, v, x )
 ```
 
@@ -65,11 +65,13 @@ $$
 lrEqualAlpha =  lr(C95, vars)
 
 ```
-Here these two conditional cutoffs are 
+We have two instruments, with different variances  `r vars[1]` and `r vars[2]`.  they could be different in precisions. Or they could be because there are two different possible sample sizes.  *The instrument used is picked at random!*
 
-The likelihood ratios at the two critical values are
+Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. If you know which instrument was picked, you would of course use the relevant significance cutoff. Here these two conditional cutoffs are `r C95[1]` and `r C95[2]`.  Then regardless of the chances for the two instrument, the overall marginal *alpha* is the same.
 
-If we raise the cutoff for the Bigger variance, and lower it for the Smaller variance, watch what happens.
+The likelihood ratios at the two critical values are `r lrEqualAlpha[1]` and `r lrEqualAlpha[2]`.  Not the same.  Should we maximize power by  forcing the two likelihood ratios to be the same?
+
+If we raise the cutoff for the Bigger variance, and lower it for the Smaller variance, watch what happens. 
 
 ```{r}
 Aseq<- seq(0.001, 0.05, length=1000)
@@ -110,6 +112,7 @@ results = list(C95Small, C95Big,
                conditionalPowerEqualLR, averagePowerEqualLR)
 ```
 
+The plot shows the absolute difference in the two likelihood ratios, as the proportion of **alpha** for the big variance. We see that the likelihood ratios are equal when the alpha for the big variance instrument is **`r round(optimalAlphaSmall, digits=3)`**. Then the other **alpha**, for the less precise instrument, is `r round(optimalAlphaBig, digits=3)`. They add to **alpha = `r alpha`**.
 
 ```{r echo=FALSE}
 ### conditional power
@@ -191,7 +194,7 @@ The critical value for the small variance is now `r C95Small`,
 and for the large variance it's `r C95Big`.
 
 
-
+Are you content to report a P value based on the marginal **alpha** when you KNOW which instrument was used? So the **conditionality principle** is used FIRST.
 
 
 
