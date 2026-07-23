@@ -102,8 +102,6 @@ lrDifference = function(alphaBig){
   lrBig - lrSmall
 }
 lrDifferenceAbs = function(alphaBig) abs(lrDifference(alphaBig))
-plot(Aseq,
-     lrDifferenceAbs(Aseq) , xlab='alpha Big', ylab='lrDifferenceAbs')
 optimal = optimize(lrDifferenceAbs, 
                            maximum = FALSE, interval = c(0, max(Aseq))) 
 optimalAlphaBig = optimal$ minimum
@@ -124,6 +122,15 @@ results.EqualLR <<- data.frame(
   LR = rep(optimal$objective, 2),
   power = conditionalPowerEqualLR, 
   marginalPower = rep(averagePowerEqualLR, 2))
+
+output$lrDifferenceAbs = renderPlot({
+  plot(Aseq,
+     lrDifferenceAbs(Aseq) , xlab='alpha Big', ylab='lrDifferenceAbs')
+  abline(v=alpha/2, lty=2)
+  abline(v=optimalAlphaBig, lty=3)
+})
+plotOutput('lrDifferenceAbs')
+
 ```
 
 The plot shows the absolute difference in the two likelihood ratios, as we change the proportion of **alpha** for the big variance. We see that the likelihood ratios are equal when the alpha for the big variance instrument is **`r round(optimalAlphaSmall, digits=3)`**. Then the other **alpha**, for the less precise instrument, is `r round(optimalAlphaBig, digits=3)`. They average to **alpha = `r alpha`**.
