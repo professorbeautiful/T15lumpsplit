@@ -8,6 +8,7 @@ runtime: shiny
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library(shiny)
 ```
 
 
@@ -65,6 +66,12 @@ $$
   cutoffs  = qnorm(1 - alpha, sd = sqrt(vars))
 lrEqualAlpha =  lr(cutoffs, vars)
   pow.M.alt.1 = pow(cutoffs, M.alt=1, V=vars)
+  results.EqualAlpha = data.frame(
+    alphas = rep(alpha, 2),
+    cutoffs, 
+    LR= lrEqualAlpha, 
+    power=pow.M.alt.1,
+    marginalPower= rep(mean(pow.M.alt.1), 2))
 
 ```
 But we have **two** instruments to measure *X*, with different variances  `r vars[1]` and `r vars[2]`.  They could be different in precisions. Or they could be because there are two different possible sample sizes.  *The instrument used is picked at random!*  ---- **But we know which one was picked!**
@@ -73,7 +80,7 @@ Suppose we use the same *alpha*, the same conditional type I error rate, regardl
 
 The likelihood ratios at the two critical values are `r lrEqualAlpha[1]` and `r lrEqualAlpha[2]`.  Not the same.  Should we maximize power by  forcing the two likelihood ratios to be the same?
 
-If we raise the cutoff for the Bigger variance, and lower it for the Smaller variance, watch what happens. The likelihood ratios get closer and closer.
+If we raise the cutoff for the Bigger variance `r vars[1]`, and lower it for the Smaller variance `r vars[2]`, watch what happens. The likelihood ratios get closer and closer.
 
 ```{r}
 Aseq<- seq(0.001, 0.05, length=1000)
@@ -97,8 +104,9 @@ lrDifference = function(alphaBig){
 lrDifferenceAbs = function(alphaBig) abs(lrDifference(alphaBig))
 plot(Aseq,
      lrDifferenceAbs(Aseq) , xlab='alpha Big', ylab='lrDifferenceAbs')
-optimalAlphaBig = optimize(lrDifferenceAbs, 
-                           maximum = FALSE, interval = c(0, max(Aseq))) $ minimum
+optimal = optimize(lrDifferenceAbs, 
+                           maximum = FALSE, interval = c(0, max(Aseq))) 
+optimalAlphaBig = optimal$ minimum
 whichOptimal = print( which(abs(optimalAlphaBig - Aseq) < 1e-4) [1] )
 optimalAlphaSmall = 2*alpha - optimalAlphaBig
 cutoffsBig =   qnorm(1 - optimalAlphaBig, sd = sqrt(max(vars)))
@@ -110,8 +118,12 @@ conditionalPowerEqualLR =   c( pow(cutoffsSmall, M.alt=1, V=vars[1]),
 
 averagePowerEqualLR = mean(conditionalPowerEqualLR)
   
-results = list(cutoffsSmall, cutoffsBig, 
-               conditionalPowerEqualLR, averagePowerEqualLR)
+results.EqualLR <<- data.frame(
+  alphas = c(optimalAlphaSmall, optimalAlphaBig), 
+  cutoffs = c(cutoffsSmall, cutoffsBig), 
+  LR = rep(optimal$objective, 2),
+  power = conditionalPowerEqualLR, 
+  marginalPower = rep(averagePowerEqualLR, 2))
 ```
 
 The plot shows the absolute difference in the two likelihood ratios, as the proportion of **alpha** for the big variance. We see that the likelihood ratios are equal when the alpha for the big variance instrument is **`r round(optimalAlphaSmall, digits=3)`**. Then the other **alpha**, for the less precise instrument, is `r round(optimalAlphaBig, digits=3)`. They average to **alpha = `r alpha`**.
@@ -166,17 +178,20 @@ output$theplot = renderPlot({
   )
 })
 
+
+plotOutput('theplot')
+```
+```{r eval=FALSE}
 output$likrat = renderPlot({
   plot(c(cutoffsSmallValues, cutoffsBigValues), 
        )
 })
-plotOutput('theplot')
 ```
 
 
 
-If the variance is `r vars[1]`, the cutoff for alpha=0.05 is `r cutoffs[1] `.  
-But if the variance is `r vars[2]`, the cutoff for alpha=0.05 is `r cutoffs[2] `.  
+If the variance is `r vars[1]`, the cutoff for alpha=0.05 is `r signif(digits=3, cutoffs[1] )`.  
+But if the variance is `r vars[2]`, the cutoff for alpha=0.05 is `r signif(digits=3, cutoffs[2] ) `.  
 The conditional statistical **powers** for rejecting the "null" (bland) hypothesis $M=0$  are `r pow.M.alt.1[1]` and `r pow.M.alt.1[2]`,
 
 
@@ -195,9 +210,32 @@ AlphaBig = optimalAlphaBig = `r optimalAlphaBig` and
 AlphaSmall = optimalAlphaSmall = `r optimalAlphaSmall`.  
 The critical value for the small variance is now `r cutoffsSmall`,
 and for the large variance it's `r cutoffsBig`.
+```{r}
+    results.EqualLR = data.frame(
+      alphas = c(optimalAlphaBig, optimalAlphaSmall),
+      cutoffs=c(cutoffsBig, cutoffsSmall), 
+                                 lrEqualAlpha, pow.M.alt.1)
 
+  
 
-Are you content to report a P value based on the marginal **alpha** when you KNOW which instrument was used? So the **conditionality principle** is used FIRST.
+```
+The increase in power is minuscule.  
+But you are actually combining two possible experiments and ignoring the fact that you know which one was done.
+
+Compare the cutoffs.  
+With equal *alpha*:  
+Are you content to report a P value based on the marginal **alpha** when you KNOW which instrument was used? So the **conditionality p(rinciple** is used FIRST.
+
+```{r}
+  output$results.EqualAlpha = renderTable(results.EqualAlpha )
+  tableOutput('results.EqualAlpha')
+```
+
+```{r}  
+  output$results.EqualLR = renderTable(results.EqualLR) 
+  tableOutput('results.EqualLR')
+```
+
 
 
 
