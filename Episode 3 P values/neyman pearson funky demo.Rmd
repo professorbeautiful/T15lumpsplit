@@ -62,14 +62,14 @@ $$
 Power(C)~=~  (1 - pnorm(C,M_{alt},\sqrt{V}) )
 $$
 ```{r echo=FALSE}
-  C95  = qnorm(1 - alpha, sd = sqrt(vars))
-lrEqualAlpha =  lr(C95, vars)
-  pow.M.alt.1 = pow(C95, M.alt=1, V=vars)
+  cutoffs  = qnorm(1 - alpha, sd = sqrt(vars))
+lrEqualAlpha =  lr(cutoffs, vars)
+  pow.M.alt.1 = pow(cutoffs, M.alt=1, V=vars)
 
 ```
 But we have **two** instruments to measure *X*, with different variances  `r vars[1]` and `r vars[2]`.  They could be different in precisions. Or they could be because there are two different possible sample sizes.  *The instrument used is picked at random!*  ---- **But we know which one was picked!**
 
-Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. If you know which instrument was picked, you would of course use the relevant significance cutoff. Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r signif(digits=4, C95[1])` and `r signif(digits=4, C95[2])`.  Then regardless of the chances for the two instrument, the overall marginal *alpha* is the same.
+Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. If you know which instrument was picked, you would of course use the relevant significance cutoff. Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r signif(digits=4, cutoffs[1])` and `r signif(digits=4, cutoffs[2])`.  Then regardless of the chances for the two instrument, the overall marginal *alpha* is the same.
 
 The likelihood ratios at the two critical values are `r lrEqualAlpha[1]` and `r lrEqualAlpha[2]`.  Not the same.  Should we maximize power by  forcing the two likelihood ratios to be the same?
 
@@ -79,17 +79,17 @@ If we raise the cutoff for the Bigger variance, and lower it for the Smaller var
 Aseq<- seq(0.001, 0.05, length=1000)
 lrBigValues = numeric(0)
 lrSmallValues = numeric(0)
-C95BigValues = numeric(0)
-C95SmallValues = numeric(0)
+cutoffsBigValues = numeric(0)
+cutoffsSmallValues = numeric(0)
 lrDifference = function(alphaBig){
   alphaSmall = 2*alpha  - alphaBig # because they average to alpha.
-  C95Big = qnorm(1 - alphaBig, sd = sqrt(max(vars)))
-  C95Small = qnorm(1 - alphaSmall, sd = sqrt(min(vars)))
-  C95BigValues =  append(C95BigValues, C95Big)
-  C95SmallValues =  append(C95SmallValues, C95Small)
-  #print(c( lr(C95Big, v = max(vars)) , lr(C95Small, v = min(vars)) ) )
-  lrBig = lr(C95Big, v = max(vars)) 
-  lrSmall = lr(C95Small, v = min(vars))
+  cutoffsBig = qnorm(1 - alphaBig, sd = sqrt(max(vars)))
+  cutoffsSmall = qnorm(1 - alphaSmall, sd = sqrt(min(vars)))
+  cutoffsBigValues =  append(cutoffsBigValues, cutoffsBig)
+  cutoffsSmallValues =  append(cutoffsSmallValues, cutoffsSmall)
+  #print(c( lr(cutoffsBig, v = max(vars)) , lr(cutoffsSmall, v = min(vars)) ) )
+  lrBig = lr(cutoffsBig, v = max(vars)) 
+  lrSmall = lr(cutoffsSmall, v = min(vars))
   lrBigValues =  append(lrBigValues, lrBig)
   lrSmallValues =  append(lrSmallValues, lrSmall)
   lrBig - lrSmall
@@ -101,16 +101,16 @@ optimalAlphaBig = optimize(lrDifferenceAbs,
                            maximum = FALSE, interval = c(0, max(Aseq))) $ minimum
 whichOptimal = print( which(abs(optimalAlphaBig - Aseq) < 1e-4) [1] )
 optimalAlphaSmall = 2*alpha - optimalAlphaBig
-C95Big =   qnorm(1 - optimalAlphaBig, sd = sqrt(max(vars)))
-C95Small = qnorm(1 - optimalAlphaSmall, sd = sqrt(min(vars)))
-# testthat::expect_equal(lr(C95Small, min(vars)), 
-#                        lr(C95Big, max(vars)) , tolerance = 1e-3)
-conditionalPowerEqualLR =   c( pow(C95Small, M.alt=1, V=vars[1]), 
-                               pow(C95Big, M.alt=1, V=vars[2]) )
+cutoffsBig =   qnorm(1 - optimalAlphaBig, sd = sqrt(max(vars)))
+cutoffsSmall = qnorm(1 - optimalAlphaSmall, sd = sqrt(min(vars)))
+# testthat::expect_equal(lr(cutoffsSmall, min(vars)), 
+#                        lr(cutoffsBig, max(vars)) , tolerance = 1e-3)
+conditionalPowerEqualLR =   c( pow(cutoffsSmall, M.alt=1, V=vars[1]), 
+                               pow(cutoffsBig, M.alt=1, V=vars[2]) )
 
 averagePowerEqualLR = mean(conditionalPowerEqualLR)
   
-results = list(C95Small, C95Big, 
+results = list(cutoffsSmall, cutoffsBig, 
                conditionalPowerEqualLR, averagePowerEqualLR)
 ```
 
@@ -120,21 +120,21 @@ The plot shows the absolute difference in the two likelihood ratios, as the prop
 ### conditional power
 
 output$theplot = renderPlot({
-  plot(Cseq, ylim=c(0,1), xlim=c(0, C95Big * 1.01),
+  plot(Cseq, ylim=c(0,1), xlim=c(0, cutoffsBig * 1.01),
        pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
        pch='', col=col.v1)
-  lines(x=c(lowerC, C95[1]), y= c(alpha,alpha) , col='black')
-  lines(x=c(lowerC, C95[2]), y= c(alpha,alpha) , col='black')
+  lines(x=c(lowerC, cutoffs[1]), y= c(alpha,alpha) , col='black')
+  lines(x=c(lowerC, cutoffs[2]), y= c(alpha,alpha) , col='black')
   text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
-  points(C95, c(alpha, alpha), col=col.v, pch='C')
-  #points(C95, pow(C95, M.alt=0), col=col.v, pch='C')
-  points(C95, pow.M.alt.1, col=col.v, pch='P')
+  points(cutoffs, c(alpha, alpha), col=col.v, pch='C')
+  #points(cutoffs, pow(cutoffs, M.alt=0), col=col.v, pch='C')
+  points(cutoffs, pow.M.alt.1, col=col.v, pch='P')
   
   
   for(Vn in 1:2) {
     lines(Cseq, pow(Cseq, M.alt=1, V=vars[Vn]), lty=2, lwd=3, col=col.v[Vn])
-    lines(x=c(lowerC, C95[Vn]), y= rep(pow.M.alt.1 [Vn], 2), col=col.v[Vn])
-    lines(x=rep(C95[Vn],2), y = c(alpha, pow.M.alt.1 [Vn]), col=col.v[Vn])
+    lines(x=c(lowerC, cutoffs[Vn]), y= rep(pow.M.alt.1 [Vn], 2), col=col.v[Vn])
+    lines(x=rep(cutoffs[Vn],2), y = c(alpha, pow.M.alt.1 [Vn]), col=col.v[Vn])
     text(x=lowerC, y=pow.M.alt.1 [Vn], col=col.v[Vn],
          labels = paste('V=', vars[Vn], '  power=', 
                         signif(digits = 2, pow.M.alt.1 [Vn])), adj = c(0,0))
@@ -142,14 +142,14 @@ output$theplot = renderPlot({
   }
   ### average
   averagePowerEqualAlpha = mean(pow.M.alt.1)
-#  lines(x=c(lowerC, mean(C95)), y= rep(averagePowerEqualAlpha, 2), col=col.v[3])
+#  lines(x=c(lowerC, mean(cutoffs)), y= rep(averagePowerEqualAlpha, 2), col=col.v[3])
   lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
   text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
        labels = paste('marginal power equal alpha:', 
                       signif(digits = 6, averagePowerEqualAlpha)))
 
   
-  points( cex=2, c(C95Small, C95Big), 
+  points( cex=2, c(cutoffsSmall, cutoffsBig), 
           conditionalPowerEqualLR, col=col.v[4], pch='L')
   text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v[4], xpd=NA,
        labels = paste('marginal power equal LR:', 
@@ -167,7 +167,7 @@ output$theplot = renderPlot({
 })
 
 output$likrat = renderPlot({
-  plot(c(C95SmallValues, C95BigValues), 
+  plot(c(cutoffsSmallValues, cutoffsBigValues), 
        )
 })
 plotOutput('theplot')
@@ -175,8 +175,8 @@ plotOutput('theplot')
 
 
 
-If the variance is `r vars[1]`, the cutoff for alpha=0.05 is `r C95[1] `.  
-But if the variance is `r vars[2]`, the cutoff for alpha=0.05 is `r C95[2] `.  
+If the variance is `r vars[1]`, the cutoff for alpha=0.05 is `r cutoffs[1] `.  
+But if the variance is `r vars[2]`, the cutoff for alpha=0.05 is `r cutoffs[2] `.  
 The conditional statistical **powers** for rejecting the "null" (bland) hypothesis $M=0$  are `r pow.M.alt.1[1]` and `r pow.M.alt.1[2]`,
 
 
@@ -186,15 +186,15 @@ over  which variance is chosen (50-50), is
 ## Likelihood ratios
 The likelihood ratios are, respectively, 
 
-`r lr(C95[1], vars[1])` and `r lr(C95[2], vars[2])`
+`r lr(cutoffs[1], vars[1])` and `r lr(cutoffs[2], vars[2])`
 
 Not equal!!
 
 The equalizer for the likelihood ratio is when  
 AlphaBig = optimalAlphaBig = `r optimalAlphaBig` and  
 AlphaSmall = optimalAlphaSmall = `r optimalAlphaSmall`.  
-The critical value for the small variance is now `r C95Small`,
-and for the large variance it's `r C95Big`.
+The critical value for the small variance is now `r cutoffsSmall`,
+and for the large variance it's `r cutoffsBig`.
 
 
 Are you content to report a P value based on the marginal **alpha** when you KNOW which instrument was used? So the **conditionality principle** is used FIRST.
