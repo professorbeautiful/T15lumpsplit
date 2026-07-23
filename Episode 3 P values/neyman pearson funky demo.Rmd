@@ -49,6 +49,7 @@ plot(xseq<- seq(lowerC, 3, length=1000),  log(lr(xseq, vars[1])))
 
 ```
 
+The setting:  one observation from a normal distribution, mean unknown.
 If we know the variance is $V$, and the observed value is $X$,
 the likelihood function as a function of the mean $M$ is 
 $$
@@ -63,15 +64,16 @@ $$
 ```{r echo=FALSE}
   C95  = qnorm(1 - alpha, sd = sqrt(vars))
 lrEqualAlpha =  lr(C95, vars)
+  pow.M.alt.1 = pow(C95, M.alt=1, V=vars)
 
 ```
-We have two instruments, with different variances  `r vars[1]` and `r vars[2]`.  they could be different in precisions. Or they could be because there are two different possible sample sizes.  *The instrument used is picked at random!*
+But we have **two** instruments to measure *X*, with different variances  `r vars[1]` and `r vars[2]`.  They could be different in precisions. Or they could be because there are two different possible sample sizes.  *The instrument used is picked at random!*  ---- **But we know which one was picked!**
 
-Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. If you know which instrument was picked, you would of course use the relevant significance cutoff. Here these two conditional cutoffs are `r C95[1]` and `r C95[2]`.  Then regardless of the chances for the two instrument, the overall marginal *alpha* is the same.
+Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. If you know which instrument was picked, you would of course use the relevant significance cutoff. Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r signif(digits=4, C95[1])` and `r signif(digits=4, C95[2])`.  Then regardless of the chances for the two instrument, the overall marginal *alpha* is the same.
 
 The likelihood ratios at the two critical values are `r lrEqualAlpha[1]` and `r lrEqualAlpha[2]`.  Not the same.  Should we maximize power by  forcing the two likelihood ratios to be the same?
 
-If we raise the cutoff for the Bigger variance, and lower it for the Smaller variance, watch what happens. 
+If we raise the cutoff for the Bigger variance, and lower it for the Smaller variance, watch what happens. The likelihood ratios get closer and closer.
 
 ```{r}
 Aseq<- seq(0.001, 0.05, length=1000)
@@ -112,7 +114,7 @@ results = list(C95Small, C95Big,
                conditionalPowerEqualLR, averagePowerEqualLR)
 ```
 
-The plot shows the absolute difference in the two likelihood ratios, as the proportion of **alpha** for the big variance. We see that the likelihood ratios are equal when the alpha for the big variance instrument is **`r round(optimalAlphaSmall, digits=3)`**. Then the other **alpha**, for the less precise instrument, is `r round(optimalAlphaBig, digits=3)`. They add to **alpha = `r alpha`**.
+The plot shows the absolute difference in the two likelihood ratios, as the proportion of **alpha** for the big variance. We see that the likelihood ratios are equal when the alpha for the big variance instrument is **`r round(optimalAlphaSmall, digits=3)`**. Then the other **alpha**, for the less precise instrument, is `r round(optimalAlphaBig, digits=3)`. They average to **alpha = `r alpha`**.
 
 ```{r echo=FALSE}
 ### conditional power
@@ -126,7 +128,6 @@ output$theplot = renderPlot({
   text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
   points(C95, c(alpha, alpha), col=col.v, pch='C')
   #points(C95, pow(C95, M.alt=0), col=col.v, pch='C')
-  pow.M.alt.1 = pow(C95, M.alt=1, V=vars)
   points(C95, pow.M.alt.1, col=col.v, pch='P')
   
   
@@ -176,7 +177,9 @@ plotOutput('theplot')
 
 If the variance is `r vars[1]`, the cutoff for alpha=0.05 is `r C95[1] `.  
 But if the variance is `r vars[2]`, the cutoff for alpha=0.05 is `r C95[2] `.  
-The conditional powers are 
+The conditional statistical **powers** for rejecting the "null" (bland) hypothesis $M=0$  are `r pow.M.alt.1[1]` and `r pow.M.alt.1[2]`,
+
+
 and the average power, averaging the conditional powers
 over  which variance is chosen (50-50), is 
 
