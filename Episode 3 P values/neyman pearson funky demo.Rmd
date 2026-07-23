@@ -133,6 +133,17 @@ plotOutput('lrDifferenceAbs')
 
 ```
 
+```{r}
+output$alpha.Text = renderText({
+  input$alpha
+})
+output$optimalAlphaSmall_Text = renderText({
+  round(digits=3, rV$optimalAlphaSmall)
+})
+textOutput('fisherResultOriginal', inline=TRUE)
+
+```
+
 The plot shows the absolute difference in the two likelihood ratios, as we change the proportion of **alpha** for the big variance. We see that the likelihood ratios are equal when the alpha for the big variance instrument is **`r round(optimalAlphaSmall, digits=3)`**. Then the other **alpha**, for the less precise instrument, is `r round(optimalAlphaBig, digits=3)`. They average to **alpha = `r alpha`**.
 
 ```{r echo=FALSE}
