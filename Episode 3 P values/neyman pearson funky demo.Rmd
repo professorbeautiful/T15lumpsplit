@@ -107,7 +107,7 @@ plot(Aseq,
 optimal = optimize(lrDifferenceAbs, 
                            maximum = FALSE, interval = c(0, max(Aseq))) 
 optimalAlphaBig = optimal$ minimum
-whichOptimal = print( which(abs(optimalAlphaBig - Aseq) < 1e-4) [1] )
+whichOptimal = ( which(abs(optimalAlphaBig - Aseq) < 1e-4) [1] )
 optimalAlphaSmall = 2*alpha - optimalAlphaBig
 cutoffsBig =   qnorm(1 - optimalAlphaBig, sd = sqrt(max(vars)))
 cutoffsSmall = qnorm(1 - optimalAlphaSmall, sd = sqrt(min(vars)))
@@ -126,7 +126,7 @@ results.EqualLR <<- data.frame(
   marginalPower = rep(averagePowerEqualLR, 2))
 ```
 
-The plot shows the absolute difference in the two likelihood ratios, as the proportion of **alpha** for the big variance. We see that the likelihood ratios are equal when the alpha for the big variance instrument is **`r round(optimalAlphaSmall, digits=3)`**. Then the other **alpha**, for the less precise instrument, is `r round(optimalAlphaBig, digits=3)`. They average to **alpha = `r alpha`**.
+The plot shows the absolute difference in the two likelihood ratios, as we change the proportion of **alpha** for the big variance. We see that the likelihood ratios are equal when the alpha for the big variance instrument is **`r round(optimalAlphaSmall, digits=3)`**. Then the other **alpha**, for the less precise instrument, is `r round(optimalAlphaBig, digits=3)`. They average to **alpha = `r alpha`**.
 
 ```{r echo=FALSE}
 ### conditional power
