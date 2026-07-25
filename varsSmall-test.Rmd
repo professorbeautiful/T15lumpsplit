@@ -71,9 +71,12 @@ ls()
 ```
 
  varsSmall is `r textOutput( 'varsSmall.text', inline=TRUE)`  
- or  `r varsSmall.text()` 
-
+ 
+or  `r varsSmall.text()` 
+ Either style works alone, but the 2nd causes the first to not appear.
 
 and   
-varsBig is `r vBtext()`
+varsBig is `r vBtext()`  and `r vBtext()` and `r vBtext()`
+Aha, only the last one works!  You would have to serialize.
+
 
