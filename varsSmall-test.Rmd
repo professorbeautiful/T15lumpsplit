@@ -1,0 +1,79 @@
+---
+title: "Untitled"
+author: "Roger Day"
+date: "2026-07-21"
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+#library(shiny)
+#options(error=print(traceback()))
+#invisible(require(shinyjs) )
+
+```
+
+
+#  neyman pearson funky demo
+# violating conditionality principle
+
+
+ 
+```{r echo=FALSE}
+
+h0 = 0 # null
+ha = 1 #  alternative hypothesis
+vars.init = c(0.4, 3) ####    Small, and large. so power is large, Small.
+div(
+  numericInput('varsBig', 'varsBig', value = vars.init[2]),
+  numericInput('varsSmall', 'varsSmall', value = vars.init[1])
+)
+
+```
+```{r}
+varsBig = reactive({input$varsBig})
+#output$varsBig.text = renderText({varsBig()})
+output[['varsBig.text']] = renderText({varsBig()})   # OK.
+vBtext = function()textOutput( 'varsBig.text', inline=TRUE)
+```
+```{r}
+#makeReactiveVariable = function(N){
+N = 'varsSmall'
+Nassign = paste0(
+    'reactive({', 'input$', N, '})' ) 
+print(Nassign)
+assign(N, eval(parse(text= Nassign) ) )
+print(varsSmall)  ### ok.
+```
+
+```{r}
+Noutput = (parse(text=paste0(N, '()' )))
+print(Noutput)
+#output[['varsBig.text']] = renderText({varsBig()})   # OK.
+
+output[[paste0(N, '.text')]] = renderText({ eval(Noutput) }) ##ok.
+assign(paste0(N, '.text'),
+       #eval(parse(text=paste0(
+       function()textOutput( paste0(N, '.text'),
+                             inline=TRUE)
+)
+ls()
+#print(varsSmall)
+#print(textOutput(paste0(N, '.text')))
+
+#}
+#makeReactiveVariable('varsSmall')
+
+#varsSmall = reactive({input$varsSmall})
+#output$varsSmalltext = renderText({varsSmall()})
+
+
+```
+
+ varsSmall is `r textOutput( 'varsSmall.text', inline=TRUE)`  
+ or  `r varsSmall.text()` 
+
+
+and   
+varsBig is `r vBtext()`
+
