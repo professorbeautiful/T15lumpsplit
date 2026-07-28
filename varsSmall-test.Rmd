@@ -31,34 +31,31 @@ div(
 
 ```
 
-```{r eval=F}
-# not gonna work.
-for (v in c('varsSmall', 'varsBig')) {
-assign(v,  reactive({input$varsSmall}) )
-  outputName = paste0(v, '.text')
+```{r eval=T}
+# not gonna work?
+for (v.input.name in c('varsSmall', 'varsBig')) {
+  assign(paste0(v.input.name, '.reactive.x'),  
+         reactive({input[[eval(v.input.name)]] }) )  ### nope.Verbatim.
 # output[[outputName]] = renderText({eval(paste0(v, '()' ))})   # OK.
 # textName = paste0(v, 'text')
 # assign(textName,  function()textOutput( outputName, inline=TRUE)  ) ##OK
 # print(get(textName))
 }
+ls()
+print(varsSmall.reactive.x) # the way the input[[]] parses is too tricky. Verbatim.
+print(varsBig.reactive.x)
 ```
 
 ```{r eval=T}
-varsBig = reactive({input$varsBig})
-output[['varsBig.text']] = renderText({varsBig()})   # OK.
-varsBig.text = function()textOutput( 'varsBig.text', inline=TRUE)  ##OK
-```
-```{r eval=T}
-varsSmall = reactive({input$varsSmall})
-output[['varsSmall.text']] = renderText({varsSmall()})   # OK.
+varsSmall.reactive = reactive({input[['varsSmall']]})  #OK not needed now
+output[['varsSmall.text']] = renderText({varsSmall.reactive()})   # OK.
 varsSmall.text = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
+
+varsBig.reactive = reactive({input[['varsBig']]}) #OK not needed now
+output[['varsBig.text']] = renderText({varsBig.reactive()})   # OK.
+varsBig.text = function()textOutput( 'varsBig.text', inline=TRUE)  ##OK
+
 ```
-
-print() 
-
-```
-
-
 
 ```{r eval=FALSE}
 makeReactiveVariable = parse(text="
