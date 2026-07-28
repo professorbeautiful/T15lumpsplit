@@ -1,0 +1,282 @@
+---
+title: "Untitled"
+author: "Roger Day"
+date: "2026-07-21"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(shiny)
+options(error=print(traceback()))
+```
+
+
+#  neyman pearson funky demo
+# violating conditionality principle
+
+
+
+```{r echo=FALSE}
+
+h0 = 0 # null
+ha = 1 #  alternative hypothesis
+vars.init = c(0.4, 3) ####    Small, and large. so power is large, Small.
+varsBig = reactive(input$varsBig)
+varsSmall = reactive(input$varsSmall)
+div(
+  numericInput('varsBig', 'varsBig', value = vars.init[2]),
+  numericInput('varsSmall', 'varsSmall', value = vars.init[1])
+)
+vars = reactive({c(varsSmall, varsBig)})
+
+alpha = 0.05
+col.v1 = 'red'
+col.v2 = 'darkgreen'
+col.v = c(col.v1, col.v2, 'blue', 'orange')
+names(col.v) = c('small', 'big', 'alpha', 'LR')
+pow = function(C, M.alt=1, V) {
+  1 - pnorm(C, M.alt, sqrt(V)) 
+}
+lowerC = 0
+Cseq <- seq(lowerC,3,length=1000)
+
+likelihood = function(h, v, x) {
+  1 - pnorm( abs((x - h)/sqrt(v))  ) 
+}
+# likelihood(h = 0, v = 1, x = qnorm(1-0.025)) # yes 0.025.
+lr = function(x, v) likelihood(h = ha, v , x ) / likelihood(h = h0, v, x )
+```
+
+```{r eval=FALSE}
+
+### skip this plot
+plot(xseq<- seq(lowerC, 3, length=1000),  log(lr(xseq, varsSmall())))
+abline(v=0:1)
+lines(col='red',xseq<- seq(lowerC, 3, length=1000),  log(lr(xseq, varsBig() )))
+plot(xseq<- seq(lowerC, 3, length=1000),  log(lr(xseq, varsSmall() )))
+
+```
+
+The setting:  one observation from a normal distribution, mean unknown.
+If we know the variance is $V$, and the observed value is $X$,
+the likelihood function as a function of the mean $M$ is 
+$$
+L(M)~=~dnorm(X,M,\sqrt{V})
+$$
+For rejection critical value $C$ > 0, 
+the power to reject $M = 0$ if the true mean is $M_{alt}$ is
+
+$$
+Power(C)~=~  (1 - pnorm(C,M_{alt},\sqrt{V}) )
+$$
+```{r echo=FALSE}
+cutoffs  = reactive({
+  qnorm(1 - alpha, sd = sqrt(vars()))
+})
+
+
+output$results.EqualAlpha = renderTable({
+  #cutoffs  = qnorm(1 - alpha, sd = sqrt(vars))
+  lrEqualAlpha <<-  lr(cutoffs(), vars())
+  pow.M.alt.1 <<- pow(cutoffs(), M.alt=1, V=vars())
+  results.EqualAlpha = data.frame(
+    alphas = rep(alpha, 2),
+    cutoffs, 
+    LR= lrEqualAlpha, 
+    power=pow.M.alt.1,
+    marginalPower= rep(mean(pow.M.alt.1), 2))
+})
+```
+But we have **two** instruments to measure *X*, with different variances  
+`r textOutput('varsSmall.text')` and `r textOutput('varsBig.text')`.  They could be different in precisions. Or they could be because there are two different possible sample sizes.  *The instrument used is picked at random!*  ---- **But we know which one was picked!**
+
+Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. If you know which instrument was picked, you would of course use the relevant significance cutoff. Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r #signif(digits=4, cutoffs()[1])` and `r #signif(digits=4, cutoffs()[2])`.  Then regardless of the chances for the two instrument, the overall marginal *alpha* is the same.
+
+The likelihood ratios at the two critical values are `r #lrEqualAlpha[1]` and `r #lrEqualAlpha[2]`.  Not the same.  Should we maximize power by  forcing the two likelihood ratios to be the same?
+
+If we raise the cutoff for the Bigger variance `r textOutput('varsSmall.text')`, and lower it for the Smaller variance `r textOutput('varsBig.text')`, watch what happens. The likelihood ratios get closer and closer.
+
+```{r}
+output$lrDifferenceAbs = renderPlot({
+  
+  Aseq<- seq(0.001, 0.05, length=1000)
+  lrBigValues = numeric(0)
+  lrSmallValues = numeric(0)
+  cutoffsBigValues = numeric(0)
+  cutoffsSmallValues = numeric(0)
+  lrDifference = function(alphaBig){
+    alphaSmall = 2*alpha  - alphaBig # because they average to alpha.
+    cutoffsBig = qnorm(1 - alphaBig, sd = sqrt(max(vars())))
+    cutoffsSmall = qnorm(1 - alphaSmall, sd = sqrt(min(vars())))
+    cutoffsBigValues =  append(cutoffsBigValues, cutoffsBig)
+    cutoffsSmallValues =  append(cutoffsSmallValues, cutoffsSmall)
+    #print(c( lr(cutoffsBig, v = max(vars)) , lr(cutoffsSmall, v = min(vars)) ) )
+    lrBig = lr(cutoffsBig, v = max(vars())) 
+    lrSmall = lr(cutoffsSmall, v = min(vars()))
+    lrBigValues =  append(lrBigValues, lrBig)
+    lrSmallValues =  append(lrSmallValues, lrSmall)
+    lrBig - lrSmall
+  }
+  lrDifferenceAbs = function(alphaBig) abs(lrDifference(alphaBig))
+  optimal = optimize(lrDifferenceAbs, 
+                     maximum = FALSE, interval = c(0, max(Aseq))) 
+  optimalAlphaBig = optimal$ minimum
+  whichOptimal = ( which(abs(optimalAlphaBig - Aseq) < 1e-4) [1] )
+  optimalAlphaSmall = 2*alpha - optimalAlphaBig
+  cutoffsBig =   qnorm(1 - optimalAlphaBig, sd = sqrt(max(vars)))
+  cutoffsSmall = qnorm(1 - optimalAlphaSmall, sd = sqrt(min(vars)))
+  # testthat::expect_equal(lr(cutoffsSmall, min(vars)), 
+  #                        lr(cutoffsBig, max(vars)) , tolerance = 1e-3)
+  conditionalPowerEqualLR =   c( pow(cutoffsSmall, M.alt=1, V=varsSmall()), 
+                                 pow(cutoffsBig, M.alt=1, V=vars[2]) )
+  
+  averagePowerEqualLR = mean(conditionalPowerEqualLR)
+  
+  results.EqualLR <<- data.frame(
+    alphas = c(optimalAlphaSmall, optimalAlphaBig), 
+    cutoffs = c(cutoffsSmall, cutoffsBig), 
+    LR = rep(optimal$objective, 2),
+    power = conditionalPowerEqualLR, 
+    marginalPower = rep(averagePowerEqualLR, 2))
+  
+  plot(Aseq,
+       lrDifferenceAbs(Aseq) , xlab='alpha Big', ylab='lrDifferenceAbs')
+  abline(v=alpha/2, lty=2)
+  abline(v=optimalAlphaBig, lty=3)
+})
+plotOutput('lrDifferenceAbs')
+
+```
+
+```{r}
+output$alpha.Text = renderText({
+  input$alpha
+})
+output$optimalAlphaSmall_Text = renderText({
+  round(digits=3, rV$optimalAlphaSmall)
+})
+output$optimalAlphaBig_Text = renderText({
+  round(digits=3, rV$optimalAlphaBig)
+})
+
+
+```
+
+The plot shows the absolute difference in the two likelihood ratios, as we change the proportion of **alpha** for the big variance. We see that the likelihood ratios are equal when the alpha for the big variance instrument is **`r textOutput('optimalAlphaBig_Text', inline=TRUE)`**. 
+Then the other **alpha**, for the more precise instrument, is 
+`r textOutput('optimalAlphaSmall_Text', inline=TRUE)`. 
+They average to **alpha = `r textOutput('alpha.Text', inline=TRUE)`**.
+
+```{r echo=FALSE}
+### conditional power
+
+output$theplot = renderPlot({
+  plot(Cseq, ylim=c(0,1), xlim=c(0, cutoffsBig * 1.01),
+       pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
+       pch='', col=col.v1)
+  lines(x=c(lowerC, cutoffs()[1]), y= c(alpha,alpha) , col='black')
+  lines(x=c(lowerC, cutoffs()[2]), y= c(alpha,alpha) , col='black')
+  text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
+  points(cutoffs(), c(alpha, alpha), col=col.v, pch='C')
+  #points(cutoffs, pow(cutoffs, M.alt=0), col=col.v, pch='C')
+  points(cutoffs(), pow.M.alt.1, col=col.v, pch='P')
+  
+  
+  for(Vn in 1:2) {
+    lines(Cseq, pow(Cseq, M.alt=1, V=vars[Vn]), lty=2, lwd=3, col=col.v[Vn])
+    lines(x=c(lowerC, cutoffs()[Vn]), y= rep(pow.M.alt.1 [Vn], 2), col=col.v[Vn])
+    lines(x=rep(cutoffs()[Vn],2), y = c(alpha, pow.M.alt.1 [Vn]), col=col.v[Vn])
+    text(x=lowerC, y=pow.M.alt.1 [Vn], col=col.v[Vn],
+         labels = paste('V=', vars[Vn], '  power=', 
+                        signif(digits = 2, pow.M.alt.1 [Vn])), adj = c(0,0))
+    
+  }
+  ### average
+  averagePowerEqualAlpha = mean(pow.M.alt.1)
+  #  lines(x=c(lowerC, mean(cutoffs)), y= rep(averagePowerEqualAlpha, 2), col=col.v[3])
+  lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
+  text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
+       labels = paste('marginal power equal alpha:', 
+                      signif(digits = 6, averagePowerEqualAlpha)))
+  
+  
+  points( cex=2, c(cutoffsSmall, cutoffsBig), 
+          conditionalPowerEqualLR, col=col.v[4], pch='L')
+  text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v[4], xpd=NA,
+       labels = paste('marginal power equal LR:', 
+                      signif(digits = 6, averagePowerEqualLR)))
+  
+  
+  legend(x='topright', 
+         legend=c(paste('Variance=', varsSmall()), 
+                  paste('Variance=', vars[2]), 
+                  'equal alpha',
+                  'equal LR'
+         ), 
+         text.col =  col.v
+  )
+})
+
+
+plotOutput('theplot')
+```
+```{r eval=FALSE}
+output$likrat = renderPlot({
+  plot(c(cutoffsSmallValues, cutoffsBigValues), 
+  )
+})
+```
+
+
+
+If the variance is `r varsSmall()`, the cutoff for alpha=0.05 is `r #signif(digits=3, cutoffs()[1] )`.  
+But if the variance is `r vars[2]`, the cutoff for alpha=0.05 is `r #signif(digits=3, cutoffs()[2] ) `.  
+The conditional statistical **powers** for rejecting the "null" (bland) hypothesis $M=0$  are `r pow.M.alt.1[1]` and `r pow.M.alt.1[2]`,
+
+
+and the average power, averaging the conditional powers
+over  which variance is chosen (50-50), is 
+
+## Likelihood ratios
+The likelihood ratios are, respectively, 
+
+`r lr(cutoffs()[1], varsSmall())` and `r lr(cutoffs()[2], vars[2])`
+
+Not equal!!
+
+The equalizer for the likelihood ratio is when  
+AlphaBig = optimalAlphaBig = `r optimalAlphaBig` and  
+AlphaSmall = optimalAlphaSmall = `r optimalAlphaSmall`.  
+The critical value for the small variance is now `r cutoffsSmall`,
+and for the large variance it's `r cutoffsBig`.
+```{r}
+results.EqualLR = data.frame(
+  alphas = c(optimalAlphaBig, optimalAlphaSmall),
+  cutoffs=c(cutoffsBig, cutoffsSmall), 
+  lrEqualAlpha, pow.M.alt.1)
+
+
+
+```
+The increase in power is minuscule.  
+But you are actually combining two possible experiments and ignoring the fact that you know which one was done.
+
+Compare the cutoffs.  
+With equal *alpha*:  
+Are you content to report a P value based on the marginal **alpha** when you KNOW which instrument was used? So the **conditionality p(rinciple** is used FIRST.
+
+```{r}
+output$results.EqualAlpha = renderTable(results.EqualAlpha )
+tableOutput('results.EqualAlpha')
+```
+
+```{r}  
+output$results.EqualLR = renderTable(results.EqualLR) 
+tableOutput('results.EqualLR')
+```
+
+
+
+

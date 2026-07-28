@@ -32,24 +32,37 @@ div(
 ```
 ```{r}
 varsBig = reactive({input$varsBig})
-#output$varsBig.text = renderText({varsBig()})
 output[['varsBig.text']] = renderText({varsBig()})   # OK.
-vBtext = function()textOutput( 'varsBig.text', inline=TRUE)
+vBtext = function()textOutput( 'varsBig.text', inline=TRUE)  ##OK
 ```
 ```{r}
-#makeReactiveVariable = function(N){
-N = 'varsSmall'
-Nassign = paste0(
-    'reactive({', 'input$', N, '})' ) 
-print(Nassign)
-assign(N, eval(parse(text= Nassign) ) )
-print(varsSmall)  ### ok.
+varsSmall = reactive({input$varsSmall})
+output[['varsSmall.text']] = renderText({varsSmall()})   # OK.
+vStext = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
+```
+```{r}
+makeReactiveVariable = parse(text="
+  Nname = 'varsSmall'
+  Nassign = paste0(
+    'reactive({', 'input$', Nname, '})' ) 
+  print(Nassign)
+  Nreactive = paste0(Nname, '.text')
+  cat('(Nreactive)\n')
+  print((Nreactive))  ### ok.
+  assign(Nreactive, eval(parse(text= Nassign) ) , 
+         envir = parent.frame(2))
+  cat('get(Nreactive)\n')
+  #print(get(Nreactive))  ### ok.
+  #output[['varsSmalltext']] = renderText({(get(Nreactive, envir = parent.frame(1)))})
+")
+
 ```
 
-```{r}
+```{r eval=FALSE}
+N = 'varsBig'
 Noutput = (parse(text=paste0(N, '()' )))
 print(Noutput)
-#output[['varsBig.text']] = renderText({varsBig()})   # OK.
+output[['varsBig.text']] = renderText({varsBig()})   # OK.
 
 output[[paste0(N, '.text')]] = renderText({ eval(Noutput) }) ##ok.
 assign(paste0(N, '.text'),
@@ -62,21 +75,37 @@ ls()
 #print(textOutput(paste0(N, '.text')))
 
 #}
+```
+
+```{r}
+print(names(output))
+```
+```{r}
 #makeReactiveVariable('varsSmall')
+  Nname = 'varsSmall'
+eval(makeReactiveVariable)
+vStext = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
 
-#varsSmall = reactive({input$varsSmall})
-#output$varsSmalltext = renderText({varsSmall()})
 
+#print(names(output))  #useless
+find('varsBig.text')
+find('varsSmall.text')
+
+
+#  varsSmall.text is not found - " reactive outside..,"
+# varsSmall is `r textOutput( 'varsSmall.text', inline=TRUE)`  
+# or  `r varsSmall.text()`   
 
 ```
 
- varsSmall is `r textOutput( 'varsSmall.text', inline=TRUE)`  
- 
-or  `r varsSmall.text()` 
+ Try vStext--    `r vStext()`
+ or varsSmall.text --   `r #varsSmall.text()`
  Either style works alone, but the 2nd causes the first to not appear.
 
+
+ 
 and   
-varsBig is `r vBtext()`  and `r vBtext()` and `r vBtext()`
+varsBig is `r varsBig.text()`  and vBtext `r vBtext()` and vBtext  `r vBtext()`
 Aha, only the last one works!  You would have to serialize.
 
 
