@@ -31,98 +31,26 @@ div(
 
 ```
 
-```{r eval=F}
-# not gonna work?
-for (v.input.name in c('varsSmall', 'varsBig')) {
-  assign(paste0(v.input.name, '.reactive.x'),  
-         reactive({input[[(v.input.name)]] }) )  ### nope.Verbatim. 
-# output[[outputName]] = renderText({eval(paste0(v, '()' ))})   # OK.
-# textName = paste0(v, 'text')
-# assign(textName,  function()textOutput( outputName, inline=TRUE)  ) ##OK
-# print(get(textName))
-}
-ls()
-print(varsSmall.reactive.x) # the way the input[[]] parses is too tricky. Verbatim.
-print(varsBig.reactive.x)
-```
 
 ```{r eval=T}
-#varsSmall.reactive = reactive({input[['varsSmall']]})  #OK not needed now
 output[['varsSmall.text']] = renderText(input[['varsSmall']])   # OK.
-#varsSmall.text = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
+output[['varsSmall.text.2']] = renderText(input[['varsSmall']])   # OK.
 
-#varsBig.reactive = reactive({input[['varsBig']]}) #OK not needed now
 output[['varsBig.text']] = renderText(input[['varsBig']])   # OK.
-#varsBig.text = function()textOutput( 'varsBig.text', inline=TRUE)  ##OK
+output[['varsBig.text.2']] = renderText(input[['varsBig']])   # OK.
 
 ```
 
-```{r eval=FALSE}
-makeReactiveVariable = parse(text="
-  Nname = 'varsSmall'
-  Nassign = paste0(
-    'reactive({', 'input$', Nname, '})' ) 
-  print(Nassign)
-  Nreactive = paste0(Nname, '.text')
-  cat('(Nreactive)\n')
-  print((Nreactive))  ### ok.
-  assign(Nreactive, eval(parse(text= Nassign) ) , 
-         envir = parent.frame(2))
-  cat('get(Nreactive)\n')
-  #print(get(Nreactive))  ### ok.
-  #output[['varsSmalltext']] = renderText({(get(Nreactive, envir = parent.frame(1)))})
-")
+varsSmall.text --   `r textOutput( 'varsSmall.text', inline=TRUE)`
+and again...  `r textOutput( 'varsSmall.text', inline=TRUE)`
+ The 2nd causes the first to not appear.  
+ Overwriting of JS id name.
 
-```
-
-```{r eval=FALSE}
-N = 'varsBig'
-Noutput = (parse(text=paste0(N, '()' )))
-print(Noutput)
-output[['varsBig.text']] = renderText({varsBig()})   # OK.
-
-output[[paste0(N, '.text')]] = renderText({ eval(Noutput) }) ##ok.
-assign(paste0(N, '.text'),
-       #eval(parse(text=paste0(
-       function()textOutput( paste0(N, '.text'),
-                             inline=TRUE)
-)
-ls()
-#print(varsSmall)
-#print(textOutput(paste0(N, '.text')))
-
-#}
-```
-
-```{r}
-print(names(output))
-```
-```{r}
-#makeReactiveVariable('varsSmall')
-#  Nname = 'varsSmall'
-#eval(makeReactiveVariable)
-#vStext = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
-
-
-#print(names(output))  #useless
-# find('varsBig.text')
-# find('varsSmall.text')
-
-
-#  varsSmall.text is not found - " reactive outside..,"
-# varsSmall is `r textOutput( 'varsSmall.text', inline=TRUE)`  
-# or  `r varsSmall.text()`   
-
-```
-
- Try vStext--    `r #vStext()`
- or varsSmall.text --   `r textOutput( 'varsSmall.text', inline=TRUE)`
- Either style works alone, but the 2nd causes the first to not appear.
-
-
- 
-and   
-varsBig is `r textOutput( 'varsBig.text', inline=TRUE)`  and vBtext `r #vBtext()` and vBtext  `r #vBtext()`
-Aha, only the last one works!  You would have to serialize.
+ and   
+varsBig is `r textOutput( 'varsBig.text', inline=TRUE)`  
+AND `r textOutput( 'varsBig.text.2', inline=TRUE)` 
+Just make more that one output component if needed.
+You serialize only as needed.
+AND `r textOutput( 'varsBig.text.2', inline=TRUE)`  ???
 
 
