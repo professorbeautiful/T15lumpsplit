@@ -1,0 +1,35 @@
+---
+title: "Neyman Pearson for 2x2"
+author: "Roger Day"
+date: "2026-07-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+A statistician and a clinical researcher walk into a bar.  
+They're planning a clinical trial.
+How many patients do we need?
+
+Nul hypothesis, the odds ratio is 1.
+Alternative, the odds ratio is 2.
+
+Big argument.  The statistician wants a nice big 1000 patients, 500 treated 500 placebo.  The researcher says no way, 100 should be fine, I'm still paying off med school.  
+
+We measure the odds ratio to be 1.1.
+the standard deviation is 1/sqrt(N).
+If the sample size is 1000, the s.d. is 0.03, and so that's significant!
+More than 3 s.d.
+If the sample size is 100, the s.d. is 0.1, NOT significant!
+Just 1 s.d.
+
+Average over the two possible sample sizes.
+The s.d. sqrt( (0.03^2 + 0.1^2)/2)   which is 0.07.
+
+Suppose for alpha = 0.05, the power is 0.9 if N = 1000, but 0.5 if N = 100.
+
+
+
+
