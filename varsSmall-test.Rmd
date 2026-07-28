@@ -30,17 +30,25 @@ div(
 )
 
 ```
-```{r}
+```{r eval=TRUE}
 varsBig = reactive({input$varsBig})
 output[['varsBig.text']] = renderText({varsBig()})   # OK.
 vBtext = function()textOutput( 'varsBig.text', inline=TRUE)  ##OK
 ```
-```{r}
+```{r eval=TRUE}
 varsSmall = reactive({input$varsSmall})
 output[['varsSmall.text']] = renderText({varsSmall()})   # OK.
 vStext = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
 ```
-```{r}
+```{r eval=FALSE}
+
+varsSmall = reactive({input$varsSmall})
+output[['varsSmall.text']] = renderText({varsSmall()})   # OK.
+vStext = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
+```
+
+
+```{r eval=FALSE}
 makeReactiveVariable = parse(text="
   Nname = 'varsSmall'
   Nassign = paste0(
@@ -82,14 +90,14 @@ print(names(output))
 ```
 ```{r}
 #makeReactiveVariable('varsSmall')
-  Nname = 'varsSmall'
-eval(makeReactiveVariable)
-vStext = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
+#  Nname = 'varsSmall'
+#eval(makeReactiveVariable)
+#vStext = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
 
 
 #print(names(output))  #useless
-find('varsBig.text')
-find('varsSmall.text')
+# find('varsBig.text')
+# find('varsSmall.text')
 
 
 #  varsSmall.text is not found - " reactive outside..,"
@@ -105,7 +113,7 @@ find('varsSmall.text')
 
  
 and   
-varsBig is `r varsBig.text()`  and vBtext `r vBtext()` and vBtext  `r vBtext()`
+varsBig is `r #varsBig.text()`  and vBtext `r vBtext()` and vBtext  `r #vBtext()`
 Aha, only the last one works!  You would have to serialize.
 
 
