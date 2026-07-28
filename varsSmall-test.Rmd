@@ -35,7 +35,7 @@ div(
 # not gonna work?
 for (v.input.name in c('varsSmall', 'varsBig')) {
   assign(paste0(v.input.name, '.reactive.x'),  
-         reactive({input[[eval(v.input.name)]] }) )  ### nope.Verbatim.
+         reactive({input[[(v.input.name)]] }) )  ### nope.Verbatim. 
 # output[[outputName]] = renderText({eval(paste0(v, '()' ))})   # OK.
 # textName = paste0(v, 'text')
 # assign(textName,  function()textOutput( outputName, inline=TRUE)  ) ##OK
