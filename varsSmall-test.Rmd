@@ -30,22 +30,34 @@ div(
 )
 
 ```
-```{r eval=TRUE}
+
+```{r eval=F}
+# not gonna work.
+for (v in c('varsSmall', 'varsBig')) {
+assign(v,  reactive({input$varsSmall}) )
+  outputName = paste0(v, '.text')
+# output[[outputName]] = renderText({eval(paste0(v, '()' ))})   # OK.
+# textName = paste0(v, 'text')
+# assign(textName,  function()textOutput( outputName, inline=TRUE)  ) ##OK
+# print(get(textName))
+}
+```
+
+```{r eval=T}
 varsBig = reactive({input$varsBig})
 output[['varsBig.text']] = renderText({varsBig()})   # OK.
-vBtext = function()textOutput( 'varsBig.text', inline=TRUE)  ##OK
+varsBig.text = function()textOutput( 'varsBig.text', inline=TRUE)  ##OK
 ```
-```{r eval=TRUE}
+```{r eval=T}
 varsSmall = reactive({input$varsSmall})
 output[['varsSmall.text']] = renderText({varsSmall()})   # OK.
-vStext = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
+varsSmall.text = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
 ```
-```{r eval=FALSE}
 
-varsSmall = reactive({input$varsSmall})
-output[['varsSmall.text']] = renderText({varsSmall()})   # OK.
-vStext = function()textOutput( 'varsSmall.text', inline=TRUE)  ##OK
+print() 
+
 ```
+
 
 
 ```{r eval=FALSE}
@@ -106,14 +118,14 @@ print(names(output))
 
 ```
 
- Try vStext--    `r vStext()`
- or varsSmall.text --   `r #varsSmall.text()`
+ Try vStext--    `r #vStext()`
+ or varsSmall.text --   `r varsSmall.text()`
  Either style works alone, but the 2nd causes the first to not appear.
 
 
  
 and   
-varsBig is `r #varsBig.text()`  and vBtext `r vBtext()` and vBtext  `r #vBtext()`
+varsBig is `r varsBig.text()`  and vBtext `r #vBtext()` and vBtext  `r #vBtext()`
 Aha, only the last one works!  You would have to serialize.
 
 
