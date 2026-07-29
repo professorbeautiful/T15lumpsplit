@@ -181,10 +181,11 @@ output$results.EqualLR = renderTable({
 ```{r}
 output$lrDifferenceAbsPLot  = renderPlot({
     Aseq<- seq(0.001, 0.05, length=1000)
+    cat('in lrDifferenceAbsPLot\n' )
     plot(Aseq,
        lrDifferenceAbs(Aseq) , xlab='alpha Big', ylab='lrDifferenceAbs')
-  abline(v=alpha/2, lty=2)
-  abline(v=results.EqualLR.Table()$alphas[2], lty=3)
+#  abline(v=alpha/2, lty=2)
+  #abline(v=results.EqualLR.Table()$alphas[2], lty=3)
 })
 ```
 
@@ -199,4 +200,39 @@ plotOutput('lrDifferenceAbsPlot')
 tableOutput('results.EqualLR')
 
 ```
+
+```{r echo=FALSE}
+### conditional power
+
+output$theplot = renderPlot({
+  cutoffs = results.EqualLR.Table()$cutoffs
+
+  plot(Cseq, ylim=c(0,1), xlim=c(0, cutoffs[2] * 1.01),
+       pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
+       pch='', col=col.v1)
+    lines(x=c(lowerC, cutoffs()[1]), y= c(alpha,alpha) , col='black')
+  lines(x=c(lowerC, cutoffs()[2]), y= c(alpha,alpha) , col='black')
+  text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
+  points(cutoffs(), c(alpha, alpha), col=col.v, pch='C')
+  #points(cutoffs, pow(cutoffs, M.alt=0), col=col.v, pch='C')
+  points(cutoffs(), pow.M.alt.1(), col=col.v, pch='P')
+  
+  
+  for(Vn in 1:2) {
+    lines(Cseq, pow(Cseq, M.alt=1, V=vars()[Vn]), lty=2, lwd=3, col=col.v[Vn])
+    lines(x=c(lowerC, cutoffs[Vn]), y= rep(pow.M.alt.1() [Vn], 2), col=col.v[Vn])
+    lines(x=rep(cutoffs[Vn],2), y = c(alpha, pow.M.alt.1() [Vn]), col=col.v[Vn])
+    text(x=lowerC, y=pow.M.alt.1() [Vn], col=col.v[Vn],
+         labels = paste('V=', vars()[Vn], '  power=', 
+                        signif(digits = 2, pow.M.alt.1() [Vn])), adj = c(0,0))
+    
+  }
+})
+
+plotOutput('theplot')
+
+```
+
+
+
 
