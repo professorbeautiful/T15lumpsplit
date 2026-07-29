@@ -142,7 +142,8 @@ If we raise the cutoff for the Bigger variance `r textOutput(inline=T, 'varsBig.
     lrBig - lrSmall
   }
   lrDifferenceAbs = function(alphaBig) abs(lrDifference(alphaBig))
-
+```
+```{r}
   results.EqualLR.Table = reactive({
   Aseq<- seq(0.001, 0.05, length=1000)
   optimal = optimize(lrDifferenceAbs, 
@@ -206,8 +207,9 @@ tableOutput('results.EqualLR')
 
 output$theplot = renderPlot({
   cutoffs = results.EqualLR.Table()$cutoffs
-
-  plot(Cseq, ylim=c(0,1), xlim=c(0, cutoffs[2] * 1.01),
+cutoffsSmall = cutoffs[1]
+cutoffsBig = cutoffs[2]
+  plot(Cseq, ylim=c(0,1), xlim=c(0, cutoffsBig * 1.01),
        pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
        pch='', col=col.v1)
     lines(x=c(lowerC, cutoffs()[1]), y= c(alpha,alpha) , col='black')
@@ -227,6 +229,22 @@ output$theplot = renderPlot({
                         signif(digits = 2, pow.M.alt.1() [Vn])), adj = c(0,0))
     
   }
+  ### average
+  averagePowerEqualAlpha = mean(pow.M.alt.1())
+  #  lines(x=c(lowerC, mean(cutoffs)), y= rep(averagePowerEqualAlpha, 2), col=col.v[3])
+  lines(rep(lowerC, 2), pow.M.alt.1(), col=col.v[3])
+  text(x=lowerC, y=mean(pow.M.alt.1()), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
+       labels = paste('marginal power equal alpha:', 
+                      signif(digits = 6, averagePowerEqualAlpha)))
+  
+  conditionalPowerEqualLR = results.EqualLR.Table()$power
+  averagePowerEqualLR = mean(conditionalPowerEqualLR)
+  points( cex=2, c(cutoffsSmall, cutoffsBig), 
+          conditionalPowerEqualLR, col=col.v[4], pch='L')
+  text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v[4], xpd=NA,
+       labels = paste('marginal power equal LR:', 
+                      signif(digits = 6, averagePowerEqualLR)))
+  
 })
 
 plotOutput('theplot')
