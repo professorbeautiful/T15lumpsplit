@@ -284,7 +284,9 @@ output$theplotChangingAlphaBig = renderPlot({
 ```
 
 ```{r echo=FALSE}
-numericInput('ChangingAlphaBig', 'Changing Alpha allocation', value = alpha, min=minAlphaBig, max=alpha * 2 - minAlphaBig, step=minAlphaBig)
+## We are FOR NOW keeping Pr(variance = vars[1] equal to 1/2).
+numericInput('ChangingAlphaBig', 'Changing Alpha allocation', value = alpha,
+             min=minAlphaBig, max=alpha * 2 - minAlphaBig, step=minAlphaBig)
 
 plotOutput('theplotChangingAlphaBig')
 ```
