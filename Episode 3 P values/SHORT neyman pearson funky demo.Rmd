@@ -241,10 +241,22 @@ cutoffsBig = cutoffs[2]
   averagePowerEqualLR = mean(conditionalPowerEqualLR)
   points( cex=2, c(cutoffsSmall, cutoffsBig), 
           conditionalPowerEqualLR, col=col.v[4], pch='L')
+  points( cex=3, c(cutoffsSmall, cutoffsBig), 
+          conditionalPowerEqualLR, col=col.v[4], pch=1)
   text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v[4], xpd=NA,
        labels = paste('marginal power equal LR:', 
-                      signif(digits = 6, averagePowerEqualLR)))
-  
+                      signif(digits = 3, averagePowerEqualLR)))
+  arrowTerminus = c(1.2, averagePowerEqualLR)
+  diagram::curvedarrow(to=arrowTerminus, from=c(cutoffsSmall,
+                                             conditionalPowerEqualLR[1]) ,
+                       lwd = 2, lty = 1, lcol = col.v[4], 
+            arr.col = col.v[4], arr.pos = 0.5, curve = .5, dr = 0.01, 
+            endhead = FALSE, segment = c(0, 1))
+  diagram::curvedarrow(to=arrowTerminus, from=c(cutoffsBig,
+                                             conditionalPowerEqualLR[2]) ,
+                       lwd = 2, lty = 1, lcol = col.v[4], 
+            arr.col = col.v[4], arr.pos = 0.5, curve = .1, dr = 0.01, 
+            endhead = FALSE, segment = c(0, 1))
 })
 
 plotOutput('theplot')
