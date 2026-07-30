@@ -284,7 +284,7 @@ output$theplotChangingAlphaBig = renderPlot({
 ```
 
 ```{r echo=FALSE}
-numericInput('ChangingAlphaBig', 'Changing Alpha allocation', value = alpha/2, min=minAlphaBig, max=alpha, step=minAlphaBig)
+numericInput('ChangingAlphaBig', 'Changing Alpha allocation', value = alpha, min=minAlphaBig, max=alpha * 2 - minAlphaBig, step=minAlphaBig)
 
 plotOutput('theplotChangingAlphaBig')
 ```
