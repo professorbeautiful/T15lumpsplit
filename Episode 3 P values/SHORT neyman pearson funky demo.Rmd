@@ -194,11 +194,15 @@ output$lrDifferenceAbsPlot  = renderPlot({
 plotOutput(outputId = 'lrDifferenceAbsPlot')  #, width = '40%', height='40%')
 
 ```
-## results.EqualLR
+## Comparing power, for equal alpha and equal LR
 
 ```{r}
-fluidRow(column(6, tableOutput('results.EqualAlpha')),
-         column(6, tableOutput('results.EqualLR')))
+centerIt = function(S) span(style='text-align:center;  display: flex;
+  align-items: center;
+  justify-content: center; font-size:larger', em(S))
+fluidRow(column(5, centerIt('Equal alpha'), tableOutput('results.EqualAlpha')),
+         column(2),
+         column(5, centerIt('Equal LR'), tableOutput('results.EqualLR')))
 
 ```
 
