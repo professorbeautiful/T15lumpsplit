@@ -194,6 +194,8 @@ output$lrDifferenceAbsPlot  = renderPlot({
 ```
 
 ```{r}
+# not a helpful plot
+
 ### lrDifferenceAbsPlot
 
 #plotOutput(outputId = 'lrDifferenceAbsPlot')  #, width = '40%', height='40%')
