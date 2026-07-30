@@ -100,7 +100,6 @@ output$results.EqualAlpha = renderTable({
   results.EqualAlpha
 })
 
-tableOutput('results.EqualAlpha')
 ```
 But we have **two** instruments to measure *X*, with different variances
 **`r textOutput(inline=T, 'varsSmall.text')` and `r textOutput(inline=T, 'varsBig.text')`.**  
@@ -180,9 +179,8 @@ output$results.EqualLR = renderTable({
 
 
 ```{r}
-output$lrDifferenceAbsPLot  = renderPlot({
+output$lrDifferenceAbsPlot  = renderPlot({
     Aseq<- seq(0.001, 0.05, length=1000)
-    cat('in lrDifferenceAbsPLot\n' )
     plot(Aseq,
        lrDifferenceAbs(Aseq) , xlab='alpha Big', ylab='lrDifferenceAbs')
 #  abline(v=alpha/2, lty=2)
@@ -192,13 +190,15 @@ output$lrDifferenceAbsPLot  = renderPlot({
 
 ### lrDifferenceAbsPlot
 ```{r}
-plotOutput('lrDifferenceAbsPlot')
+
+plotOutput(outputId = 'lrDifferenceAbsPlot')  #, width = '40%', height='40%')
 
 ```
 ## results.EqualLR
 
 ```{r}
-tableOutput('results.EqualLR')
+fluidRow(column(6, tableOutput('results.EqualAlpha')),
+         column(6, tableOutput('results.EqualLR')))
 
 ```
 
@@ -235,30 +235,32 @@ cutoffsBig = cutoffs[2]
   lines(rep(lowerC, 2), pow.M.alt.1(), col=col.v[3])
   text(x=lowerC, y=mean(pow.M.alt.1()), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
        labels = paste('marginal power equal alpha:', 
-                      signif(digits = 6, averagePowerEqualAlpha)))
+                      signif(digits = 3, averagePowerEqualAlpha)))
   
   conditionalPowerEqualLR = results.EqualLR.Table()$power
   averagePowerEqualLR = mean(conditionalPowerEqualLR)
   points( cex=2, c(cutoffsSmall, cutoffsBig), 
-          conditionalPowerEqualLR, col=col.v[4], pch='L')
+          conditionalPowerEqualLR, col=col.v['LR'], pch='L')
   points( cex=3, c(cutoffsSmall, cutoffsBig), 
-          conditionalPowerEqualLR, col=col.v[4], pch=1)
-  text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v[4], xpd=NA,
+          conditionalPowerEqualLR, col=col.v['LR'], pch=1)
+  text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'], xpd=NA,
        labels = paste('marginal power equal LR:', 
                       signif(digits = 3, averagePowerEqualLR)))
-  arrowTerminus = c(1.2, averagePowerEqualLR)
+  arrowTerminus = c(1.2, averagePowerEqualLR+0.1)
   diagram::curvedarrow(to=arrowTerminus, from=c(cutoffsSmall,
                                              conditionalPowerEqualLR[1]) ,
-                       lwd = 2, lty = 1, lcol = col.v[4], 
-            arr.col = col.v[4], arr.pos = 0.5, curve = .5, dr = 0.01, 
+                       lwd = 2, lty = 1, lcol = col.v['LR'], 
+            arr.col = col.v['LR'], arr.pos = 1, curve = -.3, dr = 0.01, 
             endhead = FALSE, segment = c(0, 1))
   diagram::curvedarrow(to=arrowTerminus, from=c(cutoffsBig,
                                              conditionalPowerEqualLR[2]) ,
-                       lwd = 2, lty = 1, lcol = col.v[4], 
-            arr.col = col.v[4], arr.pos = 0.5, curve = .1, dr = 0.01, 
+                       lwd = 2, lty = 1, lcol = col.v['LR'], 
+            arr.col = col.v['LR'], arr.pos = 1, curve = .1, dr = 0.01, 
             endhead = FALSE, segment = c(0, 1))
 })
+```
 
+```{r}
 plotOutput('theplot')
 
 ```
