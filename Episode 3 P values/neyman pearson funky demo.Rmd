@@ -206,6 +206,7 @@ output$lrDifferenceAbsPlot  = renderPlot({
 ```{r}
 minAlphaBig = 0.002
 
+### This plot shows how the power and cutoffs change as the alpha allocation changes
 output$theplotChangingAlphaBig = renderPlot({
   cutoffsBig =   qnorm(1 - input$ChangingAlphaBig, sd = sqrt(max(vars())))
   cutoffsSmall = qnorm(1 - (alpha - input$ChangingAlphaBig), sd = sqrt(min(vars())))
@@ -218,6 +219,8 @@ output$theplotChangingAlphaBig = renderPlot({
   plot(Cseq, ylim=c(0,1), xlim=c(0, upperX * 1.005),
        pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
        pch='', col=col.v1)
+  #  points for the equal alpha case.
+  
   
   #   lines(x=c(lowerC, cutoffs()[1]), y= c(alpha,alpha) , col='black')
   # lines(x=c(lowerC, cutoffs()[2]), y= c(alpha,alpha) , col='black')
