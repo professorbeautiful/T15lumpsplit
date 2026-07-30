@@ -146,7 +146,9 @@ If we raise the cutoff for the Bigger variance `r textOutput(inline=T, 'varsBig.
   results.EqualLR.Table = reactive({
   Aseq<- seq(0.001, 0.05, length=1000)
   optimal = optimize(lrDifferenceAbs, 
-                     maximum = FALSE, interval = c(0, max(Aseq))) 
+                     maximum = FALSE, interval = c(0, max(Aseq)),
+                     tol = .Machine$double.eps^0.5) 
+  print(optimal)
   optimalAlphaBig = optimal$ minimum
   whichOptimal = ( which(abs(optimalAlphaBig - Aseq) < 1e-4) [1] )
   optimalAlphaSmall = 2*alpha - optimalAlphaBig
