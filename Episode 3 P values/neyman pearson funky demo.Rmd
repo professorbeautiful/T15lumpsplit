@@ -1,5 +1,5 @@
 ---
-title: "SHORT neyman pearson funky demo"
+title: "neyman pearson funky demo"
 author: "Roger Day"
 date: "2026-07-21"
 output: html_document
