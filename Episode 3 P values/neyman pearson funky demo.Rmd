@@ -193,10 +193,10 @@ output$lrDifferenceAbsPlot  = renderPlot({
 })
 ```
 
-### lrDifferenceAbsPlot
 ```{r}
+### lrDifferenceAbsPlot
 
-plotOutput(outputId = 'lrDifferenceAbsPlot')  #, width = '40%', height='40%')
+#plotOutput(outputId = 'lrDifferenceAbsPlot')  #, width = '40%', height='40%')
 
 ```
 ## Comparing power, for equal alpha and equal LR
