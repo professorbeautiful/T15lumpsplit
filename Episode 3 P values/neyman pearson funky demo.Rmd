@@ -201,15 +201,7 @@ plotOutput(outputId = 'lrDifferenceAbsPlot')  #, width = '40%', height='40%')
 ```
 ## Comparing power, for equal alpha and equal LR
 
-```{r}
-centerIt = function(S) span(style='text-align:center;  display: flex;
-  align-items: center;
-  justify-content: center; font-size:larger', em(S))
-fluidRow(column(5, centerIt('Equal alpha'), tableOutput('results.EqualAlpha')),
-         column(2),
-         column(5, centerIt('Equal LR'), tableOutput('results.EqualLR')))
 
-```
 
 ```{r echo=FALSE}
 ### conditional power
@@ -269,11 +261,15 @@ cutoffsBig = cutoffs[2]
 })
 ```
 
+
 ```{r}
-plotOutput('theplot')
+centerIt = function(S) span(style='text-align:center;  display: flex;
+  align-items: center;
+  justify-content: center; font-size:larger', em(S))
+fluidRow(column(5, centerIt('Equal alpha'), tableOutput('results.EqualAlpha'),
+         centerIt('Equal LR'), tableOutput('results.EqualLR')),
+         column(6, plotOutput('theplot')))
 
 ```
-
-
 
 
