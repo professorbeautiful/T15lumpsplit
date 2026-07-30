@@ -160,10 +160,13 @@ If we raise the cutoff for the Bigger variance `r textOutput(inline=T, 'varsBig.
   averagePowerEqualLR = mean(conditionalPowerEqualLR)
   
   cat('results.EqualLR.Table\n')
+  lrBig = lr(cutoffsBig, v = max(vars())) 
+    lrSmall = lr(cutoffsSmall, v = min(vars()))
+    
   print(data.frame(
     alphas = c(optimalAlphaSmall, optimalAlphaBig), 
     cutoffs = c(cutoffsSmall, cutoffsBig), 
-    LR = rep(optimal$objective, 2),
+    LR = c(lrSmall, lrBig),
     power = conditionalPowerEqualLR, 
     marginalPower = rep(averagePowerEqualLR, 2)
   ) )
