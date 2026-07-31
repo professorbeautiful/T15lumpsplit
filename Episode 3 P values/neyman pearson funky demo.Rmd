@@ -89,9 +89,10 @@ cutoffs.equalAlpha = reactive({
   cutoffs.by.alpha(c(alpha, alpha), vars())
 })
 
-output$cutoffs.text = renderText(paste0(signif(digits=3, cutoffs.equalAlpha()[1]), 
-                                        ' and ',
-                                   signif(digits=3, cutoffs.equalAlpha()[2] ) ) )
+output$cutoffsAlpha.text = renderText(paste0(signif(digits=3,
+                                                    cutoffs.equalAlpha()[1]), 
+                                             ' and ',
+                                             signif(digits=3, cutoffs.equalAlpha()[2] ) ) )
 
 results.EqualAlpha.Table = reactive({
     #cutoffs  = qnorm(1 - alpha, sd = sqrt(vars))
@@ -109,8 +110,6 @@ results.EqualAlpha.Table = reactive({
       )
     for(i in ncol(results.EqualAlpha))
       results.EqualAlpha[[i]] = signif( digits=3, results.EqualAlpha[[i]])
-  
- 
   # newNames = colDef(names(results.EqualAlpha))
   # print(newNames)
   # newNames[[5]] = colDef('marginal<br>power', html=TRUE)
@@ -135,10 +134,14 @@ They could be different in precisions. Or they could be because there are two di
 Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. If you know which instrument was picked, you would of course use the relevant significance cutoff. Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r textOutput(inline=T, 'cutoffs.text')`.  
 Then regardless of the chances for the two instrument, the overall marginal *alpha* is the same.
 ```{r}
+# lrEqualAlpha <<-  lr(cutoffsAlpha(), vars())
+
+# pow.M.alt.1 <<- reactive(pow(cutoffsAlpha(), M.alt=1, V=vars()) )
+
 output$lrEqualAlpha.text = renderText({
-  paste0(signif(digits=3, results.EqualAlpha$LR[1]),
+  paste0(signif(digits=3, results.EqualAlpha.Table()$LR[1]),
          ' and ',
-         signif(digits=3, results.EqualAlpha$LR[2])
+         signif(digits=3, results.EqualAlpha.Table()$LR[2])
          )
 })
 ```
@@ -413,9 +416,11 @@ output$theplotForEquals = renderPlot({
 centerIt = function(S) span(style='text-align:center;  display: flex;
   align-items: center;
   justify-content: center; font-size:larger', em(S))
-fluidRow(column(5, centerIt('Equal alpha'), 
-                reactableOutput('results.EqualAlpha'),
-         centerIt('Equal LR'), tableOutput('results.EqualLR')),
+fluidRow(column(5, 
+                centerIt('Equal alpha'), 
+                tableOutput('results.EqualAlpha'),
+                centerIt('Equal LR'), 
+                tableOutput('results.EqualLR')),
          column(6, plotOutput('theplotForEquals')))
 
 ```
