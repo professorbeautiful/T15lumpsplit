@@ -62,7 +62,6 @@ pow = function(C, M.alt=1, V) {
   1 - pnorm(C, M.alt, sqrt(V)) 
 }
 lowerC = 0
-Cseq <- seq(lowerC,3,length=1000)
 
 likelihood = function(h, v, x) {
   1 - pnorm( abs((x - h)/sqrt(v))  ) 
@@ -225,7 +224,7 @@ results.EqualLR.Table = reactive({
     power = conditionalPowerEqualLR, 
     marginalPower = rep(averagePowerEqualLR, 2)
   ) 
-  
+  return(results.EqualLR.Table)
 })
 ```
 
@@ -235,6 +234,9 @@ output$results.EqualLR = renderTable({
 })
 ```
 
+```{r}
+cutoffs.equalLR = reactive(results.EqualLR.Table()$cutoffs)
+```
 
 
 ```{r}
@@ -271,23 +273,22 @@ output$theplotChangingAlphaBig = renderPlot({
                                  pow(cutoffsBig, M.alt=1, V=vars()[2]) )
   upperX = qnorm(1 - minAlphaBig, sd = sqrt(max(vars())))
   cat('upperX ', upperX, '\n')
+  Cseq <- seq(lowerC, max(results.EqualLR.Table()$cutoffs), length=1000)
+
   plot(Cseq, ylim=c(0,1), xlim=c(0, upperX * 1.005),
        pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
        pch='', col=col.v1)
   #  Draw points for the equal alpha case.
   pow.M.alt.1 = pow(cutoffs.equalAlpha(), M.alt=1, V=vars())
-  points(cutoffs.equalAlpha(), pow.M.alt.1, col=col.v, pch='P')
-  points(cutoffsAny, conditionalPowerEqualLR, col=col.v, pch='P')
-
-  
+  points(cutoffs.equalAlpha(), pow.M.alt.1,  pch='A')
+  points(cutoffsAny, pow(cutoffsAny, M.alt=1, V=vars()), pch='P')
+  points(cutoffs.equalLR(), pow(cutoffs.equalLR(), M.alt=1, V=vars()), col=col.v[4], pch='L')
   #   lines(x=c(lowerC, cutoffs()[1]), y= c(alpha,alpha) , col='black')
   # lines(x=c(lowerC, cutoffs()[2]), y= c(alpha,alpha) , col='black')
   # text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
   # points(cutoffs(), c(alpha, alpha), col=col.v, pch='C')
   #points(cutoffs, pow(cutoffs, M.alt=0), col=col.v, pch='C')  # null hypothesis
   # points(cutoffs(), pow.M.alt.1(), col=col.v, pch='P')
-  
-  
   cutoffsLR = results.EqualLR.Table()$cutoffs
   cutoffsLRSmall =   cutoffsLR[1]
   cutoffsLRBig =   cutoffsLR[2]
@@ -300,11 +301,10 @@ output$theplotChangingAlphaBig = renderPlot({
     #                     signif(digits = 2, pow.M.alt.1() [Vn])), adj = c(0,0))
     
   }
-
   ### average
   averagePowerEqualAlpha = mean(pow.M.alt.1)
   #  lines(x=c(lowerC, mean(cutoffs)), y= rep(averagePowerEqualAlpha, 2), col=col.v[3])
-  lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
+  #lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
   text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
        labels = paste('marginal power equal alpha:', 
                       signif(digits = 3, averagePowerEqualAlpha)))
@@ -355,22 +355,29 @@ plotOutput('theplotChangingAlphaBig')
 #### Plot power and cutoffs for equalAlpha and equalLR cases.
 
 output$theplotForEquals = renderPlot({
+    Cseq <- seq(lowerC, max(results.EqualLR.Table()$cutoffs), length=1000)
+
     cutoffsLR = results.EqualLR.Table()$cutoffs
     cutoffsLRSmall =   cutoffsLR[1]
     cutoffsLRBig =   cutoffsLR[2]
     cutoffsAlpha = results.EqualAlpha.Table()$cutoffs
     cutoffsAlphaSmall =   cutoffsAlpha[1]
     cutoffsAlphaBig =   cutoffsAlpha[2]
-  plot(Cseq, ylim=c(0,1), xlim=c(0,   cutoffsLRBig * 1.01),
+  plot(Cseq, 
+       ylim=c(0,1), xlim=c(0,   cutoffsLRBig * 1.01),
        pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
        pch='', col=col.v1)
+  lines(Cseq, pow(Cseq, M.alt=0, vars()[1]), col=col.v1)
+  lines(Cseq, pow(Cseq, M.alt=0, vars()[2]), col=col.v2)
   #####  LR ########
   # lines(x=c(lowerC,   cutoffsLR[1]), y= c(alpha,alpha) , col='black')
   # lines(x=c(lowerC,   cutoffsLR[2]), y= c(alpha,alpha) , col='black')
   # text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
-#  points(cutoffs(), c(alpha, alpha), col=col.v, pch='C')
-  #points(cutoffs, pow(cutoffs, M.alt=0), col=col.v, pch='C')
-#  points(cutoffs(), pow.M.alt.1(), col=col.v, pch='P')
+  points(cutoffsAlpha, c(alpha, alpha), col=col.v, pch='C')
+  points(cutoffsAlpha, pow(cutoffsAlpha, M.alt=0, V=vars()), col=col.v, pch='C')
+  for(v in 1:2) 
+    lines(rep(cutoffsAlpha[v],2), c(alpha, pow(cutoffsAlpha[v], M.alt=0, V=vars()[v])))
+  #points(cutoffs(), pow.M.alt.1(), col=col.v, pch='P')
   
   
   # for(Vn in 1:2) {
