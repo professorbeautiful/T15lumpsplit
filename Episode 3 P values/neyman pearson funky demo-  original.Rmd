@@ -76,22 +76,22 @@ output[['varsSmall.text.2']] = renderText(input[['varsSmall']])   # OK.
 output[['varsBig.text']] = renderText(input[['varsBig']])   # OK.
 output[['varsBig.text.2']] = renderText(input[['varsBig']])   # OK.
 
-cutoffs  = reactive({
+cutoffsAlpha  = reactive({
   qnorm(1 - alpha, sd = sqrt(vars()))
 })
 
-output$cutoffs.text = renderText(paste0(signif(digits=3, cutoffs()[1]), 
+output$cutoffsAlpha.text = renderText(paste0(signif(digits=3, cutoffsAlpha()[1]), 
                                         ' and ',
-                                   signif(digits=3, cutoffs()[2] ) ) )
+                                   signif(digits=3, cutoffsAlpha()[2] ) ) )
 
 
 output$results.EqualAlpha = renderTable({
-  #cutoffs  = qnorm(1 - alpha, sd = sqrt(vars))
-  lrEqualAlpha <<-  lr(cutoffs(), vars())
-  pow.M.alt.1 <<- reactive(pow(cutoffs(), M.alt=1, V=vars()) )
+  #cutoffsAlpha  = qnorm(1 - alpha, sd = sqrt(vars))
+  lrEqualAlpha <<-  lr(cutoffsAlpha(), vars())
+  pow.M.alt.1 <<- reactive(pow(cutoffsAlpha(), M.alt=1, V=vars()) )
   results.EqualAlpha = data.frame(
     alphas = rep(alpha, 2),
-    cutoffs=cutoffs(), 
+    cutoffs=cutoffsAlpha(), 
     LR= lrEqualAlpha, 
     power=pow.M.alt.1(),
     marginalPower= rep(mean(pow.M.alt.1()), 2))
@@ -101,14 +101,14 @@ output$results.EqualAlpha = renderTable({
 tableOutput('results.EqualAlpha')
 ```
 But we have **two** instruments to measure *X*, with different variances  
-`r textOutput('varsSmall.text')` and `r textOutput('varsBig.text')`.  They could be different in precisions. Or they could be because there are two different possible sample sizes.  *The instrument used is picked at random!*  ---- **But we know which one was picked!**
+`r tO('varsSmall.text')` and `r tO('varsBig.text')`.  They could be different in precisions. Or they could be because there are two different possible sample sizes.  *The instrument used is picked at random!*  ---- **But we know which one was picked!**
 
-Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. If you know which instrument was picked, you would of course use the relevant significance cutoff. Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r textOutput('cutoffs.text')`.  
+Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. If you know which instrument was picked, you would of course use the relevant significance cutoff. Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r tO('cutoffsAlpha.text')`.  
 Then regardless of the chances for the two instrument, the overall marginal *alpha* is the same.
 
 The likelihood ratios at the two critical values are `r #lrEqualAlpha[1]` and `r #lrEqualAlpha[2]`.  Not the same.  Should we maximize power by  forcing the two likelihood ratios to be the same?
 
-If we raise the cutoff for the Bigger variance `r textOutput('varsBig.text.2')`, and lower it for the Smaller variance `r textOutput('varsSmall.text.2')`, watch what happens. The likelihood ratios get closer and closer.
+If we raise the cutoff for the Bigger variance `r tO('varsBig.text.2')`, and lower it for the Smaller variance `r tO('varsSmall.text.2')`, watch what happens. The likelihood ratios get closer and closer.
 
 ```{r}
 results.EqualLR.Table = reactive({
@@ -165,7 +165,7 @@ output$results.EqualLR = renderTable({
 
 
 ```{r}
-output$lrDifferenceAbsPLot  = renderPlot({
+output$lrDifferenceAbsPlot  = renderPlot({
     plot(Aseq,
        lrDifferenceAbs(Aseq) , xlab='alpha Big', ylab='lrDifferenceAbs')
   abline(v=alpha/2, lty=2)
