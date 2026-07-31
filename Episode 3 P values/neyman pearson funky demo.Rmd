@@ -443,11 +443,18 @@ output$theplotForEquals = renderPlot({
 centerIt = function(S) span(style='text-align:center;  display: flex;
   align-items: center;
   justify-content: center; font-size:larger', em(S))
+output$meanAlphaPower = renderText(
+  paste('Marginal power = ' , signif( mean(results.EqualAlpha.Table()$power))))
+output$meanLRPower = renderText(
+  paste('Marginal power = ', signif(mean(results.EqualLR.Table()$power))))
 fluidRow(column(5, 
                 centerIt('Equal alpha'), 
+                 centerIt(textOutput('meanAlphaPower')), 
                 tableOutput('results.EqualAlpha'),
                 centerIt('Equal LR'), 
-                tableOutput('results.EqualLR')),
+                centerIt(textOutput('meanLRPower')),
+                tableOutput('results.EqualLR')
+                ),
          column(6, plotOutput('theplotForEquals')))
 
 ```
