@@ -377,10 +377,18 @@ output$theplotForEquals = renderPlot({
   # lines(x=c(lowerC,   cutoffsLR[1]), y= c(alpha,alpha) , col='black')
   # lines(x=c(lowerC,   cutoffsLR[2]), y= c(alpha,alpha) , col='black')
   # text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
-  points(cutoffsAlpha[1], results.EqualAlpha.Table()$power[1], col=col.v1, pch='C')
-  points(cutoffsAlpha[2], results.EqualAlpha.Table()$power[2],, col=col.v2, pch='C')
-  for(v in 1:2) 
-    lines(rep(cutoffsAlpha[v],2), c(alpha, pow(cutoffsAlpha[v], M.alt=0, V=vars()[v])))
+  
+  for(v in 1:2) {
+    lines(rep(cutoffsAlpha[v],2), 
+          c(alpha, pow(cutoffsAlpha[v], M.alt=0, V=vars()[v])))
+    points(cutoffsAlpha[v], 
+           results.EqualAlpha.Table()$power[v], col=col.v[v], pch='A', cex=2)
+    text(x= cutoffsAlpha[v] + ifelse(v==1, 1, -1),
+         y=results.EqualAlpha.Table()$power[v],
+          xpd=NA,  
+         cex=1, 
+         'conditional power\nequal Alpha', col=col.v[v])
+  }
   # for(Vn in 1:2) {
   #   lines(Cseq, pow(Cseq, M.alt=1, V=vars()[Vn]), lty=2, lwd=3, col=col.v[Vn])
   #   lines(x=c(lowerC, cutoffs.equalAlpha[Vn]), 
@@ -395,11 +403,10 @@ output$theplotForEquals = renderPlot({
   ### average
   averagePowerEqualAlpha = mean(pow.M.alt.1)
   ### ERROR ON NEXT LINE
-  lines(x=c(lowerC, mean(cutoffsAlpha)), 
-        y= rep(averagePowerEqualAlpha, 2), 
-        col=col.v[3])
-  print(pow.M.alt.1)
-   lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
+  # lines(x=c(lowerC, mean(cutoffsAlpha)), 
+  #       y= rep(averagePowerEqualAlpha, 2), 
+  #       col=col.v[3])
+  lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
   text(x=lowerC, y=averagePowerEqualAlpha, xpd=NA, adj = c(0,1), 
        col=col.v[3], xpd=NA,
        labels = paste('marginal power equal alpha:', 
