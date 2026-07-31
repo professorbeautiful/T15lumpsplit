@@ -4,6 +4,8 @@ author: "Roger Day"
 date: "2026-07-21"
 output: html_document
 runtime: shiny
+resource_files:
+- www/KeyHandler.js
 ---
 
 ```{r setup, include=FALSE}
@@ -11,6 +13,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library(shiny)
 library(DT)  # not data.table
 library(reactable)
+library(shinyDebuggingPanel, quietly = TRUE)
 options(error=print(traceback()))
 
 tO = function(V) textOutput(inline=TRUE, V)
@@ -23,7 +26,24 @@ tO = function(V) textOutput(inline=TRUE, V)
 
 
 ```{r echo=FALSE}
+#shiny::includeScript(path =  paste0(getwd(), '/inst/T15lumpsplit/www/KeyHandler.js') )  FAILS--- private folder
 
+includeScript('/Users/rogerday/Google Drive/Documents/T15lumpsplit/inst/T15lumpsplit/www/KeyHandler.js') 
+observeEvent(input$ctrlDpressed, {}) # just to flush the ctrl-D press.
+
+shinyDebuggingPanel::makeDebuggingPanelOutput(
+   session, toolsInitialState = TRUE,
+   condition='ctrlDpressed === true')
+
+fluidRow(
+shinyDebuggingPanel::withDebuggingPanel()
+)
+
+
+
+```
+
+```{r echo=FALSE}
 h0 = 0 # null
 ha = 1 #  alternative hypothesis
 vars.init = c(0.4, 3) ####    Small, and large. so power is large, Small.
