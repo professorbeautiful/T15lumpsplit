@@ -388,6 +388,10 @@ output$theplotForEquals = renderPlot({
           xpd=NA,  
          cex=1, 
          'conditional power\nequal Alpha', col=col.v[v])
+    text(pos=3, xpd=NA,  cex=1, 
+         cutoffsLR[v], results.EqualLR.Table()$power[v]+ 0.01, 
+          'conditional power, \nequal LR', col=col.v[v])
+    
   }
   # for(Vn in 1:2) {
   #   lines(Cseq, pow(Cseq, M.alt=1, V=vars()[Vn]), lty=2, lwd=3, col=col.v[Vn])
@@ -416,13 +420,12 @@ output$theplotForEquals = renderPlot({
   averagePowerEqualLR = mean(conditionalPowerEqualLR)
   points( cex=2, c(cutoffsLRSmall, cutoffsLRBig), 
           conditionalPowerEqualLR, col=col.v, pch='L')
-  text(pos=3, xpd=NA,  cex=1, cutoffsLRSmall, results.EqualLR.Table()$power[1], 
-          'conditional power, \nequal LR', col=col.v1)
-  text(pos=3, xpd=NA,  cex=1, cutoffsLRBig, results.EqualLR.Table()$power[2], 
-          'conditional power, \nequal LR', col=col.v2)
-  # points( cex=3, c(cutoffsLRSmall, cutoffsLRBig), 
+  
+  # text(pos=3, xpd=NA,  cex=1, cutoffsLRBig, results.EqualLR.Table()$power[2], 
+  #         'conditional power, \nequal LR', col=col.v2)
+  # # points( cex=3, c(cutoffsLRSmall, cutoffsLRBig), 
   #         conditionalPowerEqualLR, col=col.v, pch=1)
-  text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'], xpd=NA,
+  text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'],
        labels = paste('marginal power equal LR:', 
                       signif(digits = 3, averagePowerEqualLR)))
   # arrowTerminus = c(1.2, averagePowerEqualLR+0.1)
