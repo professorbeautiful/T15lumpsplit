@@ -15,6 +15,8 @@ library(DT)  # not data.table
 library(reactable)
 library(shinyDebuggingPanel, quietly = TRUE)
 options(error=print(traceback()))
+options(shiny.launch.browser=TRUE)
+
 
 tO = function(V) textOutput(inline=TRUE, V)
 ```
@@ -406,9 +408,13 @@ output$theplotForEquals = renderPlot({
   conditionalPowerEqualLR = results.EqualLR.Table()$power
   averagePowerEqualLR = mean(conditionalPowerEqualLR)
   points( cex=2, c(cutoffsLRSmall, cutoffsLRBig), 
-          conditionalPowerEqualLR, col=col.v['LR'], pch='L')
-  points( cex=3, c(cutoffsLRSmall, cutoffsLRBig), 
-          conditionalPowerEqualLR, col=col.v['LR'], pch=1)
+          conditionalPowerEqualLR, col=col.v, pch='L')
+  text(pos=3, xpd=NA,  cex=1, cutoffsLRSmall, results.EqualLR.Table()$power[1], 
+          'conditional power, \nequal LR', col=col.v1)
+  text(pos=3, xpd=NA,  cex=1, cutoffsLRBig, results.EqualLR.Table()$power[2], 
+          'conditional power, \nequal LR', col=col.v2)
+  # points( cex=3, c(cutoffsLRSmall, cutoffsLRBig), 
+  #         conditionalPowerEqualLR, col=col.v, pch=1)
   text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'], xpd=NA,
        labels = paste('marginal power equal LR:', 
                       signif(digits = 3, averagePowerEqualLR)))
