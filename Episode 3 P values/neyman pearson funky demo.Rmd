@@ -365,21 +365,20 @@ output$theplotForEquals = renderPlot({
     cutoffsAlphaBig =   cutoffsAlpha[2]
   plot(Cseq, 
        ylim=c(0,1), xlim=c(0,   cutoffsLRBig * 1.01),
-       pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
+       pow(Cseq, M.alt=0, 1), 
+       xlab='critical rejection cutoff, conditional on which experiment',
+       ylab='power to reject alternative',
        pch='', col=col.v1)
-  lines(Cseq, pow(Cseq, M.alt=0, vars()[1]), col=col.v1)
-  lines(Cseq, pow(Cseq, M.alt=0, vars()[2]), col=col.v2)
+  lines(Cseq, pow(Cseq, M.alt=1, vars()[1]), col=col.v1)
+  lines(Cseq, pow(Cseq, M.alt=1, vars()[2]), col=col.v2)
   #####  LR ########
   # lines(x=c(lowerC,   cutoffsLR[1]), y= c(alpha,alpha) , col='black')
   # lines(x=c(lowerC,   cutoffsLR[2]), y= c(alpha,alpha) , col='black')
   # text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
-  points(cutoffsAlpha, c(alpha, alpha), col=col.v, pch='C')
-  points(cutoffsAlpha, pow(cutoffsAlpha, M.alt=0, V=vars()), col=col.v, pch='C')
+  points(cutoffsAlpha[1], results.EqualAlpha.Table()$power[1], col=col.v1, pch='C')
+  points(cutoffsAlpha[2], results.EqualAlpha.Table()$power[2],, col=col.v2, pch='C')
   for(v in 1:2) 
     lines(rep(cutoffsAlpha[v],2), c(alpha, pow(cutoffsAlpha[v], M.alt=0, V=vars()[v])))
-  #points(cutoffs(), pow.M.alt.1(), col=col.v, pch='P')
-  
-  
   # for(Vn in 1:2) {
   #   lines(Cseq, pow(Cseq, M.alt=1, V=vars()[Vn]), lty=2, lwd=3, col=col.v[Vn])
   #   lines(x=c(lowerC, cutoffs.equalAlpha[Vn]), 
