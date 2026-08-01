@@ -142,9 +142,10 @@ results.EqualAlpha.Table = reactive({
   })
 
 output$results.EqualAlpha = renderTable({
-  results.EqualAlpha.Table()
-
-})
+  df = results.EqualAlpha.Table()
+  names(df)[names(df) == 'marginalPower'] = 'marginal<br>power'
+  df
+}, sanitize.colnames.function = function(x) x)
 
 
 ```
@@ -232,8 +233,10 @@ results.EqualLR.Table = reactive({
 
 ```{r}
 output$results.EqualLR = renderTable({
-  results.EqualLR.Table()
-})
+  df = results.EqualLR.Table()
+  names(df)[names(df) == 'marginalPower'] = 'marginal<br>power'
+  df
+}, sanitize.colnames.function = function(x) x)
 ```
 
 ```{r}
