@@ -152,10 +152,16 @@ output$results.EqualAlpha = renderTable({
 ```
 But we have **two** instruments to measure *X*, with different variances
 **`r textOutput(inline=T, 'varsSmall.text')` and `r textOutput(inline=T, 'varsBig.text')`.**  
-They could be different in precisions. Or they could be because there are two different possible sample sizes.  *The instrument used is picked at random!*  ---- **But we know which one was picked!**
+They could be different in precisions. Or they could be because there are two different possible sample sizes. 
 
-Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. If you know which instrument was picked, you would of course use the relevant significance cutoff. Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r textOutput(inline=T, 'cutoffs.text')`.  
-Then regardless of the chances for the two instrument, the overall marginal *alpha* is the same.
+*The instrument used is picked at random!*  
+
+---- **And...  we know which one was picked!**
+
+Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. We'll call that  
+**"equal alpha"**.  
+If you know which instrument was picked, you will of course use the relevant significance cutoff. Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r textOutput(inline=T, 'cutoffs.text')`.  
+Then regardless of the chances for selection either instrument, the overall **marginal** *alpha* is the same.
 ```{r}
 # lrEqualAlpha <<-  lr(cutoffsAlpha(), vars())
 
@@ -167,8 +173,27 @@ output$lrEqualAlpha.text = renderText({
          signif(digits=3, results.EqualAlpha.Table()$LR[2])
          )
 })
+output$lrEqualAlpha_1.text = renderText({
+  paste0(signif(digits=3, results.EqualAlpha.Table()$LR[1]) )
+})
+output$lrEqualAlpha_2.text = renderText({
+  paste0(signif(digits=3, results.EqualAlpha.Table()$LR[1]) )
+})
+
 ```
 
+But why not maximize the statistical power?  
+Our null  hypothesis is  **mean = 0**.  
+Pick the alternative hypothesis which we want power against to be **mean = 1**.  
+
+The "Neyman-Pearson lemma" says, maximize power by setting the rejection region boundary to have the same likelihood ratio everywhere on the boundary.
+Our current rejection region is  
+
+"variance = 0.4 AND X > `r textOutput('lrEqualAlpha_1.text')`  
+ OR  
+"variance = 1.0 AND X > `r textOutput('lrEqualAlpha_2.text')`  .
+
+ 
 The likelihood ratios at the two critical values are `r textOutput(inline=TRUE, 'lrEqualAlpha.text')`.
 Not the same.  Should we maximize power by  forcing the two likelihood ratios to be the same?
 
