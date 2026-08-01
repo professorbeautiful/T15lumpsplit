@@ -378,12 +378,14 @@ output$theplotForEquals = renderPlot({
   # lines(x=c(lowerC,   cutoffsLR[2]), y= c(alpha,alpha) , col='black')
   # text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
   
+    conditionalPowerEqualLR = results.EqualLR.Table()$power
+
   for(v in 1:2) {
     lines(rep(cutoffsAlpha[v],2), 
           c(alpha, pow(cutoffsAlpha[v], M.alt=0, V=vars()[v])))
     points(cutoffsAlpha[v], 
            results.EqualAlpha.Table()$power[v], col=col.v[v], pch='A', cex=2)
-    text(x= cutoffsAlpha[v] + ifelse(v==1, 1, -1),
+    text(x= cutoffsAlpha[v] + ifelse(v==1, -0.8, -0.8) ,
          y=results.EqualAlpha.Table()$power[v],
           xpd=NA,  
          cex=1, 
@@ -393,6 +395,11 @@ output$theplotForEquals = renderPlot({
          + 0.05*(v==1) - 0.02*(v==2), 
           'conditional power\nequal LR', col=col.v[v])
   }
+
+    points( cex=2, c(cutoffsLRSmall, cutoffsLRBig), 
+          conditionalPowerEqualLR, col=col.v, pch='L')
+  
+  
   # for(Vn in 1:2) {
   #   lines(Cseq, pow(Cseq, M.alt=1, V=vars()[Vn]), lty=2, lwd=3, col=col.v[Vn])
   #   lines(x=c(lowerC, cutoffs.equalAlpha[Vn]), 
@@ -407,26 +414,17 @@ output$theplotForEquals = renderPlot({
   ### average
   margPowerEqualAlpha = signif(digits=4, mean(results.EqualAlpha.Table()$power))
   margPowerEqualLR = signif( digits=4, mean(results.EqualLR.Table()$power))
-
-  ### ERROR ON NEXT LINE
-  # lines(x=c(lowerC, mean(cutoffsAlpha)), 
-  #       y= rep(margPowerEqualAlpha, 2), 
-  #       col=col.v[3])
-  #lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
   
-  conditionalPowerEqualLR = results.EqualLR.Table()$power
-  margPowerEqualLR = mean(conditionalPowerEqualLR)
-  points( cex=2, c(cutoffsLRSmall, cutoffsLRBig), 
-          conditionalPowerEqualLR, col=col.v, pch='L')
-  
-  text(x=2.8, y = margPowerEqualLR + 0.1, adj = c(0,-1), 'marginal power:')
-  text(x=2.8, y=margPowerEqualAlpha, xpd=NA, adj = c(0,1), 
-       col=col.v[3], xpd=NA,
+  text(x=2.8, y = margPowerEqualLR + 0.07, adj = c(0,-1), 'marginal power:')
+  text(x=2.8, y = margPowerEqualAlpha, xpd=NA, adj = c(0,1), 
+       col=col.v['alpha'], xpd=NA,
        labels = paste('equal alpha:', 
                       signif(digits = 3, margPowerEqualAlpha)))
+  lines(c(0, 2.8), rep(margPowerEqualAlpha,2),  col=col.v['alpha'])
   text(x=2.8, y=margPowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'],
        labels = paste('equal LR:', 
                       signif(digits = 3, margPowerEqualLR)))
+  lines(c(0, 2.8), rep(margPowerEqualLR,2),  col=col.v['LR'])
 
   legend(x='topright', 
          legend=c(paste('Variance=', vars()[1]), 
