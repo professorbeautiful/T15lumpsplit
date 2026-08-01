@@ -388,10 +388,10 @@ output$theplotForEquals = renderPlot({
           xpd=NA,  
          cex=1, 
          'conditional power\nequal Alpha', col=col.v[v])
-    text(pos=3, xpd=NA,  cex=1, 
-         cutoffsLR[v], results.EqualLR.Table()$power[v]+ 0.01, 
+    text(pos=ifelse(v==1, 3, 2), xpd=NA,  cex=1, 
+         cutoffsLR[v] - 0.05*(v==2), results.EqualLR.Table()$power[v]
+         + 0.05*(v==1) - 0.02*(v==2), 
           'conditional power\nequal LR', col=col.v[v])
-    
   }
   # for(Vn in 1:2) {
   #   lines(Cseq, pow(Cseq, M.alt=1, V=vars()[Vn]), lty=2, lwd=3, col=col.v[Vn])
