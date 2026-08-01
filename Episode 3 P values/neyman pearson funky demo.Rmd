@@ -259,96 +259,84 @@ output$lrDifferenceAbsPlot  = renderPlot({
 #plotOutput(outputId = 'lrDifferenceAbsPlot')  #, width = '40%', height='40%')
 
 ```
-## Comparing power, as alpha allocation changes
+<!-- ## Comparing power, as alpha allocation changes -->
 
 ```{r}
 minAlphaBig = 0.002
 
 ### This plot shows how the power and cutoffs change as the alpha allocation changes
-output$theplotChangingAlphaBig = renderPlot({
-  cutoffsBig =   qnorm(1 - input$ChangingAlphaBig, sd = sqrt(max(vars())))
-  cutoffsSmall = qnorm(1 - (alpha - input$ChangingAlphaBig), sd = sqrt(min(vars())))
-  cutoffsAny = c(cutoffsSmall, cutoffsBig)
-  # testthat::expect_equal(lr(cutoffsSmall, min(vars)), 
-  #                        lr(cutoffsBig, max(vars)) , tolerance = 1e-3)
-  conditionalPowerEqualLR =   c( pow(cutoffsSmall, M.alt=1, V=vars()[1]), 
-                                 pow(cutoffsBig, M.alt=1, V=vars()[2]) )
-  upperX = qnorm(1 - minAlphaBig, sd = sqrt(max(vars())))
-  cat('upperX ', upperX, '\n')
-  Cseq <- seq(lowerC, max(results.EqualLR.Table()$cutoffs), length=1000)
-
-  plot(Cseq, ylim=c(0,1), xlim=c(0, upperX * 1.005),
-       pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
-       pch='', col=col.v1)
-  #  Draw points for the equal alpha case.
-  pow.M.alt.1 = pow(cutoffs.equalAlpha(), M.alt=1, V=vars())
-  points(cutoffs.equalAlpha(), pow.M.alt.1,  pch='A')
-  points(cutoffsAny, pow(cutoffsAny, M.alt=1, V=vars()), pch='P')
-  points(cutoffs.equalLR(), pow(cutoffs.equalLR(), M.alt=1, V=vars()), col=col.v[4], pch='L')
-  #   lines(x=c(lowerC, cutoffs()[1]), y= c(alpha,alpha) , col='black')
-  # lines(x=c(lowerC, cutoffs()[2]), y= c(alpha,alpha) , col='black')
-  # text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
-  # points(cutoffs(), c(alpha, alpha), col=col.v, pch='C')
-  #points(cutoffs, pow(cutoffs, M.alt=0), col=col.v, pch='C')  # null hypothesis
-  # points(cutoffs(), pow.M.alt.1(), col=col.v, pch='P')
-  cutoffsLR = results.EqualLR.Table()$cutoffs
-  cutoffsLRSmall =   cutoffsLR[1]
-  cutoffsLRBig =   cutoffsLR[2]
-  for(Vn in 1:2) {
-    # lines(Cseq, pow(Cseq, M.alt=1, V=vars()[Vn]), lty=2, lwd=3, col=col.v[Vn])
-    # lines(x=c(lowerC, cutoffsLR[Vn]), y= rep(pow.M.alt.1 [Vn], 2), col=col.v[Vn])
-    # lines(x=rep(cutoffs[Vn],2), y = c(alpha, pow.M.alt.1() [Vn]), col=col.v[Vn])
-    # text(x=lowerC, y=pow.M.alt.1() [Vn], col=col.v[Vn],
-    #      labels = paste('V=', vars()[Vn], '  power=', 
-    #                     signif(digits = 2, pow.M.alt.1() [Vn])), adj = c(0,0))
-    
-  }
-  ### average
-  margPowerEqualAlpha = mean(pow.M.alt.1)
-  #  lines(x=c(lowerC, mean(cutoffs)), y= rep(margPowerEqualAlpha, 2), col=col.v[3])
-  #lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
-  # text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
-  #      labels = paste('marginal power equal alpha:', 
-  #                     signif(digits = 3, margPowerEqualAlpha)))
-  
-  conditionalPowerEqualLR = results.EqualLR.Table()$power
-  margPowerEqualLR = mean(conditionalPowerEqualLR)
-  points( cex=2, c(  cutoffsLRSmall,   cutoffsLRBig), 
-          conditionalPowerEqualLR, col=col.v['LR'], pch='L')
-  points( cex=3, c(  cutoffsLRSmall,   cutoffsLRBig), 
-          conditionalPowerEqualLR, col=col.v['LR'], pch=1)
-  # text(x=lowerC, y=margPowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'], xpd=NA,
-  #      labels = paste('marginal power equal LR:', 
-  #                     signif(digits = 3, margPowerEqualLR)))
-  # # arrowTerminus = c(1.2, margPowerEqualLR+0.1)
-  # diagram::curvedarrow(to=arrowTerminus, from=c(cutoffsSmall,
-  #                                            conditionalPowerEqualLR[1]) ,
-  #                      lwd = 2, lty = 1, lcol = col.v['LR'], 
-  #           arr.col = col.v['LR'], arr.pos = 1, curve = -.3, dr = 0.01, 
-  #           endhead = FALSE, segment = c(0, 1))
-  # diagram::curvedarrow(to=arrowTerminus, from=c(cutoffsBig,
-  #                                            conditionalPowerEqualLR[2]) ,
-  #                      lwd = 2, lty = 1, lcol = col.v['LR'], 
-  #           arr.col = col.v['LR'], arr.pos = 1, curve = .1, dr = 0.01, 
-  #           endhead = FALSE, segment = c(0, 1))
-  # 
-  legend(x='topright', 
-         legend=c(paste('Variance=', vars()[1]), 
-                  paste('Variance=', vars()[2]), 
-                  'equal alpha',
-                  'equal LR'
-         ), 
-         text.col =  col.v
-  )
-})
+# output$theplotChangingAlphaBig = renderPlot({
+#   cutoffsBig =   qnorm(1 - input$ChangingAlphaBig, sd = sqrt(max(vars())))
+#   cutoffsSmall = qnorm(1 - (alpha - input$ChangingAlphaBig), sd = sqrt(min(vars())))
+#   cutoffsAny = c(cutoffsSmall, cutoffsBig)
+#   # testthat::expect_equal(lr(cutoffsSmall, min(vars)), 
+#   #                        lr(cutoffsBig, max(vars)) , tolerance = 1e-3)
+#   conditionalPowerEqualLR =   c( pow(cutoffsSmall, M.alt=1, V=vars()[1]), 
+#                                  pow(cutoffsBig, M.alt=1, V=vars()[2]) )
+#   upperX = qnorm(1 - minAlphaBig, sd = sqrt(max(vars())))
+#   cat('upperX ', upperX, '\n')
+#   Cseq <- seq(lowerC, max(results.EqualLR.Table()$cutoffs), length=1000)
+# 
+#   plot(Cseq, ylim=c(0,1), xlim=c(0, upperX * 1.005),
+#        pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
+#        pch='', col=col.v1)
+#   #  Draw points for the equal alpha case.
+#   pow.M.alt.1 = pow(cutoffs.equalAlpha(), M.alt=1, V=vars())
+#   points(cutoffs.equalAlpha(), pow.M.alt.1,  pch='A')
+#   points(cutoffsAny, pow(cutoffsAny, M.alt=1, V=vars()), pch='P')
+#   points(cutoffs.equalLR(), pow(cutoffs.equalLR(), M.alt=1, V=vars()), col=col.v[4], pch='L')
+#   #   lines(x=c(lowerC, cutoffs()[1]), y= c(alpha,alpha) , col='black')
+#   # lines(x=c(lowerC, cutoffs()[2]), y= c(alpha,alpha) , col='black')
+#   # text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
+#   # points(cutoffs(), c(alpha, alpha), col=col.v, pch='C')
+#   #points(cutoffs, pow(cutoffs, M.alt=0), col=col.v, pch='C')  # null hypothesis
+#   # points(cutoffs(), pow.M.alt.1(), col=col.v, pch='P')
+#   cutoffsLR = results.EqualLR.Table()$cutoffs
+#   cutoffsLRSmall =   cutoffsLR[1]
+#   cutoffsLRBig =   cutoffsLR[2]
+#   for(Vn in 1:2) {
+#     # lines(Cseq, pow(Cseq, M.alt=1, V=vars()[Vn]), lty=2, lwd=3, col=col.v[Vn])
+#     # lines(x=c(lowerC, cutoffsLR[Vn]), y= rep(pow.M.alt.1 [Vn], 2), col=col.v[Vn])
+#     # lines(x=rep(cutoffs[Vn],2), y = c(alpha, pow.M.alt.1() [Vn]), col=col.v[Vn])
+#     # text(x=lowerC, y=pow.M.alt.1() [Vn], col=col.v[Vn],
+#     #      labels = paste('V=', vars()[Vn], '  power=', 
+#     #                     signif(digits = 2, pow.M.alt.1() [Vn])), adj = c(0,0))
+#     
+#   }
+#   ### average
+#   margPowerEqualAlpha = mean(pow.M.alt.1)
+#   #  lines(x=c(lowerC, mean(cutoffs)), y= rep(margPowerEqualAlpha, 2), col=col.v[3])
+#   #lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
+#   text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
+#        labels = paste('marginal power equal alpha:',
+#                       signif(digits = 3, margPowerEqualAlpha)))
+# 
+#   conditionalPowerEqualLR = results.EqualLR.Table()$power
+#   margPowerEqualLR = mean(conditionalPowerEqualLR)
+#   points( cex=2, c(  cutoffsLRSmall,   cutoffsLRBig), 
+#           conditionalPowerEqualLR, col=col.v['LR'], pch='L')
+#   points( cex=3, c(  cutoffsLRSmall,   cutoffsLRBig), 
+#           conditionalPowerEqualLR, col=col.v['LR'], pch=1)
+#   text(x=lowerC, y=margPowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'], xpd=NA,
+#        labels = paste('marginal power equal LR:',
+#                       signif(digits = 3, margPowerEqualLR)))
+#   legend(x='topright', 
+#          legend=c(paste('Variance=', vars()[1]), 
+#                   paste('Variance=', vars()[2]), 
+#                   'equal alpha',
+#                   'equal LR'
+#          ), 
+#          text.col =  col.v
+#   )
+# })
 ```
 
 ```{r echo=FALSE}
 ## We are FOR NOW keeping Pr(variance = vars[1] equal to 1/2).
-numericInput('ChangingAlphaBig', 'Changing Alpha allocation', value = alpha,
-             min=minAlphaBig, max=alpha * 2 - minAlphaBig, step=minAlphaBig)
-
-plotOutput('theplotChangingAlphaBig')
+# numericInput('ChangingAlphaBig', 'Changing Alpha allocation', value = alpha,
+#              min=minAlphaBig, max=alpha * 2 - minAlphaBig, step=minAlphaBig)
+# 
+# plotOutput('theplotChangingAlphaBig')
 ```
 
 
