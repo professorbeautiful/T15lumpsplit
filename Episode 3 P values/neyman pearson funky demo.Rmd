@@ -104,15 +104,23 @@ cutoffs.by.alpha = function(alphaBoth, variancesBoth)
     qnorm(1 - alphaBoth, sd = sqrt(variancesBoth))
 
 
-
 cutoffs.equalAlpha = reactive({
   cutoffs.by.alpha(c(alpha, alpha), vars())
 })
+cutoffs.equalAlpha_1 = reactive({
+  cutoffs.by.alpha(alpha, vars()[1])
+})
+cutoffs.equalAlpha_2 = reactive({
+  cutoffs.by.alpha(alpha, vars()[2])
+})
+
 
 output$cutoffsAlpha.text = renderText(paste0(signif(digits=3,
                                                     cutoffs.equalAlpha()[1]), 
                                              ' and ',
                                              signif(digits=3, cutoffs.equalAlpha()[2] ) ) )
+output$cutoffsAlpha1.text = renderText(paste0(signif(digits=3, cutoffs.equalAlpha_1)))
+output$cutoffsAlpha2.text = renderText(paste0(signif(digits=3, cutoffs.equalAlpha_2)))
 
 results.EqualAlpha.Table = reactive({
     #cutoffs  = qnorm(1 - alpha, sd = sqrt(vars))
@@ -185,43 +193,69 @@ But why not maximize the statistical power?
 Our null  hypothesis is  **mean = 0**.  
 Pick the alternative hypothesis which we want power against to be **mean = 1**.  
 
-The "Neyman-Pearson lemma" says, maximize power by setting the rejection region boundary to have the same likelihood ratio everywhere on the boundary.
+
 Our current rejection region is  
+```{r}
+output$rejectionRegion.text = renderUI(
+  HTML(paste0(
+    span(style='color:darkgreen', 
+         'variance = ', vars()[2],
+         
+         " AND   cutoff = ", 
+         signif(digits=3,
+                cutoffs.equalAlpha_2())
+    ), 
+         ' OR ',
+    span(style='color:red', 
+         'variance = ', vars()[1],
+         " AND   cutoff = ", 
+         signif(digits=3, cutoffs.equalAlpha_1()
+         ) )
+  )
+))
+    
+div(style='text-align:center',
+    uiOutput('rejectionRegion.text')
+)
+```
 
-"variance = 0.4 AND X > `r textOutput('lrEqualAlpha_1.text')`  
- OR  
-"variance = 1.0 AND X > `r textOutput('lrEqualAlpha_2.text')`  .
 
- 
 ```{r plotRejectionRegion}
 output$plotRejectionRegion = renderPlot( height=200, #width='100%', 
                                         {
   print(vars.init)
   plot.default( xlab= 'observed value of X',
                 ylab = 'variance',
+                xlim=c(0, results.EqualAlpha.Table()$cutoffs[2] * 2),
+                ylim = vars.init+ c( -0.1, 0.1),
     axes=F,
     c( 0, results.EqualAlpha.Table()$cutoffs[2] * 2), 
        vars.init+ c( -0.1, 0.1), col=NA) 
-  abline(h=vars.init)  
-  for (v in 1:2)
+#  abline(h=vars.init)  
+  for (v in 1:2) {
+    lines(c(0, results.EqualAlpha.Table()$cutoffs[v]), rep(vars()[v], 2),
+          col = col.v[v])
     lines(c(results.EqualAlpha.Table()$cutoffs[v],
             results.EqualAlpha.Table()$cutoffs[2] * 2),  
           rep(vars()[v], each=2) , col = col.v[v],
           lwd=4)
+  }
   points( results.EqualAlpha.Table()$cutoffs, 
           vars.init, col=col.v[1:2], cex=2, pch=1) 
   text(results.EqualAlpha.Table()$cutoffs[2], vars()[2],
-       'rejection region, var = 3.0' ,  adj=c(-1,-1))
+       'rejection region, var = 3.0' ,  adj=c(-1,-1), xpd=NA)
   text(results.EqualAlpha.Table()$cutoffs[1], vars()[1],
        'rejection region, var = 0.4',   adj=c(-1,-1))
   text(0.05, vars()[1] - 0.3, '0', xpd=NA)
 } )
-plotOutput('plotRejectionRegion')
+plotOutput('plotRejectionRegion', height = 200)
 ```
 
 
 The likelihood ratios at the two critical values are `r textOutput(inline=TRUE, 'lrEqualAlpha.text')`.
-Not the same.  Should we maximize power by  forcing the two likelihood ratios to be the same?
+Not the same.   
+The "Neyman-Pearson lemma" says, maximize power by setting the rejection region boundary to have the same likelihood ratio everywhere on the boundary.
+Should we maximize power by  forcing the two likelihood ratios to be the same?
 
 If we raise the cutoff for the Bigger variance `r textOutput(inline=T, 'varsBig.text.2')`, and lower it for the Smaller variance `r textOutput(inline=T, 'varsSmall.text.2')`, watch what happens. The likelihood ratios get closer and closer.
 
