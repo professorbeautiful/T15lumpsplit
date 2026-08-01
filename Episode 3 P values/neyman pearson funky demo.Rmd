@@ -176,7 +176,7 @@ output$lrEqualAlpha_1.text = renderText({
   paste0(signif(digits=3, results.EqualAlpha.Table()$LR[1]) )
 })
 output$lrEqualAlpha_2.text = renderText({
-  paste0(signif(digits=3, results.EqualAlpha.Table()$LR[1]) )
+  paste0(signif(digits=3, results.EqualAlpha.Table()$LR[2]) )
 })
 
 ```
@@ -193,6 +193,33 @@ Our current rejection region is
 "variance = 1.0 AND X > `r textOutput('lrEqualAlpha_2.text')`  .
 
  
+```{r plotRejectionRegion}
+output$plotRejectionRegion = renderPlot( height=200, #width='100%', 
+                                        {
+  print(vars.init)
+  plot.default( xlab= 'observed value of X',
+                ylab = 'variance',
+    axes=F,
+    c( 0, results.EqualAlpha.Table()$cutoffs[2] * 2), 
+       vars.init+ c( -0.1, 0.1), col=NA) 
+  abline(h=vars.init)  
+  for (v in 1:2)
+    lines(c(results.EqualAlpha.Table()$cutoffs[v],
+            results.EqualAlpha.Table()$cutoffs[2] * 2),  
+          rep(vars()[v], each=2) , col = col.v[v],
+          lwd=4)
+  points( results.EqualAlpha.Table()$cutoffs, 
+          vars.init, col=col.v[1:2], cex=2, pch=1) 
+  text(results.EqualAlpha.Table()$cutoffs[2], vars()[2],
+       'rejection region, var = 3.0' ,  adj=c(-1,-1))
+  text(results.EqualAlpha.Table()$cutoffs[1], vars()[1],
+       'rejection region, var = 0.4',   adj=c(-1,-1))
+  text(0.05, vars()[1] - 0.3, '0', xpd=NA)
+} )
+plotOutput('plotRejectionRegion')
+```
+
+
 The likelihood ratios at the two critical values are `r textOutput(inline=TRUE, 'lrEqualAlpha.text')`.
 Not the same.  Should we maximize power by  forcing the two likelihood ratios to be the same?
 
