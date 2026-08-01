@@ -22,8 +22,7 @@ tO = function(V) textOutput(inline=TRUE, V)
 ```
 
 
-#  neyman pearson funky demo
-# violating conditionality principle
+#  The beautiful Neyman Pearson lemma makes you do nutty things
 
 
 
@@ -476,5 +475,10 @@ fluidRow(column(5,
          column(6, plotOutput('theplotForEquals')))
 
 ```
+
+So for negligible gain,  you do stupid things.
+You are violating conditionality principle--
+condition only on the experiment you actually did.
+
 
 
