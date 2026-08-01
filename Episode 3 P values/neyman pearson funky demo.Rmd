@@ -213,7 +213,7 @@ results.EqualLR.Table = reactive({
   conditionalPowerEqualLR =   c( pow(cutoffsSmall, M.alt=1, V=vars()[1]), 
                                  pow(cutoffsBig, M.alt=1, V=vars()[2]) )
   
-  averagePowerEqualLR = mean(conditionalPowerEqualLR)
+  margPowerEqualLR = mean(conditionalPowerEqualLR)
   
   cat('results.EqualLR.Table\n')
   lrBig = lr(cutoffsBig, v = max(vars())) 
@@ -224,7 +224,7 @@ results.EqualLR.Table = reactive({
     cutoffs = c(cutoffsSmall, cutoffsBig), 
     LR = c(lrSmall, lrBig),
     power = conditionalPowerEqualLR, 
-    marginalPower = rep(averagePowerEqualLR, 2)
+    marginalPower = rep(margPowerEqualLR, 2)
   ) 
   return(results.EqualLR.Table)
 })
@@ -304,23 +304,23 @@ output$theplotChangingAlphaBig = renderPlot({
     
   }
   ### average
-  averagePowerEqualAlpha = mean(pow.M.alt.1)
-  #  lines(x=c(lowerC, mean(cutoffs)), y= rep(averagePowerEqualAlpha, 2), col=col.v[3])
+  margPowerEqualAlpha = mean(pow.M.alt.1)
+  #  lines(x=c(lowerC, mean(cutoffs)), y= rep(margPowerEqualAlpha, 2), col=col.v[3])
   #lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
-  text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
-       labels = paste('marginal power equal alpha:', 
-                      signif(digits = 3, averagePowerEqualAlpha)))
+  # text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
+  #      labels = paste('marginal power equal alpha:', 
+  #                     signif(digits = 3, margPowerEqualAlpha)))
   
   conditionalPowerEqualLR = results.EqualLR.Table()$power
-  averagePowerEqualLR = mean(conditionalPowerEqualLR)
+  margPowerEqualLR = mean(conditionalPowerEqualLR)
   points( cex=2, c(  cutoffsLRSmall,   cutoffsLRBig), 
           conditionalPowerEqualLR, col=col.v['LR'], pch='L')
   points( cex=3, c(  cutoffsLRSmall,   cutoffsLRBig), 
           conditionalPowerEqualLR, col=col.v['LR'], pch=1)
-  text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'], xpd=NA,
-       labels = paste('marginal power equal LR:', 
-                      signif(digits = 3, averagePowerEqualLR)))
-  # arrowTerminus = c(1.2, averagePowerEqualLR+0.1)
+  # text(x=lowerC, y=margPowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'], xpd=NA,
+  #      labels = paste('marginal power equal LR:', 
+  #                     signif(digits = 3, margPowerEqualLR)))
+  # # arrowTerminus = c(1.2, margPowerEqualLR+0.1)
   # diagram::curvedarrow(to=arrowTerminus, from=c(cutoffsSmall,
   #                                            conditionalPowerEqualLR[1]) ,
   #                      lwd = 2, lty = 1, lcol = col.v['LR'], 
@@ -390,7 +390,7 @@ output$theplotForEquals = renderPlot({
          'conditional power\nequal Alpha', col=col.v[v])
     text(pos=3, xpd=NA,  cex=1, 
          cutoffsLR[v], results.EqualLR.Table()$power[v]+ 0.01, 
-          'conditional power, \nequal LR', col=col.v[v])
+          'conditional power\nequal LR', col=col.v[v])
     
   }
   # for(Vn in 1:2) {
@@ -405,38 +405,36 @@ output$theplotForEquals = renderPlot({
   #   
   # }
   ### average
-  averagePowerEqualAlpha = mean(pow.M.alt.1)
+  margPowerEqualAlpha = signif(digits=4, mean(results.EqualAlpha.Table()$power))
+  margPowerEqualLR = signif( digits=4, mean(results.EqualLR.Table()$power))
+
   ### ERROR ON NEXT LINE
   # lines(x=c(lowerC, mean(cutoffsAlpha)), 
-  #       y= rep(averagePowerEqualAlpha, 2), 
+  #       y= rep(margPowerEqualAlpha, 2), 
   #       col=col.v[3])
-  lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
-  text(x=lowerC, y=averagePowerEqualAlpha, xpd=NA, adj = c(0,1), 
-       col=col.v[3], xpd=NA,
-       labels = paste('marginal power equal alpha:', 
-                      signif(digits = 3, averagePowerEqualAlpha)))
+  #lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
   
   conditionalPowerEqualLR = results.EqualLR.Table()$power
-  averagePowerEqualLR = mean(conditionalPowerEqualLR)
+  margPowerEqualLR = mean(conditionalPowerEqualLR)
   points( cex=2, c(cutoffsLRSmall, cutoffsLRBig), 
           conditionalPowerEqualLR, col=col.v, pch='L')
   
-  # text(pos=3, xpd=NA,  cex=1, cutoffsLRBig, results.EqualLR.Table()$power[2], 
-  #         'conditional power, \nequal LR', col=col.v2)
-  # # points( cex=3, c(cutoffsLRSmall, cutoffsLRBig), 
-  #         conditionalPowerEqualLR, col=col.v, pch=1)
-  text(x=lowerC, y=averagePowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'],
-       labels = paste('marginal power equal LR:', 
-                      signif(digits = 3, averagePowerEqualLR)))
-  
+  text(x=2.8, y = margPowerEqualLR + 0.1, adj = c(0,-1), 'marginal power:')
+  text(x=2.8, y=margPowerEqualAlpha, xpd=NA, adj = c(0,1), 
+       col=col.v[3], xpd=NA,
+       labels = paste('equal alpha:', 
+                      signif(digits = 3, margPowerEqualAlpha)))
+  text(x=2.8, y=margPowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'],
+       labels = paste('equal LR:', 
+                      signif(digits = 3, margPowerEqualLR)))
+
   legend(x='topright', 
          legend=c(paste('Variance=', vars()[1]), 
-                  paste('Variance=', vars()[2]), 
-                  'equal alpha',
-                  'equal LR'
+                  paste('Variance=', vars()[2]) 
          ), 
-         text.col =  col.v
+         text.col =  c(col.v1, col.v2)
   )
+
 })
 ```
 
