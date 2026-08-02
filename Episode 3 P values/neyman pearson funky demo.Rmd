@@ -525,17 +525,20 @@ output$theplotForEquals = renderPlot({
                       signif(digits = 3, margPowerEqualLR)))
   lines(c(0, 2.8), rep(margPowerEqualLR,2),  col=col.v['LR'])
 
-  legend(x='topright', 
-         legend=c(paste('Variance=', vars()[1]), 
-                  paste('Variance=', vars()[2]) 
+  legend(x='topright', pch = c('','','A', 'L'),
+         legend=c(paste('small variance=', vars()[1]), 
+                  paste('big    variance=', vars()[2]),
+                  'equal alpha',
+                  'equal likelihood'
          ), 
-         text.col =  c(col.v1, col.v2)
+         text.col =  c(col.v1, col.v2, col.v['alpha'], col.v['LR']),
+        
   )
 
 })
 ```
 
-## Comparing power, for equal alpha and equal LR
+## Comparing power, for equal alpha (A) and equal LR (L)
 
 
 ```{r}
