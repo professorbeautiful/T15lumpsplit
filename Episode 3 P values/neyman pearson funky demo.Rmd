@@ -573,9 +573,9 @@ You are violating conditionality principle--
 condition only on the experiment you actually did.
 So for negligible gain in marginal statistical power,  you do a stupid thing.
 
-So what happens if the small variance inaccurate instrument is picked, and the observation X is exactly at the cutoff for same-likelihood-ratio plan with alpha = 0.05?
-Well then you can claim that the P value is 0.05. But being honest, which means conditional on the experiment actually done, the data X is at the cutoff corresponding to alpha = `r tO('alphaSmall.equalLR')`. To paraphrase,
+So what happens if the small variance, more accurate instrument is picked, and the observation X is exactly at the cutoff for the same-likelihood-ratio plan with alpha = 0.05?
+Well then you can claim that the P value is 0.05. But being honest, which means conditional on the experiment actually done, the data X is actually at the conditional cutoff corresponding to alpha = `r tO('alphaSmall.equalLR')`. To paraphrase,
 
-"The coin flip could have picked a worse experiment, and even if it didn't, the existence of the possibility means the strength of evidence is 0.05 not 0.09."
+"The coin flip could have picked a worse experiment, and even if it didn't, the existence of the possibility means the strength of evidence is 0.05 not `r tO('alphaSmall.equalLR.dup')`."
 
 
