@@ -514,7 +514,7 @@ output$theplotForEquals = renderPlot({
   margPowerEqualAlpha = signif(digits=4, mean(results.EqualAlpha.Table()$power))
   margPowerEqualLR = signif( digits=4, mean(results.EqualLR.Table()$power))
   
-  text(x=2.8, y = margPowerEqualLR + 0.07, adj = c(0,-1), 'marginal power:')
+  text(x=2.8, y = margPowerEqualLR + 0.07, adj = c(0,-1), xpd=NA, 'marginal power:')
   text(x=2.8, y = margPowerEqualAlpha, xpd=NA, adj = c(0,1), 
        col=col.v['alpha'], xpd=NA,
        labels = paste('equal alpha:', 
