@@ -205,8 +205,10 @@ So what's the problem?
 
 Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument was selected. We'll call that analysis plan
 **"equal alpha"**.  
-If you know which instrument was picked, you will of course use the relevant significance cutoff. 
-#####Right?
+If you know which instrument was picked, you will of course use the relevant significance cutoff.  
+
+#### *Right?*  
+
 Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r textOutput(inline=T, 'cutoffs.text')`.  
 Then  the overall **marginal** *alpha* is the same.  Even if the chances for selection either instrument are not 50-50.
 ```{r lrEqualAlpha.text}
