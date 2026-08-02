@@ -31,7 +31,7 @@ tO = function(V) textOutput(inline=TRUE, V)
 
 ```{r echo=FALSE}
 ### none of these work 
-shiny::includeScript(path =  'KeyHandler.js') ) # FAILS--- private folder
+shiny::includeScript(path =  'KeyHandler.js')  # FAILS--- private folder
 # includeScript('/Users/rogerday/Google Drive/Documents/T15lumpsplit/inst/T15lumpsplit/www/KeyHandler.js') 
 
 #keyhandler = readLines('www/KeyHandler.js')
