@@ -187,11 +187,11 @@ But we have **two** instruments to measure *X*, with different variances
 **`r textOutput(inline=T, 'varsSmall.text')` and `r textOutput(inline=T, 'varsBig.text')`.**  
 They could be different in precisions. Or they could be because there are two different possible sample sizes.  
 
-Even a clinical trial where the "mean" we want to know is, say, a log odds ratio, and the normal approximation is good enough.
-A statistician and a clinical researcher walk into a bar.  
+Even a clinical trial where the "mean" we want to know is, say, a log odds ratio, and the normal approximation is good enough.  
+*A statistician and a clinical researcher walk into a bar.  *  
 They're planning a clinical trial.
-How many patients do we need?
-Big argument.  The statistician wants a nice big 1000 patients, 500 treated 500 placebo.  The researcher says no way, 100 should be fine, I'm still paying off med school.  
+How many patients do they need?
+**Big argument.**  The statistician wants a nice big 1000 patients, 500 treated 500 placebo.  The researcher says no way, 100 should be fine, I'm still paying off med school.  
 
 So they flip a coin to decide.
 
