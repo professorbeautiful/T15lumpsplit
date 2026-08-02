@@ -559,7 +559,7 @@ fluidRow(column(5,
                 centerIt(textOutput('meanLRPower')),
                 tableOutput('results.EqualLR')
                 ),
-         column(6, plotOutput('theplotForEquals')))
+         column(7, plotOutput('theplotForEquals')))
 
 ```
 
