@@ -24,7 +24,7 @@ tO = function(V) textOutput(inline=TRUE, V)
 ```
 
 
-#  The beautiful Neyman Pearson lemma makes you do nutty things
+#  The beautiful Neyman Pearson lemma <br>makes you do nutty things
 
 
 
@@ -99,8 +99,9 @@ lr = function(x, v) likelihood(h = ha, v=v , x=x ) / likelihood(h = h0, v=v, x=x
 ### The setting:  
 One observation is made from a normal distribution, with mean unknown.  
 Hypotheses are:  
-* Null:   mean = 0.
-* Alternative:   mean = 1.
+
+* Null: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mean = M = 0.  
+* Alternative:   mean = M = $M_{alt}$ = 1.
 
 What's the 'most powerful test'?
 
@@ -202,7 +203,7 @@ So what's the problem?
 
 ---- **And...  we know which one was picked!**
 
-Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument was selected. We'll call that  
+Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument was selected. We'll call that analysis plan
 **"equal alpha"**.  
 If you know which instrument was picked, you will of course use the relevant significance cutoff. 
 #####Right?
