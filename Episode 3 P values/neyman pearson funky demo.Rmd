@@ -71,6 +71,9 @@ likelihood = function(h, v, x) {
 }
 # likelihood(h = 0, v = 1, x = qnorm(1-0.025)) # yes 0.025.
 lr = function(x, v) likelihood(h = ha, v=v , x=x ) / likelihood(h = h0, v=v, x=x )
+# plot(Cseq <- seq(0, 1.5, length=1000), lr(Cseq, 1) )    makes sense
+# lines(Cseq <- seq(0, 1.5, length=1000), lr(Cseq, v = 2) , col='red')
+# lr(x = .5, v = 1)   Equals 1, correctly.
 ```
 
 ```{r eval=FALSE}
