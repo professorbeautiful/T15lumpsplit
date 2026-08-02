@@ -216,11 +216,18 @@ Then  the overall **marginal** *alpha* is the same.  Even if the chances for sel
 
 # pow.M.alt.1 <<- reactive(pow(cutoffsAlpha(), M.alt=1, V=vars()) )
 
-output$lrEqualAlpha.text = renderText({
-  paste0(signif(digits=3, results.EqualAlpha.Table()$LR[1]),
-         ' and ',
+output$lrEqualAlpha.text = renderUI({
+  span(
+    span(style=paste('color:', vars()['big'], ';' ),
          signif(digits=3, results.EqualAlpha.Table()$LR[2])
-         )
+         
+    ),
+    ' and ',
+    span(style=paste('color:', vars()['small'] ),
+         
+         signif(digits=3, results.EqualAlpha.Table()$LR[1])
+    )
+  )
 })
 output$lrEqualAlpha_1.text = renderText({
   paste0(signif(digits=3, results.EqualAlpha.Table()$LR[1]) )
@@ -236,10 +243,11 @@ Our null  hypothesis is  **mean = 0**.
 Pick the alternative hypothesis which we want power against to be **mean = 1**.  
 
 ```{r numericinputs 1}
-div(
-  numericInput('varsBig', 'variance Big', value = vars.init[2], min = vars.init[1], step=vars.step),
-  numericInput('varsSmall', 'variance Small', value = vars.init[1], min = 0,
-               max = vars.init[2], step=vars.step)
+fluidRow(
+ column(5, style=paste('color:', col.v['big']), numericInput('varsBig', 'Big variance ', value = vars.init['big'], min = vars.init['big'], step=vars.step) ),
+ column(5, style=paste('color:', col.v['small']), 
+  numericInput('varsSmall', 'Small variance ', value = vars.init['small'], min = 0,
+               max = vars.init['small'], step=vars.step) )
 )
 ```
 
@@ -305,7 +313,9 @@ plotOutput('plotRejectionRegion', height = 200)
 ```
 
 
-The likelihood ratios at the two critical values are `r textOutput(inline=TRUE, 'lrEqualAlpha.text')`.  
+The likelihood ratios at the two critical values are
+`r uiOutput(inline=TRUE, 'lrEqualAlpha.text')`.   
+
 *Not the same. *    
 The "Neyman-Pearson lemma" says, maximize power by setting the rejection region boundary to have the same likelihood ratio everywhere on the boundary.
 Should we maximize power by  forcing the two likelihood ratios to be the same?
