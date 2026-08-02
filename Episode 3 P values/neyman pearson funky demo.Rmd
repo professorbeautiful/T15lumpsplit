@@ -47,12 +47,14 @@ shinyDebuggingPanel::withDebuggingPanel()
 ```{r echo=FALSE}
 h0 = 0 # null
 ha = 1 #  alternative hypothesis
-vars.init = c(0.4, 3) ####    Small, and large. so power is large, Small.
-div(
-  numericInput('varsBig', 'varsBig', value = vars.init[2], min = 0, step=0.1),
-  numericInput('varsSmall', 'varsSmall', value = vars.init[1], min = 0, step=0.1)
-)
+vars.init = c(small=0.4, big=3) ####    Small, and large. so power is large, Small.
+vars.step = 0.1
+
 vars = reactive({c(input$varsSmall, input$varsBig)})
+observeEvent(input$varsBig,
+             updateNumericInput(inputId='varsSmall', max = input$varsBig))
+observeEvent(input$varsSmall,
+             updateNumericInput(inputId='varsBig', min = input$varsSmall))
 
 alpha = 0.05
 col.v1 = 'red'
@@ -193,6 +195,13 @@ But why not maximize the statistical power?
 Our null  hypothesis is  **mean = 0**.  
 Pick the alternative hypothesis which we want power against to be **mean = 1**.  
 
+```{r}
+div(
+  numericInput('varsBig', 'variance Big', value = vars.init[2], min = vars.init[1], step=vars.step),
+  numericInput('varsSmall', 'variance Small', value = vars.init[1], min = 0,
+               max = vars.init[2], step=vars.step)
+)
+```
 
 Our current rejection region is  
 ```{r}
@@ -200,7 +209,6 @@ output$rejectionRegion.text = renderUI(
   HTML(paste0(
     span(style='color:darkgreen', 
          'variance = ', vars()[2],
-         
          " AND   cutoff = ", 
          signif(digits=3,
                 cutoffs.equalAlpha_2())
@@ -429,6 +437,19 @@ minAlphaBig = 0.002
 # plotOutput('theplotChangingAlphaBig')
 ```
 
+
+```{r}
+div(
+  numericInput('varsBig', 'variance Big', value = vars.init[2], min = vars.init[1], step=vars.step),
+  numericInput('varsSmall', 'variance Small', value = vars.init[1], min = 0,
+               max = vars.init[2], step=vars.step)
+)
+vars = reactive({c(input$varsSmall, input$varsBig)})
+observeEvent(input$varsBig,
+             updateNumericInput(inputId='varsSmall', max = input$varsBig))
+observeEvent(input$varsSmall,
+             updateNumericInput(inputId='varsBig', min = input$varsSmall))
+```
 
 ```{r echo=FALSE}
 
