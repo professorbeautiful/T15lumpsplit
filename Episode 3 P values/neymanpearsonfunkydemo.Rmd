@@ -29,7 +29,7 @@ tO = function(V) textOutput(inline=TRUE, V)
 
 
 
-```{r echo=FALSE}
+```{r keys, echo=FALSE}
 ### none of these works -- initially.
 shiny::includeScript(path =  'www/KeyHandler.js')  
     # works at shinyapps.io
@@ -39,7 +39,7 @@ shiny::includeScript(path =  'www/KeyHandler.js')
 
 
 
-```{r}
+```{r shinyDebuggingPanel}
 observeEvent(input$ctrlDpressed, {}) # just to flush the ctrl-D press.
 
 shinyDebuggingPanel::makeDebuggingPanelOutput(
@@ -54,7 +54,7 @@ shinyDebuggingPanel::withDebuggingPanel()
 
 ```
 
-```{r echo=FALSE}
+```{r likelihoods, echo=FALSE}
 h0 = 0 # null
 ha = 1 #  alternative hypothesis
 vars.init = c(small=0.4, big=3) ####    Small, and large. so power is large, Small.
@@ -116,7 +116,7 @@ the power to reject $M = 0$ if the true mean is $M_{alt}$ is
 $$
 Power(C)~=~  (1 - pnorm(C,M_{alt},\sqrt{V}) )
 $$
-```{r echo=FALSE}
+```{r results.EqualAlpha.Table, echo=FALSE}
 output[['varsSmall.text']] = renderText(input[['varsSmall']])   # OK.
 output[['varsSmall.text.2']] = renderText(input[['varsSmall']])   # OK.
 
@@ -200,7 +200,7 @@ If you know which instrument was picked, you will of course use the relevant sig
 #####Right?
 Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r textOutput(inline=T, 'cutoffs.text')`.  
 Then  the overall **marginal** *alpha* is the same.  Even if the chances for selection either instrument are not 50-50.
-```{r}
+```{r lrEqualAlpha.text}
 # lrEqualAlpha <<-  lr(cutoffsAlpha(), vars())
 
 # pow.M.alt.1 <<- reactive(pow(cutoffsAlpha(), M.alt=1, V=vars()) )
@@ -224,7 +224,7 @@ Of course we want to pick the test method that maximizes the statistical power?
 Our null  hypothesis is  **mean = 0**.  
 Pick the alternative hypothesis which we want power against to be **mean = 1**.  
 
-```{r}
+```{r numericinputs 1}
 div(
   numericInput('varsBig', 'variance Big', value = vars.init[2], min = vars.init[1], step=vars.step),
   numericInput('varsSmall', 'variance Small', value = vars.init[1], min = 0,
@@ -233,7 +233,7 @@ div(
 ```
 
 Our current rejection region is  
-```{r}
+```{r rejectionRegion.text}
 output$rejectionRegion.text = renderUI(
   HTML(paste0(
     span(style='color:darkgreen', 
@@ -301,7 +301,7 @@ Should we maximize power by  forcing the two likelihood ratios to be the same?
 
 If we raise the cutoff for the instrument with the Bigger variance `r textOutput(inline=T, 'varsBig.text.2')`, and lower it for the instrument with the Smaller variance `r textOutput(inline=T, 'varsSmall.text.2')`, watch what happens. The likelihood ratios get closer and closer.
 
-```{r}
+```{r lrDifferenceAbs}
   lrDifference = function(alphaBig){
       lrBigValues = numeric(0)
       lrSmallValues = numeric(0)
@@ -325,7 +325,7 @@ If we raise the cutoff for the instrument with the Bigger variance `r textOutput
 
 
 
-```{r}
+```{r results.EqualLR.Table}
 results.EqualLR.Table = reactive({
   Aseq<- seq(0.001, 0.05, length=1000)
   optimal = optimize(lrDifferenceAbs, 
@@ -359,7 +359,7 @@ results.EqualLR.Table = reactive({
 })
 ```
 
-```{r}
+```{r results.EqualLR}
 output$results.EqualLR = renderTable({
   df = results.EqualLR.Table()
   names(df)[names(df) == 'marginalPower'] = 'marginal<br>power'
@@ -368,12 +368,12 @@ output$results.EqualLR = renderTable({
 }, sanitize.colnames.function = function(x) x)
 ```
 
-```{r}
+```{r cutoffs.equalLR}
 cutoffs.equalLR = reactive(results.EqualLR.Table()$cutoffs)
 ```
 
 
-```{r}
+```{r lrDifferenceAbsPlot render}
 output$lrDifferenceAbsPlot  = renderPlot({
     Aseq<- seq(0.001, 0.05, length=1000)
     plot(Aseq,
@@ -383,7 +383,7 @@ output$lrDifferenceAbsPlot  = renderPlot({
 })
 ```
 
-```{r}
+```{r lrDifferenceAbsPlot output not used}
 # not a helpful plot
 
 ### lrDifferenceAbsPlot
@@ -393,77 +393,79 @@ output$lrDifferenceAbsPlot  = renderPlot({
 ```
 <!-- ## Comparing power, as alpha allocation changes -->
 
-```{r}
+```{r theplotChangingAlphaBig render}
 minAlphaBig = 0.002
 
 ### This plot shows how the power and cutoffs change as the alpha allocation changes
-# output$theplotChangingAlphaBig = renderPlot({
-#   cutoffsBig =   qnorm(1 - input$ChangingAlphaBig, sd = sqrt(max(vars())))
-#   cutoffsSmall = qnorm(1 - (alpha - input$ChangingAlphaBig), sd = sqrt(min(vars())))
-#   cutoffsAny = c(cutoffsSmall, cutoffsBig)
-#   # testthat::expect_equal(lr(cutoffsSmall, min(vars)), 
-#   #                        lr(cutoffsBig, max(vars)) , tolerance = 1e-3)
-#   conditionalPowerEqualLR =   c( pow(cutoffsSmall, M.alt=1, V=vars()[1]), 
-#                                  pow(cutoffsBig, M.alt=1, V=vars()[2]) )
-#   upperX = qnorm(1 - minAlphaBig, sd = sqrt(max(vars())))
-#   cat('upperX ', upperX, '\n')
-#   Cseq <- seq(lowerC, max(results.EqualLR.Table()$cutoffs), length=1000)
-# 
-#   plot(Cseq, ylim=c(0,1), xlim=c(0, upperX * 1.005),
-#        pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
-#        pch='', col=col.v1)
-#   #  Draw points for the equal alpha case.
-#   pow.M.alt.1 = pow(cutoffs.equalAlpha(), M.alt=1, V=vars())
-#   points(cutoffs.equalAlpha(), pow.M.alt.1,  pch='A')
-#   points(cutoffsAny, pow(cutoffsAny, M.alt=1, V=vars()), pch='P')
-#   points(cutoffs.equalLR(), pow(cutoffs.equalLR(), M.alt=1, V=vars()), col=col.v[4], pch='L')
-#   #   lines(x=c(lowerC, cutoffs()[1]), y= c(alpha,alpha) , col='black')
-#   # lines(x=c(lowerC, cutoffs()[2]), y= c(alpha,alpha) , col='black')
-#   # text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black') 
-#   # points(cutoffs(), c(alpha, alpha), col=col.v, pch='C')
-#   #points(cutoffs, pow(cutoffs, M.alt=0), col=col.v, pch='C')  # null hypothesis
-#   # points(cutoffs(), pow.M.alt.1(), col=col.v, pch='P')
-#   cutoffsLR = results.EqualLR.Table()$cutoffs
-#   cutoffsLRSmall =   cutoffsLR[1]
-#   cutoffsLRBig =   cutoffsLR[2]
-#   for(Vn in 1:2) {
-#     # lines(Cseq, pow(Cseq, M.alt=1, V=vars()[Vn]), lty=2, lwd=3, col=col.v[Vn])
-#     # lines(x=c(lowerC, cutoffsLR[Vn]), y= rep(pow.M.alt.1 [Vn], 2), col=col.v[Vn])
-#     # lines(x=rep(cutoffs[Vn],2), y = c(alpha, pow.M.alt.1() [Vn]), col=col.v[Vn])
-#     # text(x=lowerC, y=pow.M.alt.1() [Vn], col=col.v[Vn],
-#     #      labels = paste('V=', vars()[Vn], '  power=', 
-#     #                     signif(digits = 2, pow.M.alt.1() [Vn])), adj = c(0,0))
-#     
-#   }
-#   ### average
-#   margPowerEqualAlpha = mean(pow.M.alt.1)
-#   #  lines(x=c(lowerC, mean(cutoffs)), y= rep(margPowerEqualAlpha, 2), col=col.v[3])
-#   #lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
-#   text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
-#        labels = paste('marginal power equal alpha:',
-#                       signif(digits = 3, margPowerEqualAlpha)))
-# 
-#   conditionalPowerEqualLR = results.EqualLR.Table()$power
-#   margPowerEqualLR = mean(conditionalPowerEqualLR)
-#   points( cex=2, c(  cutoffsLRSmall,   cutoffsLRBig), 
-#           conditionalPowerEqualLR, col=col.v['LR'], pch='L')
-#   points( cex=3, c(  cutoffsLRSmall,   cutoffsLRBig), 
-#           conditionalPowerEqualLR, col=col.v['LR'], pch=1)
-#   text(x=lowerC, y=margPowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'], xpd=NA,
-#        labels = paste('marginal power equal LR:',
-#                       signif(digits = 3, margPowerEqualLR)))
-#   legend(x='topright', 
-#          legend=c(paste('Variance=', vars()[1]), 
-#                   paste('Variance=', vars()[2]), 
-#                   'equal alpha',
-#                   'equal LR'
-#          ), 
-#          text.col =  col.v
-#   )
-# })
+output$theplotChangingAlphaBig = renderPlot({
+  cutoffsBig =   qnorm(1 - input$ChangingAlphaBig, sd = sqrt(max(vars())))
+  cutoffsSmall = qnorm(1 - (alpha - input$ChangingAlphaBig), sd = sqrt(min(vars())))
+  cutoffsAny = c(cutoffsSmall, cutoffsBig)
+  # testthat::expect_equal(lr(cutoffsSmall, min(vars)),
+  #                        lr(cutoffsBig, max(vars)) , tolerance = 1e-3)
+  conditionalPowerEqualLR =   c( pow(cutoffsSmall, M.alt=1, V=vars()[1]),
+                                 pow(cutoffsBig, M.alt=1, V=vars()[2]) )
+  upperX = qnorm(1 - minAlphaBig, sd = sqrt(max(vars())))
+  cat('upperX ', upperX, '\n')
+  Cseq <- seq(lowerC, max(results.EqualLR.Table()$cutoffs), length=1000)
+
+  plot(Cseq, ylim=c(0,1), xlim=c(0, upperX * 1.005),
+       pow(Cseq, M.alt=0, 1), xlab='critical rejection cutoff', ylab='power',
+       pch='', col=col.v1)
+  #  Draw points for the equal alpha case.
+  pow.M.alt.1 = pow(cutoffs.equalAlpha(), M.alt=1, V=vars())
+  points(cutoffs.equalAlpha(), pow.M.alt.1,  pch='A')
+  points(cutoffsAny, pow(cutoffsAny, M.alt=1, V=vars()), pch='P')
+  points(cutoffs.equalLR(), pow(cutoffs.equalLR(), M.alt=1, V=vars()), col=col.v[4], pch='L')
+  #   lines(x=c(lowerC, cutoffs()[1]), y= c(alpha,alpha) , col='black')
+  # lines(x=c(lowerC, cutoffs()[2]), y= c(alpha,alpha) , col='black')
+  # text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black')
+  # points(cutoffs(), c(alpha, alpha), col=col.v, pch='C')
+  #points(cutoffs, pow(cutoffs, M.alt=0), col=col.v, pch='C')  # null hypothesis
+  # points(cutoffs(), pow.M.alt.1(), col=col.v, pch='P')
+  cutoffsLR = results.EqualLR.Table()$cutoffs
+  cutoffsLRSmall =   cutoffsLR[1]
+  cutoffsLRBig =   cutoffsLR[2]
+  for(Vn in 1:2) {
+    # lines(Cseq, pow(Cseq, M.alt=1, V=vars()[Vn]), lty=2, lwd=3, col=col.v[Vn])
+    # lines(x=c(lowerC, cutoffsLR[Vn]), y= rep(pow.M.alt.1 [Vn], 2), col=col.v[Vn])
+    # lines(x=rep(cutoffs[Vn],2), y = c(alpha, pow.M.alt.1() [Vn]), col=col.v[Vn])
+    # text(x=lowerC, y=pow.M.alt.1() [Vn], col=col.v[Vn],
+    #      labels = paste('V=', vars()[Vn], '  power=',
+    #                     signif(digits = 2, pow.M.alt.1() [Vn])), adj = c(0,0))
+
+  }
+  ### average
+  margPowerEqualAlpha = mean(pow.M.alt.1)
+  #  lines(x=c(lowerC, mean(cutoffs)), y= rep(margPowerEqualAlpha, 2), col=col.v[3])
+  #lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
+  text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
+       labels = paste('marginal power equal alpha:',
+                      signif(digits = 3, margPowerEqualAlpha)))
+
+  conditionalPowerEqualLR = results.EqualLR.Table()$power
+  margPowerEqualLR = mean(conditionalPowerEqualLR)
+  points( cex=2, c(  cutoffsLRSmall,   cutoffsLRBig),
+          conditionalPowerEqualLR, col=col.v['LR'], pch='L')
+  points( cex=3, c(  cutoffsLRSmall,   cutoffsLRBig),
+          conditionalPowerEqualLR, col=col.v['LR'], pch=1)
+  text(x=lowerC, y=margPowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'], xpd=NA,
+       labels = paste('marginal power equal LR:',
+                      signif(digits = 3, margPowerEqualLR)))
+  legend(x='topright',
+         legend=c(paste('Variance=', vars()[1]),
+                  paste('Variance=', vars()[2]),
+                  'equal alpha',
+                  'equal LR'
+         ),
+         text.col =  col.v
+  )
+})
+renderPlot('theplotChangingAlphaBig')
+
 ```
 
-```{r echo=FALSE}
+```{r theplotChangingAlphaBig output, echo=FALSE}
 ## We are FOR NOW keeping Pr(variance = vars[1] equal to 1/2).
 # numericInput('ChangingAlphaBig', 'Changing Alpha allocation', value = alpha,
 #              min=minAlphaBig, max=alpha * 2 - minAlphaBig, step=minAlphaBig)
@@ -472,7 +474,7 @@ minAlphaBig = 0.002
 ```
 
 
-```{r}
+```{r numeric inputs}
 div(
   numericInput('varsBig', 'variance Big', value = vars.init[2], min = vars.init[1], step=vars.step),
   numericInput('varsSmall', 'variance Small', value = vars.init[1], min = 0,
@@ -485,7 +487,7 @@ observeEvent(input$varsSmall,
              updateNumericInput(inputId='varsBig', min = input$varsSmall))
 ```
 
-```{r echo=FALSE}
+```{r theplotForEquals, echo=FALSE}
 
 #### Plot power and cutoffs for equalAlpha and equalLR cases.
 
@@ -576,7 +578,7 @@ output$theplotForEquals = renderPlot({
 ## Comparing power, for equal alpha (A) and equal LR (L)
 
 
-```{r}
+```{r tables and plot}
 centerIt = function(S) span(style='text-align:center;  display: flex;
   align-items: center;
   justify-content: center; font-size:larger', em(S))
