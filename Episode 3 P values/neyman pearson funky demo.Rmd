@@ -14,6 +14,8 @@ library(shiny)
 library(DT)  # not data.table
 library(reactable)
 library(shinyDebuggingPanel, quietly = TRUE)
+library(keys)
+
 options(error=print(traceback()))
 options(shiny.launch.browser=TRUE)
 
@@ -26,10 +28,22 @@ tO = function(V) textOutput(inline=TRUE, V)
 
 
 
-```{r echo=FALSE}
-#shiny::includeScript(path =  paste0(getwd(), '/inst/T15lumpsplit/www/KeyHandler.js') )  FAILS--- private folder
 
-includeScript('/Users/rogerday/Google Drive/Documents/T15lumpsplit/inst/T15lumpsplit/www/KeyHandler.js') 
+```{r echo=FALSE}
+### none of these work 
+shiny::includeScript(path =  'KeyHandler.js') ) # FAILS--- private folder
+# includeScript('/Users/rogerday/Google Drive/Documents/T15lumpsplit/inst/T15lumpsplit/www/KeyHandler.js') 
+
+#keyhandler = readLines('www/KeyHandler.js')
+#getwd()
+
+# tags$head(tags$script(src="www/KeyHandler.js"))
+
+```
+
+
+
+```{r}
 observeEvent(input$ctrlDpressed, {}) # just to flush the ctrl-D press.
 
 shinyDebuggingPanel::makeDebuggingPanelOutput(
@@ -562,6 +576,10 @@ output$alphaSmall.equalLR = output$alphaSmall.equalLR.dup = renderText({
   value = signif(digits=2, results.EqualLR.Table()$alpha[1])
   value
 })
+output$alphaBig.equalLR = renderText({
+  value = signif(digits=2, results.EqualLR.Table()$alpha[2])
+  value
+})
 fluidRow(column(5, 
                 centerIt('Equal alpha'), 
                  centerIt(textOutput('meanAlphaPower')), 
@@ -581,6 +599,12 @@ So for negligible gain in marginal statistical power,  you do a stupid thing.
 So what happens if the small variance, more accurate instrument is picked, and the observation X is exactly at the cutoff for the same-likelihood-ratio plan with alpha = 0.05?
 Well then you can claim that the P value is 0.05. But being honest, which means conditional on the experiment actually done, the data X is actually at the conditional cutoff corresponding to alpha = `r tO('alphaSmall.equalLR')`. To paraphrase,
 
-"The coin flip could have picked a worse experiment. But even though it didn't, the existence of that possibility means that we can report that the strength of evidence is 0.05 not `r tO('alphaSmall.equalLR.dup')`."
+"The coin flip could have picked a **worse** experiment. But even though it didn't, the existence of that possibility means that we can report that the strength of evidence is 0.05 not `r tO('alphaSmall.equalLR.dup')`."
+
+And what's just as bad,  this can happen:  
+
+"The coin flip could have picked a **better** experiment. But even though it didn't, the existence of that possibility means that we MUST report that the strength of evidence is only 0.05 not `r tO('alphaBig.equalLR')`."
+
+CONCLUSION:  Taking seriously the mandate to choose a method that maximizes power is bad.  Always condition on the ancillary statistic when you can.  Here the ancillary statistic is which experiment was chosen.
 
 
