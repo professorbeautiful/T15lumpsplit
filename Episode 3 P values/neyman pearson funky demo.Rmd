@@ -67,10 +67,10 @@ pow = function(C, M.alt=1, V) {
 lowerC = 0
 
 likelihood = function(h, v, x) {
-  1 - pnorm( abs((x - h)/sqrt(v))  ) 
+  dnorm(x = x, mean = h, sd = sqrt(v))
 }
 # likelihood(h = 0, v = 1, x = qnorm(1-0.025)) # yes 0.025.
-lr = function(x, v) likelihood(h = ha, v , x ) / likelihood(h = h0, v, x )
+lr = function(x, v) likelihood(h = ha, v=v , x=x ) / likelihood(h = h0, v=v, x=x )
 ```
 
 ```{r eval=FALSE}
