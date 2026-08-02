@@ -212,14 +212,14 @@ output$rejectionRegion.text = renderUI(
   HTML(paste0(
     span(style='color:darkgreen', 
          'variance = ', vars()[2],
-         " AND   cutoff = ", 
+         " AND   X > ", 
          signif(digits=3,
                 cutoffs.equalAlpha_2())
     ), 
-         ' OR ',
+         ' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
     span(style='color:red', 
          'variance = ', vars()[1],
-         " AND   cutoff = ", 
+         " AND   X > ", 
          signif(digits=3, cutoffs.equalAlpha_1()
          ) )
   )
@@ -251,13 +251,18 @@ output$plotRejectionRegion = renderPlot( height=200, #width='100%',
           rep(vars()[v], each=2) , col = col.v[v],
           lwd=4)
   }
+  text( x=results.EqualAlpha.Table()$cutoffs, 
+        y=vars(),  pos=3,
+        #adj=c(-1,-1),
+        signif(digits=3, results.EqualAlpha.Table()$cutoffs),
+        col=col.v[1:2], cex=1.5, xpd=NA) 
   points( results.EqualAlpha.Table()$cutoffs, 
-          vars.init, col=col.v[1:2], cex=2, pch=1) 
+          vars.init, col=col.v[1:2], cex=2, pch=1, xpd=NA) 
   text(results.EqualAlpha.Table()$cutoffs[2], vars()[2],
        'rejection region, var = 3.0' ,  adj=c(-1,-1), xpd=NA)
   text(results.EqualAlpha.Table()$cutoffs[1], vars()[1],
-       'rejection region, var = 0.4',   adj=c(-1,-1))
-  text(0.05, vars()[1] - 0.3, '0', xpd=NA)
+       'rejection region, var = 0.4',   adj=c(-1,-1), xpd=NA)
+  text(0.05, vars()[1] - 0.3, '0', xpd=NA)  #zero
 } )
 plotOutput('plotRejectionRegion', height = 200)
 ```
@@ -576,6 +581,6 @@ So for negligible gain in marginal statistical power,  you do a stupid thing.
 So what happens if the small variance, more accurate instrument is picked, and the observation X is exactly at the cutoff for the same-likelihood-ratio plan with alpha = 0.05?
 Well then you can claim that the P value is 0.05. But being honest, which means conditional on the experiment actually done, the data X is actually at the conditional cutoff corresponding to alpha = `r tO('alphaSmall.equalLR')`. To paraphrase,
 
-"The coin flip could have picked a worse experiment, and even if it didn't, the existence of the possibility means the strength of evidence is 0.05 not `r tO('alphaSmall.equalLR.dup')`."
+"The coin flip could have picked a worse experiment. But even though it didn't, the existence of that possibility means that we can report that the strength of evidence is 0.05 not `r tO('alphaSmall.equalLR.dup')`."
 
 
