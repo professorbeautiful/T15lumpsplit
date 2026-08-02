@@ -553,8 +553,10 @@ output$meanAlphaPower = renderText(
   paste('Marginal power = ' , signif( mean(results.EqualAlpha.Table()$power))))
 output$meanLRPower = renderText(
   paste('Marginal power = ', signif(mean(results.EqualLR.Table()$power))))
-output$alphaSmall.equalLR = renderText(
-  signif(digits=2, results.EqualLR.Table()$alpha[1]))
+output$alphaSmall.equalLR = output$alphaSmall.equalLR.dup = renderText({
+  value = signif(digits=2, results.EqualLR.Table()$alpha[1])
+  value
+})
 fluidRow(column(5, 
                 centerIt('Equal alpha'), 
                  centerIt(textOutput('meanAlphaPower')), 
