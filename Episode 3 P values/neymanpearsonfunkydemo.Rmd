@@ -30,15 +30,11 @@ tO = function(V) textOutput(inline=TRUE, V)
 
 
 ```{r echo=FALSE}
-### none of these work 
-shiny::includeScript(path =  'KeyHandler.js')  # FAILS--- private folder
-# includeScript('/Users/rogerday/Google Drive/Documents/T15lumpsplit/inst/T15lumpsplit/www/KeyHandler.js') 
-
-#keyhandler = readLines('www/KeyHandler.js')
-#getwd()
-
-# tags$head(tags$script(src="www/KeyHandler.js"))
-
+### none of these works -- initially.
+shiny::includeScript(path =  'www/KeyHandler.js')  
+    # works at shinyapps.io
+    ### and locally, all of a sudden!
+## Did I have to deploy first before running this line locally would work?
 ```
 
 
