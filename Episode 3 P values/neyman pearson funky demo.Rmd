@@ -546,6 +546,8 @@ output$meanAlphaPower = renderText(
   paste('Marginal power = ' , signif( mean(results.EqualAlpha.Table()$power))))
 output$meanLRPower = renderText(
   paste('Marginal power = ', signif(mean(results.EqualLR.Table()$power))))
+output$alphaSmall.equalLR = renderText(
+  signif(digits=2, results.EqualLR.Table()$alpha[1]))
 fluidRow(column(5, 
                 centerIt('Equal alpha'), 
                  centerIt(textOutput('meanAlphaPower')), 
@@ -558,11 +560,12 @@ fluidRow(column(5,
 
 ```
 
-So for negligible gain,  you do stupid things.
 You are violating conditionality principle--
 condition only on the experiment you actually did.
+So for negligible gain in marginal statistical power,  you do a stupid thing.
 
-So what happens if the small variance inaccurate instrument is picked, and the observation X is exactly at the cutoff for same-likelihood-ratio plan with alpha = 0.05.  Well then you can claim that the P value is 0.05. But being honest, X is at the cutoff for alpha = 0.09. To paraphrase,
+So what happens if the small variance inaccurate instrument is picked, and the observation X is exactly at the cutoff for same-likelihood-ratio plan with alpha = 0.05?
+Well then you can claim that the P value is 0.05. But being honest, which means conditional on the experiment actually done, the data X is at the cutoff corresponding to alpha = `r tO('alphaSmall.equalLR')`. To paraphrase,
 
 "The coin flip could have picked a worse experiment, and even if it didn't, the existence of the possibility means the strength of evidence is 0.05 not 0.09."
 
