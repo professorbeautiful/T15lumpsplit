@@ -96,13 +96,21 @@ lr = function(x, v) likelihood(h = ha, v=v , x=x ) / likelihood(h = h0, v=v, x=x
 
 ```
 
-The setting:  one observation from a normal distribution, mean unknown.
+### The setting:  
+One observation is made from a normal distribution, with mean unknown.  
+Hypotheses are:  
+* Null:   mean = 0.
+* Alternative:   mean = 1.
+
+What's the 'most powerful test'?
+
+
 If we know the variance is $V$, and the observed value is $X$,
 the likelihood function as a function of the mean $M$ is 
 $$
 L(M)~=~dnorm(X,M,\sqrt{V})
 $$
-For rejection critical value $C$ > 0, 
+For the  critical value $C$ setting the rejection region, 
 the power to reject $M = 0$ if the true mean is $M_{alt}$ is
 
 $$
@@ -172,18 +180,26 @@ output$results.EqualAlpha = renderTable({
 
 
 ```
+
+### Complication!
+
 But we have **two** instruments to measure *X*, with different variances
 **`r textOutput(inline=T, 'varsSmall.text')` and `r textOutput(inline=T, 'varsBig.text')`.**  
-They could be different in precisions. Or they could be because there are two different possible sample sizes. 
+They could be different in precisions. Or they could be because there are two different possible sample sizes. Even a clinical trial where the "mean" we want to know is, say, a log odds ratio, and the normal approximation is good enough.
+
+
+So what's the problem?
 
 *The instrument used is picked at random!*  
 
 ---- **And...  we know which one was picked!**
 
-Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument. We'll call that  
+Suppose we use the same *alpha*, the same conditional type I error rate, regardless of which instrument was selected. We'll call that  
 **"equal alpha"**.  
-If you know which instrument was picked, you will of course use the relevant significance cutoff. Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r textOutput(inline=T, 'cutoffs.text')`.  
-Then regardless of the chances for selection either instrument, the overall **marginal** *alpha* is the same.
+If you know which instrument was picked, you will of course use the relevant significance cutoff. 
+#####Right?
+Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r textOutput(inline=T, 'cutoffs.text')`.  
+Then  the overall **marginal** *alpha* is the same.  Even if the chances for selection either instrument are not 50-50.
 ```{r}
 # lrEqualAlpha <<-  lr(cutoffsAlpha(), vars())
 
@@ -204,7 +220,7 @@ output$lrEqualAlpha_2.text = renderText({
 
 ```
 
-But why not maximize the statistical power?  
+Of course we want to pick the test method that maximizes the statistical power?  
 Our null  hypothesis is  **mean = 0**.  
 Pick the alternative hypothesis which we want power against to be **mean = 1**.  
 
@@ -278,12 +294,12 @@ plotOutput('plotRejectionRegion', height = 200)
 ```
 
 
-The likelihood ratios at the two critical values are `r textOutput(inline=TRUE, 'lrEqualAlpha.text')`.
-Not the same.   
+The likelihood ratios at the two critical values are `r textOutput(inline=TRUE, 'lrEqualAlpha.text')`.  
+*Not the same. *    
 The "Neyman-Pearson lemma" says, maximize power by setting the rejection region boundary to have the same likelihood ratio everywhere on the boundary.
 Should we maximize power by  forcing the two likelihood ratios to be the same?
 
-If we raise the cutoff for the Bigger variance `r textOutput(inline=T, 'varsBig.text.2')`, and lower it for the Smaller variance `r textOutput(inline=T, 'varsSmall.text.2')`, watch what happens. The likelihood ratios get closer and closer.
+If we raise the cutoff for the instrument with the Bigger variance `r textOutput(inline=T, 'varsBig.text.2')`, and lower it for the instrument with the Smaller variance `r textOutput(inline=T, 'varsSmall.text.2')`, watch what happens. The likelihood ratios get closer and closer.
 
 ```{r}
   lrDifference = function(alphaBig){
