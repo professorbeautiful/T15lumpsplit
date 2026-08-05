@@ -55,8 +55,8 @@ shinyDebuggingPanel::withDebuggingPanel()
 ```
 
 ```{r likelihoods, echo=FALSE}
-h0 = 0 # null
-ha = 1 #  alternative hypothesis
+h0 = 0 # bland, null hypothesis
+ha = 1 #  exciting, alternative hypothesis
 vars.init = c(small=0.4, big=3) ####    Small, and large. so power is large, Small.
 vars.step = 0.1
 
@@ -100,8 +100,8 @@ lr = function(x, v) likelihood(h = ha, v=v , x=x ) / likelihood(h = h0, v=v, x=x
 One observation is made from a normal distribution, with mean unknown.  
 Hypotheses are:  
 
-* Null: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mean = M = 0.  
-* Alternative:   mean = M = $M_{alt}$ = 1.
+* Null (boring): &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mean = M = 0.  
+* Alternative (exciting):   mean = M = $M_{alt}$ = 1.
 
 What's the 'most powerful test'?
 
@@ -209,8 +209,7 @@ If you know which instrument was picked, you will of course use the relevant sig
 
 #### *Right?*  
 
-Here for *alpha* = `r alpha`, used regardless of the instrument chosen, these two conditional cutoffs are `r textOutput(inline=T, 'cutoffs.text')`.  
-Then  the overall **marginal** *alpha* is the same.  Even if the chances for selection either instrument are not 50-50.
+Here for *alpha* = Type I error = power to reject the bland hypothesis = `r alpha`, used regardless of the instrument chosen, the overall **marginal** *alpha* is the same.  Even if the chances for selecting either instrument are not 50-50, still the average of *alpha* with *alpha* is ... *alpha*.
 ```{r lrEqualAlpha.text}
 # lrEqualAlpha <<-  lr(cutoffsAlpha(), vars())
 
@@ -239,19 +238,19 @@ output$lrEqualAlpha_2.text = renderText({
 ```
 
 Of course we want to pick the test method that maximizes the statistical power?  
-Our null  hypothesis is  **mean = 0**.  
-Pick the alternative hypothesis which we want power against to be **mean = 1**.  
+Our bland null  hypothesis is  **mean = 0**.  
+Pick the exciting alternative hypothesis which we want power against to be **mean = 1**.  
 
 ```{r numericinputs 1}
 fluidRow(
- column(5, style=paste('color:', col.v['big']), numericInput('varsBig', 'Big variance ', value = vars.init['big'], min = vars.init['big'], step=vars.step) ),
+ column(5, style=paste('color:', col.v['big']), numericInput('varsBig', 'Big variance (poor precision) ', value = vars.init['big'], min = vars.init['big'], step=vars.step) ),
  column(5, style=paste('color:', col.v['small']), 
-  numericInput('varsSmall', 'Small variance ', value = vars.init['small'], min = 0,
+  numericInput('varsSmall', 'Small variance (good precision)', value = vars.init['small'], min = 0,
                max = vars.init['small'], step=vars.step) )
 )
 ```
 
-Our current rejection region is  
+Our current rejection region is the union of two rays going off to the right to infinity: 
 ```{r rejectionRegion.text}
 output$rejectionRegion.text = renderUI(
   HTML(paste0(
@@ -316,11 +315,19 @@ plotOutput('plotRejectionRegion', height = 200)
 The likelihood ratios at the two critical values are
 `r uiOutput(inline=TRUE, 'lrEqualAlpha.text')`.   
 
-*Not the same. *    
-The "Neyman-Pearson lemma" says, maximize power by setting the rejection region boundary to have the same likelihood ratio everywhere on the boundary.
+*These numbers are NOT the same. *  
+
+The **"Neyman-Pearson lemma"** says, you maximize power by setting the rejection region boundary to have the same likelihood ratio everywhere on the boundary.
 Should we maximize power by  forcing the two likelihood ratios to be the same?
 
-If we raise the cutoff for the instrument with the Bigger variance `r textOutput(inline=T, 'varsBig.text.2')`, and lower it for the instrument with the Smaller variance `r textOutput(inline=T, 'varsSmall.text.2')`, watch what happens. The likelihood ratios get closer and closer.
+*Let's do it! *
+
+## How does the average power change as alpha allocation changes?
+
+We will raise the cutoff for the instrument with the Bigger variance `r textOutput(inline=T, 'varsBig.text.2')`, and lower it for the instrument with the Smaller variance `r textOutput(inline=T, 'varsSmall.text.2')`.
+The average, or marginal *alpha* stays the same.  
+
+We'll see what happens as the likelihood ratios get closer and closer.
 
 ```{r lrDifferenceAbs}
   lrDifference = function(alphaBig){
