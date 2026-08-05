@@ -423,7 +423,7 @@ minAlphaBig = 0.002
 ### This plot shows how the power and cutoffs change as the alpha allocation changes
 output$theplotChangingAlphaBig = renderPlot({
   cutoffsBig =   qnorm(1 - input$ChangingAlphaBig, sd = sqrt(max(vars())))
-  cutoffsSmall = qnorm(1 - (alpha - input$ChangingAlphaBig), sd = sqrt(min(vars())))
+  cutoffsSmall = qnorm(1 - (2*alpha - input$ChangingAlphaBig), sd = sqrt(min(vars())))
   cutoffsAny = c(cutoffsSmall, cutoffsBig)
   # testthat::expect_equal(lr(cutoffsSmall, min(vars)),
   #                        lr(cutoffsBig, max(vars)) , tolerance = 1e-3)
