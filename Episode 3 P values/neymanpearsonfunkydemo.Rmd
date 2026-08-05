@@ -481,7 +481,7 @@ output$theplotChangingAlphaBig = renderPlot({
                   paste('Variance=', vars()[2]),
                   'conditional power for equal alpha',
                   'conditional power for equal LR',
-                  'conditional power for other allocation'
+                  'conditional power for any conditional Big alpha'
          ),
          text.col =  c(col.v, 'black'),
          pch = c('', '', 'A', 'L', '?'),
@@ -500,6 +500,7 @@ numericInput('ChangingAlphaBig', 'Changing how much alpha is allocated to the Bi
 plotOutput('theplotChangingAlphaBig')
 ```
 
+(The two conditional alphas AVERAGE to the overall alpha.  The two JOINT alphas, the probabilities of the two rays in the previous plot, are how the total alpha is ALLOCATED to the two rays.  The joint alphas are half as big, and they SUM to the total alpha.)
 
 ```{r numeric inputs}
 div(
