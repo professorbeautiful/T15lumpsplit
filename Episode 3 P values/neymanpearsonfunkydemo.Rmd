@@ -149,6 +149,7 @@ results.EqualAlpha.Table = reactive({
     #data = 
 #      signif(digits=2, 
     data.frame(
+      variance = c('small', 'big'),
         alphas = rep(alpha, 2),
         cutoffs=cutoffs.equalAlpha(), 
         LR= lrEqualAlpha, 
@@ -372,6 +373,7 @@ results.EqualLR.Table = reactive({
     lrSmall = lr(cutoffsSmall, v = min(vars()))
     
   results.EqualLR.Table = data.frame(
+    variance = c('small', 'big'),
     alphas = c(optimalAlphaSmall, optimalAlphaBig), 
     cutoffs = c(cutoffsSmall, cutoffsBig), 
     LR = c(lrSmall, lrBig),
@@ -622,7 +624,7 @@ output$alphaBig.equalLR = renderText({
   value = signif(digits=2, results.EqualLR.Table()$alpha[2])
   value
 })
-fluidRow(column(5, 
+fluidRow(column(6, 
                 centerIt('Equal alpha'), 
                  centerIt(textOutput('meanAlphaPower')), 
                 tableOutput('results.EqualAlpha'),
@@ -630,7 +632,7 @@ fluidRow(column(5,
                 centerIt(textOutput('meanLRPower')),
                 tableOutput('results.EqualLR')
                 ),
-         column(7, plotOutput('theplotForEquals')))
+         column(6, plotOutput('theplotForEquals')))
 
 ```
 
