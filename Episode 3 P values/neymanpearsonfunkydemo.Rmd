@@ -1,5 +1,5 @@
 ---
-title: "neyman pearson funky demo"
+title: "The beautiful Neyman Pearson lemma <br>makes you do nutty things"
 author: "Roger Day"
 date: "2026-07-21"
 output: html_document
@@ -22,11 +22,6 @@ options(shiny.launch.browser=TRUE)
 
 tO = function(V) textOutput(inline=TRUE, V)
 ```
-
-
-#  The beautiful Neyman Pearson lemma <br>makes you do nutty things
-
-
 
 
 ```{r keys, echo=FALSE}
