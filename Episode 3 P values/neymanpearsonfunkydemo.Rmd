@@ -396,7 +396,7 @@ cutoffs.equalLR = reactive(results.EqualLR.Table()$cutoffs)
 ```
 
 
-```{r lrDifferenceAbsPlot render}
+```{r lrDifferenceAbsPlot render not used}
 output$lrDifferenceAbsPlot  = renderPlot({
     Aseq<- seq(0.001, 0.05, length=1000)
     plot(Aseq,
@@ -404,6 +404,7 @@ output$lrDifferenceAbsPlot  = renderPlot({
 #  abline(v=alpha/2, lty=2)
   #abline(v=results.EqualLR.Table()$alphas[2], lty=3)
 })
+
 ```
 
 ```{r lrDifferenceAbsPlot output not used}
@@ -437,9 +438,9 @@ output$theplotChangingAlphaBig = renderPlot({
        pch='', col=col.v1)
   #  Draw points for the equal alpha case.
   pow.M.alt.1 = pow(cutoffs.equalAlpha(), M.alt=1, V=vars())
-  points(cutoffs.equalAlpha(), pow.M.alt.1,  pch='A')
-  points(cutoffsAny, pow(cutoffsAny, M.alt=1, V=vars()), pch='P')
-  points(cutoffs.equalLR(), pow(cutoffs.equalLR(), M.alt=1, V=vars()), col=col.v[4], pch='L')
+  points(cutoffs.equalAlpha(), pow.M.alt.1,  pch='A', col=col.v['alpha'], cex=2)
+  points(cutoffs.equalLR(), pow(cutoffs.equalLR(), M.alt=1, V=vars()), col=col.v['LR'], pch='L', cex=2)
+  points(cutoffsAny, pow(cutoffsAny, M.alt=1, V=vars()), pch='?', cex=3)
   #   lines(x=c(lowerC, cutoffs()[1]), y= c(alpha,alpha) , col='black')
   # lines(x=c(lowerC, cutoffs()[2]), y= c(alpha,alpha) , col='black')
   # text(x=lowerC, y=alpha, labels = paste('alpha=', alpha), adj = c(0,0), col='black')
@@ -463,7 +464,7 @@ output$theplotChangingAlphaBig = renderPlot({
   #  lines(x=c(lowerC, mean(cutoffs)), y= rep(margPowerEqualAlpha, 2), col=col.v[3])
   #lines(rep(lowerC, 2), pow.M.alt.1, col=col.v[3])
   text(x=lowerC, y=mean(pow.M.alt.1), xpd=NA, adj = c(0,1), col=col.v[3], xpd=NA,
-       labels = paste('marginal power equal alpha:',
+       labels = paste('marginal power for equal alpha:',
                       signif(digits = 3, margPowerEqualAlpha)))
 
   conditionalPowerEqualLR = results.EqualLR.Table()$power
@@ -475,25 +476,28 @@ output$theplotChangingAlphaBig = renderPlot({
   text(x=lowerC, y=margPowerEqualLR, xpd=NA, adj = c(0,-1), col=col.v['LR'], xpd=NA,
        labels = paste('marginal power equal LR:',
                       signif(digits = 3, margPowerEqualLR)))
-  legend(x='topright',
+  legend(x='topright', 
          legend=c(paste('Variance=', vars()[1]),
                   paste('Variance=', vars()[2]),
-                  'equal alpha',
-                  'equal LR'
+                  'conditional power for equal alpha',
+                  'conditional power for equal LR',
+                  'conditional power for other allocation'
          ),
-         text.col =  col.v
+         text.col =  c(col.v, 'black'),
+         pch = c('', '', 'A', 'L', '?'),
+        
   )
 })
-renderPlot('theplotChangingAlphaBig')
+
 
 ```
 
 ```{r theplotChangingAlphaBig output, echo=FALSE}
 ## We are FOR NOW keeping Pr(variance = vars[1] equal to 1/2).
-# numericInput('ChangingAlphaBig', 'Changing Alpha allocation', value = alpha,
-#              min=minAlphaBig, max=alpha * 2 - minAlphaBig, step=minAlphaBig)
-# 
-# plotOutput('theplotChangingAlphaBig')
+numericInput('ChangingAlphaBig', 'Changing how much alpha is allocated to the Big variance part', value = alpha,
+             min=minAlphaBig, max=alpha * 2 - minAlphaBig, step=minAlphaBig)
+
+plotOutput('theplotChangingAlphaBig')
 ```
 
 
